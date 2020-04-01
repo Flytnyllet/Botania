@@ -10,6 +10,6 @@ public class LineInput : MonoBehaviour
     public void Engage()
     {
         _input = "";
-        Repaint();
+        //Repaint();
     }
 }
