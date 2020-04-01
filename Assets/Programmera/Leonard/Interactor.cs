@@ -12,14 +12,16 @@ public class Interactor : MonoBehaviour
 	[SerializeField] float distance = 100;
 	[SerializeField] public KeyCode interactKey = KeyCode.E;
 	[SerializeField] public int interactLayerMask = -1;
+	void Awake()
+	{
+		FlowerLibrary.InitiateLibrary(); // OBS! Do not comment, SUPER important.
+	}
 
 	void Start()
 	{
 		// === Flower Segment ===
 		// ==========================================
-		FlowerLibrary.InitiateLibrary(); // OBS! Do not comment, SUPER important.
-
-		// The rest of this is debugging
+		// This is debugging
 		List<string> flowerNames = FlowerLibrary.GetAllFlowerNames();
 		string debugFlowerNames = "All flower names: ";
 		foreach (string name in flowerNames)

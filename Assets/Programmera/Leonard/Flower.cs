@@ -15,6 +15,7 @@ public class Flower
 	{
 		this._name = name;
 		this._progressionCurve = progressionCurve;
+		this._loreProgression = loreProgression;
 	}
 
 	public string Name
@@ -37,5 +38,9 @@ public class Flower
 	{
 		get { return _progressionCurve; }
 		//set { _progressionCurve = value; }
+	}
+	public string[] LoreProgression
+	{
+		get { return _loreProgression;  }
 	}
 }

@@ -20,13 +20,13 @@ public static class FlowerLibrary
 			"It's a very nice flower.",
 			"This belongs in a museum!",
 			"You can make opium from this >->" };
-		Flower flower1 = new Flower(1, "Poppy", baseProgression);
+		Flower flower1 = new Flower(1, "Poppy", baseProgression, poppyProgress);
 		_flowerTypes.Add(flower1);
 		string[] dandelionProgress = new string[3] {
 			"This stuff grows everywhere!",
 			"Soon it will be able to grow on animals.",
 			"Sooooon it will be able to grow on YOU..." };
-		Flower flower2 = new Flower(2, "Dandelion", baseProgression);
+		Flower flower2 = new Flower(2, "Dandelion", baseProgression, dandelionProgress);
 		_flowerTypes.Add(flower2);
 
 		_libraryInitiated = true;
@@ -45,7 +45,12 @@ public static class FlowerLibrary
 		}
 		return flowerNames;
 	}
-
+	/*
+	public static List<Flower> GetAllFlowers()
+	{
+		return _flowerTypes;
+	}
+	*/
 	public static void IncrementFlower(int id)
 	{
 		Flower flower = _flowerTypes[id];
