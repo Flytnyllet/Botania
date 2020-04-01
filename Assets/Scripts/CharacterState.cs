@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 
+//This is supposed to act as a place to store character variables which
+// can be edidted by other objects for the sake of avoiding dependendies.
+
 public enum CHARACTER_CONTROL_STATE { PLAYERCONTROLLED = 0, CUTSCENE }
 [CreateAssetMenu(fileName = "CharacterControlState")]
 public class CharacterState : ScriptableObject
 {
     CHARACTER_CONTROL_STATE _controlState = 0;
-    public CHARACTER_CONTROL_STATE CONTROL_STATE
+    public CHARACTER_CONTROL_STATE Control_State
     {
         get { return _controlState; }
     }
