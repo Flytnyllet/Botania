@@ -9,8 +9,9 @@ public class Flower
 	int _amount = 0;
 	int _unlockProgress = 0;
 	int[] _progressionCurve;
+	string[] _loreProgression;
 
-	public Flower(int id, string name = "NoName", int[] progressionCurve = null)
+	public Flower(int id, string name = "NoName", int[] progressionCurve = null, string[] loreProgression = null)
 	{
 		this._name = name;
 		this._progressionCurve = progressionCurve;

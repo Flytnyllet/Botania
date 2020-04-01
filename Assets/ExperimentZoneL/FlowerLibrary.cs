@@ -9,11 +9,23 @@ public static class FlowerLibrary
 
 	public static void InitiateLibrary()
 	{
-		int[] baseProgression = new int[4] { 1, 3, 5, 15 };
-		Flower flower0 = new Flower(0, "Tulip", baseProgression);
+		int[] baseProgression = new int[3] { 1, 3, 5 };
+		string[] tulipProgress = new string[3] {
+			"Tulips are a thing.",
+			"There are a lot of different tulips, but here they are all orange!",
+			"Please eat tulips during your free time!" };
+		Flower flower0 = new Flower(0, "Tulip", baseProgression, tulipProgress);
 		_flowerTypes.Add(flower0);
+		string[] poppyProgress = new string[3] {
+			"It's a very nice flower.",
+			"This belongs in a museum!",
+			"You can make opium from this >->" };
 		Flower flower1 = new Flower(1, "Poppy", baseProgression);
 		_flowerTypes.Add(flower1);
+		string[] dandelionProgress = new string[3] {
+			"This stuff grows everywhere!",
+			"Soon it will be able to grow on animals.",
+			"Sooooon it will be able to grow on YOU..." };
 		Flower flower2 = new Flower(2, "Dandelion", baseProgression);
 		_flowerTypes.Add(flower2);
 
@@ -43,5 +55,8 @@ public static class FlowerLibrary
 		{
 			flower.UnlockProgress++;
 		}
+
+
+		Interactor.AddLogEntry("Added " + flower.Name);
 	}
 }
