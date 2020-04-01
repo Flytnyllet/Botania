@@ -5,8 +5,9 @@ using UnityEngine;
 public class InfiniteTerrain : MonoBehaviour
 {
     //Faster comparing square distance
-    const float VIEWER_MOVE_THRESHOLD_FOR_CHUNK_UPDATE = 25f;
-    const float SQR_VIEWER_MOVE_THRESHOLD_FOR_CHUNK_UPDATE = VIEWER_MOVE_THRESHOLD_FOR_CHUNK_UPDATE * VIEWER_MOVE_THRESHOLD_FOR_CHUNK_UPDATE;
+    static readonly float VIEWER_MOVE_THRESHOLD_FOR_CHUNK_UPDATE = 25f;
+    static readonly float SQR_VIEWER_MOVE_THRESHOLD_FOR_CHUNK_UPDATE = VIEWER_MOVE_THRESHOLD_FOR_CHUNK_UPDATE * VIEWER_MOVE_THRESHOLD_FOR_CHUNK_UPDATE;
+
 
     public static float MaxViewDistance { get; private set; }
 
@@ -26,7 +27,7 @@ public class InfiniteTerrain : MonoBehaviour
 
     //Holds created chunks which are enabled or disabled
     Dictionary<Vector2, TerrainChunk> _terrainChunkDictionary = new Dictionary<Vector2, TerrainChunk>();
-    List<TerrainChunk> _terrainChunksVisableLastUpdate = new List<TerrainChunk>();
+    static List<TerrainChunk> _terrainChunksVisableLastUpdate = new List<TerrainChunk>();
 
     private void Start()
     {
@@ -43,7 +44,7 @@ public class InfiniteTerrain : MonoBehaviour
 
     private void Update()
     {
-        ViewerPosition = new Vector2(_viewer.position.x, _viewer.position.z);
+        ViewerPosition = new Vector2(_viewer.position.x, _viewer.position.z) / _mapGenerator.GetScale();
 
         if ((_viewerPositionOld - ViewerPosition).sqrMagnitude > SQR_VIEWER_MOVE_THRESHOLD_FOR_CHUNK_UPDATE)
         {
@@ -70,17 +71,9 @@ public class InfiniteTerrain : MonoBehaviour
                 Vector2 viewedChunkCoord = new Vector2(currentChunkCoordX + xOffset, currentChunkCoordY + yOffset);
 
                 if (_terrainChunkDictionary.ContainsKey(viewedChunkCoord))
-                {
                     _terrainChunkDictionary[viewedChunkCoord].UpdateTerrainChunk();
-                    if (_terrainChunkDictionary[viewedChunkCoord].IsVisable())
-                    {
-                        _terrainChunksVisableLastUpdate.Add(_terrainChunkDictionary[viewedChunkCoord]);
-                    }
-                }
                 else
-                {
                     _terrainChunkDictionary.Add(viewedChunkCoord, new TerrainChunk(viewedChunkCoord, _chunkSize, _detailLevels, transform, _mapMaterial));
-                }
             }
         }
     }
@@ -93,9 +86,11 @@ public class InfiniteTerrain : MonoBehaviour
 
         MeshRenderer _meshRenderer;
         MeshFilter _meshFilter;
+        MeshCollider _meshCollider;
 
         LODInfo[] _detailLevels;
         LODMesh[] _lodMeshes;
+        LODMesh _collisionLODMesh;
 
         MapData _mapData;
         bool _mapDataReceived;
@@ -112,16 +107,21 @@ public class InfiniteTerrain : MonoBehaviour
             _meshObject = new GameObject("Terrain Chunk");
             _meshRenderer = _meshObject.AddComponent<MeshRenderer>();
             _meshFilter = _meshObject.AddComponent<MeshFilter>();
+            _meshCollider = _meshObject.AddComponent<MeshCollider>();
             _meshRenderer.material = material;
 
-            _meshObject.transform.position = positionV3;
+            _meshObject.transform.position = positionV3 * _mapGenerator.GetScale();
             _meshObject.transform.parent = parent;
+            _meshObject.transform.localScale = Vector3.one * _mapGenerator.GetScale();
             SetVisable(false);
 
             _lodMeshes = new LODMesh[detailLevels.Length];
             for (int i = 0; i < _detailLevels.Length; i++)
             {
                 _lodMeshes[i] = new LODMesh(_detailLevels[i].levelOfDetail, UpdateTerrainChunk);
+
+                if (detailLevels[i].useForCollider)
+                    _collisionLODMesh = _lodMeshes[i];
             }
 
             _mapGenerator.RequestMapData(_position, OnMapDataReceived);
@@ -131,9 +131,6 @@ public class InfiniteTerrain : MonoBehaviour
         {
             this._mapData = mapData;
             _mapDataReceived = true;
-
-            Texture2D texture = TextureGenerator.TextureFromColorMap(mapData.colorMap, MapGenerator.MAP_CHUNK_SIZE, MapGenerator.MAP_CHUNK_SIZE);
-            _meshRenderer.material.mainTexture = texture;
 
             UpdateTerrainChunk();
         }
@@ -168,6 +165,17 @@ public class InfiniteTerrain : MonoBehaviour
                         else if (!lodMesh.HasRequestedMesh)
                             lodMesh.RequestMesh(_mapData);
                     }
+
+                    //If the player is on highest level detail, add collision
+                    if (lodIndex == 0)
+                    {
+                        if (_collisionLODMesh.HasMesh)
+                            _meshCollider.sharedMesh = _collisionLODMesh.Mesh;
+                        else if (!_collisionLODMesh.HasRequestedMesh)
+                            _collisionLODMesh.RequestMesh(_mapData);
+                    }
+
+                    _terrainChunksVisableLastUpdate.Add(this);
                 }
 
                 SetVisable(visable);
@@ -221,6 +229,7 @@ public class InfiniteTerrain : MonoBehaviour
     {
         [Range(0, 6)]    public int levelOfDetail;
         [Range(0, 1000)] public float visableDstThreshold;
+        [Tooltip("Should this level of detail have a collider? (no if not on player)")]public bool useForCollider;
     }
 
 }
