@@ -13,8 +13,6 @@ public class MapGenerator : MonoBehaviour
         FALL_OF_MAP
     }
 
-    public static readonly int MAP_CHUNK_SIZE = 239;
-
     [Header("General Settings")]
 
     [SerializeField] DrawMode _drawMode;
@@ -25,16 +23,31 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] NoiseData _noiseData;
     [SerializeField] TextureData _textureData;
     [SerializeField] Material _terrainMaterial;
+    [SerializeField, Range(0, MeshGenerator.NUMBER_SUPPORTED_CHUNK_SIZES - 1)] int _chunkSizeIndex;
 
     [Header("Mesh Settings")]
 
-    [SerializeField, Range(0, 6)] int _editorPreviewLevelOfDetail;
+    [SerializeField, Range(0, MeshGenerator.NUMBER_SUPPORTED_LODS - 1)] int _editorPreviewLevelOfDetail;
 
     float[,] _fallofMap;
 
     Queue<MapThreadInfo<MapData>> _mapDataThreadInfoQueue = new Queue<MapThreadInfo<MapData>>();
     Queue<MapThreadInfo<MeshData>> _meshDataThreadInfoQueue = new Queue<MapThreadInfo<MeshData>>();
 
+    static int _mapChunkSize;
+
+    public static int GetChunkSize()
+    {
+        return _mapChunkSize;
+    }
+
+    private void Awake()
+    {
+        _mapChunkSize = MeshGenerator.SUPPORTED_CHUNK_SIZES[_chunkSizeIndex] - 1;
+
+        _textureData.ApplyToMaterial(_terrainMaterial);
+        _textureData.UpdateMeshHeights(_terrainMaterial, _terrainData.MinHeight, _terrainData.MaxHeight);
+    }
 
     void OnValuesUpdated()
     {
@@ -50,6 +63,8 @@ public class MapGenerator : MonoBehaviour
     //Primaraly used to init things in edit mode!
     private void OnValidate()
     {
+        _mapChunkSize = MeshGenerator.SUPPORTED_CHUNK_SIZES[_chunkSizeIndex] - 1;
+
         if (_terrainData != null)
         {
             _terrainData.OnValuesUpdated -= OnValuesUpdated;
@@ -73,6 +88,8 @@ public class MapGenerator : MonoBehaviour
 
     public void DrawMapInEditor()
     {
+        _textureData.UpdateMeshHeights(_terrainMaterial, _terrainData.MinHeight, _terrainData.MaxHeight);
+
         MapData mapData = GenerateMapData(Vector2.zero);
         //Ändra senare kan vara slow
         MapDisplay display = FindObjectOfType<MapDisplay>();
@@ -82,7 +99,7 @@ public class MapGenerator : MonoBehaviour
         else if (_drawMode == DrawMode.MESH)
             display.DrawMesh(MeshGenerator.GenerateTerrainMesh(mapData.heightMap, _terrainData.GetMeshHeightMultiplier(), _terrainData.GetMeshHeightCurve(), _editorPreviewLevelOfDetail));
         else if (_drawMode == DrawMode.FALL_OF_MAP)
-            display.DrawTexture(TextureGenerator.TextureFromHeightMap(FallofGenerator.GenerateFallofMap(MAP_CHUNK_SIZE)));
+            display.DrawTexture(TextureGenerator.TextureFromHeightMap(FallofGenerator.GenerateFallofMap(GetChunkSize())));
     }
 
     public void RequestMapData(Vector2 centre, Action<MapData> callback)
@@ -142,24 +159,22 @@ public class MapGenerator : MonoBehaviour
 
     private MapData GenerateMapData(Vector2 centre)
     {
-        float[,] noiseMap = Noise.GenerateNoiseMap(_normalizeMode, MAP_CHUNK_SIZE + 2, MAP_CHUNK_SIZE + 2, _noiseData.GetSeed(), _noiseData.GetNoiseScale(), _noiseData.GetOctaves(), _noiseData.GetPersistance(), _noiseData.GetLacunarity(), centre + _noiseData.GetOffset());
+        float[,] noiseMap = Noise.GenerateNoiseMap(_normalizeMode, GetChunkSize() + 2, GetChunkSize() + 2, _noiseData.GetSeed(), _noiseData.GetNoiseScale(), _noiseData.GetOctaves(), _noiseData.GetPersistance(), _noiseData.GetLacunarity(), centre + _noiseData.GetOffset());
 
         if (_terrainData.GetUseFallofMap())
         {
             if (_fallofMap == null)
-                _fallofMap = FallofGenerator.GenerateFallofMap(MAP_CHUNK_SIZE + 2);
+                _fallofMap = FallofGenerator.GenerateFallofMap(GetChunkSize() + 2);
 
-            for (int y = 0; y < MAP_CHUNK_SIZE + 2; y++)
+            for (int y = 0; y < GetChunkSize() + 2; y++)
             {
-                for (int x = 0; x < MAP_CHUNK_SIZE + 2; x++)
+                for (int x = 0; x < GetChunkSize() + 2; x++)
                 {
                     if (_terrainData.GetUseFallofMap())
                         noiseMap[x, y] = Mathf.Clamp(noiseMap[x, y] - _fallofMap[x, y], 0, 1);
                 }
             }
         }
-
-        _textureData.UpdateMeshHeights(_terrainMaterial, _terrainData.MinHeight, _terrainData.MaxHeight);
 
         return new MapData(noiseMap);
     }

@@ -4,6 +4,10 @@ using UnityEngine;
 
 public static class MeshGenerator
 {
+    public const int NUMBER_SUPPORTED_LODS = 5;
+    public const int NUMBER_SUPPORTED_CHUNK_SIZES = 9;
+    public static readonly int[] SUPPORTED_CHUNK_SIZES = { 48, 72, 96, 120, 144, 168, 192, 216, 240 };
+
     public static MeshData GenerateTerrainMesh(float[,] heightMap, float heightMultiplier, AnimationCurve heightCurve, int levelOfDetail)
     {
         //This is copying heightcurve so each thread won't be accessing the same height curve and crash
