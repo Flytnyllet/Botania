@@ -1142,6 +1142,8 @@ GameObject:
   - component: {fileID: 1149588782}
   - component: {fileID: 1149588781}
   - component: {fileID: 1149588780}
+  - component: {fileID: 1149588784}
+  - component: {fileID: 1149588783}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -1222,6 +1224,64 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1149588778}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1149588783
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1149588778}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a0b0c4f79fc9104cbb7e8c7e7a8c785, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interaction: 2
+  postTriggerAction: 2
+  eventCalls:
+  - fghj
+  eventParameter:
+    stringParam: 
+    intParam: 0
+    floatParam: 0
+    colourParam:
+      r: 1
+      g: 1
+      b: 1
+      a: 1
+    posParam: {x: 0, y: 0}
+    transformParam: {fileID: 0}
+--- !u!114 &1149588784
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1149588778}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67a01951023e33145a883fe257d936bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  events:
+  - subscriptionName: 
+    action:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 0}
+          m_MethodName: 
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: 
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+        Culture=neutral, PublicKeyToken=null
+      m_CallsDirty: 1
 --- !u!1 &1557709458
 GameObject:
   m_ObjectHideFlags: 0
