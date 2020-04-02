@@ -13,34 +13,28 @@ public static class Noise
         GLOBAL
     }
 
-    public static float[,] GenerateNoiseMap(NormalizeMode normalizeMode, int mapWidth, int mapHeight, int seed, float scale, int octaves, float persistance, float lacunarity, Vector2 offset)
+    public static float[,] GenerateNoiseMap(int mapWidth, int mapHeight, NoiseSettings settings, Vector2 sampleCenter)
     {
 
         float[,] noiseMap = new float[mapWidth, mapHeight];
 
         //Used as offset based on seed to get new noise
-        System.Random prng = new System.Random(seed);
-        Vector2[] octaveOffsets = new Vector2[octaves];
+        System.Random prng = new System.Random(settings.Seed);
+        Vector2[] octaveOffsets = new Vector2[settings.Octaves];
 
         float maxPossibleHeight = 0;
         float amplitude = 1;
         float frequency = 1;
 
         //Sets the offsets based on seed
-        for (int i = 0; i < octaves; i++)
+        for (int i = 0; i < settings.Octaves; i++)
         {
-            float offsetX = prng.Next(-100000, 100000) + offset.x;
-            float offsetY = prng.Next(-100000, 100000) - offset.y;
+            float offsetX = prng.Next(-100000, 100000) + settings.Offset.x + sampleCenter.x;
+            float offsetY = prng.Next(-100000, 100000) - settings.Offset.y - sampleCenter.y;
             octaveOffsets[i] = new Vector2(offsetX, offsetY);
 
             maxPossibleHeight += amplitude;
-            amplitude += persistance;
-        }
-
-        if (scale <= 0)
-        {
-            scale = 0.0001f;
-            Debug.LogWarning("Scale is smaller or equal to zero! Don't! Clamped to 0.0001 for now!");
+            amplitude += settings.Persistance;
         }
 
         //keep track of max and min to be able to normalize 0-1
@@ -60,40 +54,64 @@ public static class Noise
                 frequency = 1;
                 float noiseHeight = 0;
 
-                for (int i = 0; i < octaves; i++)
+                for (int i = 0; i < settings.Octaves; i++)
                 {
-                    float sampleX = (x - halfWidth + octaveOffsets[i].x) / scale * frequency;
-                    float sampleY = (y - halfHeight + octaveOffsets[i].y) / scale * frequency;
+                    float sampleX = (x - halfWidth + octaveOffsets[i].x) / settings.Scale * frequency;
+                    float sampleY = (y - halfHeight + octaveOffsets[i].y) / settings.Scale * frequency;
 
                     float perlinValue = Mathf.PerlinNoise(sampleX, sampleY) * 2 - 1;
                     noiseHeight += perlinValue * amplitude;
 
-                    amplitude *= persistance;
-                    frequency *= lacunarity;
+                    amplitude *= settings.Persistance;
+                    frequency *= settings.Lacunarity;
                 }
                 //sets current min and max value in float[,]
                 if (noiseHeight > maxLocalNoiseHeight)
                     maxLocalNoiseHeight = noiseHeight;
-                else if (noiseHeight < minLocalNoiseHeight)
+                if (noiseHeight < minLocalNoiseHeight)
                     minLocalNoiseHeight = noiseHeight;
 
                 noiseMap[x, y] = noiseHeight;
-            }
-        }
 
-        //Normalize values in noiseMap
-        for (int y = 0; y < mapHeight; y++)
-            for (int x = 0; x < mapWidth; x++)
-            {
-                if (normalizeMode == NormalizeMode.LOCAL)
-                    noiseMap[x, y] = Mathf.InverseLerp(minLocalNoiseHeight, maxLocalNoiseHeight, noiseMap[x, y]);
-                else
+                if (settings.NormalizeMode == NormalizeMode.GLOBAL)
                 {
                     float normalizedHeight = (noiseMap[x, y] + 1) / (maxPossibleHeight / GLOBAL_MODE_ESTIMATE_MULTIPLIER);
                     noiseMap[x, y] = Mathf.Clamp(normalizedHeight, 0, int.MaxValue);
                 }
             }
+        }
 
+        //Normalize values in noiseMap
+        if (settings.NormalizeMode == NormalizeMode.LOCAL)
+        {
+            for (int y = 0; y < mapHeight; y++)
+                for (int x = 0; x < mapWidth; x++)
+                {
+                    noiseMap[x, y] = Mathf.InverseLerp(minLocalNoiseHeight, maxLocalNoiseHeight, noiseMap[x, y]);
+                }
+        }
+            
         return noiseMap;
     }
+}
+
+[System.Serializable]
+public class NoiseSettings
+{
+    [SerializeField, Range(0, 100000), Tooltip("Gives a different starting point for noise")] int _seed;
+    [SerializeField, Tooltip("Offset from noise seed if desired")] Vector2 _offset;
+    [SerializeField, Range(0.001f, 100), Tooltip("Scale of Noise")] float _scale = 10;
+    [SerializeField, Range(1, 10), Tooltip("Amount of noiselayers stacked on eachother (3 is good)")] int _octaves = 4;
+    [SerializeField, Range(0, 1), Tooltip("Amount of increase in frequency of each octave")] float _persistance = 0.6f;
+    [SerializeField, Range(1, 25), Tooltip("How much effect each octave should have")] float _lacunarity = 1.5f;
+
+    [SerializeField, Tooltip("Keep on GLOBAL! LOCAL is only used for testing purposes!")] Noise.NormalizeMode _normalizeMode = Noise.NormalizeMode.GLOBAL;
+
+    public int Seed { get { return _seed; } private set { _seed = value;  } }
+    public Vector2 Offset { get { return _offset; } private set { _offset = value;  } }
+    public float Scale { get { return _scale; } private set { _scale = value; } }
+    public int Octaves { get { return _octaves; } private set { _octaves = value;  } }
+    public float Persistance { get { return _persistance; } private set { _persistance = value;  } }
+    public float Lacunarity { get { return _lacunarity; } private set { _lacunarity = value;  } }
+    public Noise.NormalizeMode NormalizeMode { get { return _normalizeMode; } private set { _normalizeMode = value;  } }
 }

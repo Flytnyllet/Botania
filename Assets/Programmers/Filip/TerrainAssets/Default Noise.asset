@@ -13,10 +13,37 @@ MonoBehaviour:
   m_Name: Default Noise
   m_EditorClassIdentifier: 
   _autoUpdate: 1
-  _seed: 43702
-  _offset: {x: 0, y: 0}
-  _noiseScale: 68.8
-  _octaves: 3
-  _persistance: 0.391
-  _lacunarity: 2.1
-  _normalizeMode: 1
+  _noiseSettings:
+    _seed: 0
+    _offset: {x: 0, y: 0}
+    _scale: 47.5
+    _octaves: 4
+    _persistance: 0.6
+    _lacunarity: 1.5
+    _normalizeMode: 1
+  _heightMultiplier: 38
+  _heightCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _useFallOfMap: 0
