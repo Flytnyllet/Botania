@@ -31,50 +31,53 @@ public class MouseLook : MonoBehaviour
 
     float rotationY = 0F;
 
-	FPSMovement fpsMove;
+    FPSMovement fpsMove;
 
     void Update()
     {
-        if (axes == RotationAxes.MouseXAndY)
+        if (CharacterState.Control_State == CHARACTER_CONTROL_STATE.PLAYERCONTROLLED)
         {
-			float rotationX = 0;
+            if (axes == RotationAxes.MouseXAndY)
+            {
+                float rotationX = 0;
 
-			/*if (fpsMove != null)
-			{
-				Vector3 parentX = fpsMove.transform.localEulerAngles;
-				parentX.y += Input.GetAxis("Mouse X") * sensitivityX;
-				fpsMove.transform.localEulerAngles = parentX;
-			}
-			else
-			{
-				rotationX = transform.localEulerAngles.y + Input.GetAxis("Mouse X") * sensitivityX;
-			}*/
-			rotationX = transform.localEulerAngles.y + Input.GetAxis("Mouse X") * sensitivityX;
+                /*if (fpsMove != null)
+                {
+                    Vector3 parentX = fpsMove.transform.localEulerAngles;
+                    parentX.y += Input.GetAxis("Mouse X") * sensitivityX;
+                    fpsMove.transform.localEulerAngles = parentX;
+                }
+                else
+                {
+                    rotationX = transform.localEulerAngles.y + Input.GetAxis("Mouse X") * sensitivityX;
+                }*/
+                rotationX = transform.localEulerAngles.y + Input.GetAxis("Mouse X") * sensitivityX;
 
-            rotationY += Input.GetAxis("Mouse Y") * sensitivityY;
-            rotationY = Mathf.Clamp(rotationY, minimumY, maximumY);
+                rotationY += Input.GetAxis("Mouse Y") * sensitivityY;
+                rotationY = Mathf.Clamp(rotationY, minimumY, maximumY);
 
-            transform.localEulerAngles = new Vector3(-rotationY, rotationX, 0);
-        }
-        else if (axes == RotationAxes.MouseX)
-        {
-            transform.Rotate(0, Input.GetAxis("Mouse X") * sensitivityX, 0);
-        }
-        else
-        {
-            rotationY += Input.GetAxis("Mouse Y") * sensitivityY;
-            rotationY = Mathf.Clamp(rotationY, minimumY, maximumY);
+                transform.localEulerAngles = new Vector3(-rotationY, rotationX, 0);
+            }
+            else if (axes == RotationAxes.MouseX)
+            {
+                transform.Rotate(0, Input.GetAxis("Mouse X") * sensitivityX, 0);
+            }
+            else
+            {
+                rotationY += Input.GetAxis("Mouse Y") * sensitivityY;
+                rotationY = Mathf.Clamp(rotationY, minimumY, maximumY);
 
-            transform.localEulerAngles = new Vector3(-rotationY, transform.localEulerAngles.y, 0);
+                transform.localEulerAngles = new Vector3(-rotationY, transform.localEulerAngles.y, 0);
+            }
         }
     }
 
     void Start()
     {
-		if(transform.GetComponentInParent<FPSMovement>() != null)
-		{
-			fpsMove = transform.GetComponentInParent<FPSMovement>();
-		}
+        if (transform.GetComponentInParent<FPSMovement>() != null)
+        {
+            fpsMove = transform.GetComponentInParent<FPSMovement>();
+        }
         //if(!networkView.isMine)
         //enabled = false;
 
