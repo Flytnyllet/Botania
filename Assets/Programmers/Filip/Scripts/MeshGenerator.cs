@@ -4,15 +4,8 @@ using UnityEngine;
 
 public static class MeshGenerator
 {
-    public const int NUMBER_SUPPORTED_LODS = 5;
-    public const int NUMBER_SUPPORTED_CHUNK_SIZES = 9;
-    public static readonly int[] SUPPORTED_CHUNK_SIZES = { 48, 72, 96, 120, 144, 168, 192, 216, 240 };
-
-    public static MeshData GenerateTerrainMesh(float[,] heightMap, float heightMultiplier, AnimationCurve heightCurve, int levelOfDetail)
+    public static MeshData GenerateTerrainMesh(float[,] heightMap, MeshSettings meshSettings, int levelOfDetail)
     {
-        //This is copying heightcurve so each thread won't be accessing the same height curve and crash
-        AnimationCurve threadHeightCurve = new AnimationCurve(heightCurve.keys);
-
         //Used to simplify mesh triangles on distance
         int meshSimplificationIncrement = (levelOfDetail == 0) ? 1 : levelOfDetail * 2; // If levelofdetail is 0 set it to 1 otherwise double
 
@@ -23,7 +16,6 @@ public static class MeshGenerator
         float topLeftX = (meshSizeUnSimplified - 1) / -2f;
         float topLeftZ = (meshSizeUnSimplified - 1) / 2f;
 
-  
         int verticesPerLine = (meshSize - 1) / meshSimplificationIncrement + 1;
 
         MeshData meshData = new MeshData(verticesPerLine); //Uses data for threading
@@ -50,7 +42,6 @@ public static class MeshGenerator
             }
         }
 
-
         for (int y = 0; y < borderedSize; y += meshSimplificationIncrement)
         {
             for (int x = 0; x < borderedSize; x += meshSimplificationIncrement)
@@ -58,8 +49,8 @@ public static class MeshGenerator
                 int vertexIndex = vertexIndicesMap[x, y];
 
                 Vector2 percent = new Vector2((x - meshSimplificationIncrement) / (float)meshSize, (y - meshSimplificationIncrement) / (float)meshSize);
-                float height = threadHeightCurve.Evaluate(heightMap[x, y]) * heightMultiplier;
-                Vector3 vertexPosition = new Vector3(topLeftX + percent.x * meshSizeUnSimplified, height, topLeftZ - percent.y * meshSizeUnSimplified);
+                float height = heightMap[x, y];
+                Vector3 vertexPosition = new Vector3((topLeftX + percent.x * meshSizeUnSimplified) * meshSettings.MeshScale, height, (topLeftZ - percent.y * meshSizeUnSimplified ) * meshSettings.MeshScale);
 
                 meshData.AddVertex(vertexPosition, percent, vertexIndex);
 
