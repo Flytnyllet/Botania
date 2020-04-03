@@ -5,7 +5,6 @@ using UnityEngine;
 public class FPSMovement : MonoBehaviour
 {
 	CharacterController charCon;
-    [SerializeField] CharacterState _stateObject;
     [SerializeField] float _speed = 12f;
     [SerializeField] float _jumpForce = 1f;
     [SerializeField] float _gravity = -9.81f;
@@ -29,7 +28,7 @@ public class FPSMovement : MonoBehaviour
 
 	void Update()
 	{
-        if (_stateObject.Control_State == CHARACTER_CONTROL_STATE.PLAYERCONTROLLED)
+        if (CharacterState.Control_State == CHARACTER_CONTROL_STATE.PLAYERCONTROLLED)
         {
             //Input
             float x = Input.GetAxis("Horizontal");
@@ -78,9 +77,11 @@ public class FPSMovement : MonoBehaviour
 
 	void Walking(float horizontal, float vertical)
 	{
-		Vector3 move =
+        Vector3 lookDir =_playerCam.forward;
+        lookDir.y = 0;
+        Vector3 move =
 			_playerCam.right * horizontal +
-			_playerCam.forward * vertical;
+            lookDir * vertical;
 		charCon.Move(move * _speed * Time.deltaTime);
 	}
 
