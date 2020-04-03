@@ -14,8 +14,10 @@ public class StoreData : MonoBehaviour
         }
     }
 
-    public PlayerData profile;
+    private List<FlowerData> flowers;
+    public List<FlowerData> Flowers { get; private set; }
 
-    public int cube;
-    public int globe;
+    private PlayerData playerData;
+    public PlayerData PlayerData { get; private set; }
+
 }
