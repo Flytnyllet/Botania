@@ -8,7 +8,9 @@ public class MapPreview : MonoBehaviour
     {
         NOISE_MAP,
         MESH,
-        FALL_OF_MAP
+        FALL_OF_MAP,
+        SPAWNABLE_NOISE,
+        BIOME
     }
 
     [Header("General Settings")]
@@ -31,12 +33,29 @@ public class MapPreview : MonoBehaviour
     [SerializeField] MeshFilter _meshFilter;
     [SerializeField] MeshRenderer _meshRenderer;
 
+    [Header("Biome Testing")]
+
+    [SerializeField] NoiseMergeType _noiseMergeType;
+
+    [SerializeField] Biome _biome;
+
+    [SerializeField] Spawnable _spawnable_1;
+    [SerializeField] Spawnable _spawnable_2;
+
+    Transform _biomeContainer;
+
     public bool DoAutoUpdate() { return _autoUpdate; }
 
     public float GetScale() { return _meshSettings.MeshScale; }
 
     public void DrawMapInEditor()
     {
+        if (_biomeContainer != null)
+            DestroyImmediate(_biomeContainer.gameObject);
+
+        _biomeContainer = new GameObject().transform;
+        _biomeContainer.parent = transform;
+
         _textureData.ApplyToMaterial(_terrainMaterial);
         _textureData.UpdateMeshHeights(_terrainMaterial, _heightMapSettings.MinHeight, _heightMapSettings.MaxHeight);
 
@@ -49,6 +68,13 @@ public class MapPreview : MonoBehaviour
             DrawMesh(MeshGenerator.GenerateTerrainMesh(heightMap.heightMap, _meshSettings, _editorPreviewLevelOfDetail));
         else if (_drawMode == DrawMode.FALL_OF_MAP)
             DrawTexture(TextureGenerator.TextureFromHeightMap( new HeightMap(FallofGenerator.GenerateFallofMap(_meshSettings.ChunkSize), 0, 1)));
+        else if (_drawMode == DrawMode.SPAWNABLE_NOISE)
+            DrawTexture(TextureGenerator.TextureFromHeightMap(new HeightMap(Noise.MergeNoise(_meshSettings.ChunkSize + 2, _meshSettings.ChunkSize + 2, _spawnable_1.NoiseSettings, _spawnable_2.NoiseSettings, _noiseMergeType, Vector2.zero), 0, 1)));
+        else if (_drawMode == DrawMode.BIOME)
+        {
+            DrawMesh(MeshGenerator.GenerateTerrainMesh(heightMap.heightMap, _meshSettings, _editorPreviewLevelOfDetail));
+            PrefabSpawner.SpawnOnChunk(_biome, heightMap, _meshSettings, _biomeContainer, Vector2.zero);
+        }
     }
 
 
@@ -93,6 +119,21 @@ public class MapPreview : MonoBehaviour
         {
             _heightMapSettings.OnValuesUpdated -= OnValuesUpdated;
             _heightMapSettings.OnValuesUpdated += OnValuesUpdated;
+        }
+        if (_spawnable_1 != null)
+        {
+            _spawnable_1.OnValuesUpdated -= OnValuesUpdated;
+            _spawnable_1.OnValuesUpdated += OnValuesUpdated;
+        }
+        if (_spawnable_2 != null)
+        {
+            _spawnable_2.OnValuesUpdated -= OnValuesUpdated;
+            _spawnable_2.OnValuesUpdated += OnValuesUpdated;
+        }
+        if (_biome != null)
+        {
+            _biome.OnValuesUpdated -= OnValuesUpdated;
+            _biome.OnValuesUpdated += OnValuesUpdated;
         }
         if (_textureData != null)
         {

@@ -14,7 +14,7 @@ public static class MeshGenerator
         int meshSizeUnSimplified = borderedSize - 2;
 
         float topLeftX = (meshSizeUnSimplified - 1) / -2f;
-        float topLeftZ = (meshSizeUnSimplified - 1) / 2f;
+        float topLeftZ = (meshSizeUnSimplified - 1) /  2f;
 
         int verticesPerLine = (meshSize - 1) / meshSimplificationIncrement + 1;
 
