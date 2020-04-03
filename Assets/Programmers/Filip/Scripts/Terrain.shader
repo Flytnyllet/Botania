@@ -17,12 +17,17 @@
 
 		const static int MAX_COLOR_COUNT = 8;
 
-		int baseColorCount;
+		int layerCount;
 		float3 baseColors[MAX_COLOR_COUNT];
 		float baseStartHeights[MAX_COLOR_COUNT];
+		float baseBlends[MAX_COLOR_COUNT];
+		float baseColorStrength[MAX_COLOR_COUNT];
+		float baseTextureScales[MAX_COLOR_COUNT];
 
 		float minHeight;
 		float maxHeight;
+
+		UNITY_DECLARE_TEX2DARRAY(baseTextures);
 
         struct Input
         {
@@ -44,15 +49,9 @@
 
         void surf (Input IN, inout SurfaceOutputStandard o)
         {
-			float heightPercent = inverseLerp(minHeight, maxHeight, IN.worldPos.y);
+			float heightPercent = inverseLerp(minHeight - 10, maxHeight, IN.worldPos.y);
 
-			o.Albedo = baseColors[0];
-
-			for (int i = 0; i < baseColorCount; i++)
-			{
-				float drawStrength = saturate(sign(heightPercent - baseStartHeights[i] * 0.1));
-				o.Albedo = o.Albedo * (1.0 - drawStrength) + baseColors[i] * drawStrength;
-			}
+			o.Albedo = heightPercent;
         }
         ENDCG
     }

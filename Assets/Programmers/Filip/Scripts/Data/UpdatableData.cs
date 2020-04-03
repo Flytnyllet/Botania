@@ -8,6 +8,8 @@ public class UpdatableData : ScriptableObject
 
     [SerializeField] bool _autoUpdate;
 
+#if UNITY_EDITOR
+
     private void OnValidate()
     {
         if (_autoUpdate)
@@ -20,4 +22,6 @@ public class UpdatableData : ScriptableObject
         if (OnValuesUpdated != null)
             OnValuesUpdated();
     }
+
+#endif
 }
