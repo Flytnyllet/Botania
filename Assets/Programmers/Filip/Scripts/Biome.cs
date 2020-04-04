@@ -7,16 +7,20 @@ public class Biome : UpdatableData
 {
     [SerializeField] Spawnable[] _spawnables;
     [SerializeField] MeshSettings _meshSettings;
-    [SerializeField] HeightMapSettings _offsetNoise;
+    [SerializeField] HeightMapSettings _offsetNoiseSettings;
+
+    float[,] _offsetNoise;
 
     public Spawnable[] Spawnables { get { return _spawnables; } private set { _spawnables = value; } }
-    public HeightMapSettings OffsetNoise { get { return _offsetNoise; } private set { _offsetNoise = value; } }
+    public float[,] OffsetNoise { get { return _offsetNoise; } private set { _offsetNoise = value; } }
 
-    public void Setup()
+    public void Setup(Vector2 center)
     {
+        _offsetNoise = Noise.GenerateNoiseMap(_meshSettings.ChunkSize, _meshSettings.ChunkSize, _offsetNoiseSettings.NoiseSettings, center);
+
         for (int i = 0; i < _spawnables.Length; i++)
         {
-            _spawnables[i].Setup(null, _meshSettings.ChunkSize);
+            _spawnables[i].Setup(null, _meshSettings.ChunkSize, center);
         }
     }
 }
