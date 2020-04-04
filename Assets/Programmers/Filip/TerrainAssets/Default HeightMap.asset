@@ -9,39 +9,39 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f499bce57ccb6e04b8f4b9b4b2929c77, type: 3}
+  m_Script: {fileID: 11500000, guid: a6a8266cd6fa0014aa75a4711a79cdd5, type: 3}
   m_Name: Default HeightMap
   m_EditorClassIdentifier: 
   _autoUpdate: 1
   _noiseSettings:
     _seed: 0
     _offset: {x: 0, y: 0}
-    _scale: 46
+    _scale: 36
     _octaves: 3
-    _persistance: 0.494
+    _persistance: 0.333
     _lacunarity: 1.5
-    _darken: 0
+    _darken: 0.09
     _useDarken: 0
     _normalizeMode: 1
-  _heightMultiplier: 12.1
+  _heightMultiplier: 9
   _heightCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
       value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
       weightedMode: 0
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
       time: 1
       value: 1
-      inSlope: 2
-      outSlope: 2
-      tangentMode: 0
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
       weightedMode: 0
       inWeight: 0
       outWeight: 0

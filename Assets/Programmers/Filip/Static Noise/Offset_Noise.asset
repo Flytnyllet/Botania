@@ -9,21 +9,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f499bce57ccb6e04b8f4b9b4b2929c77, type: 3}
-  m_Name: Offset-Noise
+  m_Script: {fileID: 11500000, guid: a6a8266cd6fa0014aa75a4711a79cdd5, type: 3}
+  m_Name: Offset_Noise
   m_EditorClassIdentifier: 
   _autoUpdate: 1
   _noiseSettings:
     _seed: 0
     _offset: {x: 0, y: 0}
-    _scale: 1
+    _scale: 0.01
     _octaves: 3
-    _persistance: 0.468
-    _lacunarity: 10.19
-    _darken: 0.706
+    _persistance: 0.383
+    _lacunarity: 1.5
+    _darken: -0.17
     _useDarken: 0
     _normalizeMode: 0
-  _heightMultiplier: 1
+  _heightMultiplier: 6
   _heightCurve:
     serializedVersion: 2
     m_Curve:

@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5054333338043311255}
-  - component: {fileID: 5054333338043311253}
+  - component: {fileID: 3217619196147007213}
   - component: {fileID: 5054333338043311252}
   m_Layer: 0
   m_Name: MapGenerator
@@ -32,7 +32,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5054333338043311253
+--- !u!114 &3217619196147007213
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -41,7 +41,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5054333338043311254}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1fe4196f8a3dad94eb92c3447b4ed4ad, type: 3}
+  m_Script: {fileID: 11500000, guid: 04defc001634f2c4990071e88f4a7f42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _detailLevels:
@@ -53,9 +53,9 @@ MonoBehaviour:
     visableDstThreshold: 200
   - levelOfDetail: 4
     visableDstThreshold: 250
-  _colliderLODIndex: 1
+  _colliderLODIndex: 2
   _viewer: {fileID: 0}
-  _mapMaterial: {fileID: 2100000, guid: e3fac86f06927b84fbe2bab1b6089f91, type: 2}
+  _mapMaterial: {fileID: 0}
   _meshSettings: {fileID: 0}
   _heightMapSettings: {fileID: 0}
   _textureSettings: {fileID: 0}
@@ -68,6 +68,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 5054333338043311254}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1e7246be887bf2c47aa4ec93196aab2d, type: 3}
+  m_Script: {fileID: 11500000, guid: 6e2a96709e752eb40a234c6f30e244e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
