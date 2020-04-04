@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PrefabSpawner : MonoBehaviour
 {
+    static readonly int DEGREES_360 = 360;
+
     public static void SpawnOnChunk(Biome biome, HeightMap heightMap, MeshSettings meshSettings, Transform container, Vector2 chunkCoord)
     {
         float height = 1;
@@ -25,10 +27,19 @@ public class PrefabSpawner : MonoBehaviour
                     float xPos = x - meshSettings.ChunkSize / 2;
                     float yPos = y - meshSettings.ChunkSize / 2;
 
-                    Vector3 objectPosition = new Vector3((xPos + chunkCoord.x) * meshSettings.MeshScale, heightMap.heightMap[x, y] + height, -(yPos + chunkCoord.y) * meshSettings.MeshScale);
-                    Quaternion rotation = Quaternion.Euler(0, biome.OffsetNoise[x, y] * 360, 0);
+                    Vector3 objectPosition = new Vector3((xPos + chunkCoord.x) * meshSettings.MeshScale, heightMap.heightMap[x, y] + 0.35f * height, -(yPos + chunkCoord.y) * meshSettings.MeshScale);
+                    Vector3 offsetVector = new Vector3(biome.OffsetNoise[x, y] * 2 - 1, 0.0f, biome.SpreadNoise[x, y] * 2 - 1);
 
-                    if (spawnNoise[x, y] > 0.01f && x % 2 == 0 && y % 2 == 0)
+                    objectPosition += offsetVector * spawnables[i].OffsetAmount;
+
+                    Quaternion rotation = Quaternion.Euler(0, biome.OffsetNoise[x, y] * DEGREES_360, 0);
+
+                    bool insideNoise = spawnNoise[x, y] > spawnables[i].NoiseStartPoint; //is it inside the noise?
+                    bool gradientSpawn = spawnNoise[x, y] + biome.OffsetNoise[x, y] > spawnables[i].Thickness; //If it is, transition?
+                    bool uniformSpread = x % spawnables[i].UniformSpreadAmount == 0 && y % spawnables[i].UniformSpreadAmount == 0; //uniform spread?
+                    bool noiseSpread = biome.SpreadNoise[y, x] > spawnables[i].RandomSpread;
+
+                    if (insideNoise && gradientSpawn && uniformSpread && noiseSpread)
                         Instantiate(spawnables[i].Prefab, objectPosition, rotation, container);
 
                     //if (x % 2 == 0 && y % 2 == 0)
@@ -37,7 +48,7 @@ public class PrefabSpawner : MonoBehaviour
             }
 
             if (spawnables[i].SubSpawners.Length > 0)
-                SpawnFromSpawnables(height + 1, biome, spawnables[i].SubSpawners, heightMap, meshSettings, container, chunkCoord);
+                SpawnFromSpawnables(height + 1.25f, biome, spawnables[i].SubSpawners, heightMap, meshSettings, container, chunkCoord);
         }
     }
 }
