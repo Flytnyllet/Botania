@@ -62,6 +62,6 @@ public static class FlowerLibrary
 		}
 
 
-		Interactor.AddLogEntry("Added " + flower.Name);
+		//Interactor.AddLogEntry("Added " + flower.Name);
 	}
 }
