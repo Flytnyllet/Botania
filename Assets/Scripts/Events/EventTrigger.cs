@@ -7,12 +7,11 @@ using UnityEngine.Events;
 public class EventTrigger : MonoBehaviour
 {
     [Header("Trigger Options")]
-    [SerializeField] Interactions interaction = Interactions.onButtonPress;
-    enum Interactions { onEnter = 0, onButtonPress, onLeave };
-    //[SerializeField] InteractionType interactionType = InteractionType.Direct;
-    //public enum InteractionType { Direct = 0, PreAndPostTimer };
-    [SerializeField] Actions postTriggerAction = Actions.Nothing;
-    enum Actions { Nothing = 0, DeleteObject, DeactivateTrigger };
+    [SerializeField] INTERACTIONS interaction = INTERACTIONS.onButtonPress; 
+    enum INTERACTIONS { onEnter = 0, onButtonPress, onLeave };
+
+    [SerializeField] ACTIONS postTriggerAction = ACTIONS.Nothing;
+    enum ACTIONS { Nothing = 0, DeleteObject, DeactivateTrigger };
 
     [Header("Event Data")]
     public string[] eventCalls = new string[1];
@@ -30,11 +29,11 @@ public class EventTrigger : MonoBehaviour
             }
             switch (postTriggerAction)
             {
-                case Actions.DeleteObject:
+                case ACTIONS.DeleteObject:
                     Destroy(this.gameObject);
                     break;
 
-                case Actions.DeactivateTrigger:
+                case ACTIONS.DeactivateTrigger:
                     Destroy(this);
                     break;
             }
@@ -42,35 +41,35 @@ public class EventTrigger : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (interaction == Interactions.onEnter && collision.tag == "Player")
+        if (interaction == INTERACTIONS.onEnter && collision.tag == "Player")
         {
             Engage();
         }
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (interaction == Interactions.onEnter && collision.gameObject.tag == "Player")
+        if (interaction == INTERACTIONS.onEnter && collision.gameObject.tag == "Player")
         {
             Engage();
         }
     }
     private void OnCollisionStay2D(Collision2D collision)
     {
-        if (interaction == Interactions.onButtonPress && collision.gameObject.tag == "Player" && Input.GetKeyDown(KeyCode.E))
+        if (interaction == INTERACTIONS.onButtonPress && collision.gameObject.tag == "Player" && Input.GetKeyDown(KeyCode.E))
         {
             Engage();
         }
     }
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (interaction == Interactions.onButtonPress && collision.gameObject.tag == "Player" && Input.GetKeyDown(KeyCode.E))
+        if (interaction == INTERACTIONS.onButtonPress && collision.gameObject.tag == "Player" && Input.GetKeyDown(KeyCode.E))
         {
             Engage();
         }
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (interaction == Interactions.onLeave && collision.gameObject.tag == "Player")
+        if (interaction == INTERACTIONS.onLeave && collision.gameObject.tag == "Player")
         {
             Engage();
         }
