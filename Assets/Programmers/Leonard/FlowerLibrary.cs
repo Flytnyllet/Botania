@@ -28,6 +28,12 @@ public static class FlowerLibrary
 			"Sooooon it will be able to grow on YOU..." };
 		Flower flower2 = new Flower(2, "Dandelion", baseProgression, dandelionProgress);
 		_flowerTypes.Add(flower2);
+		string[] violet = new string[3] {
+			"Violet is my favorite color!",
+			"Please don't remove my messages.",
+			"This book protects me, I should be safe here." };
+		Flower flower3 = new Flower(3, "Violet", baseProgression, violet);
+		_flowerTypes.Add(flower3);
 
 		_libraryInitiated = true;
 	}
