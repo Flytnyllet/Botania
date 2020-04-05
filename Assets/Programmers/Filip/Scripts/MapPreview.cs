@@ -50,17 +50,18 @@ public class MapPreview : MonoBehaviour
 
     public void DrawMapInEditor()
     {
+        //Used to store prefab objects in edit mode and delete them when changes are made (is a bit buggy)
         if (_biomeContainer != null)
             DestroyImmediate(_biomeContainer.gameObject);
-
         _biomeContainer = new GameObject().transform;
         _biomeContainer.parent = transform;
 
+        //Apply material to mesh
         _textureData.ApplyToMaterial(_terrainMaterial);
         _textureData.UpdateMeshHeights(_terrainMaterial, _heightMapSettings.MinHeight, _heightMapSettings.MaxHeight);
 
+        //Generate the heightmap for the chunk at origin
         HeightMap heightMap = HeightMapGenerator.GenerateHeightMap(_meshSettings.ChunkSize + 2, _meshSettings.ChunkSize + 2, _heightMapSettings, Vector2.zero);
-        //Ändra senare kan vara slow
 
         if (_drawMode == DrawMode.NOISE_MAP)
             DrawTexture(TextureGenerator.TextureFromHeightMap(heightMap));
@@ -69,7 +70,7 @@ public class MapPreview : MonoBehaviour
         else if (_drawMode == DrawMode.FALL_OF_MAP)
             DrawTexture(TextureGenerator.TextureFromHeightMap( new HeightMap(FallofGenerator.GenerateFallofMap(_meshSettings.ChunkSize), 0, 1)));
         else if (_drawMode == DrawMode.SPAWNABLE_NOISE)
-            DrawTexture(TextureGenerator.TextureFromHeightMap(new HeightMap(Noise.MergeNoise(_meshSettings.ChunkSize + 2, _meshSettings.ChunkSize + 2, _spawnable_1.NoiseSettings, _spawnable_2.NoiseSettings, _noiseMergeType, Vector2.zero), 0, 1)));
+            DrawTexture(TextureGenerator.TextureFromHeightMap(new HeightMap(Noise.MergeNoise(_meshSettings.ChunkSize + 2, _meshSettings.ChunkSize + 2, _spawnable_1.NoiseSettingsData.NoiseSettings, _spawnable_2.NoiseSettingsData.NoiseSettings, _noiseMergeType, Vector2.zero), 0, 1)));
         else if (_drawMode == DrawMode.BIOME)
         {
             DrawMesh(MeshGenerator.GenerateTerrainMesh(heightMap.heightMap, _meshSettings, _editorPreviewLevelOfDetail));
@@ -77,7 +78,7 @@ public class MapPreview : MonoBehaviour
         }
     }
 
-
+    //Draws on the plane (for noise display)
     public void DrawTexture(Texture2D texture)
     {
         _textureRenderer.sharedMaterial.mainTexture = texture;
@@ -87,6 +88,7 @@ public class MapPreview : MonoBehaviour
         _meshFilter.gameObject.SetActive(false);
     }
 
+    //Create the mesh from meshdata if that is to be displayed
     public void DrawMesh(MeshData meshData)
     {
         _meshFilter.sharedMesh = meshData.CreateMesh();
@@ -95,7 +97,7 @@ public class MapPreview : MonoBehaviour
         _meshFilter.gameObject.SetActive(true);
     }
 
-
+    //If changes are made, apply in edit mode
     void OnValuesUpdated()
     {
         if (!Application.isPlaying)
@@ -119,6 +121,8 @@ public class MapPreview : MonoBehaviour
         {
             _heightMapSettings.OnValuesUpdated -= OnValuesUpdated;
             _heightMapSettings.OnValuesUpdated += OnValuesUpdated;
+            _heightMapSettings.NoiseSettingsData.OnValuesUpdated -= OnValuesUpdated;
+            _heightMapSettings.NoiseSettingsData.OnValuesUpdated += OnValuesUpdated;
         }
         if (_spawnable_1 != null)
         {
@@ -134,11 +138,23 @@ public class MapPreview : MonoBehaviour
         {
             _biome.OnValuesUpdated -= OnValuesUpdated;
             _biome.OnValuesUpdated += OnValuesUpdated;
+            SubscribeToSpawnables(_biome.Spawnables);
         }
         if (_textureData != null)
         {
             _textureData.OnValuesUpdated -= OnTextureValuesUpdated;
             _textureData.OnValuesUpdated += OnTextureValuesUpdated;
+        }
+    }
+
+    private void SubscribeToSpawnables(Spawnable[] spawnables)
+    {
+        for (int i = 0; i < spawnables.Length; i++)
+        {
+            spawnables[i].OnValuesUpdated -= OnValuesUpdated;
+            spawnables[i].OnValuesUpdated += OnValuesUpdated;
+
+            SubscribeToSpawnables(spawnables[i].SubSpawners);
         }
     }
 }
