@@ -7,7 +7,7 @@ public static class FlowerLibrary
 	static List<Flower> _flowerTypes = new List<Flower>();
 	static bool _libraryInitiated = false;
 
-	public static void InitiateLibrary()
+	static FlowerLibrary()
 	{
 		int[] baseProgression = new int[3] { 1, 3, 5 };
 		string[] tulipProgress = new string[3] {

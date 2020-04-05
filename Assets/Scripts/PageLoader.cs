@@ -30,7 +30,7 @@ public class PageLoader : MonoBehaviour
 			}
 			else
 			{
-				Debug.LogError("Page load failure. Either the page name is incorrect or there is no flower by the name of " + _flower);
+				Debug.LogError("Page load failure. Either the page name is incorrect or there is no flower by the name of " + _flowerLoadName);
 			}
 
 			int ind = _textObject.Count;

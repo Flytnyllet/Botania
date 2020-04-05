@@ -14,7 +14,7 @@ public class Interactor : MonoBehaviour
 	[SerializeField] public int interactLayerMask = -1;
 	void Awake()
 	{
-		FlowerLibrary.InitiateLibrary(); // OBS! Do not comment, SUPER important.
+		//FlowerLibrary.InitiateLibrary(); // OBS! Do not comment, SUPER important.
 	}
 
 	void Start()
