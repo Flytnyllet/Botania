@@ -43,8 +43,15 @@ public class PageLoader : MonoBehaviour
 
 			_amountCounter.text = _flower.Amount.ToString();
 		}
+	}
 
-
+	void OnEnable()
+	{
+		if (_isFlowerPage && _flower != null)
+		{
+			_amountCounter.text =
+				_flower.Amount.ToString();
+		}
 	}
 
 	public void NextPage()
