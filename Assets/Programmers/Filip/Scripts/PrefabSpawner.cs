@@ -8,13 +8,12 @@ public class PrefabSpawner : MonoBehaviour
 
     public static void SpawnOnChunk(Biome biome, HeightMap heightMap, MeshSettings meshSettings, Transform container, Vector2 chunkCoord)
     {
-        float height = 1; //Remove later, only for testing purposes atm, ALSO FOR HEIGHT IN PARAMETER!!!
         //Generate all noises according to chunk position
         biome.Setup(chunkCoord); 
-        SpawnFromSpawnables(height, biome, biome.Spawnables, heightMap, meshSettings, container, chunkCoord);
+        SpawnFromSpawnables(biome, biome.Spawnables, heightMap, meshSettings, container, chunkCoord);
     }
 
-    private static void SpawnFromSpawnables(float height, Biome biome, Spawnable[] spawnables, HeightMap heightMap, MeshSettings meshSettings, Transform container, Vector2 chunkCoord)
+    private static void SpawnFromSpawnables(Biome biome, Spawnable[] spawnables, HeightMap heightMap, MeshSettings meshSettings, Transform container, Vector2 chunkCoord)
     {
         for (int i = 0; i < spawnables.Length; i++)
         {
@@ -30,7 +29,7 @@ public class PrefabSpawner : MonoBehaviour
                     float yPos = y - meshSettings.ChunkSize / 2;
 
                     //Position from grid in world
-                    Vector3 objectPosition = new Vector3((xPos + chunkCoord.x) * meshSettings.MeshScale, heightMap.heightMap[x, y] + 0.35f * height, -(yPos + chunkCoord.y) * meshSettings.MeshScale);
+                    Vector3 objectPosition = new Vector3((xPos + chunkCoord.x) * meshSettings.MeshScale, heightMap.heightMap[x, y] + 0.35f, -(yPos + chunkCoord.y) * meshSettings.MeshScale);
                     //Vector to offset from grid slightly to create less uniform distribution
                     Vector3 offsetVector = new Vector3(spawnables[i].OffsetNoise[x, y] * 2 - 1, 0.0f, spawnables[i].SpreadNoise[x, y] * 2 - 1);
 
@@ -52,14 +51,11 @@ public class PrefabSpawner : MonoBehaviour
 
                     if (insideNoise && gradientSpawn && uniformSpread && noiseSpread && minHeight && maxHeight)
                         Instantiate(spawnables[i].Prefab, objectPosition, rotation, container);
-
-                    //if (x % 2 == 0 && y % 2 == 0)
-                    //    Instantiate(spawnables[i].Prefab, objectPosition, Quaternion.identity, container);
                 }
             }
 
             if (spawnables[i].SubSpawners.Length > 0)
-                SpawnFromSpawnables(height + 1.25f, biome, spawnables[i].SubSpawners, heightMap, meshSettings, container, chunkCoord);
+                SpawnFromSpawnables(biome, spawnables[i].SubSpawners, heightMap, meshSettings, container, chunkCoord);
         }
     }
 }

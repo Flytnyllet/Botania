@@ -14,12 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _autoUpdate: 1
   _noiseSettings:
-    _seed: 0
-    _offset: {x: 0, y: 0}
-    _scale: 1
-    _octaves: 2
-    _persistance: 0.375
-    _lacunarity: 5
-    _darken: -0.25
-    _useDarken: 0
-    _normalizeMode: 0
+  - _noiseMergeType: 0
+    _noiseSettings:
+      _seed: 0
+      _offset: {x: 0, y: 0}
+      _scale: 1
+      _octaves: 2
+      _persistance: 0.375
+      _lacunarity: 5
+      _darken: -0.25
+      _useDarken: 0
+      _normalizeMode: 0

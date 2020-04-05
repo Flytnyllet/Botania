@@ -70,7 +70,7 @@ public class MapPreview : MonoBehaviour
         else if (_drawMode == DrawMode.FALL_OF_MAP)
             DrawTexture(TextureGenerator.TextureFromHeightMap( new HeightMap(FallofGenerator.GenerateFallofMap(_meshSettings.ChunkSize), 0, 1)));
         else if (_drawMode == DrawMode.SPAWNABLE_NOISE)
-            DrawTexture(TextureGenerator.TextureFromHeightMap(new HeightMap(Noise.MergeNoise(_meshSettings.ChunkSize + 2, _meshSettings.ChunkSize + 2, _spawnable_1.NoiseSettingsData.NoiseSettings, _spawnable_2.NoiseSettingsData.NoiseSettings, _noiseMergeType, Vector2.zero), 0, 1)));
+            DrawTexture(TextureGenerator.TextureFromHeightMap(new HeightMap(Noise.MergeNoise(_meshSettings.ChunkSize + 2, _meshSettings.ChunkSize + 2, _spawnable_1.NoiseSettingsData.NoiseSettingsDataMerge, _spawnable_2.NoiseSettingsData.NoiseSettingsDataMerge, _noiseMergeType, Vector2.zero), 0, 1)));
         else if (_drawMode == DrawMode.BIOME)
         {
             DrawMesh(MeshGenerator.GenerateTerrainMesh(heightMap.heightMap, _meshSettings, _editorPreviewLevelOfDetail));
