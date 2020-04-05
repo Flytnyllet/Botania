@@ -7,7 +7,6 @@ using UnityEngine;
 // can be edidted by other objects for the sake of avoiding dependendies.
 
 public enum CHARACTER_CONTROL_STATE { PLAYERCONTROLLED = 0, CUTSCENE }
-[CreateAssetMenu(fileName = "CharacterControlState")]
 public static class CharacterState 
 {
     static CHARACTER_CONTROL_STATE _controlState = 0;
@@ -26,14 +25,13 @@ public static class CharacterState
     }
 
     //This is not thread safe at the moment and just here as a test due to the lack of cooroutines.
-    public static void SetControlState(CHARACTER_CONTROL_STATE state, float time)
-    {
-        CHARACTER_CONTROL_STATE returnState = _controlState;
-        _controlState = state;
-        Task task = Task.Run(async () =>
-        {
-            await Task.Delay(System.TimeSpan.FromSeconds(time));
-            _controlState = returnState;
-        });
-    }
+    //public static void SetControlState(CHARACTER_CONTROL_STATE startState, CHARACTER_CONTROL_STATE endState, float time)
+    //{
+    //    _controlState = startState;
+    //    Task task = Task.Run(async () =>
+    //    {
+    //        await Task.Delay(System.TimeSpan.FromSeconds(time));
+    //        _controlState = endState;
+    //    });
+    //}
 }

@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Interactable : MonoBehaviour
 {
-    enum InteractionType { Flower, Door};
-	[SerializeField] InteractionType INTERACTION_TYPE = InteractionType.Flower;
+    enum INTERACTION_TYPE { Flower, Door};
+	[SerializeField]  INTERACTION_TYPE _interactionType= INTERACTION_TYPE.Flower;
 	[SerializeField] int _type; // Used for flower type, might be useful for locked doors etc.
 
 

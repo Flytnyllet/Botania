@@ -5,6 +5,8 @@ using UnityEditor;
 //[CustomEditor(typeof(LineInput))]
 public class InspectorLineInput : EditorWindow
 {
+    const string INPUTFIELD_EVENT_ID = "_InputFieldEvent";
+
     [SerializeField] string _input;
 
     // Add menu item named "My Window" to the Window menu
@@ -20,24 +22,11 @@ public class InspectorLineInput : EditorWindow
         EditorGUILayout.TextField("Text Field", _input);
         if (GUILayout.Button("Build Object"))
             {
-                //myScript.Engage();
-                GUI.FocusControl(null);
+            //EventManager.TriggerEvent(INPUTFIELD_EVENT_ID, );    
+
+
+            GUI.FocusControl(null);
                 Repaint();
             }
     }
-
-
-    //public override void OnInspectorGUI()
-    //{
-    //    DrawDefaultInspector();
-
-    //    LineInput myScript = (LineInput)target;
-    //    if (GUILayout.Button("Build Object"))
-    //    {
-    //        myScript.Engage();
-    //        GUI.FocusControl(null);
-    //        Repaint();
-    //    }
-    //}
-
 }

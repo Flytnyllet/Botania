@@ -61,7 +61,6 @@ public static class FlowerLibrary
 			flower.UnlockProgress++;
 		}
 
-
 		//Interactor.AddLogEntry("Added " + flower.Name);
 	}
 }

@@ -85,6 +85,11 @@ public class FPSMovement : MonoBehaviour
 		charCon.Move(move * _speed * Time.deltaTime);
 	}
 
+    void Teleport()
+    {
+
+    }
+
 	void Launch(Vector3 launchVector)
 	{
 		_velocity += launchVector;

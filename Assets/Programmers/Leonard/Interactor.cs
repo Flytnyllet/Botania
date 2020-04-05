@@ -33,15 +33,19 @@ public class Interactor : MonoBehaviour
 
 		// === Load Log Stuff ===
 		// WARNING! No other objects can have the names "Log" and "LogEntry" at the start of a scene.
-		_log = GameObject.Find("Log");
-		_logEntry = GameObject.Find("LogEntry");
-		if (_log == null || _logEntry == null)
-		{
-			Debug.LogError("Missing 'Log' or 'LogEntry' GameObject");
-		}
+		
+        //Har avaktiverat logging tills vidare då det inte är konfirmerat add det skall finnas ett logg fönster i spelet
+        //Om vi använder det senare föreslåt jag att vi använder eventManager för kommunikationen
 
-		Debug.Log("Log Object = " + _log.name);
-		Debug.Log("LogEntry Object = " + _logEntry.name);
+        //_log = GameObject.Find("Log");
+		//_logEntry = GameObject.Find("LogEntry");
+		//if (_log == null || _logEntry == null)
+		//{
+		//	Debug.LogError("Missing 'Log' or 'LogEntry' GameObject");
+		//}
+
+		//Debug.Log("Log Object = " + _log.name);
+		//Debug.Log("LogEntry Object = " + _logEntry.name);
 	}
 
 	void Update()
@@ -60,10 +64,6 @@ public class Interactor : MonoBehaviour
 			}
 		}
 
-		if (Input.GetButtonDown("Inventory"))
-		{
-			inventory.SetActive(!inventory.activeSelf);
-		}
 	}
 
 	public static void AddLogEntry(string entry)
