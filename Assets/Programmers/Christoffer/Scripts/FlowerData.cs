@@ -12,7 +12,7 @@ public enum FlowerType
 }
 
 [System.Serializable]
-public class FlowerData : MonoBehaviour
+public class FlowerData 
 {
     private string id;
     public string Id { get; set; }

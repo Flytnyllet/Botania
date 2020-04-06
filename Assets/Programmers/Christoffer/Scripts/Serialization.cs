@@ -5,7 +5,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 using System.Runtime.Serialization;
 
-public class Serialization : MonoBehaviour
+public static class Serialization 
 {
     public static bool Save(string saveName, object saveData)
     {
@@ -17,6 +17,7 @@ public class Serialization : MonoBehaviour
         }
 
         string path = Application.persistentDataPath + "/saves/" + saveName + ".save";
+        Debug.Log(path);
 
         FileStream file = File.Create(path);
         formatter.Serialize(file, saveData);
@@ -25,11 +26,14 @@ public class Serialization : MonoBehaviour
         return true;
     }
 
-    public static object Load(string path)
+    public static object Load(string p)
     {
+
+        string path = Application.persistentDataPath + "/saves/" + p + ".save";
         if (!File.Exists(path))
             return null;
 
+        Debug.Log(path);
         BinaryFormatter formatter = GetBinaryFormatter();
 
         FileStream file = File.Open(path, FileMode.Open);

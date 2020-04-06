@@ -1,15 +1,32 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+[System.Serializable]
+class FlowerLibrarySave
+{
+   [SerializeField] public List<Flower> flowerTypes;
+}
 
 public static class FlowerLibrary 
 {
-	static List<Flower> _flowerTypes = new List<Flower>();
+    const string SAVE_FILE_NAME = "FlowerLibrary";
+    static List<Flower> _flowerTypes = new List<Flower>();
 	static bool _libraryInitiated = false;
 
 	static FlowerLibrary()
 	{
-		int[] baseProgression = new int[3] { 1, 3, 5 };
+        _flowerTypes = (List<Flower>)Serialization.Load(SAVE_FILE_NAME);
+        //FlowerLibrarySave save =(FlowerLibrarySave)Serialization.Load(SAVE_FILE_NAME);
+        if(_flowerTypes == null)
+        {
+            _flowerTypes = new List<Flower>();
+        }
+        //else
+        //{
+        //    _flowerTypes = save.flowerTypes;
+        //}
+
+        int[] baseProgression = new int[3] { 1, 3, 5 };
 		string[] tulipProgress = new string[3] {
 			"Tulips are a thing.",
 			"There are a lot of different tulips, but here they are all orange!",
@@ -66,6 +83,8 @@ public static class FlowerLibrary
 		{
 			flower.UnlockProgress++;
 		}
+        FlowerLibrarySave save = new FlowerLibrarySave() { flowerTypes = _flowerTypes };
+        Serialization.Save(SAVE_FILE_NAME, save);
 
 		//Interactor.AddLogEntry("Added " + flower.Name);
 	}
