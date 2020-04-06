@@ -50,6 +50,7 @@ public static class MeshGenerator
 
                 Vector2 percent = new Vector2((x - meshSimplificationIncrement) / (float)meshSize, (y - meshSimplificationIncrement) / (float)meshSize);
                 float height = heightMap[x, y];
+
                 Vector3 vertexPosition = new Vector3((topLeftX + percent.x * meshSizeUnSimplified) * meshSettings.MeshScale, height, (topLeftZ - percent.y * meshSizeUnSimplified ) * meshSettings.MeshScale);
 
                 meshData.AddVertex(vertexPosition, percent, vertexIndex);

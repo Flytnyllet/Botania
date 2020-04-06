@@ -39,7 +39,7 @@ public class TerrainChunk
         this._meshSettings = meshSettings;
         this._viewer = viewer;
 
-        _sampleCenter = (coord * (meshSettings.ChunkSize - 1)) / meshSettings.MeshScale;
+        _sampleCenter = (coord * (meshSettings.ChunkSize - 1) * meshSettings.MeshScale) / meshSettings.MeshScale;
         Vector2 position = coord * (meshSettings.ChunkSize - 1);
         _bounds = new Bounds(position, Vector2.one * (meshSettings.ChunkSize - 1));
 

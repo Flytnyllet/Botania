@@ -36,7 +36,7 @@ public class TerrainGenerator : MonoBehaviour
 
         float maxViewDistance = _detailLevels[_detailLevels.Length - 1].visableDstThreshold;
 
-        _meshWorldSize = _meshSettings.ChunkSize - 1;
+        _meshWorldSize = _meshSettings.MeshWorldSize;
         _chunksVisableInViewDist = Mathf.RoundToInt(maxViewDistance / _meshWorldSize);
 
         UpdateVisableChunks();

@@ -25,7 +25,7 @@ public class MeshSettings : UpdatableData
     {
         get
         {
-            return NUMBER_SUPPORTED_CHUNK_SIZES - 1 * MeshScale;
+            return (ChunkSize - 1) * _meshScale;
         }
     }
 }
