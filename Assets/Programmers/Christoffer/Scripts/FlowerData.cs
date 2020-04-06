@@ -6,7 +6,9 @@ using UnityEngine;
 
 public enum FlowerType
 {
-    //Typerna/Namnen på blommorna
+    Tulip,
+    Poppy,
+    Dandelion
 }
 
 [System.Serializable]
