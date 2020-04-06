@@ -13,6 +13,7 @@ public static class Noise
         GLOBAL
     }
 
+    //Combines different noises of one noise object into one final noise
     public static float[,] GenerateNoiseMap(int mapWidth, int mapHeight, NoiseSettingsDataMerge[] settingsMerge, Vector2 sampleCenter)
     {
         float[,] noise = GenerateNoiseMap(mapWidth, mapHeight, settingsMerge[0].NoiseSettings, sampleCenter);
@@ -115,6 +116,7 @@ public static class Noise
         return noiseMap;
     }
 
+    //Base for all merge noise functions, combine two different noise according to mode
     public static float[,] MergeNoise(int width, int height, float[,] noise_1, float[,] noise_2, NoiseMergeType noiseMergeType, Vector2 center)
     {
         float[,] finalNoise = new float[width, height];
@@ -177,6 +179,7 @@ public static class Noise
         return finalNoise;
     }
 
+    //Converts different input parameter data and sends it to base merge function ^
     public static float[,] MergeNoise(int mapWidth, int mapHeight, NoiseSettingsDataMerge[] settingsMerge_1, NoiseSettingsDataMerge[] settingsMerge_2, NoiseMergeType noiseMergeType, Vector2 sampleCenter)
     {
         float[,] noise_1 = GenerateNoiseMap(mapWidth, mapHeight, settingsMerge_1, sampleCenter);
@@ -184,14 +187,12 @@ public static class Noise
 
         return MergeNoise(mapWidth, mapHeight, noise_1, noise_2, noiseMergeType, sampleCenter);
     }
-
     public static float[,] MergeNoise(int mapWidth, int mapHeight, NoiseSettingsDataMerge[] settingsMerge_1, float[,] noise_2, NoiseMergeType noiseMergeType, Vector2 sampleCenter)
     {
         float[,] noise_1 = GenerateNoiseMap(mapWidth, mapHeight, settingsMerge_1, sampleCenter);
 
         return MergeNoise(mapWidth, mapHeight, noise_1, noise_2, noiseMergeType, sampleCenter);
     }
-
     public static float[,] MergeNoise(int width, int height, NoiseSettings noiseSettings_1, NoiseSettings noiseSettings_2, NoiseMergeType noiseMergeType, Vector2 center)
     {
         float[,] noise_1 = GenerateNoiseMap(width, height, noiseSettings_1, center);
@@ -199,14 +200,12 @@ public static class Noise
 
         return MergeNoise(width, height, noise_1, noise_2, noiseMergeType, center);
     }
-
     public static float[,] MergeNoise(int width, int height, float[,] noise_1, NoiseSettings noiseSettings_2, NoiseMergeType noiseMergeType, Vector2 center)
     {
         float[,] noise_2 = GenerateNoiseMap(width, height, noiseSettings_2, center);
 
         return MergeNoise(width, height, noise_1, noise_2, noiseMergeType, center);
     }
-
     public static float[,] MergeNoise(int width, int height, NoiseSettings noiseSettings_1, float[,] noise_2, NoiseMergeType noiseMergeType, Vector2 center)
     {
         float[,] noise_1 = GenerateNoiseMap(width, height, noiseSettings_1, center);

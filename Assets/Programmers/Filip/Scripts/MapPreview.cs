@@ -53,7 +53,8 @@ public class MapPreview : MonoBehaviour
         //Used to store prefab objects in edit mode and delete them when changes are made (is a bit buggy)
         if (_biomeContainer != null)
             DestroyImmediate(_biomeContainer.gameObject);
-        _biomeContainer = new GameObject().transform;
+        Transform biomeContainer = new GameObject().transform;
+        _biomeContainer = biomeContainer;
         _biomeContainer.parent = transform;
 
         //Apply material to mesh
