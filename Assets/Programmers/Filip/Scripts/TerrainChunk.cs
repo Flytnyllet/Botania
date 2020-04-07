@@ -39,9 +39,9 @@ public class TerrainChunk
         this._meshSettings = meshSettings;
         this._viewer = viewer;
 
-        _sampleCenter = (coord * (meshSettings.ChunkSize - 1) * meshSettings.MeshScale) / meshSettings.MeshScale;
-        Vector2 position = coord * (meshSettings.ChunkSize - 1);
-        _bounds = new Bounds(position, Vector2.one * (meshSettings.ChunkSize - 1));
+        _sampleCenter = coord * meshSettings.MeshWorldSize / meshSettings.MeshScale;
+        Vector2 position = coord * meshSettings.MeshWorldSize;
+        _bounds = new Bounds(position, Vector2.one * meshSettings.MeshWorldSize);
 
         _meshObject = new GameObject("Terrain Chunk");
         _meshRenderer = _meshObject.AddComponent<MeshRenderer>();
@@ -67,7 +67,7 @@ public class TerrainChunk
 
     public void Load()
     {
-        ThreadedDataRequester.RequestData(() => HeightMapGenerator.GenerateHeightMap(_meshSettings.ChunkSize + 2, _meshSettings.ChunkSize + 2, _heightMapSettings, _sampleCenter), OnHeightMapReceived);
+        ThreadedDataRequester.RequestData(() => HeightMapGenerator.GenerateHeightMap(_meshSettings.NumVertsPerLine, _meshSettings.NumVertsPerLine, _heightMapSettings, _sampleCenter), OnHeightMapReceived);
     }
 
     void OnHeightMapReceived(object heightMapObject)

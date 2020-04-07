@@ -61,16 +61,16 @@ public class MapPreview : MonoBehaviour
         _textureData.UpdateMeshHeights(_terrainMaterial, _heightMapSettings.MinHeight, _heightMapSettings.MaxHeight);
 
         //Generate the heightmap for the chunk at origin
-        HeightMap heightMap = HeightMapGenerator.GenerateHeightMap(_meshSettings.ChunkSize + 2, _meshSettings.ChunkSize + 2, _heightMapSettings, Vector2.zero);
+        HeightMap heightMap = HeightMapGenerator.GenerateHeightMap(_meshSettings.NumVertsPerLine, _meshSettings.NumVertsPerLine, _heightMapSettings, Vector2.zero);
 
         if (_drawMode == DrawMode.NOISE_MAP)
             DrawTexture(TextureGenerator.TextureFromHeightMap(heightMap));
         else if (_drawMode == DrawMode.MESH)
             DrawMesh(MeshGenerator.GenerateTerrainMesh(heightMap.heightMap, _meshSettings, _editorPreviewLevelOfDetail));
         else if (_drawMode == DrawMode.FALL_OF_MAP)
-            DrawTexture(TextureGenerator.TextureFromHeightMap( new HeightMap(FallofGenerator.GenerateFallofMap(_meshSettings.ChunkSize + 2), 0, 1)));
+            DrawTexture(TextureGenerator.TextureFromHeightMap( new HeightMap(FallofGenerator.GenerateFallofMap(_meshSettings.NumVertsPerLine), 0, 1)));
         else if (_drawMode == DrawMode.SPAWNABLE_NOISE)
-            DrawTexture(TextureGenerator.TextureFromHeightMap(new HeightMap(Noise.MergeNoise(_meshSettings.ChunkSize + 2, _meshSettings.ChunkSize + 2, _spawnable_1.NoiseSettingsData.NoiseSettingsDataMerge, _spawnable_2.NoiseSettingsData.NoiseSettingsDataMerge, _noiseMergeType, Vector2.zero), 0, 1)));
+            DrawTexture(TextureGenerator.TextureFromHeightMap(new HeightMap(Noise.MergeNoise(_meshSettings.NumVertsPerLine, _meshSettings.NumVertsPerLine, _spawnable_1.NoiseSettingsData.NoiseSettingsDataMerge, _spawnable_2.NoiseSettingsData.NoiseSettingsDataMerge, _noiseMergeType, Vector2.zero), 0, 1)));
         else if (_drawMode == DrawMode.BIOME)
         {
             DrawMesh(MeshGenerator.GenerateTerrainMesh(heightMap.heightMap, _meshSettings, _editorPreviewLevelOfDetail));
