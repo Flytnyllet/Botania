@@ -16,6 +16,9 @@ public class Spawnable : UpdatableData
 
     [Header("General Settings")]
 
+    [SerializeField, Range(0, 1), Tooltip("How much random rotation should be applied (probably keep it on 1)")] float _rotationAmount = 1.0f;
+    [SerializeField, Range(0, 1), Tooltip("How much should the object point along the surface normal?")] float _surfaceNormalAmount = 1.0f;
+
     [SerializeField, Range(0, 30), Tooltip("How many squares does this object occupy? (ZERO will be treated as the object can spawn inside other objects (such as grass))")] int _size;
     [SerializeField, Range(0, 1), Tooltip("At which point in the noise gradient should object start spawning? Low = smooth edges, high = sharp af")] float _noiseStartPoint;
     [SerializeField, Range(0, 2), Tooltip("How thick the area of spawn should be")] float _thickness = 0.75f;
@@ -46,6 +49,8 @@ public class Spawnable : UpdatableData
     public NoiseSettingsData NoiseSettingsData        { get { return _noiseSettingsData; }   private set { _noiseSettingsData = value; } }
     public Spawnable[] SubSpawners                    { get { return _subSpawners; }         private set { _subSpawners = value; } }
     public int Size                                   { get { return _size; }                private set { _size = value; } }
+    public float SurfaceNormalAmount                  { get { return _surfaceNormalAmount; } private set { _surfaceNormalAmount = value; } }
+    public float RotationAmount                       { get { return _rotationAmount; }      private set { _rotationAmount = value; } }
     public float NoiseStartPoint                      { get { return _noiseStartPoint; }     private set { _noiseStartPoint = value; } }
     public float Thickness                            { get { return _thickness; }           private set { _thickness = value; } }
     public int UniformSpreadAmount                    { get { return _uniformSpreadAmount; } private set { _uniformSpreadAmount = value; } }

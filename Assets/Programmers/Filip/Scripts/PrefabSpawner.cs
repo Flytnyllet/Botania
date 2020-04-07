@@ -7,27 +7,28 @@ public class PrefabSpawner : MonoBehaviour
     static readonly int DEGREES_360 = 360;
     static readonly float STANDARD_GRID_OFFSET = 0.5f;
 
-    public static void SpawnOnChunk(Biome biome, HeightMap heightMap, MeshSettings meshSettings, Transform container, Vector2 chunkCoord)
+    public static void SpawnOnChunk(Biome biome, HeightMap heightMap, MeshData meshData, MeshSettings meshSettings, Transform container, Vector2 chunkCoord)
     {
         //Generate all noises according to chunk position
         biome.Setup(chunkCoord); 
-        SpawnFromSpawnables(biome, biome.Spawnables, heightMap, meshSettings, container, chunkCoord);
+        SpawnFromSpawnables(biome, biome.Spawnables, heightMap, meshData, meshSettings, container, chunkCoord);
     }
 
-    private static void SpawnFromSpawnables(Biome biome, Spawnable[] spawnables, HeightMap heightMap, MeshSettings meshSettings, Transform container, Vector2 chunkCoord)
+    private static void SpawnFromSpawnables(Biome biome, Spawnable[] spawnables, HeightMap heightMap, MeshData meshData, MeshSettings meshSettings, Transform container, Vector2 chunkCoord)
     {
         for (int i = 0; i < spawnables.Length; i++)
         {
             //First spawn the subspawners prefabs as they are harder to make room for
             if (spawnables[i].SubSpawners.Length > 0)
-                SpawnFromSpawnables(biome, spawnables[i].SubSpawners, heightMap, meshSettings, container, chunkCoord);
+                SpawnFromSpawnables(biome, spawnables[i].SubSpawners, heightMap, meshData, meshSettings, container, chunkCoord);
 
             //Get noise specific to this prefab
             float[,] spawnNoise = spawnables[i].GetNoise;
 
-            for (int x = 0; x < meshSettings.ChunkSize - spawnables[i].Size; x++)
+            //+ 1 offset in loops are due to border around mesh
+            for (int x = 0; x < meshSettings.ChunkSize - spawnables[i].Size + 1; x++)
             {
-                for (int y = 0; y < meshSettings.ChunkSize - spawnables[i].Size; y++)
+                for (int y = 0; y < meshSettings.ChunkSize - spawnables[i].Size + 1; y++)
                 {
                     //No use in checking if it can spawn if that square is occopied
                     if (biome.CanObjectSpawn(x, y, spawnables[i].Size))
@@ -37,22 +38,24 @@ public class PrefabSpawner : MonoBehaviour
                         bool uniformSpread = x % spawnables[i].UniformSpreadAmount == 0 && y % spawnables[i].UniformSpreadAmount == 0; //uniform spread?
                         bool noiseSpread = spawnables[i].SpreadNoise[y, x] > spawnables[i].RandomSpread;
 
+                        //Slope bool
+                        Vector3 normal = meshData.GetNormal(y * (meshSettings.ChunkSize) + x);
+                        bool slope = true;
+
                         //height bools
-                        bool minHeight = (heightMap.heightMap[x, y] > heightMap.minValue + spawnables[i].SoftMinHeight * spawnables[i].OffsetNoise[y, x]);
+                        bool minHeight = (heightMap.heightMap[x, y] > -0.001f + heightMap.minValue + spawnables[i].SoftMinHeight * spawnables[i].OffsetNoise[y, x]);
                         minHeight = minHeight && heightMap.heightMap[x, y] > spawnables[i].HardMinHeight;
                         bool maxHeight = (heightMap.heightMap[x, y] < heightMap.maxValue - spawnables[i].SoftMaxHeight * spawnables[i].OffsetNoise[x, y]);
                         maxHeight = maxHeight && heightMap.heightMap[x, y] < spawnables[i].HardMaxHeight;
 
-                        if (insideNoise && gradientSpawn && uniformSpread && noiseSpread && minHeight && maxHeight)
+                        if (insideNoise && gradientSpawn && uniformSpread && noiseSpread && minHeight && maxHeight & slope)
                         {
                             //Since the object can spawn, mark it's space as occopied
                             biome.OccupyWithObject(x, y, spawnables[i].Size);
 
-
-
                             //Current local positions in x and y in chunk, used only to spawn from
-                            float xPos = x + (STANDARD_GRID_OFFSET * spawnables[i].Size) - meshSettings.ChunkSize / 2;
-                            float zPos = y + (STANDARD_GRID_OFFSET * spawnables[i].Size) - meshSettings.ChunkSize / 2;
+                            float xPos = x + (STANDARD_GRID_OFFSET * spawnables[i].Size) - meshSettings.ChunkSize / 2 - 1; //Due to the border around the mesh +- 1 corrects it to the right grid position
+                            float zPos = y + (STANDARD_GRID_OFFSET * spawnables[i].Size) - meshSettings.ChunkSize / 2 - 1; //Due to the border around the mesh +- 1 corrects it to the right grid position
                             float yPos = heightMap.heightMap[x + (int)(STANDARD_GRID_OFFSET * spawnables[i].Size), y + (int)(STANDARD_GRID_OFFSET * spawnables[i].Size)] + 0.5f;
 
                             //Position from grid in world
@@ -62,17 +65,23 @@ public class PrefabSpawner : MonoBehaviour
 
                             objectPosition += offsetVector * spawnables[i].OffsetAmount;
 
-
-
+                            //How much along the normal should the object point?
+                            Vector3 finalRotation = LerpToVector(normal, Vector3.up, spawnables[i].SurfaceNormalAmount);
                             //Random rotation based on noise
-                            Quaternion rotation = Quaternion.Euler(0, spawnables[i].OffsetNoise[x, y] * DEGREES_360, 0);
+                            Quaternion rotation = Quaternion.FromToRotation(Vector3.up, finalRotation);
 
+                            GameObject newObject = Instantiate(spawnables[i].Prefab, objectPosition, rotation, container) as GameObject;
+                            newObject.transform.RotateAround(objectPosition, newObject.transform.up, spawnables[i].OffsetNoise[x, y] * DEGREES_360 * spawnables[i].RotationAmount);
 
-                            Instantiate(spawnables[i].Prefab, objectPosition, rotation, container);
                         }
                     }               
                 }
             }
         }
+    }
+
+    private static Vector3 LerpToVector(Vector3 toVector, Vector3 fromVector, float amount)
+    {
+        return toVector * amount + fromVector * (1 - amount);
     }
 }

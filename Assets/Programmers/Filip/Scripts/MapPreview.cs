@@ -9,7 +9,6 @@ public class MapPreview : MonoBehaviour
         NOISE_MAP,
         MESH,
         FALL_OF_MAP,
-        SPAWNABLE_NOISE,
         BIOME
     }
 
@@ -39,9 +38,6 @@ public class MapPreview : MonoBehaviour
 
     [SerializeField] Biome _biome;
 
-    [SerializeField] Spawnable _spawnable_1;
-    [SerializeField] Spawnable _spawnable_2;
-
     Transform _biomeContainer;
 
     public bool DoAutoUpdate() { return _autoUpdate; }
@@ -53,7 +49,8 @@ public class MapPreview : MonoBehaviour
         //Used to store prefab objects in edit mode and delete them when changes are made (is a bit buggy)
         if (_biomeContainer != null)
             DestroyImmediate(_biomeContainer.gameObject);
-        _biomeContainer = new GameObject().transform;
+        Transform biomeContainer = new GameObject().transform;
+        _biomeContainer = biomeContainer;
         _biomeContainer.parent = transform;
 
         //Apply material to mesh
@@ -69,12 +66,11 @@ public class MapPreview : MonoBehaviour
             DrawMesh(MeshGenerator.GenerateTerrainMesh(heightMap.heightMap, _meshSettings, _editorPreviewLevelOfDetail));
         else if (_drawMode == DrawMode.FALL_OF_MAP)
             DrawTexture(TextureGenerator.TextureFromHeightMap( new HeightMap(FallofGenerator.GenerateFallofMap(_meshSettings.NumVertsPerLine), 0, 1)));
-        else if (_drawMode == DrawMode.SPAWNABLE_NOISE)
-            DrawTexture(TextureGenerator.TextureFromHeightMap(new HeightMap(Noise.MergeNoise(_meshSettings.NumVertsPerLine, _meshSettings.NumVertsPerLine, _spawnable_1.NoiseSettingsData.NoiseSettingsDataMerge, _spawnable_2.NoiseSettingsData.NoiseSettingsDataMerge, _noiseMergeType, Vector2.zero), 0, 1)));
         else if (_drawMode == DrawMode.BIOME)
         {
-            DrawMesh(MeshGenerator.GenerateTerrainMesh(heightMap.heightMap, _meshSettings, _editorPreviewLevelOfDetail));
-            PrefabSpawner.SpawnOnChunk(_biome, heightMap, _meshSettings, _biomeContainer, Vector2.zero);
+            MeshData meshData = MeshGenerator.GenerateTerrainMesh(heightMap.heightMap, _meshSettings, _editorPreviewLevelOfDetail);
+            DrawMesh(meshData);
+            PrefabSpawner.SpawnOnChunk(_biome, heightMap, meshData, _meshSettings, _biomeContainer, Vector2.zero);
         }
     }
 
@@ -124,21 +120,16 @@ public class MapPreview : MonoBehaviour
             _heightMapSettings.NoiseSettingsData.OnValuesUpdated -= OnValuesUpdated;
             _heightMapSettings.NoiseSettingsData.OnValuesUpdated += OnValuesUpdated;
         }
-        if (_spawnable_1 != null)
-        {
-            _spawnable_1.OnValuesUpdated -= OnValuesUpdated;
-            _spawnable_1.OnValuesUpdated += OnValuesUpdated;
-        }
-        if (_spawnable_2 != null)
-        {
-            _spawnable_2.OnValuesUpdated -= OnValuesUpdated;
-            _spawnable_2.OnValuesUpdated += OnValuesUpdated;
-        }
         if (_biome != null)
         {
             _biome.OnValuesUpdated -= OnValuesUpdated;
             _biome.OnValuesUpdated += OnValuesUpdated;
             SubscribeToSpawnables(_biome.Spawnables);
+        }
+        if (_textureData != null)
+        {
+            _textureData.OnValuesUpdated -= OnTextureValuesUpdated;
+            _textureData.OnValuesUpdated += OnTextureValuesUpdated;
         }
         if (_textureData != null)
         {

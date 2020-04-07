@@ -219,6 +219,11 @@ public class MeshData
         return Vector3.Cross(sideAB, sideAC).normalized;
     }
 
+    public Vector3 GetNormal(int i)
+    {
+        return _bakedNormals[i];
+    }
+
     public void BakeNormals()
     {
         _bakedNormals = CalculateNormals();

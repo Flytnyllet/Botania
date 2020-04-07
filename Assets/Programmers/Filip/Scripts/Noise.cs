@@ -28,8 +28,21 @@ public static class Noise
 
     public static float[,] GenerateNoiseMap(int mapWidth, int mapHeight, NoiseSettings settings, Vector2 sampleCenter)
     {
-
         float[,] noiseMap = new float[mapWidth, mapHeight];
+
+        //This justs set everything to white and returns it
+        if (settings.AllWhite)
+        {
+            for (int x = 0; x < noiseMap.GetLength(0); x++)
+            {
+                for (int y = 0; y < noiseMap.GetLength(1); y++)
+                {
+                    noiseMap[x, y] = 1.0f;
+                }
+            }
+
+            return noiseMap;
+        }
 
         //Used as offset based on seed to get new noise
         System.Random prng = new System.Random(settings.Seed);
@@ -217,6 +230,8 @@ public static class Noise
 [System.Serializable]
 public class NoiseSettings
 {
+    [SerializeField, Tooltip("Enable this if you want just white!")] bool _allWhite = false;
+
     [SerializeField, Range(0, 100000), Tooltip("Gives a different starting point for noise")] int _seed;
     [SerializeField, Tooltip("Offset from noise seed if desired")] Vector2 _offset;
     [SerializeField, Range(0.001f, 1000), Tooltip("Scale of Noise")] float _scale = 10;
@@ -228,6 +243,8 @@ public class NoiseSettings
     [SerializeField] bool _useDarken = false;
 
     [SerializeField, Tooltip("Keep on GLOBAL! LOCAL is only used for testing purposes!")] Noise.NormalizeMode _normalizeMode = Noise.NormalizeMode.GLOBAL;
+
+    public bool AllWhite                     { get { return _allWhite; }      private set { _allWhite = value; } }
 
     public int Seed                          { get { return _seed; }          private set { _seed = value;  } }
     public Vector2 Offset                    { get { return _offset; }        private set { _offset = value;  } }
