@@ -4,20 +4,23 @@ using UnityEngine;
 
 public class DetectionTrigger : MonoBehaviour
 {
-	[SerializeField] MonoBehaviour _targetScript;
+	[SerializeField] DetectionTriggerTarget[] _targetScripts;
 
-	void Start()
-	{
-		_targetScript.enabled = false;
-	}
+    //Det här skriptet måste ha en kollider, och måste placeras som barn till det objekt som den hanterar
+    private void Awake()
+    {
+        _targetScripts = GetComponentsInParent<DetectionTriggerTarget>();
+        //_targetScripts = GetComponents<DetectionTriggerTarget>();
+    }
 
-	void OnTriggerEnter(Collider other)
+    void OnTriggerEnter(Collider other)
 	{
-		
 		if(other.tag == "Player")
 		{
-			Debug.Log("StartRunning!");
-			_targetScript.enabled = true;
+            foreach (DetectionTriggerTarget target in _targetScripts)
+            {
+                target.EnterTrigger(other.transform);
+            }
 		}
 	}
 
@@ -25,8 +28,14 @@ public class DetectionTrigger : MonoBehaviour
 	{
 		if (other.tag == "Player")
 		{
-			Debug.Log("StopRunning!");
-			_targetScript.enabled = false;
-		}
+			//_targetScript.Trigger();
+        }
 	}
+}
+
+
+public interface DetectionTriggerTarget
+{
+    void EnterTrigger(Transform transform);
+    void LeaveTrigger(Transform transform);
 }
