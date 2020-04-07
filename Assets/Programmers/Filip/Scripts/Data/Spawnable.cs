@@ -17,8 +17,6 @@ public class Spawnable : UpdatableData
     [Header("General Settings")]
 
     [SerializeField, Range(0, 1), Tooltip("How much random rotation should be applied (probably keep it on 1)")] float _rotationAmount = 1.0f;
-    [SerializeField, Range(0, 1), Tooltip("How much should the object point along the surface normal?")] float _surfaceNormalAmount = 1.0f;
-
     [SerializeField, Range(0, 30), Tooltip("How many squares does this object occupy? (ZERO will be treated as the object can spawn inside other objects (such as grass))")] int _size;
     [SerializeField, Range(0, 1), Tooltip("At which point in the noise gradient should object start spawning? Low = smooth edges, high = sharp af")] float _noiseStartPoint;
     [SerializeField, Range(0, 2), Tooltip("How thick the area of spawn should be")] float _thickness = 0.75f;
@@ -32,7 +30,17 @@ public class Spawnable : UpdatableData
     [SerializeField, Range(0, 100), Tooltip("At which height should objects start spawning? (soft amount)")] float _softMinHeight = 0;
     [SerializeField, Range(0, 100), Tooltip("At which height should objects start spawning? (hard amount)")] float _hardMinHeight = 0;
     [SerializeField, Range(0, 100), Tooltip("At which height should objects stop spawning? (soft amount)")] float _softMaxHeight = 0;
-    [SerializeField, Range(0, 100), Tooltip("At which height should objects stop spawning? (hard amount)")] float _hardMaxHeight = 0;
+    [SerializeField, Range(0, 100), Tooltip("At which height should objects stop spawning? (hard amount)")] float _hardMaxHeight = 100;
+
+
+    [Header("Slope Spawn Settings")]
+
+    [SerializeField, Range(0, 1), Tooltip("How much should the object point along the surface normal?")] float _surfaceNormalAmount = 1.0f;
+    [SerializeField, Range(0, 2), Tooltip("When pointing along normal, how much randomness around it?")] float _pointAlongNormalRandomness;
+    [SerializeField, Range(0, 90), Tooltip("At which angle should it kind of stop spawning objects (min)")] float _softMinSlope;
+    [SerializeField, Range(0, 90), Tooltip("At which angle should it definitely stop spawning objects (min)")] float _hardMinSlope;
+    [SerializeField, Range(0, 90), Tooltip("At which angle should it kind of stop spawning objects (min)")] float _softMaxSlope;
+    [SerializeField, Range(0, 90), Tooltip("At which angle should it definitely stop spawning objects (min)")] float _hardMaxSlope;
 
 
     [Header("Drop")]
@@ -44,26 +52,33 @@ public class Spawnable : UpdatableData
     float[,] _offsetNoise;
     float[,] _spreadNoise;
 
-    public NoiseMergeType NoiseMergeType              { get { return _noiseMergeType; }      private set { _noiseMergeType = value; } }
-    public GameObject Prefab                          { get { return _prefab; }              private set { _prefab = value; } }
-    public NoiseSettingsData NoiseSettingsData        { get { return _noiseSettingsData; }   private set { _noiseSettingsData = value; } }
-    public Spawnable[] SubSpawners                    { get { return _subSpawners; }         private set { _subSpawners = value; } }
-    public int Size                                   { get { return _size; }                private set { _size = value; } }
-    public float SurfaceNormalAmount                  { get { return _surfaceNormalAmount; } private set { _surfaceNormalAmount = value; } }
-    public float RotationAmount                       { get { return _rotationAmount; }      private set { _rotationAmount = value; } }
-    public float NoiseStartPoint                      { get { return _noiseStartPoint; }     private set { _noiseStartPoint = value; } }
-    public float Thickness                            { get { return _thickness; }           private set { _thickness = value; } }
-    public int UniformSpreadAmount                    { get { return _uniformSpreadAmount; } private set { _uniformSpreadAmount = value; } }
-    public float RandomSpread                         { get { return _randomSpread; }        private set { _randomSpread = value; } }
-    public float OffsetAmount                         { get { return _offsetAmount; }        private set { _offsetAmount = value; } }
-    public float SoftMinHeight                        { get { return _softMinHeight; }       private set { _softMinHeight = value; } }
-    public float HardMinHeight                        { get { return _hardMinHeight; }       private set { _hardMinHeight = value; } }
-    public float SoftMaxHeight                        { get { return _softMaxHeight; }       private set { _softMaxHeight = value; } }
-    public float HardMaxHeight                        { get { return _hardMaxHeight; }       private set { _hardMaxHeight = value; } }
+    public NoiseMergeType NoiseMergeType              { get { return _noiseMergeType; }             private set { _noiseMergeType = value; } }
+    public GameObject Prefab                          { get { return _prefab; }                     private set { _prefab = value; } }
+    public NoiseSettingsData NoiseSettingsData        { get { return _noiseSettingsData; }          private set { _noiseSettingsData = value; } }
+    public Spawnable[] SubSpawners                    { get { return _subSpawners; }                private set { _subSpawners = value; } }
+    public int Size                                   { get { return _size; }                       private set { _size = value; } }
+    public float RotationAmount                       { get { return _rotationAmount; }             private set { _rotationAmount = value; } }
+    public float NoiseStartPoint                      { get { return _noiseStartPoint; }            private set { _noiseStartPoint = value; } }
+    public float Thickness                            { get { return _thickness; }                  private set { _thickness = value; } }
+    public int UniformSpreadAmount                    { get { return _uniformSpreadAmount; }        private set { _uniformSpreadAmount = value; } }
+    public float RandomSpread                         { get { return _randomSpread; }               private set { _randomSpread = value; } }
+    public float OffsetAmount                         { get { return _offsetAmount; }               private set { _offsetAmount = value; } }
 
-    public float[,] GetNoise                          { get { return _noise; }               private set { _noise = value; } }
-    public float[,] OffsetNoise                       { get { return _offsetNoise; }         private set { _offsetNoise = value; } }
-    public float[,] SpreadNoise                       { get { return _spreadNoise; }         private set { _spreadNoise = value; } }
+    public float SoftMinHeight                        { get { return _softMinHeight; }              private set { _softMinHeight = value; } }
+    public float HardMinHeight                        { get { return _hardMinHeight; }              private set { _hardMinHeight = value; } }
+    public float SoftMaxHeight                        { get { return _softMaxHeight; }              private set { _softMaxHeight = value; } }
+    public float HardMaxHeight                        { get { return _hardMaxHeight; }              private set { _hardMaxHeight = value; } }
+
+    public float SurfaceNormalAmount                  { get { return _surfaceNormalAmount; }        private set { _surfaceNormalAmount = value; } }
+    public float PointAlongNormalRandomness           { get { return _pointAlongNormalRandomness; } private set { _pointAlongNormalRandomness = value; } }
+    public float SoftMinSlope                         { get { return _softMinSlope; }               private set { _softMinSlope = value; } }
+    public float HardMinSlope                         { get { return _hardMinSlope; }               private set { _hardMinSlope = value; } }
+    public float SoftMaxSlope                         { get { return _softMaxSlope; }               private set { _softMaxSlope = value; } }
+    public float HardMaxSlope                         { get { return _hardMaxSlope; }               private set { _hardMaxSlope = value; } }
+
+    public float[,] GetNoise                          { get { return _noise; }                      private set { _noise = value; } }
+    public float[,] OffsetNoise                       { get { return _offsetNoise; }                private set { _offsetNoise = value; } }
+    public float[,] SpreadNoise                       { get { return _spreadNoise; }                private set { _spreadNoise = value; } }
 
     // Used to calculate all the different noises for every spawable
     public void Setup(float[,] parentNoise, int chunkSize, NoiseSettingsData offsetNoiseSettings, Vector2 center, Vector2 offsetNoiseOffset)

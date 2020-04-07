@@ -7,7 +7,7 @@ public class HeightMapSettings : UpdatableData
 {
     [SerializeField] NoiseSettingsData _noiseSettingsData;
 
-    [SerializeField, Range(-100, 100)] float _heightMultiplier;
+    [SerializeField, Range(-250, 250)] float _heightMultiplier;
     [SerializeField] AnimationCurve _heightCurve;
     [SerializeField] bool _useFallOfMap;
 

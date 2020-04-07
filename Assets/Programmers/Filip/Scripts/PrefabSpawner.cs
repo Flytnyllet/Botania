@@ -38,9 +38,14 @@ public class PrefabSpawner : MonoBehaviour
                         bool uniformSpread = x % spawnables[i].UniformSpreadAmount == 0 && y % spawnables[i].UniformSpreadAmount == 0; //uniform spread?
                         bool noiseSpread = spawnables[i].SpreadNoise[y, x] > spawnables[i].RandomSpread;
 
-                        //Slope bool
+                        //Slope
                         Vector3 normal = meshData.GetNormal(y * (meshSettings.ChunkSize) + x);
-                        bool slope = true;
+                        float slopeAngle = Vector3.Angle(Vector3.up, normal);
+
+                        bool minSlope = (slopeAngle <= spawnables[i].SoftMinSlope * spawnables[i].OffsetNoise[x, y]);
+                        minSlope = minSlope && slopeAngle <= spawnables[i].HardMinSlope;
+                        bool maxSlope = (slopeAngle >= spawnables[i].SoftMaxSlope * spawnables[i].OffsetNoise[x, y]);
+                        maxSlope = maxSlope && slopeAngle >= spawnables[i].HardMaxSlope;
 
                         //height bools
                         bool minHeight = (heightMap.heightMap[x, y] > -0.001f + heightMap.minValue + spawnables[i].SoftMinHeight * spawnables[i].OffsetNoise[y, x]);
@@ -48,7 +53,8 @@ public class PrefabSpawner : MonoBehaviour
                         bool maxHeight = (heightMap.heightMap[x, y] < heightMap.maxValue - spawnables[i].SoftMaxHeight * spawnables[i].OffsetNoise[x, y]);
                         maxHeight = maxHeight && heightMap.heightMap[x, y] < spawnables[i].HardMaxHeight;
 
-                        if (insideNoise && gradientSpawn && uniformSpread && noiseSpread && minHeight && maxHeight & slope)
+                        //Things inside the if statement only need to be determined if it should spawn
+                        if (insideNoise && gradientSpawn && uniformSpread && noiseSpread && minHeight && maxHeight & minSlope && maxSlope)
                         {
                             //Since the object can spawn, mark it's space as occopied
                             biome.OccupyWithObject(x, y, spawnables[i].Size);
@@ -66,13 +72,13 @@ public class PrefabSpawner : MonoBehaviour
                             objectPosition += offsetVector * spawnables[i].OffsetAmount;
 
                             //How much along the normal should the object point?
-                            Vector3 finalRotation = LerpToVector(normal, Vector3.up, spawnables[i].SurfaceNormalAmount);
+                            float tiltAmount = spawnables[i].SurfaceNormalAmount + (spawnables[i].SpreadNoise[x, y] * 2 - 1) * spawnables[i].PointAlongNormalRandomness;
+                            Vector3 finalRotation = LerpToVector(normal, Vector3.up, tiltAmount);
                             //Random rotation based on noise
                             Quaternion rotation = Quaternion.FromToRotation(Vector3.up, finalRotation);
 
                             GameObject newObject = Instantiate(spawnables[i].Prefab, objectPosition, rotation, container) as GameObject;
                             newObject.transform.RotateAround(objectPosition, newObject.transform.up, spawnables[i].OffsetNoise[x, y] * DEGREES_360 * spawnables[i].RotationAmount);
-
                         }
                     }               
                 }
@@ -82,6 +88,7 @@ public class PrefabSpawner : MonoBehaviour
 
     private static Vector3 LerpToVector(Vector3 toVector, Vector3 fromVector, float amount)
     {
+        amount = amount <= 0 ? 0 : amount;
         return toVector * amount + fromVector * (1 - amount);
     }
 }
