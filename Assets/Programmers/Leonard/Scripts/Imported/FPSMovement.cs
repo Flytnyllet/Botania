@@ -42,7 +42,7 @@ public class FPSMovement : MonoBehaviour
             if (_velocity.y > 0)
             {
                 groundRay = false;
-            }
+            }	
 
             //Jumping
             //if (Input.GetButtonDown("Jump")) 

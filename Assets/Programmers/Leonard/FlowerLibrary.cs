@@ -5,7 +5,7 @@ using UnityEngine;
 public static class FlowerLibrary 
 {
 	static List<Flower> _flowerTypes = new List<Flower>();
-	static bool _libraryInitiated = false;
+	static List<Potion> _potionTypes = new List<Potion>();
 
 	public static void InitiateLibrary()
 	{
@@ -34,8 +34,6 @@ public static class FlowerLibrary
 			"This book protects me, I should be safe here." };
 		Flower flower3 = new Flower(3, "Violet", baseProgression, violet);
 		_flowerTypes.Add(flower3);
-
-		_libraryInitiated = true;
 	}
 
 	public static Flower GetFlowerType(int id)
