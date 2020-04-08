@@ -24,14 +24,15 @@ public class PrefabSpawner : MonoBehaviour
 
             //Get noise specific to this prefab
             float[,] spawnNoise = spawnables[i].GetNoise;
+            float spawnableSizeForGridAlign = spawnables[i].Size == 0 ? 1 : spawnables[i].Size;
 
             //+ 1 offset in loops are due to border around mesh
-            for (int x = 0; x < meshSettings.ChunkSize - spawnables[i].Size + 1; x++)
+            for (int x = 0; x < meshSettings.ChunkSize - spawnableSizeForGridAlign; x++)
             {
-                for (int y = 0; y < meshSettings.ChunkSize - spawnables[i].Size + 1; y++)
+                for (int y = 0; y < meshSettings.ChunkSize - spawnableSizeForGridAlign; y++)
                 {
                     //No use in checking if it can spawn if that square is occopied
-                    if (biome.CanObjectSpawn(x, y, spawnables[i].Size))
+                    if (biome.CanObjectSpawn(x, y, spawnables[i].Size, heightMap.heightMap, spawnables[i].SpawnDifferencial))
                     {
                         bool insideNoise = spawnNoise[x, y] > spawnables[i].NoiseStartPoint; //is it inside the noise?
                         bool gradientSpawn = spawnNoise[x, y] + spawnables[i].OffsetNoise[x, y] > spawnables[i].Thickness; //If it is, transition?
@@ -60,9 +61,9 @@ public class PrefabSpawner : MonoBehaviour
                             biome.OccupyWithObject(x, y, spawnables[i].Size);
 
                             //Current local positions in x and y in chunk, used only to spawn from
-                            float xPos = x + (STANDARD_GRID_OFFSET * spawnables[i].Size) - meshSettings.ChunkSize / 2 - 1; //Due to the border around the mesh +- 1 corrects it to the right grid position
-                            float zPos = y + (STANDARD_GRID_OFFSET * spawnables[i].Size) - meshSettings.ChunkSize / 2 - 1; //Due to the border around the mesh +- 1 corrects it to the right grid position
-                            float yPos = heightMap.heightMap[x + (int)(STANDARD_GRID_OFFSET * spawnables[i].Size), y + (int)(STANDARD_GRID_OFFSET * spawnables[i].Size)] + 0.5f;
+                            float xPos = x + STANDARD_GRID_OFFSET + (STANDARD_GRID_OFFSET * spawnableSizeForGridAlign) - meshSettings.ChunkSize / 2 - 1; //Due to the border around the mesh + STANDARD_GRID_OFFSET corrects it to the right grid position
+                            float zPos = y + STANDARD_GRID_OFFSET + (STANDARD_GRID_OFFSET * spawnableSizeForGridAlign) - meshSettings.ChunkSize / 2 - 1; //Due to the border around the mesh + STANDARD_GRID_OFFSET corrects it to the right grid position
+                            float yPos = heightMap.heightMap[x + (int)(STANDARD_GRID_OFFSET * spawnableSizeForGridAlign) + 1, y + (int)(STANDARD_GRID_OFFSET * spawnableSizeForGridAlign) + 1] + 0.5f;
 
                             //Position from grid in world
                             Vector3 objectPosition = new Vector3((xPos + chunkCoord.x) * meshSettings.MeshScale, yPos, -(zPos + chunkCoord.y) * meshSettings.MeshScale);
@@ -77,8 +78,11 @@ public class PrefabSpawner : MonoBehaviour
                             //Random rotation based on noise
                             Quaternion rotation = Quaternion.FromToRotation(Vector3.up, finalRotation);
 
-                            GameObject newObject = Instantiate(spawnables[i].Prefab, objectPosition, rotation, container) as GameObject;
-                            newObject.transform.RotateAround(objectPosition, newObject.transform.up, spawnables[i].OffsetNoise[x, y] * DEGREES_360 * spawnables[i].RotationAmount);
+                            GameObject spawnObject = spawnables[i].GetPrefab(x, y);
+                            float localRotationAmount = spawnables[i].OffsetNoise[x, y] * DEGREES_360 * spawnables[i].RotationAmount;
+
+                            GameObject newObject = Instantiate(spawnObject, objectPosition, rotation, container) as GameObject;
+                            newObject.transform.RotateAround(objectPosition, newObject.transform.up, localRotationAmount);
                         }
                     }               
                 }
@@ -86,6 +90,7 @@ public class PrefabSpawner : MonoBehaviour
         }
     }
 
+    //How much should the vector point towards another vector?
     private static Vector3 LerpToVector(Vector3 toVector, Vector3 fromVector, float amount)
     {
         amount = amount <= 0 ? 0 : amount;

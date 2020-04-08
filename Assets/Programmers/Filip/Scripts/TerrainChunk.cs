@@ -30,8 +30,11 @@ public class TerrainChunk
     MeshSettings _meshSettings;
     Transform _viewer;
 
-    public TerrainChunk(Vector2 coord, HeightMapSettings heightMapSettings, MeshSettings meshSettings, LODInfo[] detailLevels, int colliderLODIndex, Transform parent, Transform viewer, Material material)
+    Biome _biome;
+
+    public TerrainChunk(Vector2 coord, HeightMapSettings heightMapSettings, MeshSettings meshSettings, LODInfo[] detailLevels, int colliderLODIndex, Transform parent, Transform viewer, Material material, Biome biome)
     {
+        this._biome = biome;
         this.Coord = coord;
         this._detailLevels = detailLevels;
         this._colliderLODIndex = colliderLODIndex;
@@ -108,6 +111,9 @@ public class TerrainChunk
                     {
                         _previousLODIndex = lodIndex;
                         _meshFilter.mesh = lodMesh.Mesh;
+
+                        if (lodIndex == 0)
+                            PrefabSpawner.SpawnOnChunk(_biome, _heightMap, _lodMeshes[lodIndex].MeshData, _meshSettings, _meshFilter.transform, new Vector2(_sampleCenter.x, -_sampleCenter.y));
                     }
                     else if (!lodMesh.HasRequestedMesh)
                         lodMesh.RequestMesh(_heightMap, _meshSettings);
@@ -162,6 +168,7 @@ public class TerrainChunk
 class LODMesh
 {
     public Mesh Mesh { get; private set; }
+    public MeshData MeshData { get; private set; }
     public bool HasRequestedMesh { get; private set; }
     public bool HasMesh { get; private set; }
     int _levelOfDetail;
@@ -175,6 +182,7 @@ class LODMesh
 
     void OnMeshDataReceived(object meshData)
     {
+        MeshData = (MeshData)meshData;
         Mesh = ((MeshData)meshData).CreateMesh();
         HasMesh = true;
 

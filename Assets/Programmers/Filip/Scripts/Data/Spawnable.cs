@@ -17,12 +17,17 @@ public class Spawnable : UpdatableData
     [Header("General Settings")]
 
     [SerializeField, Range(0, 1), Tooltip("How much random rotation should be applied (probably keep it on 1)")] float _rotationAmount = 1.0f;
-    [SerializeField, Range(0, 30), Tooltip("How many squares does this object occupy? (ZERO will be treated as the object can spawn inside other objects (such as grass))")] int _size;
     [SerializeField, Range(0, 1), Tooltip("At which point in the noise gradient should object start spawning? Low = smooth edges, high = sharp af")] float _noiseStartPoint;
     [SerializeField, Range(0, 2), Tooltip("How thick the area of spawn should be")] float _thickness = 0.75f;
     [SerializeField, Range(1, 80), Tooltip("Uniform spread amount (use for general spreading and not for fine tuning) (low = low spread, high = high spread)")] int _uniformSpreadAmount = 1;
     [SerializeField, Range(0, 1), Tooltip("How much random spawn spread there should be")] float _randomSpread = 0.5f;
     [SerializeField, Range(0, 4), Tooltip("How much should the spawning avert from the grid it is based on? (high values might cause clipping!!!)")] float _offsetAmount = 0.75f;
+
+
+    [Header("Size Settings")]
+
+    [SerializeField, Range(0, 30), Tooltip("How many squares does this object occupy? (ZERO will be treated as the object can spawn inside other objects (such as grass))")] int _size;
+    [SerializeField, Range(0, 15), Tooltip("How high can the difference between highest and lowest point in spawn area be for it to spawn?")] float _spawnDifferencial;
 
 
     [Header("Height Spawn Settings")]
@@ -45,24 +50,27 @@ public class Spawnable : UpdatableData
 
     [Header("Drop")]
 
-    [SerializeField, Tooltip("Which object should spawn?")] GameObject _prefab;
+    [SerializeField, Tooltip("Which object should spawn?")] SpawnablePrefab[] _prefabs;
     [SerializeField, Tooltip("Sub areas within this objects noise in which new objects can spawn")] Spawnable[] _subSpawners;
 
     float[,] _noise;
     float[,] _offsetNoise;
     float[,] _spreadNoise;
 
+    int _prefabMaxProbability;
+
     public NoiseMergeType NoiseMergeType              { get { return _noiseMergeType; }             private set { _noiseMergeType = value; } }
-    public GameObject Prefab                          { get { return _prefab; }                     private set { _prefab = value; } }
     public NoiseSettingsData NoiseSettingsData        { get { return _noiseSettingsData; }          private set { _noiseSettingsData = value; } }
     public Spawnable[] SubSpawners                    { get { return _subSpawners; }                private set { _subSpawners = value; } }
-    public int Size                                   { get { return _size; }                       private set { _size = value; } }
     public float RotationAmount                       { get { return _rotationAmount; }             private set { _rotationAmount = value; } }
     public float NoiseStartPoint                      { get { return _noiseStartPoint; }            private set { _noiseStartPoint = value; } }
     public float Thickness                            { get { return _thickness; }                  private set { _thickness = value; } }
     public int UniformSpreadAmount                    { get { return _uniformSpreadAmount; }        private set { _uniformSpreadAmount = value; } }
     public float RandomSpread                         { get { return _randomSpread; }               private set { _randomSpread = value; } }
     public float OffsetAmount                         { get { return _offsetAmount; }               private set { _offsetAmount = value; } }
+
+    public int Size                                   { get { return _size; }                       private set { _size = value; } }
+    public float SpawnDifferencial                    { get { return _spawnDifferencial; }          private set { _spawnDifferencial = value; } }
 
     public float SoftMinHeight                        { get { return _softMinHeight; }              private set { _softMinHeight = value; } }
     public float HardMinHeight                        { get { return _hardMinHeight; }              private set { _hardMinHeight = value; } }
@@ -91,9 +99,51 @@ public class Spawnable : UpdatableData
         _offsetNoise = Noise.GenerateNoiseMap(chunkSize, chunkSize, offsetNoiseSettings.NoiseSettingsDataMerge, center + offsetNoiseOffset);
         _spreadNoise = Noise.GenerateNoiseMap(chunkSize, chunkSize, offsetNoiseSettings.NoiseSettingsDataMerge, center + offsetNoiseOffset * 2);
 
+        _prefabMaxProbability = SpawnablePrefab.GetMaxSize(_prefabs);
+
         for (int i = 0; i < _subSpawners.Length; i++)
         {
             _subSpawners[i].Setup(_noise, chunkSize, offsetNoiseSettings, center, offsetNoiseOffset * 2);
         }
+    }
+
+    //Returns a prefab in the prefab selection based on noise and probability in world position
+    public GameObject GetPrefab(int x, int y)
+    {
+        float randomValue = _spreadNoise[x, y] * _prefabMaxProbability;
+        int compareValue = 0;
+
+        for (int i = 0; i < _prefabs.Length; i++)
+        {
+            if (randomValue <= compareValue + _prefabs[i].Probability)
+                return _prefabs[i].Prefab;
+
+            compareValue += _prefabs[i].Probability;
+        }
+
+        Debug.LogError("There are no prefabs here! " + this);
+        return null;
+    }
+}
+
+[System.Serializable]
+public class SpawnablePrefab
+{
+    [SerializeField] GameObject _prefab;
+    [SerializeField, Range(1, 100), Tooltip("Not based on percent but the overall combined probabilities")] int _probability;
+
+    public GameObject Prefab { get { return _prefab; }      private set { _prefab = value; } }
+    public int Probability   { get { return _probability; } private set { _probability = value; } }
+
+    //Return total combined probability
+    public static int GetMaxSize(SpawnablePrefab[] spawnablePrefabs)
+    {
+        int size = 0;
+        for (int i = 0; i < spawnablePrefabs.Length; i++)
+        {
+            size += spawnablePrefabs[i].Probability;
+        }
+
+        return size;
     }
 }

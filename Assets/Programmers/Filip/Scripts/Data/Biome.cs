@@ -26,10 +26,13 @@ public class Biome : UpdatableData
     }
 
     //Returns true if the object can fit in chunk where it is trying to fit
-    public bool CanObjectSpawn(int x, int y, int size)
+    public bool CanObjectSpawn(int x, int y, int size, float[,] heightMap, float spawnDifferencial)
     {
         int maxX = x + size < _meshSettings.ChunkSize - 1 ? x + size : _meshSettings.ChunkSize - 1;
         int maxY = y + size < _meshSettings.ChunkSize - 1 ? y + size : _meshSettings.ChunkSize - 1;
+
+        float currentMin = float.MaxValue;
+        float currentMax = float.MinValue;
 
         for (int checkX = x; checkX < maxX; checkX++)
         {
@@ -37,10 +40,18 @@ public class Biome : UpdatableData
             {
                 if (_occupiedGrid[checkX, checkY])
                     return false;
+
+                if (currentMin > heightMap[checkX, checkY])
+                    currentMin = heightMap[checkX, checkY];
+                if (currentMax < heightMap[checkX, checkY])
+                    currentMax = heightMap[checkX, checkY];
             }
         }
 
-        return true;
+        if (currentMax - currentMin <= spawnDifferencial)
+            return true;
+        else
+            return false;
     }
 
     //Tells other objects this spot it taken lol

@@ -11,6 +11,7 @@ public class TerrainGenerator : MonoBehaviour
     [Header("Settings")]
     [SerializeField] LODInfo[] _detailLevels;
     [SerializeField] int _colliderLODIndex;
+    [SerializeField] Biome _biome;
 
     [Header("Drop")]
 
@@ -85,7 +86,7 @@ public class TerrainGenerator : MonoBehaviour
                         _terrainChunkDictionary[viewedChunkCoord].UpdateTerrainChunk();
                     else
                     {
-                        TerrainChunk newChunk = new TerrainChunk(viewedChunkCoord, _heightMapSettings, _meshSettings, _detailLevels, _colliderLODIndex, transform, _viewer, _mapMaterial);
+                        TerrainChunk newChunk = new TerrainChunk(viewedChunkCoord, _heightMapSettings, _meshSettings, _detailLevels, _colliderLODIndex, transform, _viewer, _mapMaterial, _biome);
                         _terrainChunkDictionary.Add(viewedChunkCoord, newChunk);
                         newChunk.onVisibilityChanged += OnTerrainChunkVisibilityChanged;
                         newChunk.Load();
