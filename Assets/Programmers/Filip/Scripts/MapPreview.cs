@@ -69,7 +69,8 @@ public class MapPreview : MonoBehaviour
         {
             MeshData meshData = MeshGenerator.GenerateTerrainMesh(heightMap.heightMap, _meshSettings, _editorPreviewLevelOfDetail);
             DrawMesh(meshData);
-            PrefabSpawner.SpawnOnChunk(_biome, heightMap, meshData, _meshSettings, _biomeContainer, Vector2.zero);
+            List<SpawnInfo> spawnInfo = PrefabSpawner.SpawnOnChunk(_biome, heightMap, meshData, _meshSettings, Vector2.zero);
+            PrefabSpawner.SpawnSpawnInfo(spawnInfo, _biomeContainer);
         }
     }
 

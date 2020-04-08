@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-
+using System.Collections.Generic;
 
 public class TerrainChunk
 {
@@ -30,6 +30,7 @@ public class TerrainChunk
     MeshSettings _meshSettings;
     Transform _viewer;
 
+    SpawnInfoRequester _spawnInfoRequester;
     Biome _biome;
 
     public TerrainChunk(Vector2 coord, HeightMapSettings heightMapSettings, MeshSettings meshSettings, LODInfo[] detailLevels, int colliderLODIndex, Transform parent, Transform viewer, Material material, Biome biome)
@@ -41,6 +42,8 @@ public class TerrainChunk
         this._heightMapSettings = heightMapSettings;
         this._meshSettings = meshSettings;
         this._viewer = viewer;
+
+        _spawnInfoRequester = new SpawnInfoRequester();
 
         _sampleCenter = coord * meshSettings.MeshWorldSize / meshSettings.MeshScale;
         Vector2 position = coord * meshSettings.MeshWorldSize;
@@ -64,6 +67,8 @@ public class TerrainChunk
             if (i == colliderLODIndex)
                 _lodMeshes[i]._updateCallback += UpdateCollisionMesh;
         }
+
+        _spawnInfoRequester._updateCallback += UpdateTerrainChunk;
 
         _maxViewDistance = _detailLevels[_detailLevels.Length - 1].visableDstThreshold;
     }
@@ -111,13 +116,22 @@ public class TerrainChunk
                     {
                         _previousLODIndex = lodIndex;
                         _meshFilter.mesh = lodMesh.Mesh;
-
-                        if (lodIndex == 0)
-                            PrefabSpawner.SpawnOnChunk(_biome, _heightMap, _lodMeshes[lodIndex].MeshData, _meshSettings, _meshFilter.transform, new Vector2(_sampleCenter.x, -_sampleCenter.y));
                     }
                     else if (!lodMesh.HasRequestedMesh)
                         lodMesh.RequestMesh(_heightMap, _meshSettings);
                 }
+
+                if (_lodMeshes[lodIndex].HasMesh && !_spawnInfoRequester.IsSet && lodIndex == 0) //The mesh is spawned but no prefabs on it (it's also the highest detail level)
+                {
+                    if (_spawnInfoRequester.HasSpawnInfo) //The requested spawninfo has arrived! Hurray!
+                    {
+                        _spawnInfoRequester.IsSet = true;
+                        PrefabSpawner.SpawnSpawnInfo(_spawnInfoRequester.SpawnInfo, _meshFilter.transform);
+                    }
+                    else if (!_spawnInfoRequester.HasRequestedSpawnInfo) //Request spawninfo!
+                        _spawnInfoRequester.RequestSpawnInfo(_biome, _heightMap, _lodMeshes[lodIndex].MeshData, _meshSettings, new Vector2(_sampleCenter.x, -_sampleCenter.y));
+                }
+
             }
 
             if (wasVisible != visable)
@@ -193,5 +207,30 @@ class LODMesh
     {
         HasRequestedMesh = true;
         ThreadedDataRequester.RequestData(() => MeshGenerator.GenerateTerrainMesh(heightMap.heightMap, meshSettings, _levelOfDetail), OnMeshDataReceived);
+    }
+}
+
+class SpawnInfoRequester
+{
+    public bool HasRequestedSpawnInfo { get; private set; }
+    public bool HasSpawnInfo { get; private set; }
+    public bool IsSet { get; set; }
+
+    public event System.Action _updateCallback;
+
+    public List<SpawnInfo> SpawnInfo { get; private set; }
+
+    void OnSpawnInfoReceived(object spawnInfo)
+    {
+        SpawnInfo = (List<SpawnInfo>)spawnInfo;
+
+        HasSpawnInfo = true;
+        _updateCallback();
+    }
+
+    public void RequestSpawnInfo(Biome biome, HeightMap heightMap, MeshData meshData, MeshSettings meshSettings, Vector2 sampleCenter)
+    {
+        HasRequestedSpawnInfo = true;
+        ThreadedDataRequester.RequestData(() => PrefabSpawner.SpawnOnChunk(biome, heightMap, meshData, meshSettings, sampleCenter), OnSpawnInfoReceived);
     }
 }

@@ -7,20 +7,25 @@ public class PrefabSpawner : MonoBehaviour
     static readonly int DEGREES_360 = 360;
     static readonly float STANDARD_GRID_OFFSET = 0.5f;
 
-    public static void SpawnOnChunk(Biome biome, HeightMap heightMap, MeshData meshData, MeshSettings meshSettings, Transform container, Vector2 chunkCoord)
+    public static List<SpawnInfo> SpawnOnChunk(Biome biome, HeightMap heightMap, MeshData meshData, MeshSettings meshSettings, Vector2 chunkCoord)
     {
         //Generate all noises according to chunk position
         biome.Setup(chunkCoord); 
-        SpawnFromSpawnables(biome, biome.Spawnables, heightMap, meshData, meshSettings, container, chunkCoord);
+        return SpawnFromSpawnables(biome, biome.Spawnables, heightMap, meshData, meshSettings, chunkCoord);
     }
 
-    private static void SpawnFromSpawnables(Biome biome, Spawnable[] spawnables, HeightMap heightMap, MeshData meshData, MeshSettings meshSettings, Transform container, Vector2 chunkCoord)
+    private static List<SpawnInfo> SpawnFromSpawnables(Biome biome, Spawnable[] spawnables, HeightMap heightMap, MeshData meshData, MeshSettings meshSettings, Vector2 chunkCoord)
     {
+        List<SpawnInfo> spawnInfo = new List<SpawnInfo>();
+
         for (int i = 0; i < spawnables.Length; i++)
         {
             //First spawn the subspawners prefabs as they are harder to make room for
             if (spawnables[i].SubSpawners.Length > 0)
-                SpawnFromSpawnables(biome, spawnables[i].SubSpawners, heightMap, meshData, meshSettings, container, chunkCoord);
+            {
+                List<SpawnInfo> childSpawnInfo = SpawnFromSpawnables(biome, spawnables[i].SubSpawners, heightMap, meshData, meshSettings, chunkCoord);
+                spawnInfo.AddRange(childSpawnInfo);
+            }
 
             //Get noise specific to this prefab
             float[,] spawnNoise = spawnables[i].GetNoise;
@@ -50,12 +55,12 @@ public class PrefabSpawner : MonoBehaviour
 
                         //height bools
                         bool minHeight = (heightMap.heightMap[x, y] > -0.001f + heightMap.minValue + spawnables[i].SoftMinHeight * spawnables[i].OffsetNoise[y, x]);
-                        minHeight = minHeight && heightMap.heightMap[x, y] > spawnables[i].HardMinHeight;
-                        bool maxHeight = (heightMap.heightMap[x, y] < heightMap.maxValue - spawnables[i].SoftMaxHeight * spawnables[i].OffsetNoise[x, y]);
+                        minHeight = minHeight && heightMap.heightMap[x, y] > -0.001f + spawnables[i].HardMinHeight;
+                        bool maxHeight = (heightMap.heightMap[x, y] <= heightMap.maxValue - spawnables[i].SoftMaxHeight * spawnables[i].OffsetNoise[x, y]);
                         maxHeight = maxHeight && heightMap.heightMap[x, y] < spawnables[i].HardMaxHeight;
 
                         //Things inside the if statement only need to be determined if it should spawn
-                        if (insideNoise && gradientSpawn && uniformSpread && noiseSpread && minHeight && maxHeight & minSlope && maxSlope)
+                        if (insideNoise && gradientSpawn && uniformSpread && noiseSpread && minHeight && maxHeight && minSlope && maxSlope)
                         {
                             //Since the object can spawn, mark it's space as occopied
                             biome.OccupyWithObject(x, y, spawnables[i].Size);
@@ -81,13 +86,14 @@ public class PrefabSpawner : MonoBehaviour
                             GameObject spawnObject = spawnables[i].GetPrefab(x, y);
                             float localRotationAmount = spawnables[i].OffsetNoise[x, y] * DEGREES_360 * spawnables[i].RotationAmount;
 
-                            GameObject newObject = Instantiate(spawnObject, objectPosition, rotation, container) as GameObject;
-                            newObject.transform.RotateAround(objectPosition, newObject.transform.up, localRotationAmount);
+                            spawnInfo.Add(new SpawnInfo(spawnObject, objectPosition, rotation, localRotationAmount));
                         }
                     }               
                 }
             }
         }
+
+        return spawnInfo;
     }
 
     //How much should the vector point towards another vector?
@@ -95,5 +101,35 @@ public class PrefabSpawner : MonoBehaviour
     {
         amount = amount <= 0 ? 0 : amount;
         return toVector * amount + fromVector * (1 - amount);
+    }
+
+    public static void SpawnSpawnInfo(List<SpawnInfo> spawnInfo, Transform container)
+    {
+        for (int i = 0; i < spawnInfo.Count; i++)
+        {
+            spawnInfo[i].Spawn(container);
+        }
+    }
+}
+
+public class SpawnInfo : MonoBehaviour
+{
+    GameObject _prefab;
+    Vector3 _spawnPosition;
+    Quaternion _rotation;
+    float _localRotationAmount;
+
+    public SpawnInfo(GameObject prefab, Vector3 spawnPosition, Quaternion rotation, float localRotationAmount)
+    {
+        this._prefab = prefab;
+        this._spawnPosition = spawnPosition;
+        this._rotation = rotation;
+        this._localRotationAmount = localRotationAmount;
+    }
+
+    public void Spawn(Transform container)
+    {
+        GameObject newObject = Instantiate(_prefab, _spawnPosition, _rotation, container) as GameObject;
+        newObject.transform.RotateAround(_spawnPosition, newObject.transform.up, _localRotationAmount);
     }
 }
