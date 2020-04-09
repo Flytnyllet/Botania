@@ -1,5 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+<<<<<<< HEAD
 --- !u!114 &-8424281466616867849
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -74,6 +75,8 @@ MonoBehaviour:
   LoadResult: 0
   FileSizes: []
   Exists: 1
+=======
+>>>>>>> StartingPrefabSpawnSystem
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -87,6 +90,7 @@ MonoBehaviour:
   m_Name: FMODStudioCache
   m_EditorClassIdentifier: 
   EditorBanks:
+<<<<<<< HEAD
   - {fileID: 7741613222064392020}
   - {fileID: -3637010817120821392}
   EditorEvents: []
@@ -96,8 +100,19 @@ MonoBehaviour:
   StringsBanks:
   - {fileID: 7741613222064392020}
   stringsBankWriteTime: 637214572850425030
+=======
+  - {fileID: 2426309026535096599}
+  - {fileID: 5296050906000168262}
+  EditorEvents: []
+  EditorParameters: []
+  MasterBanks:
+  - {fileID: 5296050906000168262}
+  StringsBanks:
+  - {fileID: 2426309026535096599}
+  stringsBankWriteTime: 637214185443022512
+>>>>>>> StartingPrefabSpawnSystem
   cacheVersion: 3
---- !u!114 &441478354095543688
+--- !u!114 &2426309026535096599
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -107,33 +122,21 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
-  m_Name: bank:/Master.bank
+  m_Name: bank:/Master.strings.bank
   m_EditorClassIdentifier: 
-  Path: FMOD/Build/Desktop/Master.bank
+  Path: FMOD/Build/Desktop/Master.strings.bank
   SubDir: 
-  lastModified: 637213422070797292
+  lastModified: 637214185443022512
   LoadResult: 0
-  FileSizes: []
+  FileSizes:
+  - Name: 
+    Value: 688
   Exists: 1
---- !u!114 &1175295159897868066
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
-  m_Name: bank:/Master.bank
-  m_EditorClassIdentifier: 
-  Path: FMOD/Build/Desktop/Master.bank
-  SubDir: 
-  lastModified: 637212668823398806
-  LoadResult: 0
-  FileSizes: []
-  Exists: 1
+<<<<<<< HEAD
 --- !u!114 &1811609145408242236
+=======
+--- !u!114 &5296050906000168262
+>>>>>>> StartingPrefabSpawnSystem
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -150,6 +153,7 @@ MonoBehaviour:
   lastModified: 637213422070797292
   LoadResult: 0
   FileSizes: []
+<<<<<<< HEAD
   Exists: 1
 --- !u!114 &2826279173875127459
 MonoBehaviour:
@@ -242,4 +246,6 @@ MonoBehaviour:
   FileSizes:
   - Name: 
     Value: 688
+=======
+>>>>>>> StartingPrefabSpawnSystem
   Exists: 1

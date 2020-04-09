@@ -8,18 +8,26 @@ public class MapPreview : MonoBehaviour
     {
         NOISE_MAP,
         MESH,
-        FALL_OF_MAP
+        FALL_OF_MAP,
+        BIOME
     }
 
     [Header("General Settings")]
 
-    [SerializeField] DrawMode _drawMode;
     [SerializeField, Tooltip("Should the terrainmap update in the editor?")] bool _autoUpdate;
+    [SerializeField] DrawMode _drawMode;
 
     [SerializeField] MeshSettings _meshSettings;
     [SerializeField] HeightMapSettings _heightMapSettings;
     [SerializeField] TextureData _textureData;
     [SerializeField] Material _terrainMaterial;
+
+    [Header("Noise settings")]
+
+    [SerializeField] NoiseMergeType _noiseMergeType;
+    [SerializeField] NoiseSettingsData _noiseSettingsData_1;
+    [SerializeField] NoiseSettingsData _noiseSettingsData_2;
+    [SerializeField, Range(1, 200), Tooltip("How big should the displayed noise be?")] int _noiseViewSize = 1;
 
     [Header("Mesh Settings")]
 
@@ -31,27 +39,54 @@ public class MapPreview : MonoBehaviour
     [SerializeField] MeshFilter _meshFilter;
     [SerializeField] MeshRenderer _meshRenderer;
 
+    [Header("Biome Testing")]
+
+
+    [SerializeField] Biome _biome;
+
+    Transform _biomeContainer;
+
+
     public bool DoAutoUpdate() { return _autoUpdate; }
 
     public float GetScale() { return _meshSettings.MeshScale; }
 
     public void DrawMapInEditor()
     {
+        //Used to store prefab objects in edit mode and delete them when changes are made (is a bit buggy)
+        if (_biomeContainer != null)
+            DestroyImmediate(_biomeContainer.gameObject);
+        _biomeContainer = new GameObject("DELETE ME IF MANY OF ME").transform;
+
+        //Apply material to mesh
         _textureData.ApplyToMaterial(_terrainMaterial);
         _textureData.UpdateMeshHeights(_terrainMaterial, _heightMapSettings.MinHeight, _heightMapSettings.MaxHeight);
 
-        HeightMap heightMap = HeightMapGenerator.GenerateHeightMap(_meshSettings.ChunkSize + 2, _meshSettings.ChunkSize + 2, _heightMapSettings, Vector2.zero);
-        //Ändra senare kan vara slow
+        //Generate the heightmap for the chunk at origin
+        HeightMap heightMap = HeightMapGenerator.GenerateHeightMap(_meshSettings.NumVertsPerLine, _meshSettings.NumVertsPerLine, _heightMapSettings, Vector2.zero);
+
+        float[,] noise = Noise.MergeNoise(_meshSettings.NumVertsPerLine * _noiseViewSize, _meshSettings.NumVertsPerLine * _noiseViewSize, _noiseSettingsData_1.NoiseSettingsDataMerge, _noiseSettingsData_2.NoiseSettingsDataMerge, _noiseMergeType, Vector2.zero);
 
         if (_drawMode == DrawMode.NOISE_MAP)
-            DrawTexture(TextureGenerator.TextureFromHeightMap(heightMap));
+            DrawTexture(TextureGenerator.TextureFromNoise(noise));
         else if (_drawMode == DrawMode.MESH)
             DrawMesh(MeshGenerator.GenerateTerrainMesh(heightMap.heightMap, _meshSettings, _editorPreviewLevelOfDetail));
         else if (_drawMode == DrawMode.FALL_OF_MAP)
-            DrawTexture(TextureGenerator.TextureFromHeightMap( new HeightMap(FallofGenerator.GenerateFallofMap(_meshSettings.ChunkSize), 0, 1)));
+        {
+            float[,] fallOf = (new HeightMap(FallofGenerator.GenerateFallofMap(_meshSettings.NumVertsPerLine), 1, 1).heightMap);
+            DrawTexture(TextureGenerator.TextureFromNoise(fallOf));
+        }
+        else if (_drawMode == DrawMode.BIOME)
+        {
+            MeshData meshData = MeshGenerator.GenerateTerrainMesh(heightMap.heightMap, _meshSettings, _editorPreviewLevelOfDetail);
+            DrawMesh(meshData);
+            PrefabSpawner prefabSpawner = new PrefabSpawner();
+            List<SpawnInfo> spawnInfo = prefabSpawner.SpawnOnChunk(_biome, heightMap, meshData, _meshSettings, Vector2.zero);
+            prefabSpawner.SpawnSpawnInfo(spawnInfo, _biomeContainer);
+        }
     }
 
-
+    //Draws on the plane (for noise display)
     public void DrawTexture(Texture2D texture)
     {
         _textureRenderer.sharedMaterial.mainTexture = texture;
@@ -61,6 +96,7 @@ public class MapPreview : MonoBehaviour
         _meshFilter.gameObject.SetActive(false);
     }
 
+    //Create the mesh from meshdata if that is to be displayed
     public void DrawMesh(MeshData meshData)
     {
         _meshFilter.sharedMesh = meshData.CreateMesh();
@@ -69,7 +105,7 @@ public class MapPreview : MonoBehaviour
         _meshFilter.gameObject.SetActive(true);
     }
 
-
+    //If changes are made, apply in edit mode
     void OnValuesUpdated()
     {
         if (!Application.isPlaying)
@@ -93,11 +129,45 @@ public class MapPreview : MonoBehaviour
         {
             _heightMapSettings.OnValuesUpdated -= OnValuesUpdated;
             _heightMapSettings.OnValuesUpdated += OnValuesUpdated;
+            _heightMapSettings.NoiseSettingsData.OnValuesUpdated -= OnValuesUpdated;
+            _heightMapSettings.NoiseSettingsData.OnValuesUpdated += OnValuesUpdated;
+        }
+        if (_noiseSettingsData_1 != null)
+        {
+            _noiseSettingsData_1.OnValuesUpdated -= OnValuesUpdated;
+            _noiseSettingsData_1.OnValuesUpdated += OnValuesUpdated;
+        }
+        if (_noiseSettingsData_2 != null)
+        {
+            _noiseSettingsData_2.OnValuesUpdated -= OnValuesUpdated;
+            _noiseSettingsData_2.OnValuesUpdated += OnValuesUpdated;
+        }
+        if (_biome != null)
+        {
+            _biome.OnValuesUpdated -= OnValuesUpdated;
+            _biome.OnValuesUpdated += OnValuesUpdated;
+            SubscribeToSpawnables(_biome.Spawnables);
         }
         if (_textureData != null)
         {
             _textureData.OnValuesUpdated -= OnTextureValuesUpdated;
             _textureData.OnValuesUpdated += OnTextureValuesUpdated;
+        }
+        if (_textureData != null)
+        {
+            _textureData.OnValuesUpdated -= OnTextureValuesUpdated;
+            _textureData.OnValuesUpdated += OnTextureValuesUpdated;
+        }
+    }
+
+    private void SubscribeToSpawnables(Spawnable[] spawnables)
+    {
+        for (int i = 0; i < spawnables.Length; i++)
+        {
+            spawnables[i].OnValuesUpdated -= OnValuesUpdated;
+            spawnables[i].OnValuesUpdated += OnValuesUpdated;
+
+            SubscribeToSpawnables(spawnables[i].SubSpawners);
         }
     }
 }

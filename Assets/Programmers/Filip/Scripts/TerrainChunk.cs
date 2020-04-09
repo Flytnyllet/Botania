@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-
+using System.Collections.Generic;
 
 public class TerrainChunk
 {
@@ -30,8 +30,12 @@ public class TerrainChunk
     MeshSettings _meshSettings;
     Transform _viewer;
 
-    public TerrainChunk(Vector2 coord, HeightMapSettings heightMapSettings, MeshSettings meshSettings, LODInfo[] detailLevels, int colliderLODIndex, Transform parent, Transform viewer, Material material)
+    SpawnInfoRequester _spawnInfoRequester;
+    Biome _biome;
+
+    public TerrainChunk(Vector2 coord, HeightMapSettings heightMapSettings, MeshSettings meshSettings, LODInfo[] detailLevels, int colliderLODIndex, Transform parent, Transform viewer, Material material, Biome biome)
     {
+        this._biome = biome;
         this.Coord = coord;
         this._detailLevels = detailLevels;
         this._colliderLODIndex = colliderLODIndex;
@@ -39,9 +43,11 @@ public class TerrainChunk
         this._meshSettings = meshSettings;
         this._viewer = viewer;
 
-        _sampleCenter = (coord * (meshSettings.ChunkSize - 1)) / meshSettings.MeshScale;
-        Vector2 position = coord * (meshSettings.ChunkSize - 1);
-        _bounds = new Bounds(position, Vector2.one * (meshSettings.ChunkSize - 1));
+        _spawnInfoRequester = new SpawnInfoRequester();
+
+        _sampleCenter = coord * meshSettings.MeshWorldSize / meshSettings.MeshScale;
+        Vector2 position = coord * meshSettings.MeshWorldSize;
+        _bounds = new Bounds(position, Vector2.one * meshSettings.MeshWorldSize);
 
         _meshObject = new GameObject("Terrain Chunk");
         _meshRenderer = _meshObject.AddComponent<MeshRenderer>();
@@ -62,12 +68,14 @@ public class TerrainChunk
                 _lodMeshes[i]._updateCallback += UpdateCollisionMesh;
         }
 
+        _spawnInfoRequester._updateCallback += UpdateTerrainChunk;
+
         _maxViewDistance = _detailLevels[_detailLevels.Length - 1].visableDstThreshold;
     }
 
     public void Load()
     {
-        ThreadedDataRequester.RequestData(() => HeightMapGenerator.GenerateHeightMap(_meshSettings.ChunkSize + 2, _meshSettings.ChunkSize + 2, _heightMapSettings, _sampleCenter), OnHeightMapReceived);
+        ThreadedDataRequester.RequestData(() => HeightMapGenerator.GenerateHeightMap(_meshSettings.NumVertsPerLine, _meshSettings.NumVertsPerLine, _heightMapSettings, _sampleCenter), OnHeightMapReceived);
     }
 
     void OnHeightMapReceived(object heightMapObject)
@@ -112,6 +120,18 @@ public class TerrainChunk
                     else if (!lodMesh.HasRequestedMesh)
                         lodMesh.RequestMesh(_heightMap, _meshSettings);
                 }
+
+                if (_lodMeshes[lodIndex].HasMesh && !_spawnInfoRequester.IsSet && lodIndex == 0) //The mesh is spawned but no prefabs on it (it's also the highest detail level)
+                {
+                    if (_spawnInfoRequester.HasSpawnInfo) //The requested spawninfo has arrived! Hurray!
+                    {
+                        _spawnInfoRequester.IsSet = true;
+                        _spawnInfoRequester.SpawnSpawnInfo(_meshFilter.transform);
+                    }
+                    else if (!_spawnInfoRequester.HasRequestedSpawnInfo) //Request spawninfo!
+                        _spawnInfoRequester.RequestSpawnInfo(_biome, _heightMap, _lodMeshes[lodIndex].MeshData, _meshSettings, new Vector2(_sampleCenter.x, -_sampleCenter.y));
+                }
+
             }
 
             if (wasVisible != visable)
@@ -162,6 +182,7 @@ public class TerrainChunk
 class LODMesh
 {
     public Mesh Mesh { get; private set; }
+    public MeshData MeshData { get; private set; }
     public bool HasRequestedMesh { get; private set; }
     public bool HasMesh { get; private set; }
     int _levelOfDetail;
@@ -175,6 +196,7 @@ class LODMesh
 
     void OnMeshDataReceived(object meshData)
     {
+        MeshData = (MeshData)meshData;
         Mesh = ((MeshData)meshData).CreateMesh();
         HasMesh = true;
 
@@ -185,5 +207,43 @@ class LODMesh
     {
         HasRequestedMesh = true;
         ThreadedDataRequester.RequestData(() => MeshGenerator.GenerateTerrainMesh(heightMap.heightMap, meshSettings, _levelOfDetail), OnMeshDataReceived);
+    }
+}
+
+class SpawnInfoRequester
+{
+    public bool HasRequestedSpawnInfo { get; private set; }
+    public bool HasSpawnInfo { get; private set; }
+    public bool IsSet { get; set; }
+
+    public event System.Action _updateCallback;
+
+    public List<SpawnInfo> SpawnInfo { get; private set; }
+
+    private PrefabSpawner prefabSpawner; 
+
+    public SpawnInfoRequester()
+    {
+        prefabSpawner = new PrefabSpawner();
+    }
+
+    void OnSpawnInfoReceived(object spawnInfo)
+    {
+        SpawnInfo = (List<SpawnInfo>)spawnInfo;
+
+        HasSpawnInfo = true;
+        _updateCallback();
+    }
+
+    public void RequestSpawnInfo(Biome biome, HeightMap heightMap, MeshData meshData, MeshSettings meshSettings, Vector2 sampleCenter)
+    {
+        biome = new Biome(biome);
+        HasRequestedSpawnInfo = true;
+        ThreadedDataRequester.RequestData(() => prefabSpawner.SpawnOnChunk(biome, heightMap, meshData, meshSettings, sampleCenter), OnSpawnInfoReceived);
+    }
+
+    public void SpawnSpawnInfo(Transform container)
+    {
+        prefabSpawner.SpawnSpawnInfo(SpawnInfo, container);
     }
 }

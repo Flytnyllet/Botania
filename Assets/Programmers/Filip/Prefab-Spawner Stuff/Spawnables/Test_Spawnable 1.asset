@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2ef82269fb17cf43a9f1163b1dfd939, type: 3}
+  m_Name: Test_Spawnable 1
+  m_EditorClassIdentifier: 
+  _autoUpdate: 1
+  _noiseMergeType: 2
+  _noiseSettingsData: {fileID: 11400000, guid: 6fc0582678bd65840a8b518243e7e38d, type: 2}
+  _rotationAmount: 1
+  _noiseStartPoint: 0.211
+  _thickness: 1.11
+  _uniformSpreadAmount: 2
+  _randomSpread: 0.5
+  _offsetAmount: 0.45
+  _size: 1
+  _spawnDifferencial: 15
+  _softMinHeight: 0
+  _hardMinHeight: 0
+  _softMaxHeight: 0
+  _hardMaxHeight: 100
+  _surfaceNormalAmount: 1
+  _pointAlongNormalRandomness: 0.39
+  _softMinSlope: 90
+  _hardMinSlope: 90
+  _softMaxSlope: 0
+  _hardMaxSlope: 0
+  _prefabs:
+  - _prefab: {fileID: 2637501909660458179, guid: 914660b3de067aa46ace5aab2e007b22,
+      type: 3}
+    _probability: 1
+  _subSpawners:
+  - {fileID: 11400000, guid: 9ed2cb23004e54e40a822f136ee277c5, type: 2}

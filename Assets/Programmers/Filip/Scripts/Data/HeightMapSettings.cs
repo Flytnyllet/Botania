@@ -5,9 +5,9 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New HeightMapSettings", menuName = "Generation/HeightMapSettings")]
 public class HeightMapSettings : UpdatableData
 {
-    [SerializeField] NoiseSettings _noiseSettings;
+    [SerializeField] NoiseSettingsData _noiseSettingsData;
 
-    [SerializeField, Range(-100, 100)] float _heightMultiplier;
+    [SerializeField, Range(-250, 250)] float _heightMultiplier;
     [SerializeField] AnimationCurve _heightCurve;
     [SerializeField] bool _useFallOfMap;
 
@@ -22,7 +22,7 @@ public class HeightMapSettings : UpdatableData
         get { return _heightMultiplier * _heightCurve.Evaluate(1); }
     }
 
-    public NoiseSettings NoiseSettings { get { return _noiseSettings; } private set { _noiseSettings = value; } }
+    public NoiseSettingsData NoiseSettingsData { get { return _noiseSettingsData; } private set { _noiseSettingsData = value; } }
 
     public float HeightMultiplier { get { return _heightMultiplier; } private set { _heightMultiplier = value; } }
     public AnimationCurve HeightCurve { get { return _heightCurve; } private set { _heightCurve = value; } }
