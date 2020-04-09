@@ -12,5 +12,6 @@ public class PageOrganizer : MonoBehaviour
 			Debug.Log("Found page " + page.gameObject.name);
 			page.NextPage();
 		}
-	} 
+	}
+
 }
