@@ -766,6 +766,7 @@ GameObject:
   - component: {fileID: 524883666}
   - component: {fileID: 524883668}
   - component: {fileID: 524883667}
+  - component: {fileID: 524883669}
   m_Layer: 5
   m_Name: Item_JumpPot
   m_TagString: Untagged
@@ -831,6 +832,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 524883665}
   m_CullTransparentMesh: 0
+--- !u!114 &524883669
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 524883665}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 009e78e7a9c0321489527e2f5b67b508, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _potionID: 1
+  textObject: {fileID: 1593480029}
 --- !u!1 &525961125
 GameObject:
   m_ObjectHideFlags: 0
@@ -1533,7 +1548,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 818922480}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 524883669}
+        m_MethodName: AddPotion
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &818922480
@@ -3153,7 +3179,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1402430570}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1482720666}
+        m_MethodName: AddPotion
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &1402430570
@@ -3390,6 +3427,7 @@ GameObject:
   - component: {fileID: 1482720663}
   - component: {fileID: 1482720665}
   - component: {fileID: 1482720664}
+  - component: {fileID: 1482720666}
   m_Layer: 5
   m_Name: Item_GlidePot
   m_TagString: Untagged
@@ -3455,6 +3493,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1482720662}
   m_CullTransparentMesh: 0
+--- !u!114 &1482720666
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1482720662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 009e78e7a9c0321489527e2f5b67b508, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _potionID: 2
+  textObject: {fileID: 596438174}
 --- !u!1 &1513477732
 GameObject:
   m_ObjectHideFlags: 0
@@ -3538,7 +3590,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1513477735}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1664718951}
+        m_MethodName: AddPotion
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &1513477735
@@ -3830,6 +3893,7 @@ GameObject:
   - component: {fileID: 1664718948}
   - component: {fileID: 1664718950}
   - component: {fileID: 1664718949}
+  - component: {fileID: 1664718951}
   m_Layer: 5
   m_Name: Item_SpeedPot
   m_TagString: Untagged
@@ -3895,6 +3959,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1664718947}
   m_CullTransparentMesh: 0
+--- !u!114 &1664718951
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1664718947}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 009e78e7a9c0321489527e2f5b67b508, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _potionID: 0
+  textObject: {fileID: 1014507017}
 --- !u!1 &1694319604
 GameObject:
   m_ObjectHideFlags: 0

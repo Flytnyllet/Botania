@@ -49,17 +49,24 @@ public static class FlowerLibrary
 		_flowerTypes.Add(flower3);
 
 		// Initialize Potions
-		Potion potion0 = new Potion(0, "Speed", 0);
+		Flower[] recipe0 = new Flower[2] { flower0, flower1 };
+		Potion potion0 = new Potion(0, "Speed", 0, recipe0);
 		_potionTypes.Add(potion0);
-		Potion potion1 = new Potion(1, "Jump", 1);
+		Flower[] recipe1 = new Flower[2] { flower1, flower2 };
+		Potion potion1 = new Potion(1, "Jump", 1, recipe1);
 		_potionTypes.Add(potion1);
-		Potion potion2 = new Potion(2, "Glide", 2);
+		Flower[] recipe2 = new Flower[3] { flower0, flower1, flower2 };
+		Potion potion2 = new Potion(2, "Glide", 2, recipe2);
 		_potionTypes.Add(potion2);
 	}
 
 	public static Flower GetFlowerType(int id)
 	{
 		return _flowerTypes[id];
+	}
+	public static Potion GetPotionType(int id)
+	{
+		return _potionTypes[id];
 	}
 	public static List<string> GetAllFlowerNames()
 	{
@@ -88,6 +95,18 @@ public static class FlowerLibrary
 		}
         //FlowerLibrarySave save = new FlowerLibrarySave() { flowerTypes = _flowerTypes };
         //Serialization.Save(SAVE_FILE_NAME, save);
+
+		//Interactor.AddLogEntry("Added " + flower.Name);
+	}
+
+	public static void IncrementPotion(int id)
+	{
+		Potion potion = _potionTypes[id];
+		Debug.Log("Added Potion: " + potion.Name);
+		potion.Amount++;
+		
+		//FlowerLibrarySave save = new FlowerLibrarySave() { flowerTypes = _flowerTypes };
+		//Serialization.Save(SAVE_FILE_NAME, save);
 
 		//Interactor.AddLogEntry("Added " + flower.Name);
 	}
