@@ -10,7 +10,6 @@ public class DetectionTrigger : MonoBehaviour
     private void Awake()
     {
         _targetScripts = GetComponentsInParent<DetectionTriggerTarget>();
-        //_targetScripts = GetComponents<DetectionTriggerTarget>();
     }
 
     void OnTriggerEnter(Collider other)

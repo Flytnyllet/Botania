@@ -56,11 +56,13 @@ public class Interactor : MonoBehaviour
 			bool hit = Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward) * distance, out collision, distance);
 			Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * distance, Color.green, 1f);
 
-			if (hit && collision.collider.tag == "Flower")
+			if (hit)
 			{
-				Debug.Log("PickUp");
+                foreach(Interactable interactable in collision.transform.GetComponents<Interactable>())
+                {
+                    collision.collider.gameObject.GetComponent<Interactable>().Interact();
+                }
 
-				collision.collider.gameObject.GetComponent<Interactable>().Interact();
 			}
 		}
 
