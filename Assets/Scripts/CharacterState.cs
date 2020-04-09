@@ -6,7 +6,7 @@ using UnityEngine;
 //This is supposed to act as a place to store character variables which
 // can be edidted by other objects for the sake of avoiding dependendies.
 
-public enum CHARACTER_CONTROL_STATE { PLAYERCONTROLLED = 0, CUTSCENE }
+public enum CHARACTER_CONTROL_STATE { PLAYERCONTROLLED = 0, CUTSCENE, MENU }
 public static class CharacterState 
 {
     static CHARACTER_CONTROL_STATE _controlState = 0;
