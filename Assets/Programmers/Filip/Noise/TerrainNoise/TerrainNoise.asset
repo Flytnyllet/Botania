@@ -12,13 +12,49 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a29f2ff204e9fd47b6aacf16bc19fd1, type: 3}
   m_Name: TerrainNoise
   m_EditorClassIdentifier: 
-  _autoUpdate: 1
+  _autoUpdate: 0
   _noiseSettings:
-  - _noiseMergeType: 0
+  - _noiseMergeType: 3
+    _noiseSettings:
+      _allWhite: 1
+      _seed: 11594
+      _offset: {x: 0, y: 0}
+      _scale: 321
+      _octaves: 4
+      _persistance: 0.6
+      _lacunarity: 2.2
+      _darken: 0.15
+      _useDarken: 0
+      _normalizeMode: 1
+  - _noiseMergeType: 4
     _noiseSettings:
       _allWhite: 0
       _seed: 11594
-      _offset: {x: 0, y: 0}
+      _offset: {x: 0, y: 100}
+      _scale: 662
+      _octaves: 2
+      _persistance: 0.6
+      _lacunarity: 2.2
+      _darken: 0.35
+      _useDarken: 1
+      _normalizeMode: 1
+  - _noiseMergeType: 3
+    _noiseSettings:
+      _allWhite: 0
+      _seed: 11594
+      _offset: {x: 0, y: 100}
+      _scale: 264
+      _octaves: 4
+      _persistance: 0.6
+      _lacunarity: 2.2
+      _darken: 0.51
+      _useDarken: 1
+      _normalizeMode: 1
+  - _noiseMergeType: 4
+    _noiseSettings:
+      _allWhite: 0
+      _seed: 11594
+      _offset: {x: 0, y: 100}
       _scale: 321
       _octaves: 4
       _persistance: 0.6

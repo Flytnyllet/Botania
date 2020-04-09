@@ -14,17 +14,20 @@ public class MapPreview : MonoBehaviour
 
     [Header("General Settings")]
 
-    [SerializeField] DrawMode _drawMode;
     [SerializeField, Tooltip("Should the terrainmap update in the editor?")] bool _autoUpdate;
+    [SerializeField] DrawMode _drawMode;
 
     [SerializeField] MeshSettings _meshSettings;
     [SerializeField] HeightMapSettings _heightMapSettings;
+    [SerializeField] TextureData _textureData;
+    [SerializeField] Material _terrainMaterial;
+
+    [Header("Noise settings")]
 
     [SerializeField] NoiseMergeType _noiseMergeType;
     [SerializeField] NoiseSettingsData _noiseSettingsData_1;
     [SerializeField] NoiseSettingsData _noiseSettingsData_2;
-    [SerializeField] TextureData _textureData;
-    [SerializeField] Material _terrainMaterial;
+    [SerializeField, Range(1, 200), Tooltip("How big should the displayed noise be?")] int _noiseViewSize = 1;
 
     [Header("Mesh Settings")]
 
@@ -53,8 +56,7 @@ public class MapPreview : MonoBehaviour
         //Used to store prefab objects in edit mode and delete them when changes are made (is a bit buggy)
         if (_biomeContainer != null)
             DestroyImmediate(_biomeContainer.gameObject);
-        _biomeContainer = new GameObject().transform;
-        _biomeContainer.parent = transform;
+        _biomeContainer = new GameObject("DELETE ME IF MANY OF ME").transform;
 
         //Apply material to mesh
         _textureData.ApplyToMaterial(_terrainMaterial);
@@ -63,7 +65,7 @@ public class MapPreview : MonoBehaviour
         //Generate the heightmap for the chunk at origin
         HeightMap heightMap = HeightMapGenerator.GenerateHeightMap(_meshSettings.NumVertsPerLine, _meshSettings.NumVertsPerLine, _heightMapSettings, Vector2.zero);
 
-        float[,] noise = Noise.MergeNoise(_meshSettings.NumVertsPerLine * 10, _meshSettings.NumVertsPerLine * 10, _noiseSettingsData_1.NoiseSettingsDataMerge, _noiseSettingsData_2.NoiseSettingsDataMerge, _noiseMergeType, Vector2.zero);
+        float[,] noise = Noise.MergeNoise(_meshSettings.NumVertsPerLine * _noiseViewSize, _meshSettings.NumVertsPerLine * _noiseViewSize, _noiseSettingsData_1.NoiseSettingsDataMerge, _noiseSettingsData_2.NoiseSettingsDataMerge, _noiseMergeType, Vector2.zero);
 
         if (_drawMode == DrawMode.NOISE_MAP)
             DrawTexture(TextureGenerator.TextureFromNoise(noise));
