@@ -126,7 +126,7 @@ public class TerrainChunk
                     if (_spawnInfoRequester.HasSpawnInfo) //The requested spawninfo has arrived! Hurray!
                     {
                         _spawnInfoRequester.IsSet = true;
-                        PrefabSpawner.SpawnSpawnInfo(_spawnInfoRequester.SpawnInfo, _meshFilter.transform);
+                        _spawnInfoRequester.SpawnSpawnInfo(_meshFilter.transform);
                     }
                     else if (!_spawnInfoRequester.HasRequestedSpawnInfo) //Request spawninfo!
                         _spawnInfoRequester.RequestSpawnInfo(_biome, _heightMap, _lodMeshes[lodIndex].MeshData, _meshSettings, new Vector2(_sampleCenter.x, -_sampleCenter.y));
@@ -220,6 +220,13 @@ class SpawnInfoRequester
 
     public List<SpawnInfo> SpawnInfo { get; private set; }
 
+    private PrefabSpawner prefabSpawner; 
+
+    public SpawnInfoRequester()
+    {
+        prefabSpawner = new PrefabSpawner();
+    }
+
     void OnSpawnInfoReceived(object spawnInfo)
     {
         SpawnInfo = (List<SpawnInfo>)spawnInfo;
@@ -230,7 +237,13 @@ class SpawnInfoRequester
 
     public void RequestSpawnInfo(Biome biome, HeightMap heightMap, MeshData meshData, MeshSettings meshSettings, Vector2 sampleCenter)
     {
+        biome = new Biome(biome);
         HasRequestedSpawnInfo = true;
-        ThreadedDataRequester.RequestData(() => PrefabSpawner.SpawnOnChunk(biome, heightMap, meshData, meshSettings, sampleCenter), OnSpawnInfoReceived);
+        ThreadedDataRequester.RequestData(() => prefabSpawner.SpawnOnChunk(biome, heightMap, meshData, meshSettings, sampleCenter), OnSpawnInfoReceived);
+    }
+
+    public void SpawnSpawnInfo(Transform container)
+    {
+        prefabSpawner.SpawnSpawnInfo(SpawnInfo, container);
     }
 }

@@ -88,6 +88,49 @@ public class Spawnable : UpdatableData
     public float[,] OffsetNoise                       { get { return _offsetNoise; }                private set { _offsetNoise = value; } }
     public float[,] SpreadNoise                       { get { return _spreadNoise; }                private set { _spreadNoise = value; } }
 
+    //These two functions are only used so different threads don't base on the same data and fs up
+    public Spawnable(Spawnable spawnable)
+    {
+        this._noiseMergeType = spawnable._noiseMergeType;
+        this._noiseSettingsData = spawnable._noiseSettingsData;
+        this._subSpawners = spawnable._subSpawners;
+        this._rotationAmount = spawnable._rotationAmount;
+        this._noiseStartPoint = spawnable._noiseStartPoint;
+        this._thickness = spawnable._thickness;
+        this._uniformSpreadAmount = spawnable._uniformSpreadAmount;
+        this._randomSpread = spawnable._randomSpread;
+        this._offsetAmount = spawnable._offsetAmount;
+        this._size = spawnable._size;
+        this._spawnDifferencial = spawnable._spawnDifferencial;
+        this._softMinHeight = spawnable._softMinHeight;
+        this._hardMinHeight = spawnable._hardMinHeight;
+        this._softMaxHeight = spawnable._softMaxHeight;
+        this._hardMaxHeight = spawnable._hardMaxHeight;
+        this._surfaceNormalAmount = spawnable._surfaceNormalAmount;
+        this._pointAlongNormalRandomness = spawnable._pointAlongNormalRandomness;
+        this._softMinSlope = spawnable._softMinSlope;
+        this._hardMinSlope = spawnable._hardMinSlope;
+        this._softMaxSlope = spawnable._softMaxSlope;
+        this._hardMaxSlope = spawnable._hardMaxSlope;
+        this._noise = spawnable._noise;
+        this._offsetNoise = spawnable._offsetNoise;
+        this._spreadNoise = spawnable._spreadNoise;
+        this._prefabs = spawnable._prefabs;
+    }
+    public static Spawnable[] CopySpawnables(Spawnable[] spawnables)
+    {
+        Spawnable[] newSpawnable = new Spawnable[spawnables.Length];
+        for (int i = 0; i < spawnables.Length; i++)
+        {
+            newSpawnable[i] = new Spawnable(spawnables[i]);
+
+            if (newSpawnable[i]._subSpawners != null)
+                newSpawnable[i]._subSpawners = CopySpawnables(newSpawnable[i]._subSpawners);
+        }
+
+        return newSpawnable;
+    }
+
     // Used to calculate all the different noises for every spawable
     public void Setup(float[,] parentNoise, int chunkSize, NoiseSettingsData offsetNoiseSettings, Vector2 center, Vector2 offsetNoiseOffset)
     {

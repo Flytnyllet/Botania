@@ -182,12 +182,15 @@ public static class Noise
             }
         }
 
-        //Normalize 
-        for (int y = 0; y < height; y++)
-            for (int x = 0; x < width; x++)
-            {
-                finalNoise[x, y] = Mathf.InverseLerp(minHeight, maxHeight, finalNoise[x, y]);
-            }
+
+        ////Normalize 
+        
+
+        //for (int y = 0; y < height; y++)
+        //    for (int x = 0; x < width; x++)
+        //    {
+        //        finalNoise[x, y] = Mathf.InverseLerp(minHeight, maxHeight, finalNoise[x, y]);
+        //    }
 
         return finalNoise;
     }

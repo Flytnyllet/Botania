@@ -19,6 +19,10 @@ public class MapPreview : MonoBehaviour
 
     [SerializeField] MeshSettings _meshSettings;
     [SerializeField] HeightMapSettings _heightMapSettings;
+
+    [SerializeField] NoiseMergeType _noiseMergeType;
+    [SerializeField] NoiseSettingsData _noiseSettingsData_1;
+    [SerializeField] NoiseSettingsData _noiseSettingsData_2;
     [SerializeField] TextureData _textureData;
     [SerializeField] Material _terrainMaterial;
 
@@ -34,11 +38,11 @@ public class MapPreview : MonoBehaviour
 
     [Header("Biome Testing")]
 
-    [SerializeField] NoiseMergeType _noiseMergeType;
 
     [SerializeField] Biome _biome;
 
     Transform _biomeContainer;
+
 
     public bool DoAutoUpdate() { return _autoUpdate; }
 
@@ -59,18 +63,24 @@ public class MapPreview : MonoBehaviour
         //Generate the heightmap for the chunk at origin
         HeightMap heightMap = HeightMapGenerator.GenerateHeightMap(_meshSettings.NumVertsPerLine, _meshSettings.NumVertsPerLine, _heightMapSettings, Vector2.zero);
 
+        float[,] noise = Noise.MergeNoise(_meshSettings.NumVertsPerLine * 10, _meshSettings.NumVertsPerLine * 10, _noiseSettingsData_1.NoiseSettingsDataMerge, _noiseSettingsData_2.NoiseSettingsDataMerge, _noiseMergeType, Vector2.zero);
+
         if (_drawMode == DrawMode.NOISE_MAP)
-            DrawTexture(TextureGenerator.TextureFromHeightMap(heightMap));
+            DrawTexture(TextureGenerator.TextureFromNoise(noise));
         else if (_drawMode == DrawMode.MESH)
             DrawMesh(MeshGenerator.GenerateTerrainMesh(heightMap.heightMap, _meshSettings, _editorPreviewLevelOfDetail));
         else if (_drawMode == DrawMode.FALL_OF_MAP)
-            DrawTexture(TextureGenerator.TextureFromHeightMap( new HeightMap(FallofGenerator.GenerateFallofMap(_meshSettings.NumVertsPerLine), 0, 1)));
+        {
+            float[,] fallOf = (new HeightMap(FallofGenerator.GenerateFallofMap(_meshSettings.NumVertsPerLine), 1, 1).heightMap);
+            DrawTexture(TextureGenerator.TextureFromNoise(fallOf));
+        }
         else if (_drawMode == DrawMode.BIOME)
         {
             MeshData meshData = MeshGenerator.GenerateTerrainMesh(heightMap.heightMap, _meshSettings, _editorPreviewLevelOfDetail);
             DrawMesh(meshData);
-            List<SpawnInfo> spawnInfo = PrefabSpawner.SpawnOnChunk(_biome, heightMap, meshData, _meshSettings, Vector2.zero);
-            PrefabSpawner.SpawnSpawnInfo(spawnInfo, _biomeContainer);
+            PrefabSpawner prefabSpawner = new PrefabSpawner();
+            List<SpawnInfo> spawnInfo = prefabSpawner.SpawnOnChunk(_biome, heightMap, meshData, _meshSettings, Vector2.zero);
+            prefabSpawner.SpawnSpawnInfo(spawnInfo, _biomeContainer);
         }
     }
 
@@ -119,6 +129,16 @@ public class MapPreview : MonoBehaviour
             _heightMapSettings.OnValuesUpdated += OnValuesUpdated;
             _heightMapSettings.NoiseSettingsData.OnValuesUpdated -= OnValuesUpdated;
             _heightMapSettings.NoiseSettingsData.OnValuesUpdated += OnValuesUpdated;
+        }
+        if (_noiseSettingsData_1 != null)
+        {
+            _noiseSettingsData_1.OnValuesUpdated -= OnValuesUpdated;
+            _noiseSettingsData_1.OnValuesUpdated += OnValuesUpdated;
+        }
+        if (_noiseSettingsData_2 != null)
+        {
+            _noiseSettingsData_2.OnValuesUpdated -= OnValuesUpdated;
+            _noiseSettingsData_2.OnValuesUpdated += OnValuesUpdated;
         }
         if (_biome != null)
         {
