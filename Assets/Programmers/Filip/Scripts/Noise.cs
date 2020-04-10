@@ -63,6 +63,8 @@ public static class Noise
             amplitude += settings.Persistance;
         }
 
+        maxPossibleHeight = (maxPossibleHeight + settings.AddValue) * settings.Strength;
+
         //keep track of max and min to be able to normalize 0-1
         float maxLocalNoiseHeight = float.MinValue;
         float minLocalNoiseHeight = float.MaxValue;
@@ -96,7 +98,7 @@ public static class Noise
                 {
                     noiseHeight -= settings.Darken;
 
-                    if (noiseHeight <= 0)
+                    if (settings.NormalizeMode == NormalizeMode.LOCAL && noiseHeight <= 0)
                         noiseHeight = 0;
                 }
 
@@ -106,7 +108,8 @@ public static class Noise
                 if (noiseHeight < minLocalNoiseHeight)
                     minLocalNoiseHeight = noiseHeight;
 
-                noiseMap[x, y] = noiseHeight;
+                noiseMap[x, y] = noiseHeight + settings.AddValue;
+                noiseMap[x, y] *= settings.Strength;
 
                 if (settings.NormalizeMode == NormalizeMode.GLOBAL)
                 {
@@ -234,6 +237,8 @@ public static class Noise
 public class NoiseSettings
 {
     [SerializeField, Tooltip("Enable this if you want just white!")] bool _allWhite = false;
+    [SerializeField, Range(0, 5), Tooltip("Add this to every point in the noise to make it more white")] float _addValue = 0;
+    [SerializeField, Range(0, 15), Tooltip("How strong should this noise have as an effect?")] float _strength = 1.0f;
 
     [SerializeField, Range(0, 100000), Tooltip("Gives a different starting point for noise")] int _seed;
     [SerializeField, Tooltip("Offset from noise seed if desired")] Vector2 _offset;
@@ -242,12 +247,14 @@ public class NoiseSettings
     [SerializeField, Range(0, 1), Tooltip("Amount of increase in frequency of each octave")] float _persistance = 0.6f;
     [SerializeField, Range(1, 25), Tooltip("How much effect each octave should have")] float _lacunarity = 1.5f;
 
-    [SerializeField, Range(-1, 1)] float _darken = 0.0f;
+    [SerializeField, Range(-3, 3)] float _darken = 0.0f;
     [SerializeField] bool _useDarken = false;
 
     [SerializeField, Tooltip("Keep on GLOBAL! LOCAL is only used for testing purposes!")] Noise.NormalizeMode _normalizeMode = Noise.NormalizeMode.GLOBAL;
 
     public bool AllWhite                     { get { return _allWhite; }      private set { _allWhite = value; } }
+    public float AddValue                    { get { return _addValue; }      private set { _addValue = value; } }
+    public float Strength                    { get { return _strength; }      private set { _strength = value; } }
 
     public int Seed                          { get { return _seed; }          private set { _seed = value;  } }
     public Vector2 Offset                    { get { return _offset; }        private set { _offset = value;  } }

@@ -10,31 +10,37 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a2ef82269fb17cf43a9f1163b1dfd939, type: 3}
-  m_Name: Test_spawnable_3
+  m_Name: Filip-Grass
   m_EditorClassIdentifier: 
   _autoUpdate: 1
-  _noiseMergeType: 2
-  _noiseSettingsData: {fileID: 11400000, guid: 8fe5922c102047449a3266bc0000572f, type: 2}
+  _noiseMergeType: 0
+  _noiseSettingsData: {fileID: 11400000, guid: 1a3c314bb7fe7604dba499589c7f0141, type: 2}
   _rotationAmount: 1
-  _noiseStartPoint: 0.203
-  _thickness: 0.64
-  _uniformSpreadAmount: 4
-  _randomSpread: 0.427
-  _offsetAmount: 0.45
-  _size: 1
+  _noiseStartPoint: 0.122
+  _thickness: 0.33
+  _uniformSpreadAmount: 2
+  _randomSpread: 0.536
+  _offsetAmount: 1
+  _size: 0
   _spawnDifferencial: 15
   _softMinHeight: 0
-  _hardMinHeight: 0
+  _hardMinHeight: 10
   _softMaxHeight: 0
   _hardMaxHeight: 100
   _surfaceNormalAmount: 1
-  _pointAlongNormalRandomness: 0
+  _pointAlongNormalRandomness: 0.65
   _softMinSlope: 90
   _hardMinSlope: 90
   _softMaxSlope: 0
   _hardMaxSlope: 0
   _prefabs:
+  - _prefab: {fileID: 2603378349626533706, guid: 1c4dd17615c6e49408aadc38206e11d3,
+      type: 3}
+    _probability: 4
   - _prefab: {fileID: 2603378349626533706, guid: be851259ed6872046a2f024f5ab7d8ef,
       type: 3}
-    _probability: 0
-  _subSpawners: []
+    _probability: 1
+  _subSpawners:
+  - {fileID: 11400000, guid: e7e0e9b7444930a4d9350f02a9d156ff, type: 2}
+  - {fileID: 11400000, guid: b91c7e116eda3394880b460672483487, type: 2}
+  - {fileID: 11400000, guid: dc29643f3af409640860ae8b2b4d3d92, type: 2}
