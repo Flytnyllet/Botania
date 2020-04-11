@@ -4,36 +4,41 @@ using UnityEngine;
 
 public class PrefabSaveData : MonoBehaviour
 {
-    public StoredSaveData _saveData;
+    StoredSaveData _saveData;
+
+    //Content of this is what needs to be saved (right now only contains way to identify object)
+    public StoredSaveData SaveData { get { return _saveData; } private set { _saveData = value; } }
 
     public void SetSaveData(StoredSaveData saveData)
     {
         this._saveData = saveData;
     }
 
+    //Call this function on pickup
     public void StoreInPrefabSpawnerSaveData()
     {
         PrefabSpawnerSaveData.AddPickup(_saveData);
     }
 }
 
-// REMOVE SERILIZE THINGS LATER, ONLY USED TO VISUALIZE IN TESTING!!!
-
 
 public struct StoredSaveData
 {
+    //The key for dictionary which holds chunk coord and index in coord
     ChunkCoordIndex _chunkCoordIndex;
-
-    public ChunkCoordIndex ChunkCoordIndex { get { return _chunkCoordIndex; } private set { _chunkCoordIndex = value; } } //Identify this specific object!
 
     //ROOM TO ADD NEW INFO TO STORE
 
+    public ChunkCoordIndex ChunkCoordIndex { get { return _chunkCoordIndex; } private set { _chunkCoordIndex = value; } } //Identify this specific object!
+
+    //Is only created in the prefab spawner and set only there
     public StoredSaveData(Vector2 chunkCoord, Vector2 itemIndex)
     {
         this._chunkCoordIndex = new ChunkCoordIndex(chunkCoord, itemIndex);
     }
 }
 
+//The key for dictionary which holds chunk coord and index in coord
 public struct ChunkCoordIndex
 {
     Vector2 _chunkCoord;

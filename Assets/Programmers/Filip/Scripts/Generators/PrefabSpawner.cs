@@ -45,57 +45,67 @@ public class PrefabSpawner : MonoBehaviour
             {
                 for (int y = 0; y < meshSettings.ChunkSize - spawnableSizeForGridAlign; y++)
                 {
-                    //No use in checking if it can spawn if that square is occopied
-                    if (CanObjectSpawn(x, y, spawnables[i].Size, heightMap.heightMap, spawnables[i].SpawnDifferencial, meshSettings.ChunkSize))
+                    Vector2 chunkIndex = new Vector2(x, y);
+
+                    //This thing is already picked up! (Size > 0 is just to check if the thing is pickable)
+                    if (spawnables[i].Size > 0 && PrefabSpawnerSaveData.ContainsChunkCoordIndex(new ChunkCoordIndex(chunkCoord, chunkIndex)))
                     {
-                        bool insideNoise = spawnNoise[x, y] > spawnables[i].NoiseStartPoint; //is it inside the noise?
-                        bool gradientSpawn = spawnNoise[x, y] + spawnables[i].OffsetNoise[x, y] > spawnables[i].Thickness; //If it is, transition?
-                        bool uniformSpread = x % spawnables[i].UniformSpreadAmount == 0 && y % spawnables[i].UniformSpreadAmount == 0; //uniform spread?
-                        bool noiseSpread = spawnables[i].SpreadNoise[y, x] > spawnables[i].RandomSpread;
-
-                        //Slope
-                        Vector3 normal = meshData.GetNormal(y * (meshSettings.ChunkSize) + x);
-                        float slopeAngle = Vector3.Angle(Vector3.up, normal);
-
-                        bool minSlope = (slopeAngle <= spawnables[i].SoftMinSlope * spawnables[i].OffsetNoise[x, y]);
-                        minSlope = minSlope && slopeAngle <= spawnables[i].HardMinSlope;
-                        bool maxSlope = (slopeAngle >= spawnables[i].SoftMaxSlope * spawnables[i].OffsetNoise[x, y]);
-                        maxSlope = maxSlope && slopeAngle >= spawnables[i].HardMaxSlope;
-
-                        //height bools
-                        bool minHeight = (heightMap.heightMap[x, y] > spawnables[i].HardMinHeight + spawnables[i].SoftMinAmount * spawnables[i].OffsetNoise[x, y]);
-                        bool maxHeight = (heightMap.heightMap[x, y] <= spawnables[i].HardMaxHeight - spawnables[i].SoftMaxAmount * spawnables[i].OffsetNoise[x, y]);
-
-                        //Things inside the if statement only need to be determined if it should spawn
-                        if (insideNoise && gradientSpawn && uniformSpread && noiseSpread && minHeight && maxHeight && minSlope && maxSlope)
+                        //ADD STUFF HERE IF THERE SHOULD BE REGROWTH OR SOMETHING!
+                    }
+                    else
+                    {
+                        //No use in checking if it can spawn if that square is occopied
+                        if (CanObjectSpawn(x, y, spawnables[i].Size, heightMap.heightMap, spawnables[i].SpawnDifferencial, meshSettings.ChunkSize))
                         {
-                            //Since the object can spawn, mark it's space as occopied
-                            OccupyWithObject(x, y, spawnables[i].Size, meshSettings.ChunkSize);
+                            bool insideNoise = spawnNoise[x, y] > spawnables[i].NoiseStartPoint; //is it inside the noise?
+                            bool gradientSpawn = spawnNoise[x, y] + spawnables[i].OffsetNoise[x, y] > spawnables[i].Thickness; //If it is, transition?
+                            bool uniformSpread = x % spawnables[i].UniformSpreadAmount == 0 && y % spawnables[i].UniformSpreadAmount == 0; //uniform spread?
+                            bool noiseSpread = spawnables[i].SpreadNoise[y, x] > spawnables[i].RandomSpread;
 
-                            //Current local positions in x and y in chunk, used only to spawn from
-                            float xPos = x + STANDARD_GRID_OFFSET + (STANDARD_GRID_OFFSET * spawnableSizeForGridAlign) - meshSettings.ChunkSize / 2 - 1; //Due to the border around the mesh + STANDARD_GRID_OFFSET corrects it to the right grid position
-                            float zPos = y + STANDARD_GRID_OFFSET + (STANDARD_GRID_OFFSET * spawnableSizeForGridAlign) - meshSettings.ChunkSize / 2 - 1; //Due to the border around the mesh + STANDARD_GRID_OFFSET corrects it to the right grid position
-                            float yPos = heightMap.heightMap[x + (int)(STANDARD_GRID_OFFSET * spawnableSizeForGridAlign) + 1, y + (int)(STANDARD_GRID_OFFSET * spawnableSizeForGridAlign) + 1] + 0.5f;
+                            //Slope
+                            Vector3 normal = meshData.GetNormal(y * (meshSettings.ChunkSize) + x);
+                            float slopeAngle = Vector3.Angle(Vector3.up, normal);
 
-                            //Position from grid in world
-                            Vector3 objectPosition = new Vector3((xPos + chunkPosition.x) * meshSettings.MeshScale, yPos, -(zPos + chunkPosition.y) * meshSettings.MeshScale);
-                            //Vector to offset from grid slightly to create less uniform distribution
-                            Vector3 offsetVector = new Vector3(spawnables[i].OffsetNoise[x, y] * 2 - 1, 0.0f, spawnables[i].SpreadNoise[x, y] * 2 - 1);
+                            bool minSlope = (slopeAngle <= spawnables[i].SoftMinSlope * spawnables[i].OffsetNoise[x, y]);
+                            minSlope = minSlope && slopeAngle <= spawnables[i].HardMinSlope;
+                            bool maxSlope = (slopeAngle >= spawnables[i].SoftMaxSlope * spawnables[i].OffsetNoise[x, y]);
+                            maxSlope = maxSlope && slopeAngle >= spawnables[i].HardMaxSlope;
 
-                            objectPosition += offsetVector * spawnables[i].OffsetAmount;
+                            //height bools
+                            bool minHeight = (heightMap.heightMap[x, y] > spawnables[i].HardMinHeight + spawnables[i].SoftMinAmount * spawnables[i].OffsetNoise[x, y]);
+                            bool maxHeight = (heightMap.heightMap[x, y] <= spawnables[i].HardMaxHeight - spawnables[i].SoftMaxAmount * spawnables[i].OffsetNoise[x, y]);
 
-                            //How much along the normal should the object point?
-                            float tiltAmount = spawnables[i].SurfaceNormalAmount + (spawnables[i].SpreadNoise[x, y] * 2 - 1) * spawnables[i].PointAlongNormalRandomness;
-                            Vector3 finalRotation = LerpToVector(normal, Vector3.up, tiltAmount);
-                            //Random rotation based on noise
-                            Quaternion rotation = Quaternion.FromToRotation(Vector3.up, finalRotation);
+                            //Things inside the if statement only need to be determined if it should spawn
+                            if (insideNoise && gradientSpawn && uniformSpread && noiseSpread && minHeight && maxHeight && minSlope && maxSlope)
+                            {
+                                //Since the object can spawn, mark it's space as occopied
+                                OccupyWithObject(x, y, spawnables[i].Size, meshSettings.ChunkSize);
 
-                            GameObject spawnObject = spawnables[i].GetPrefab(x, y);
-                            float localRotationAmount = spawnables[i].OffsetNoise[x, y] * DEGREES_360 * spawnables[i].RotationAmount;
+                                //Current local positions in x and y in chunk, used only to spawn from
+                                float xPos = x + STANDARD_GRID_OFFSET + (STANDARD_GRID_OFFSET * spawnableSizeForGridAlign) - meshSettings.ChunkSize / 2 - 1; //Due to the border around the mesh + STANDARD_GRID_OFFSET corrects it to the right grid position
+                                float zPos = y + STANDARD_GRID_OFFSET + (STANDARD_GRID_OFFSET * spawnableSizeForGridAlign) - meshSettings.ChunkSize / 2 - 1; //Due to the border around the mesh + STANDARD_GRID_OFFSET corrects it to the right grid position
+                                float yPos = heightMap.heightMap[x + (int)(STANDARD_GRID_OFFSET * spawnableSizeForGridAlign) + 1, y + (int)(STANDARD_GRID_OFFSET * spawnableSizeForGridAlign) + 1] + 0.5f;
 
-                            spawnInfo.Add(new SpawnInfo(spawnObject, objectPosition, rotation, localRotationAmount, chunkCoord, new Vector2(x, y)));
+                                //Position from grid in world
+                                Vector3 objectPosition = new Vector3((xPos + chunkPosition.x) * meshSettings.MeshScale, yPos, -(zPos + chunkPosition.y) * meshSettings.MeshScale);
+                                //Vector to offset from grid slightly to create less uniform distribution
+                                Vector3 offsetVector = new Vector3(spawnables[i].OffsetNoise[x, y] * 2 - 1, 0.0f, spawnables[i].SpreadNoise[x, y] * 2 - 1);
+
+                                objectPosition += offsetVector * spawnables[i].OffsetAmount;
+
+                                //How much along the normal should the object point?
+                                float tiltAmount = spawnables[i].SurfaceNormalAmount + (spawnables[i].SpreadNoise[x, y] * 2 - 1) * spawnables[i].PointAlongNormalRandomness;
+                                Vector3 finalRotation = LerpToVector(normal, Vector3.up, tiltAmount);
+                                //Random rotation based on noise
+                                Quaternion rotation = Quaternion.FromToRotation(Vector3.up, finalRotation);
+
+                                GameObject spawnObject = spawnables[i].GetPrefab(x, y);
+                                float localRotationAmount = spawnables[i].OffsetNoise[x, y] * DEGREES_360 * spawnables[i].RotationAmount;
+
+                                spawnInfo.Add(new SpawnInfo(spawnObject, objectPosition, rotation, localRotationAmount, chunkCoord, chunkIndex, spawnables[i]. Size != 0));
+                            }
                         }
-                    }               
+                    }            
                 }
             }
         }
@@ -173,7 +183,9 @@ public class SpawnInfo : MonoBehaviour
     Vector2 _chunkCoord;
     Vector2 _itemIndex;
 
-    public SpawnInfo(GameObject prefab, Vector3 spawnPosition, Quaternion rotation, float localRotationAmount, Vector2 chunkCoord, Vector2 itemIndex)
+    bool _correctSizeForPickup;
+
+    public SpawnInfo(GameObject prefab, Vector3 spawnPosition, Quaternion rotation, float localRotationAmount, Vector2 chunkCoord, Vector2 itemIndex, bool correctSizeForPickup)
     {
         this._prefab = prefab;
         this._spawnPosition = spawnPosition;
@@ -182,6 +194,8 @@ public class SpawnInfo : MonoBehaviour
 
         this._chunkCoord = chunkCoord;
         this._itemIndex = itemIndex;
+
+        this._correctSizeForPickup = correctSizeForPickup;
     }
 
     public void Spawn(Transform container)
@@ -192,6 +206,11 @@ public class SpawnInfo : MonoBehaviour
         PrefabSaveData saveDataScript = newObject.GetComponent<PrefabSaveData>();
 
         if (saveDataScript != null)
-            saveDataScript.SetSaveData(new StoredSaveData(_chunkCoord, _itemIndex));
+        {
+            if (_correctSizeForPickup)
+                saveDataScript.SetSaveData(new StoredSaveData(_chunkCoord, _itemIndex));
+            else
+                Debug.LogError("You are trying to spawn a prefab which should be picked up with the wrong size! Size must not be 0 for pickups!!!");
+        }
     }
 }

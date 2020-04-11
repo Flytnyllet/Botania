@@ -10,6 +10,7 @@ public class TerrainChunk
 
     GameObject _meshObject;
     Vector2 _sampleCenter;
+    Vector2 _chunkCoord;
     Bounds _bounds;
 
     MeshRenderer _meshRenderer;
@@ -42,6 +43,7 @@ public class TerrainChunk
         this._heightMapSettings = heightMapSettings;
         this._meshSettings = meshSettings;
         this._viewer = viewer;
+        this._chunkCoord = coord;
 
         _spawnInfoRequester = new SpawnInfoRequester();
 
@@ -129,7 +131,7 @@ public class TerrainChunk
                         _spawnInfoRequester.SpawnSpawnInfo(_meshFilter.transform);
                     }
                     else if (!_spawnInfoRequester.HasRequestedSpawnInfo) //Request spawninfo!
-                        _spawnInfoRequester.RequestSpawnInfo(_biome, _heightMap, _lodMeshes[lodIndex].MeshData, _meshSettings, new Vector2(_sampleCenter.x, -_sampleCenter.y), Coord);
+                        _spawnInfoRequester.RequestSpawnInfo(_biome, _heightMap, _lodMeshes[lodIndex].MeshData, _meshSettings, new Vector2(_sampleCenter.x, -_sampleCenter.y), _chunkCoord);
                 }
 
             }

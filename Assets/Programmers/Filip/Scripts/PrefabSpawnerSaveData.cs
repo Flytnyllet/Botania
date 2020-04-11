@@ -18,12 +18,14 @@ public static class PrefabSpawnerSaveData
         }
     }
 
+    //Used to say the pickup may spawn again
     public static void RemovePickup(StoredSaveData saveDataToStore)
     {
         if (_storedSaveDataDic.ContainsKey(saveDataToStore.ChunkCoordIndex))
             _storedSaveDataDic.Remove(saveDataToStore.ChunkCoordIndex);
     }
 
+    //Checks if it should spawn depending on key (used in spawning script only)
     public static bool ContainsChunkCoordIndex(ChunkCoordIndex chunkCoordIndex)
     {
         return _storedSaveDataDic.ContainsKey(chunkCoordIndex);
