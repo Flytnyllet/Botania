@@ -16,17 +16,17 @@ MonoBehaviour:
   _noiseMergeType: 0
   _noiseSettingsData: {fileID: 11400000, guid: 1a3c314bb7fe7604dba499589c7f0141, type: 2}
   _rotationAmount: 1
-  _noiseStartPoint: 0.122
+  _noiseStartPoint: 0
   _thickness: 0.33
   _uniformSpreadAmount: 2
   _randomSpread: 0.536
   _offsetAmount: 1
   _size: 0
   _spawnDifferencial: 15
-  _softMinHeight: 0
-  _hardMinHeight: 10
-  _softMaxHeight: 0
+  _hardMinHeight: 8
+  _softMinAmount: 16
   _hardMaxHeight: 100
+  _softMaxAmount: 0
   _surfaceNormalAmount: 1
   _pointAlongNormalRandomness: 0.65
   _softMinSlope: 90
@@ -40,7 +40,4 @@ MonoBehaviour:
   - _prefab: {fileID: 2603378349626533706, guid: be851259ed6872046a2f024f5ab7d8ef,
       type: 3}
     _probability: 1
-  _subSpawners:
-  - {fileID: 11400000, guid: e7e0e9b7444930a4d9350f02a9d156ff, type: 2}
-  - {fileID: 11400000, guid: b91c7e116eda3394880b460672483487, type: 2}
-  - {fileID: 11400000, guid: dc29643f3af409640860ae8b2b4d3d92, type: 2}
+  _subSpawners: []

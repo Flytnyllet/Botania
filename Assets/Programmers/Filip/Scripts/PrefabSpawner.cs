@@ -60,10 +60,8 @@ public class PrefabSpawner : MonoBehaviour
                         maxSlope = maxSlope && slopeAngle >= spawnables[i].HardMaxSlope;
 
                         //height bools
-                        bool minHeight = (heightMap.heightMap[x, y] > -0.001f + heightMap.minValue + spawnables[i].SoftMinHeight * spawnables[i].OffsetNoise[y, x]);
-                        minHeight = minHeight && heightMap.heightMap[x, y] > -0.001f + spawnables[i].HardMinHeight;
-                        bool maxHeight = (heightMap.heightMap[x, y] <= heightMap.maxValue - spawnables[i].SoftMaxHeight * spawnables[i].OffsetNoise[x, y]);
-                        maxHeight = maxHeight && heightMap.heightMap[x, y] < spawnables[i].HardMaxHeight;
+                        bool minHeight = (heightMap.heightMap[x, y] > spawnables[i].HardMinHeight + spawnables[i].SoftMinAmount * spawnables[i].OffsetNoise[x, y]);
+                        bool maxHeight = (heightMap.heightMap[x, y] <= spawnables[i].HardMaxHeight - spawnables[i].SoftMaxAmount * spawnables[i].OffsetNoise[x, y]);
 
                         //Things inside the if statement only need to be determined if it should spawn
                         if (insideNoise && gradientSpawn && uniformSpread && noiseSpread && minHeight && maxHeight && minSlope && maxSlope)

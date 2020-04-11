@@ -32,11 +32,11 @@ public class Spawnable : UpdatableData
 
     [Header("Height Spawn Settings")]
 
-    [SerializeField, Range(0, 100), Tooltip("At which height should objects start spawning? (soft amount)")] float _softMinHeight = 0;
     [SerializeField, Range(0, 100), Tooltip("At which height should objects start spawning? (hard amount)")] float _hardMinHeight = 0;
-    [SerializeField, Range(0, 100), Tooltip("At which height should objects stop spawning? (soft amount)")] float _softMaxHeight = 0;
+    [SerializeField, Range(0, 100), Tooltip("At which height should objects start spawning? (soft amount)")] float _softMinAmount = 0;
     [SerializeField, Range(0, 100), Tooltip("At which height should objects stop spawning? (hard amount)")] float _hardMaxHeight = 100;
-
+    [SerializeField, Range(0, 100), Tooltip("At which height should objects stop spawning? (soft amount)")] float _softMaxAmount = 0;
+    
 
     [Header("Slope Spawn Settings")]
 
@@ -72,9 +72,9 @@ public class Spawnable : UpdatableData
     public int Size                                   { get { return _size; }                       private set { _size = value; } }
     public float SpawnDifferencial                    { get { return _spawnDifferencial; }          private set { _spawnDifferencial = value; } }
 
-    public float SoftMinHeight                        { get { return _softMinHeight; }              private set { _softMinHeight = value; } }
+    public float SoftMinAmount                        { get { return _softMinAmount; }              private set { _softMinAmount = value; } }
     public float HardMinHeight                        { get { return _hardMinHeight; }              private set { _hardMinHeight = value; } }
-    public float SoftMaxHeight                        { get { return _softMaxHeight; }              private set { _softMaxHeight = value; } }
+    public float SoftMaxAmount                        { get { return _softMaxAmount; }              private set { _softMaxAmount = value; } }
     public float HardMaxHeight                        { get { return _hardMaxHeight; }              private set { _hardMaxHeight = value; } }
 
     public float SurfaceNormalAmount                  { get { return _surfaceNormalAmount; }        private set { _surfaceNormalAmount = value; } }
@@ -102,9 +102,9 @@ public class Spawnable : UpdatableData
         this._offsetAmount = spawnable._offsetAmount;
         this._size = spawnable._size;
         this._spawnDifferencial = spawnable._spawnDifferencial;
-        this._softMinHeight = spawnable._softMinHeight;
+        this._softMinAmount = spawnable._softMinAmount;
         this._hardMinHeight = spawnable._hardMinHeight;
-        this._softMaxHeight = spawnable._softMaxHeight;
+        this._softMaxAmount = spawnable._softMaxAmount;
         this._hardMaxHeight = spawnable._hardMaxHeight;
         this._surfaceNormalAmount = spawnable._surfaceNormalAmount;
         this._pointAlongNormalRandomness = spawnable._pointAlongNormalRandomness;
