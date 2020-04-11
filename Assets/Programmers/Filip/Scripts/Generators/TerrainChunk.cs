@@ -129,7 +129,7 @@ public class TerrainChunk
                         _spawnInfoRequester.SpawnSpawnInfo(_meshFilter.transform);
                     }
                     else if (!_spawnInfoRequester.HasRequestedSpawnInfo) //Request spawninfo!
-                        _spawnInfoRequester.RequestSpawnInfo(_biome, _heightMap, _lodMeshes[lodIndex].MeshData, _meshSettings, new Vector2(_sampleCenter.x, -_sampleCenter.y));
+                        _spawnInfoRequester.RequestSpawnInfo(_biome, _heightMap, _lodMeshes[lodIndex].MeshData, _meshSettings, new Vector2(_sampleCenter.x, -_sampleCenter.y), Coord);
                 }
 
             }
@@ -235,11 +235,11 @@ class SpawnInfoRequester
         _updateCallback();
     }
 
-    public void RequestSpawnInfo(Biome biome, HeightMap heightMap, MeshData meshData, MeshSettings meshSettings, Vector2 sampleCenter)
+    public void RequestSpawnInfo(Biome biome, HeightMap heightMap, MeshData meshData, MeshSettings meshSettings, Vector2 sampleCenter, Vector2 chunkCoord)
     {
         biome = new Biome(biome);
         HasRequestedSpawnInfo = true;
-        ThreadedDataRequester.RequestData(() => prefabSpawner.SpawnOnChunk(biome, heightMap, meshData, meshSettings, sampleCenter), OnSpawnInfoReceived);
+        ThreadedDataRequester.RequestData(() => prefabSpawner.SpawnOnChunk(biome, heightMap, meshData, meshSettings, sampleCenter, chunkCoord), OnSpawnInfoReceived);
     }
 
     public void SpawnSpawnInfo(Transform container)

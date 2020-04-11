@@ -23,12 +23,12 @@ MonoBehaviour:
   _offsetAmount: 3
   _size: 2
   _spawnDifferencial: 15
-  _softMinHeight: 0
   _hardMinHeight: 10
-  _softMaxHeight: 0
+  _softMinAmount: 0
   _hardMaxHeight: 100
-  _surfaceNormalAmount: 0.204
-  _pointAlongNormalRandomness: 0.91
+  _softMaxAmount: 0
+  _surfaceNormalAmount: 0.127
+  _pointAlongNormalRandomness: 0.25
   _softMinSlope: 90
   _hardMinSlope: 90
   _softMaxSlope: 0
@@ -40,4 +40,5 @@ MonoBehaviour:
   - _prefab: {fileID: 6124487056307694846, guid: bca04f8d4147279478c5b3b28cc3081a,
       type: 3}
     _probability: 2
-  _subSpawners: []
+  _subSpawners:
+  - {fileID: 11400000, guid: b91c7e116eda3394880b460672483487, type: 2}
