@@ -1,4 +1,4 @@
-﻿Shader "Bottania/Terrain"
+﻿Shader "Botania/Terrain"
 {
 	Properties
 	{

@@ -9,19 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f7597d6be396bb147994c78abdf8ba25, type: 3}
-  m_Name: Jens HeightMapSettings
+  m_Script: {fileID: 11500000, guid: a6a8266cd6fa0014aa75a4711a79cdd5, type: 3}
+  m_Name: Jens HeightMap
   m_EditorClassIdentifier: 
-  _autoUpdate: 0
-  _noiseSettings:
-    _seed: 22376
-    _offset: {x: 0, y: 0}
-    _scale: 63.3
-    _octaves: 4
-    _persistance: 0.6
-    _lacunarity: 1.5
-    _normalizeMode: 1
-  _heightMultiplier: 16
+  _autoUpdate: 1
+  _noiseSettingsData: {fileID: 11400000, guid: cb0b9d60d300f8d48b52296df585fd3b, type: 2}
+  _heightMultiplier: 50
   _heightCurve:
     serializedVersion: 2
     m_Curve:
@@ -35,22 +28,13 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 0.68370616
-      value: 0.86660695
-      inSlope: 0.2445131
-      outSlope: 0.2445131
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.2610041
-    - serializedVersion: 3
       time: 1
       value: 1
-      inSlope: -0.1728219
-      outSlope: -0.1728219
+      inSlope: 2
+      outSlope: 2
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.30202448
+      inWeight: 0
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2

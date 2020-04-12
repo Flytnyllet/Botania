@@ -1,4 +1,4 @@
-﻿Shader "Hidden/PortalRenderer"
+﻿Shader "Botania/PortalRenderer"
 {
     Properties
     {
@@ -8,15 +8,12 @@
 	{
 		Tags { "RenderType" = "Opaque" }
 		LOD 100
-		Cull Off
-
 		Pass
 		{
 			CGPROGRAM
 			#pragma vertex vert
 			#pragma fragment frag
 			#include "UnityCG.cginc"
-
 			struct appdata
 			{
 				float4 vertex : POSITION;
@@ -27,10 +24,7 @@
 				float4 vertex : SV_POSITION;
 				float4 screenPos : TEXCOORD0;
 			};
-
 			sampler2D _MainTex;
-			
-
 			v2f vert(appdata v)
 			{
 				v2f o;
@@ -38,15 +32,13 @@
 				o.screenPos = ComputeScreenPos(o.vertex);
 				return o;
 			}
-
-			fixed4 frag(v2f i) : SV_Target
+			fixed4 frag(v2f IN) : SV_Target
 			{
-				float2 uv = i.screenPos.xy / i.screenPos.w;
-				fixed4 portalCol = tex2D(_MainTex, uv);
-				return portalCol;
+				float2 uv = IN.screenPos.xy / IN.screenPos.w;
+				fixed4 col = tex2D(_MainTex, uv);
+				return col;
 			}
 			ENDCG
 		}
 	}
-		Fallback "Standard" // for shadows
 }
