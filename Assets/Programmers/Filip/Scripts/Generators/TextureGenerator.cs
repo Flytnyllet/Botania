@@ -15,16 +15,30 @@ public static class TextureGenerator
         return texture;
     }
 
-    public static Texture2D TextureFromHeightMap(HeightMap heightMap)
+    public static Texture2D TextureFromNoise(float[,] noise)
     {
-        int width = heightMap.heightMap.GetLength(0);
-        int height = heightMap.heightMap.GetLength(1);
+        int width = noise.GetLength(0);
+        int height = noise.GetLength(1);
 
         Color[] colorMap = new Color[width * height];
 
+        float maxValue = float.MinValue;
+        float minValue = float.MaxValue;
+
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < width; y++)
+            {
+                if (noise[x, y] < minValue)
+                    minValue = noise[x, y];
+                if (noise[x, y] > maxValue)
+                    maxValue = noise[x, y];
+            }
+        }
+
         for (int y = 0; y < height; y++)
             for (int x = 0; x < width; x++)
-                colorMap[y * width + x] = Color.Lerp(Color.black, Color.white, Mathf.InverseLerp(heightMap.minValue, heightMap.maxValue, heightMap.heightMap[x, y]));
+                colorMap[y * width + x] = Color.Lerp(Color.black, Color.white, Mathf.InverseLerp(0, maxValue, noise[x, y]));
 
         return TextureFromColorMap(colorMap, width, height);
     }

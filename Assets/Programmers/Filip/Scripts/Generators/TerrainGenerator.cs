@@ -11,6 +11,7 @@ public class TerrainGenerator : MonoBehaviour
     [Header("Settings")]
     [SerializeField] LODInfo[] _detailLevels;
     [SerializeField] int _colliderLODIndex;
+    [SerializeField] Biome _biome;
 
     [Header("Drop")]
 
@@ -36,7 +37,7 @@ public class TerrainGenerator : MonoBehaviour
 
         float maxViewDistance = _detailLevels[_detailLevels.Length - 1].visableDstThreshold;
 
-        _meshWorldSize = _meshSettings.ChunkSize - 1;
+        _meshWorldSize = _meshSettings.MeshWorldSize;
         _chunksVisableInViewDist = Mathf.RoundToInt(maxViewDistance / _meshWorldSize);
 
         UpdateVisableChunks();
@@ -85,7 +86,7 @@ public class TerrainGenerator : MonoBehaviour
                         _terrainChunkDictionary[viewedChunkCoord].UpdateTerrainChunk();
                     else
                     {
-                        TerrainChunk newChunk = new TerrainChunk(viewedChunkCoord, _heightMapSettings, _meshSettings, _detailLevels, _colliderLODIndex, transform, _viewer, _mapMaterial);
+                        TerrainChunk newChunk = new TerrainChunk(viewedChunkCoord, _heightMapSettings, _meshSettings, _detailLevels, _colliderLODIndex, transform, _viewer, _mapMaterial, _biome);
                         _terrainChunkDictionary.Add(viewedChunkCoord, newChunk);
                         newChunk.onVisibilityChanged += OnTerrainChunkVisibilityChanged;
                         newChunk.Load();
