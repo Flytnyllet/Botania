@@ -27,6 +27,9 @@ public class PrefabSpawner : MonoBehaviour
 
         List<SpawnInfo> spawnInfo = new List<SpawnInfo>();
 
+        //Spawn Water
+        spawnInfo.Add(new SpawnInfo(biome.WaterChunk, new Vector3(chunkPosition.x, biome.WaterHeight, -chunkPosition.y), Quaternion.Euler(90, 0, 0), 0, chunkCoord, Vector2.zero, false, new Vector3((meshSettings.ChunkSize - 1) * meshSettings.MeshScale, (meshSettings.ChunkSize - 1) * meshSettings.MeshScale, 1)));
+
         for (int i = 0; i < spawnables.Length; i++)
         {
             //First spawn the subspawners prefabs as they are harder to make room for
@@ -84,7 +87,7 @@ public class PrefabSpawner : MonoBehaviour
                                 //Current local positions in x and y in chunk, used only to spawn from
                                 float xPos = x + STANDARD_GRID_OFFSET + (STANDARD_GRID_OFFSET * spawnableSizeForGridAlign) - meshSettings.ChunkSize / 2 - 1; //Due to the border around the mesh + STANDARD_GRID_OFFSET corrects it to the right grid position
                                 float zPos = y + STANDARD_GRID_OFFSET + (STANDARD_GRID_OFFSET * spawnableSizeForGridAlign) - meshSettings.ChunkSize / 2 - 1; //Due to the border around the mesh + STANDARD_GRID_OFFSET corrects it to the right grid position
-                                float yPos = heightMap.heightMap[x + (int)(STANDARD_GRID_OFFSET * spawnableSizeForGridAlign) + 1, y + (int)(STANDARD_GRID_OFFSET * spawnableSizeForGridAlign) + 1] + 0.5f;
+                                float yPos = heightMap.heightMap[x + (int)(STANDARD_GRID_OFFSET * spawnableSizeForGridAlign) + 1, y + (int)(STANDARD_GRID_OFFSET * spawnableSizeForGridAlign) + 1] + spawnables[i].Height;
 
                                 //Position from grid in world
                                 Vector3 objectPosition = new Vector3((xPos + chunkPosition.x) * meshSettings.MeshScale, yPos, -(zPos + chunkPosition.y) * meshSettings.MeshScale);
@@ -102,7 +105,7 @@ public class PrefabSpawner : MonoBehaviour
                                 GameObject spawnObject = spawnables[i].GetPrefab(x, y);
                                 float localRotationAmount = spawnables[i].OffsetNoise[x, y] * DEGREES_360 * spawnables[i].RotationAmount;
 
-                                spawnInfo.Add(new SpawnInfo(spawnObject, objectPosition, rotation, localRotationAmount, chunkCoord, chunkIndex, spawnables[i]. Size != 0));
+                                spawnInfo.Add(new SpawnInfo(spawnObject, objectPosition, rotation, localRotationAmount, chunkCoord, chunkIndex, spawnables[i]. Size != 0, Vector3.one));
                             }
                         }
                     }            
@@ -178,6 +181,7 @@ public class SpawnInfo : MonoBehaviour
     GameObject _prefab;
     Vector3 _spawnPosition;
     Quaternion _rotation;
+    Vector3 _scale;
     float _localRotationAmount;
 
     Vector2 _chunkCoord;
@@ -185,11 +189,12 @@ public class SpawnInfo : MonoBehaviour
 
     bool _correctSizeForPickup;
 
-    public SpawnInfo(GameObject prefab, Vector3 spawnPosition, Quaternion rotation, float localRotationAmount, Vector2 chunkCoord, Vector2 itemIndex, bool correctSizeForPickup)
+    public SpawnInfo(GameObject prefab, Vector3 spawnPosition, Quaternion rotation, float localRotationAmount, Vector2 chunkCoord, Vector2 itemIndex, bool correctSizeForPickup, Vector3 scale)
     {
         this._prefab = prefab;
         this._spawnPosition = spawnPosition;
         this._rotation = rotation;
+        this._scale = scale;
         this._localRotationAmount = localRotationAmount;
 
         this._chunkCoord = chunkCoord;
@@ -202,6 +207,7 @@ public class SpawnInfo : MonoBehaviour
     {
         GameObject newObject = Instantiate(_prefab, _spawnPosition, _rotation, container) as GameObject;
         newObject.transform.RotateAround(_spawnPosition, newObject.transform.up, _localRotationAmount);
+        newObject.transform.localScale = _scale;
 
         PrefabSaveData saveDataScript = newObject.GetComponent<PrefabSaveData>();
 

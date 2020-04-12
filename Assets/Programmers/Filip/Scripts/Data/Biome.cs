@@ -9,8 +9,13 @@ public class Biome : UpdatableData
     [SerializeField] MeshSettings _meshSettings;
     [SerializeField] NoiseSettingsData _offsetNoiseSettings;
     [SerializeField, Tooltip("Offset for offsetNoise per children")] Vector2 _offsetVectorForOffsetNoise;
+    [SerializeField] GameObject _waterChunk;
+    [SerializeField] float _waterHeight;
 
-    public Spawnable[] Spawnables { get { return _spawnables; } private set { _spawnables = value; } }
+    public Spawnable[] Spawnables { get { return _spawnables; }  private set { _spawnables = value; } }
+
+    public GameObject WaterChunk  { get { return _waterChunk; }  private set { _waterChunk = value; } }
+    public float WaterHeight      { get { return _waterHeight; } private set { _waterHeight = value; } }
 
     public Biome(Biome biome)
     {
@@ -19,6 +24,9 @@ public class Biome : UpdatableData
         this._meshSettings = biome._meshSettings;
         this._offsetNoiseSettings = biome._offsetNoiseSettings;
         this._offsetVectorForOffsetNoise = biome._offsetVectorForOffsetNoise;
+
+        this._waterChunk = biome._waterChunk;
+        this._waterHeight = biome._waterHeight;
     }
 
     public void Setup(Vector2 center)
