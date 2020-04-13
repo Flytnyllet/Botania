@@ -11,31 +11,36 @@ public class PrefabSpawner : MonoBehaviour
 
     public bool[,] OccupiedGrid { get { return _occupiedGrid; } private set { _occupiedGrid = value; } }
 
-    public List<SpawnInfo> SpawnOnChunk(Biome biome, HeightMap heightMap, MeshData meshData, MeshSettings meshSettings, Vector2 chunkPosition, Vector2 chunkCoord)
+    public List<SpawnInfo> SpawnOnChunk(int levelOfDetail, Biome biome, HeightMap heightMap, MeshData meshData, MeshSettings meshSettings, Vector2 chunkPosition, Vector2 chunkCoord)
     {
         _occupiedGrid = new bool[meshSettings.ChunkSize - 1, meshSettings.ChunkSize - 1];
 
         //Generate all noises according to chunk position
         biome.Setup(chunkPosition); 
-        return SpawnFromSpawnables(biome, biome.Spawnables, heightMap, meshData, meshSettings, chunkPosition, chunkCoord);
+
+        switch(levelOfDetail)
+        {
+            case (0): { return SpawnFromSpawnables(levelOfDetail, biome, biome.HighLODSpawnable, heightMap, meshData, meshSettings, chunkPosition, chunkCoord, false); }
+            case (1): { return SpawnFromSpawnables(levelOfDetail, biome, biome.MediumLODSpawnable, heightMap, meshData, meshSettings, chunkPosition, chunkCoord, false); }
+            case (2): { return SpawnFromSpawnables(levelOfDetail, biome, biome.LowLODSpawnable, heightMap, meshData, meshSettings, chunkPosition, chunkCoord, true); }
+            default: throw new System.Exception("There should be no levelOfDetail of " + levelOfDetail);
+        }
     }
 
-    private List<SpawnInfo> SpawnFromSpawnables(Biome biome, Spawnable[] spawnables, HeightMap heightMap, MeshData meshData, MeshSettings meshSettings, Vector2 chunkPosition, Vector2 chunkCoord)
+    private List<SpawnInfo> SpawnFromSpawnables(int levelOfDetail, Biome biome, Spawnable[] spawnables, HeightMap heightMap, MeshData meshData, MeshSettings meshSettings, Vector2 chunkPosition, Vector2 chunkCoord, bool firstCall = false)
     {
-        //subspawner index is used to identify which subspawner it is on so even if two objects occupy the same chunkcoord
-        //and chunkindex and i it can still be differntiated
-
         List<SpawnInfo> spawnInfo = new List<SpawnInfo>();
 
         //Spawn Water
-        spawnInfo.Add(new SpawnInfo(biome.WaterChunk, new Vector3(chunkPosition.x, biome.WaterHeight, -chunkPosition.y), Quaternion.Euler(90, 0, 0), 0, chunkCoord, Vector2.zero, false, new Vector3((meshSettings.ChunkSize - 1) * meshSettings.MeshScale, (meshSettings.ChunkSize - 1) * meshSettings.MeshScale, 1)));
+        if (firstCall)
+            spawnInfo.Add(new SpawnInfo(biome.WaterChunk, new Vector3(chunkPosition.x, biome.WaterHeight, -chunkPosition.y), Quaternion.Euler(90, 0, 0), 0, chunkCoord, Vector2.zero, false, new Vector3((meshSettings.ChunkSize - 1) * meshSettings.MeshScale, (meshSettings.ChunkSize - 1) * meshSettings.MeshScale, 1)));
 
         for (int i = 0; i < spawnables.Length; i++)
         {
             //First spawn the subspawners prefabs as they are harder to make room for
             if (spawnables[i].SubSpawners.Length > 0)
             {
-                List<SpawnInfo> childSpawnInfo = SpawnFromSpawnables(biome, spawnables[i].SubSpawners, heightMap, meshData, meshSettings, chunkPosition, chunkCoord);
+                List<SpawnInfo> childSpawnInfo = SpawnFromSpawnables(levelOfDetail, biome, spawnables[i].SubSpawners, heightMap, meshData, meshSettings, chunkPosition, chunkCoord);
                 spawnInfo.AddRange(childSpawnInfo);
             }
 
@@ -66,7 +71,10 @@ public class PrefabSpawner : MonoBehaviour
                             bool noiseSpread = spawnables[i].SpreadNoise[y, x] > spawnables[i].RandomSpread;
 
                             //Slope
-                            Vector3 normal = meshData.GetNormal(y * (meshSettings.ChunkSize) + x);
+                            Vector3 normal = Vector3.up;
+                            //Only on the highest detail level, care about normal
+                            if (levelOfDetail == 0)
+                                normal = meshData.GetNormal(y * (meshSettings.ChunkSize) + x);
                             float slopeAngle = Vector3.Angle(Vector3.up, normal);
 
                             bool minSlope = (slopeAngle <= spawnables[i].SoftMinSlope * spawnables[i].OffsetNoise[x, y]);

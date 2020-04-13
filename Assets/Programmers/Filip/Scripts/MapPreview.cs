@@ -81,7 +81,7 @@ public class MapPreview : MonoBehaviour
             MeshData meshData = MeshGenerator.GenerateTerrainMesh(heightMap.heightMap, _meshSettings, _editorPreviewLevelOfDetail);
             DrawMesh(meshData);
             PrefabSpawner prefabSpawner = new PrefabSpawner();
-            List<SpawnInfo> spawnInfo = prefabSpawner.SpawnOnChunk(_biome, heightMap, meshData, _meshSettings, Vector2.zero, Vector2.zero);
+            List<SpawnInfo> spawnInfo = prefabSpawner.SpawnOnChunk(0, _biome, heightMap, meshData, _meshSettings, Vector2.zero, Vector2.zero);
             prefabSpawner.SpawnSpawnInfo(spawnInfo, _biomeContainer);
         }
     }
@@ -146,7 +146,9 @@ public class MapPreview : MonoBehaviour
         {
             _biome.OnValuesUpdated -= OnValuesUpdated;
             _biome.OnValuesUpdated += OnValuesUpdated;
-            SubscribeToSpawnables(_biome.Spawnables);
+            SubscribeToSpawnables(_biome.HighLODSpawnable);
+            SubscribeToSpawnables(_biome.MediumLODSpawnable);
+            SubscribeToSpawnables(_biome.LowLODSpawnable);
         }
         if (_textureData != null)
         {

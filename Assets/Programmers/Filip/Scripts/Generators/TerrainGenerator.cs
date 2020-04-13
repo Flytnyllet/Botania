@@ -10,7 +10,7 @@ public class TerrainGenerator : MonoBehaviour
 
     [Header("Settings")]
     [SerializeField] LODInfo[] _detailLevels;
-    [SerializeField] int _colliderLODIndex;
+    [SerializeField, Range(0, 4), Tooltip("What LOD should the collider have?")] int _colliderLODIndex;
     [SerializeField] Biome _biome;
 
     [Header("Drop")]
