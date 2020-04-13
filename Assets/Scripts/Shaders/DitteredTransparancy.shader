@@ -2,7 +2,7 @@
 {
 	Properties{
 		_MainTex("Base (RGB)", 2D) = "white" {}
-		//_Alpha("Alpha", 2D) = "white" {}
+	//_Alpha("Alpha", 2D) = "white" {}
 	}
 		SubShader{
 			Tags { "Queue" = "AlphaTest" "IgnoreProjector" = "True" "RenderType" = "TransparentCutout" }
@@ -18,7 +18,6 @@
 		#pragma target 3.0
 
 		sampler2D _MainTex;
-		//sampler2D _Alpha;
 
 		struct Input {
 			float2 uv_MainTex;
@@ -45,9 +44,9 @@
 
 			if (IN.facing < 0.5)
 				o.Normal *= -1.0;
-		
+
 		}
 		ENDCG
-		}
-			Fallback "Differed"
+	}
+		Fallback "Differed"
 }
