@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Potion
+public class TestPotion
 {
     public void SpeedPot(Test p)
     {
