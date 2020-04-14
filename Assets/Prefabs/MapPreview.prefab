@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 6855661116864764612}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 12.1, y: 1, z: 12.1}
+  m_LocalScale: {x: 5.3, y: 1, z: 5.3}
   m_Children: []
   m_Father: {fileID: 6855661117858189712}
   m_RootOrder: 0
@@ -165,8 +165,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6855661117858189712}
-  - component: {fileID: 6445789984142195376}
-  - component: {fileID: 3426245973549239405}
+  - component: {fileID: 6855661117858189727}
   m_Layer: 0
   m_Name: MapPreview
   m_TagString: Untagged
@@ -202,41 +201,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9151c11476e217479e2e2fa2900fadc, type: 3}
   m_Name:
   m_EditorClassIdentifier:
+  _autoUpdate: 1
   _drawMode: 0
-  _meshSettings: {fileID: 0}
-  _heightMapSettings: {fileID: 0}
-  _textureData: {fileID: 0}
-  _terrainMaterial: {fileID: 0}
-  _noiseMergeType: 0
-  _noiseSettingsData_1: {fileID: 0}
-  _noiseSettingsData_2: {fileID: 0}
-  _noiseViewSize: 1
-  _editorPreviewLevelOfDetail: 0
-  _textureRenderer: {fileID: 0}
-  _meshFilter: {fileID: 0}
-  _meshRenderer: {fileID: 0}
-  _biome: {fileID: 0}
-  _spawnable_1: {fileID: 0}
-  _spawnable_2: {fileID: 0}
---- !u!114 &6855661117858189727
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6855661117858189714}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 31b4adfe7208fd54d9ed734490361abb, type: 3}
-  m_Name:
-  m_EditorClassIdentifier:
-  _drawMode: 0
-  _autoUpdate: 0
-  _meshSettings: {fileID: 11400000, guid: 30c25babb5c651d43aed97b345acc5bb, type: 2}
-  _heightMapSettings: {fileID: 11400000, guid: 66436f00773fac9498eef76d42877cfe, type: 2}
+  _meshSettings: {fileID: 11400000, guid: 7d9387cccf68fe249839b1efd02293a8, type: 2}
+  _heightMapSettings: {fileID: 11400000, guid: 0d2be67557d8571419cd2ab9c8822798, type: 2}
   _textureData: {fileID: 11400000, guid: 7695465a12724bf4c8c08eb38c70eb8e, type: 2}
-  _terrainMaterial: {fileID: 10652, guid: 0000000000000000f000000000000000, type: 0}
+  _terrainMaterial: {fileID: 2100000, guid: 6cb6abed50d4a324dbef91eb8c87cc00, type: 2}
+  _noiseMergeType: 0
+  _noiseSettingsData_1: {fileID: 11400000, guid: 1a3c314bb7fe7604dba499589c7f0141,
+    type: 2}
+  _noiseSettingsData_2: {fileID: 11400000, guid: 1a3c314bb7fe7604dba499589c7f0141,
+    type: 2}
+  _noiseViewSize: 1
   _editorPreviewLevelOfDetail: 0
   _textureRenderer: {fileID: 6855661116864764611}
   _meshFilter: {fileID: 6855661117266388968}
   _meshRenderer: {fileID: 6855661117266388969}
+  _biome: {fileID: 11400000, guid: 879a5fe3b8d9641478814691d2dc556c, type: 2}
