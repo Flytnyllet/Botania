@@ -11,12 +11,12 @@ public static class FlowerLibrary
 	// Initialization
 	static FlowerLibrary()
 	{
-        _flowerTypes = (List<Flower>)Serialization.Load(SAVE_FILE_NAME);
-        //FlowerLibrarySave save =(FlowerLibrarySave)Serialization.Load(SAVE_FILE_NAME);
-        if(_flowerTypes == null)
-        {
-            _flowerTypes = new List<Flower>();
-        }
+        //_flowerTypes = (List<Flower>)Serialization.Load(SAVE_FILE_NAME);
+        ////FlowerLibrarySave save =(FlowerLibrarySave)Serialization.Load(SAVE_FILE_NAME);
+        //if(_flowerTypes == null)
+        //{
+        //    _flowerTypes = new List<Flower>();
+        //}
         //else
         //{
         //    _flowerTypes = save.flowerTypes;

@@ -18,14 +18,19 @@ public class MeshSettings : UpdatableData
 
     public int ChunkSize
     {
-        get { return SUPPORTED_CHUNK_SIZES[ChunkSizeIndex] - 1; }
+        get { return SUPPORTED_CHUNK_SIZES[ChunkSizeIndex] + 3; }
     }
 
     public float MeshWorldSize
     {
         get
         {
-            return NUMBER_SUPPORTED_CHUNK_SIZES - 1 * MeshScale;
+            return (NumVertsPerLine - 3) * _meshScale;
         }
+    }
+
+    public int NumVertsPerLine
+    {
+        get { return SUPPORTED_CHUNK_SIZES[ChunkSizeIndex] + 5; }
     }
 }

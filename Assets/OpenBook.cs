@@ -26,7 +26,16 @@ public class OpenBook : MonoBehaviour
     {
 		if (Input.GetButtonDown(INPUT_INVENTORY))
 		{
-			_bookObject.SetActive(!_bookObject.activeSelf);
+            if (!_bookObject.activeSelf)
+            {
+                _bookObject.SetActive(true);
+                CharacterState.SetControlState(CHARACTER_CONTROL_STATE.MENU);
+            }
+            else
+            {
+                _bookObject.SetActive(false);
+                CharacterState.SetControlState(CHARACTER_CONTROL_STATE.PLAYERCONTROLLED);
+            }
 		}
 
 	}
