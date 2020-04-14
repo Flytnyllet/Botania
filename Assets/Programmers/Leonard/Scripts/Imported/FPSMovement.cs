@@ -5,6 +5,7 @@ using UnityEngine;
 public class FPSMovement : MonoBehaviour
 {
 	const string DUCK_BUTTON = "Duck";
+	[SerializeField] string GROUND_TAG = "null";
 
 	[Header("Movement")]
 	CharacterController charCon;
@@ -51,12 +52,14 @@ public class FPSMovement : MonoBehaviour
 
             Vector3 jump = new Vector3(0, 1f * _jumpForce, 0);
             //Debug.DrawRay
-            bool groundRay = Physics.Raycast(transform.position, Vector3.down * 2, 2f, layerMask);
+			// OLD GROUND DETECTION
+            bool groundRay = Physics.Raycast(transform.position, Vector3.down * 2, 2f);
 
             if (_velocity.y > 0)
             {
                 groundRay = false;
             }
+			
 
 			if (Input.GetButtonDown(DUCK_BUTTON))
 			{
@@ -65,13 +68,16 @@ public class FPSMovement : MonoBehaviour
 
 			//Jumping
 			//if (Input.GetButtonDown("Jump")) 
-			if (Input.GetButtonDown("Jump") && groundRay)
+			if (Input.GetButtonDown("Jump"))// && groundRay)
 			{
-				Debug.Log("JUMP!");
-				Launch(jump);
+				if (groundRay) //(GROUND_TAG == "null" || groundRay)
+				{
+					Debug.Log("JUMP!");
+					Launch(jump);
+				}
 			}
 			//Ducking
-			else if (Input.GetButton(DUCK_BUTTON) && GetGroundSlope(transform.position, Vector3.down, 3f) > 15f)
+			else if (Input.GetButton(DUCK_BUTTON) && GetGroundSlope(transform.position, Vector3.down, 3f) > 10f)
 			{
 				Debug.Log("SLIDING!");
 				Sliding(x);
@@ -109,8 +115,8 @@ public class FPSMovement : MonoBehaviour
         Vector3 lookDir =_playerCam.forward;
         lookDir.y = 0;
         Vector3 move =
-			_playerCam.right * horizontal +
-            lookDir * vertical;
+			_playerCam.right.normalized * horizontal +
+            lookDir.normalized * vertical;
 		charCon.Move(move * _speed * Time.deltaTime);
 	}
 
@@ -127,7 +133,7 @@ public class FPSMovement : MonoBehaviour
 		lookDir.y = 0; 
 		Vector3 move = new Vector3(slopeDirection.x, 0f, slopeDirection.z);
 		Vector3 strafe = Vector3.Cross(move, Vector3.up);   //Normalize Directin
-		Debug.Log(strafe);
+		Debug.Log("Sliding");
 		move += strafe*-z;
 		//Debug.Log(move * _speed * _slidingSpeedFactor * Time.deltaTime);
 		charCon.Move(move * _speed * _slidingSpeedFactor * Time.deltaTime);
@@ -171,10 +177,12 @@ public class FPSMovement : MonoBehaviour
 
 		if (Physics.Raycast(myRay, out hit, rayDistance))
 		{
-			if (hit.collider.gameObject.tag == "ground") // Our Ray has hit the ground
+			if (GROUND_TAG == "null" || hit.collider.gameObject.tag == GROUND_TAG)
 			{
 				terrainAngle = Vector3.Angle(Vector3.up, hit.normal);
 				slopeDirection = hit.normal;
+				Debug.DrawRay(transform.position, slopeDirection, Color.magenta, 1f);
+
 			}
 		}
 

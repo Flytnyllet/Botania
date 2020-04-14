@@ -21,7 +21,7 @@ public static class FlowerLibrary
         //{
         //    _flowerTypes = save.flowerTypes;
         //}
-
+		/*
         int[] baseProgression = new int[3] { 1, 3, 5 };
 		string[] tulipProgress = new string[3] {
 			"Tulips are a thing.",
@@ -48,7 +48,9 @@ public static class FlowerLibrary
 		Flower flower3 = new Flower(3, "Violet", baseProgression, violet);
 		_flowerTypes.Add(flower3);
 
+		*/
 		// Initialize Potions
+		/*
 		Flower[] recipe0 = new Flower[2] { flower0, flower1 };
 		Potion potion0 = new Potion(0, "Speed", 0, recipe0);
 		_potionTypes.Add(potion0);
@@ -58,6 +60,12 @@ public static class FlowerLibrary
 		Flower[] recipe2 = new Flower[3] { flower0, flower1, flower2 };
 		Potion potion2 = new Potion(2, "Glide", 2, recipe2);
 		_potionTypes.Add(potion2);
+		*/
+	}
+
+	public static void AddFlower(Flower flower)
+	{
+		_flowerTypes.Add(flower);
 	}
 
 	public static Flower GetFlowerType(int id)
