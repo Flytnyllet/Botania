@@ -3437,11 +3437,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Dandelion (3)
       objectReference: {fileID: 0}
-    - target: {fileID: 1214685071922004723, guid: 18103c39341f43947ae19911cf3ecda6,
-        type: 3}
-      propertyPath: _type
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 1214685071922004735, guid: 18103c39341f43947ae19911cf3ecda6,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3506,6 +3501,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1214685071922004723, guid: 18103c39341f43947ae19911cf3ecda6,
+        type: 3}
+      propertyPath: _type
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 18103c39341f43947ae19911cf3ecda6, type: 3}
@@ -3673,6 +3673,7 @@ GameObject:
   - component: {fileID: 1323869059}
   - component: {fileID: 1323869058}
   - component: {fileID: 1323869054}
+  - component: {fileID: 1323869060}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -3766,10 +3767,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75513cb0b78d4bd419d8a10912e35605, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 12
-  jumpForce: 5
-  gravity: -9.81
-  ChangeCamera: 112
+  _speed: 12
+  _jumpForce: 1
+  _gravity: -9.81
+  _changeCamera: 112
   layerMask:
     serializedVersion: 2
     m_Bits: 256
@@ -3791,6 +3792,20 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1323869060
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1323869053}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f79819c7a2ea997498c437679762aaa5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Speed:
+    _baseValue: 0
 --- !u!1001 &1332673425
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3802,11 +3817,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Dandelion (4)
-      objectReference: {fileID: 0}
-    - target: {fileID: 1214685071922004723, guid: 18103c39341f43947ae19911cf3ecda6,
-        type: 3}
-      propertyPath: _type
-      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1214685071922004735, guid: 18103c39341f43947ae19911cf3ecda6,
         type: 3}
@@ -3872,6 +3882,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1214685071922004723, guid: 18103c39341f43947ae19911cf3ecda6,
+        type: 3}
+      propertyPath: _type
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 18103c39341f43947ae19911cf3ecda6, type: 3}
@@ -4378,11 +4393,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Dandelion (1)
       objectReference: {fileID: 0}
-    - target: {fileID: 1214685071922004723, guid: 18103c39341f43947ae19911cf3ecda6,
-        type: 3}
-      propertyPath: _type
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 1214685071922004735, guid: 18103c39341f43947ae19911cf3ecda6,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -4447,6 +4457,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1214685071922004723, guid: 18103c39341f43947ae19911cf3ecda6,
+        type: 3}
+      propertyPath: _type
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 18103c39341f43947ae19911cf3ecda6, type: 3}
@@ -4543,11 +4558,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Dandelion (2)
       objectReference: {fileID: 0}
-    - target: {fileID: 1214685071922004723, guid: 18103c39341f43947ae19911cf3ecda6,
-        type: 3}
-      propertyPath: _type
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 1214685071922004735, guid: 18103c39341f43947ae19911cf3ecda6,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -4612,6 +4622,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1214685071922004723, guid: 18103c39341f43947ae19911cf3ecda6,
+        type: 3}
+      propertyPath: _type
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 18103c39341f43947ae19911cf3ecda6, type: 3}
@@ -6173,11 +6188,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Dandelion
       objectReference: {fileID: 0}
-    - target: {fileID: 1214685071922004723, guid: 18103c39341f43947ae19911cf3ecda6,
-        type: 3}
-      propertyPath: _type
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 1214685071922004735, guid: 18103c39341f43947ae19911cf3ecda6,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -6242,6 +6252,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1214685071922004723, guid: 18103c39341f43947ae19911cf3ecda6,
+        type: 3}
+      propertyPath: _type
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 18103c39341f43947ae19911cf3ecda6, type: 3}
