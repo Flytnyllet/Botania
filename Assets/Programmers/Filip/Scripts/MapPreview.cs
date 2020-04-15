@@ -9,13 +9,15 @@ public class MapPreview : MonoBehaviour
         NOISE_MAP,
         MESH,
         FALL_OF_MAP,
-        BIOME
+        BIOME,
+        MAP
     }
 
     [Header("General Settings")]
 
     [SerializeField, Tooltip("Should the terrainmap update in the editor?")] bool _autoUpdate;
     [SerializeField] DrawMode _drawMode;
+    [SerializeField] MapSettings _mapSettings;
 
     [SerializeField] MeshSettings _meshSettings;
     [SerializeField] HeightMapSettings _heightMapSettings;
@@ -28,6 +30,7 @@ public class MapPreview : MonoBehaviour
     [SerializeField] NoiseSettingsData _noiseSettingsData_1;
     [SerializeField] NoiseSettingsData _noiseSettingsData_2;
     [SerializeField, Range(1, 200), Tooltip("How big should the displayed noise be?")] int _noiseViewSize = 1;
+    [SerializeField] Vector2 _chunkCoord;
 
     [Header("Mesh Settings")]
 
@@ -63,9 +66,11 @@ public class MapPreview : MonoBehaviour
         _textureData.UpdateMeshHeights(_terrainMaterial, _heightMapSettings.MinHeight, _heightMapSettings.MaxHeight);
 
         //Generate the heightmap for the chunk at origin
-        HeightMap heightMap = HeightMapGenerator.GenerateHeightMap(_meshSettings.NumVertsPerLine, _meshSettings.NumVertsPerLine, _heightMapSettings, Vector2.zero);
+        HeightMap heightMap = HeightMapGenerator.GenerateHeightMap(_meshSettings.NumVertsPerLine, _meshSettings.NumVertsPerLine, _heightMapSettings, _chunkCoord);
 
-        float[,] noise = Noise.MergeNoise(_meshSettings.NumVertsPerLine * _noiseViewSize, _meshSettings.NumVertsPerLine * _noiseViewSize, _noiseSettingsData_1.NoiseSettingsDataMerge, _noiseSettingsData_2.NoiseSettingsDataMerge, _noiseMergeType, Vector2.zero);
+        Vector2 sampleCenter = _chunkCoord * _meshSettings.MeshWorldSize / _meshSettings.MeshScale;
+
+        float[,] noise = Noise.MergeNoise(_meshSettings.NumVertsPerLine * _noiseViewSize, _meshSettings.NumVertsPerLine * _noiseViewSize, 1, _noiseSettingsData_1.NoiseSettingsDataMerge, _noiseSettingsData_2.NoiseSettingsDataMerge, _noiseMergeType, _chunkCoord);
 
         if (_drawMode == DrawMode.NOISE_MAP)
             DrawTexture(TextureGenerator.TextureFromNoise(noise));
@@ -81,16 +86,18 @@ public class MapPreview : MonoBehaviour
             MeshData meshData = MeshGenerator.GenerateTerrainMesh(heightMap.heightMap, _meshSettings, _editorPreviewLevelOfDetail);
             DrawMesh(meshData);
             PrefabSpawner prefabSpawner = new PrefabSpawner();
-            List<SpawnInfo> spawnInfo = prefabSpawner.SpawnOnChunk(0, 0, _biome, heightMap, meshData, _meshSettings, Vector2.zero, Vector2.zero);
+            List<SpawnInfo> spawnInfo = prefabSpawner.SpawnOnChunk(2, 0, _biome, heightMap, meshData, _meshSettings, new Vector2(sampleCenter.x, -sampleCenter.y), _chunkCoord);
             prefabSpawner.SpawnSpawnInfo(spawnInfo, _biomeContainer);
         }
+        else if (_drawMode == DrawMode.MAP)
+            DrawTexture(TextureGenerator.DrawMap(_meshSettings.NumVertsPerLine, _mapSettings, new Vector2(sampleCenter.x, -sampleCenter.y), _noiseViewSize));
     }
 
     //Draws on the plane (for noise display)
     public void DrawTexture(Texture2D texture)
     {
         _textureRenderer.sharedMaterial.mainTexture = texture;
-        _textureRenderer.transform.localScale = new Vector3(texture.width / 10f, 1, texture.height / 10f);
+        _textureRenderer.transform.localScale = new Vector3(texture.width / 50f * _mapSettings.DetailLevel, 1, texture.height / 50f * _mapSettings.DetailLevel);
 
         _textureRenderer.gameObject.SetActive(true);
         _meshFilter.gameObject.SetActive(false);
@@ -159,6 +166,11 @@ public class MapPreview : MonoBehaviour
         {
             _textureData.OnValuesUpdated -= OnTextureValuesUpdated;
             _textureData.OnValuesUpdated += OnTextureValuesUpdated;
+        }
+        if (_mapSettings != null)
+        {
+            _mapSettings.OnValuesUpdated -= OnValuesUpdated;
+            _mapSettings.OnValuesUpdated += OnValuesUpdated;
         }
     }
 
