@@ -1,4 +1,4 @@
-﻿Shader "Custom/RotationShader"
+﻿Shader "__Lab/RotationShader"
 {
     Properties
     {
