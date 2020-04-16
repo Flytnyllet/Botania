@@ -38,7 +38,8 @@ public class PotionLoader : MonoBehaviour
 
 	public void ActivatePotion()
 	{
-		//ADD FUNCTION CALL TO ACTIVATE EFFECT FROM LIST
+        p = new TestPotion();
+        p.SpeedPot(player);
 	}
 	public void AddPotion()
 	{

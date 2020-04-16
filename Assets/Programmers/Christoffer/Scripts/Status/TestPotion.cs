@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TestPotion
+public class TestPotion : MonoBehaviour
 {
     public void SpeedPot(FPSMovement p)
     {
@@ -14,5 +14,13 @@ public class TestPotion
     public void SpeedPotionEnd(FPSMovement p)
     {
         p._speed.RemoveAllModifiers(this);
+    }
+}
+
+public class GravityPotion
+{
+    public void GravtityPotion(Test p)
+    {
+
     }
 }
