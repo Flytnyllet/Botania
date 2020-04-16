@@ -20,11 +20,25 @@ public class MapGenerator : MonoBehaviour
 
     [SerializeField, Range(1, 100)] float _chunkSize = 20;
 
+    Timer _testTimer = new Timer(1);
+
     private void Awake()
     {
         _renderedMapChunks = new Dictionary<Vector2, Texture2D>();
         _chunksInMap = new List<Vector2>();
-        _spawnedMapChunks = new List<GameObject>();
+        _spawnedMapChunks = new List<GameObject>();   
+    }
+
+    private void Update()
+    {
+        _testTimer.Time += Time.deltaTime;
+
+        if (_testTimer.Expired())
+        {
+            Clear();
+            DisplayMap();
+            _testTimer.Reset();
+        }
     }
 
     public void AddChunkToMap(Vector2 chunkCoord)
@@ -37,15 +51,11 @@ public class MapGenerator : MonoBehaviour
 
     private TextureChunkData RequestTextureChunkData(Vector2 chunkCoord, Vector2 sampleCenter)
     {
-        Debug.Log("REQUEST");
-
         return TextureGenerator.DrawMap(_meshSettings.NumVertsPerLine, _mapSettings, sampleCenter, chunkCoord, 1);
     }
 
     private void ReceivedTextureChunkData(object data)
     {
-        Debug.Log("RECEIVED");
-
         TextureChunkData thisData = (TextureChunkData)data;
 
         AddTexture(TextureGenerator.TextureFromColorMap(thisData.colorMap, thisData.width, thisData.height), thisData.chunkCoord);
@@ -80,10 +90,15 @@ public class MapGenerator : MonoBehaviour
 
                 _spawnedMapChunks.Add(mapChunk);
             }
-            else
-            {
-                ////
-            }
         }
+    }
+
+    public void Clear()
+    {
+        for (int i = 0; i < _spawnedMapChunks.Count; i++)
+        {
+            Destroy(_spawnedMapChunks[i]);
+        }
+        _spawnedMapChunks.Clear();
     }
 }

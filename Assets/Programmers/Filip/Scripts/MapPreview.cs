@@ -91,7 +91,7 @@ public class MapPreview : MonoBehaviour
         }
         else if (_drawMode == DrawMode.MAP)
         {
-            TextureChunkData data = TextureGenerator.DrawMap(_meshSettings.NumVertsPerLine, _mapSettings, new Vector2(sampleCenter.x, -sampleCenter.y), _chunkCoord);
+            TextureChunkData data = TextureGenerator.DrawMap(_meshSettings.NumVertsPerLine * _noiseViewSize, _mapSettings, new Vector2(sampleCenter.x, -sampleCenter.y), _chunkCoord);
             DrawTexture(TextureGenerator.TextureFromColorMap(data.colorMap, data.width, data.height));
         }
     }
