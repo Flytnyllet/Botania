@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-public class TerrainChunk : MonoBehaviour
+public class TerrainChunk
 {
-    static readonly float COLLIDER_GENERATION_DISTANCE_THRESHOLD = 15;
+    static readonly float COLLIDER_GENERATION_DISTANCE_THRESHOLD = 5;
 
     public event System.Action<TerrainChunk, bool> onVisibilityChanged;
     public Vector2 Coord { get; private set; }

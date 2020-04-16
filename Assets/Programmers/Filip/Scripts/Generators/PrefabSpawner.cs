@@ -67,7 +67,7 @@ public class PrefabSpawner : MonoBehaviour
                         if (CanObjectSpawn(x, y, spawnables[i].Size, heightMap.heightMap, spawnables[i].SpawnDifferencial, meshSettings.ChunkSize))
                         {
                             bool insideNoise = spawnNoise[x, y] > spawnables[i].NoiseStartPoint; //is it inside the noise?
-                            bool gradientSpawn = true;// spawnNoise[x, y] + spawnables[i].OffsetNoise[x, y] > spawnables[i].Thickness; //If it is, transition?
+                            bool gradientSpawn = spawnNoise[x, y] + spawnables[i].OffsetNoise[x, y] > spawnables[i].Thickness; //If it is, transition?
                             bool uniformSpread = x % spawnables[i].UniformSpreadAmount == 0 && y % spawnables[i].UniformSpreadAmount == 0; //uniform spread?
                             bool noiseSpread = spawnables[i].SpreadNoise[y, x] > spawnables[i].RandomSpread;
 
