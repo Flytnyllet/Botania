@@ -90,14 +90,17 @@ public class MapPreview : MonoBehaviour
             prefabSpawner.SpawnSpawnInfo(spawnInfo, _biomeContainer);
         }
         else if (_drawMode == DrawMode.MAP)
-            DrawTexture(TextureGenerator.DrawMap(_meshSettings.NumVertsPerLine, _mapSettings, new Vector2(sampleCenter.x, -sampleCenter.y), _noiseViewSize));
+        {
+            TextureChunkData data = TextureGenerator.DrawMap(_meshSettings.NumVertsPerLine, _mapSettings, new Vector2(sampleCenter.x, -sampleCenter.y), _chunkCoord);
+            DrawTexture(TextureGenerator.TextureFromColorMap(data.colorMap, data.width, data.height));
+        }
     }
 
     //Draws on the plane (for noise display)
     public void DrawTexture(Texture2D texture)
     {
         _textureRenderer.sharedMaterial.mainTexture = texture;
-        _textureRenderer.transform.localScale = new Vector3(texture.width / 50f * _mapSettings.DetailLevel, 1, texture.height / 50f * _mapSettings.DetailLevel);
+        //_textureRenderer.transform.localScale = new Vector3(texture.width / 50f * _mapSettings.DetailLevel, 1, texture.height / 50f * _mapSettings.DetailLevel);
 
         _textureRenderer.gameObject.SetActive(true);
         _meshFilter.gameObject.SetActive(false);

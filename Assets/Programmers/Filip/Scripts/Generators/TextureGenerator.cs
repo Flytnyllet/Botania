@@ -15,7 +15,7 @@ public static class TextureGenerator
         return texture;
     }
 
-    public static Texture2D DrawMap(int size, MapSettings mapSettings, Vector2 center, int noiseViewSize = 1)
+    public static TextureChunkData DrawMap(int size, MapSettings mapSettings, Vector2 center, Vector2 chunkCoord, int noiseViewSize = 1)
     {
         float[,] heightNoise = Noise.GenerateNoiseMap(size * noiseViewSize, size * noiseViewSize, mapSettings.DetailLevel, mapSettings.HeightRegion.NoiseData.NoiseSettingsDataMerge, center);
         float[][,] noises = new float[mapSettings.MapRegions.Length][,];
@@ -47,6 +47,7 @@ public static class TextureGenerator
                             if (noises[i][x, y] >= mapSettings.MapRegions[i].NoiseStartPoint && currentHeight > mapSettings.MapRegions[i].MinHeightStart)
                             {
                                 finalColor = finalColor.grayscale * mapSettings.MapRegions[i].Color;
+                                finalColor.a = 1.0f;
                                 break;
                             }
                         }
@@ -59,7 +60,7 @@ public static class TextureGenerator
             }
         }
 
-        return TextureFromColorMap(colorMap, width, height);
+        return new TextureChunkData(chunkCoord, colorMap, width, height);
     }
 
     public static Texture2D TextureFromNoise(float[,] noise)
@@ -99,5 +100,21 @@ public static class TextureGenerator
                     maxValue = noise[x, y];
             }
         }
+    }
+}
+
+public struct TextureChunkData
+{
+    public Vector2 chunkCoord;
+    public Color[] colorMap;
+    public int width;
+    public int height;
+
+    public TextureChunkData(Vector2 chunkCoord, Color[] colorMap, int width, int height)
+    {
+        this.chunkCoord = chunkCoord;
+        this.colorMap = colorMap;
+        this.width = width;
+        this.height = height;
     }
 }
