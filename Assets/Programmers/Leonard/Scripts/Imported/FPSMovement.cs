@@ -5,179 +5,199 @@ using UnityEngine;
 public class FPSMovement : MonoBehaviour
 {
 	const string DUCK_BUTTON = "Duck";
+	[SerializeField] string GROUND_TAG = "null";
 
 	[Header("Movement")]
 	CharacterController charCon;
-    [SerializeField] float _speed = 12f;
-    [SerializeField] float _jumpForce = 1f;
-    [SerializeField] float _gravity = -9.81f;
+	[SerializeField] float _speed = 12f;
+	[SerializeField] float _jumpForce = 1f;
+	[SerializeField] float _gravity = -9.81f;
 	public Vector3 _velocity;
 	[SerializeField] float _crawlSpeedFactor = 0.5f;
 	[SerializeField] float _duckDistance = 0.4f;
 	[SerializeField] float _slidingSpeedFactor = 0.5f;
+	//Vector3 _slopeDirection;
+	[SerializeField] float _groundRayDistance = 3f;
+	[SerializeField] float _minSlidingAngle = 25f;
+	[SerializeField] float _slopeWalkCorrection = 2f;
+	[SerializeField] float _strafingSpeed = 5f;
+	bool _inAir = false;
 
 	[Header("Bobbing")]
 	[SerializeField] float _bobbingAmount = 0.05f;
 	[SerializeField] float _bobbingSpeed = 1f;
 	float _bobTimer = 0;
-	float defPosY;
-	Vector3 slopeDirection;
+	float _defPosY;
 
 	Transform _playerCam;
 
 	public LayerMask layerMask;
-	/* !OBS Weird bug causing script to disable itself when awake is used.
-	void Awake()
-	{
-		
-	}*/
+	
+	// !OBS Weird bug causing script to disable itself when awake is used.
 
 	void Start()
 	{
 		charCon = GetComponent<CharacterController>();
 		_playerCam = transform.Find("PlayerCam");
 		CharacterState.SetControlState(CHARACTER_CONTROL_STATE.PLAYERCONTROLLED);
-
-		defPosY = _playerCam.localPosition.y;
+		_defPosY = _playerCam.localPosition.y;
 	}
 
 	void Update()
 	{
-        if (CharacterState.Control_State == CHARACTER_CONTROL_STATE.PLAYERCONTROLLED)
-        {
-            //Input
-            float x = Input.GetAxis("Horizontal");
-            float y = Input.GetAxis("Vertical");
+		if (CharacterState.Control_State == CHARACTER_CONTROL_STATE.PLAYERCONTROLLED)
+		{
+			// == Variables ==
+			//Input
+			float x = Input.GetAxis("Horizontal");
+			float y = Input.GetAxis("Vertical");
+			Vector3 jump = new Vector3(0, 1f * _jumpForce, 0);
 
-            Vector3 jump = new Vector3(0, 1f * _jumpForce, 0);
-            //Debug.DrawRay
-            bool groundRay = Physics.Raycast(transform.position, Vector3.down * 2, 2f, layerMask);
+			//Ground Detection
+			float terrainAngle;
+			RaycastHit groundDetection;
+			bool grounded = GroundRay(transform.position, Vector3.down, 3f, out groundDetection);
 
-            if (_velocity.y > 0)
-            {
-                groundRay = false;
-            }
+			// == Functions ==
+			//_inAir = !charCon.isGrounded;
 
-			if (Input.GetButtonDown(DUCK_BUTTON))
+			// Everything that can be done while grounded
+			if (grounded)
 			{
-				Ducking(-_duckDistance);
-			}
+				terrainAngle = Vector3.Angle(Vector3.up, groundDetection.normal);
+				Vector3 slopeDirection = groundDetection.normal;
 
-			//Jumping
-			//if (Input.GetButtonDown("Jump")) 
-			if (Input.GetButtonDown("Jump") && groundRay)
-			{
-				Debug.Log("JUMP!");
-				Launch(jump);
+				// Jump, otherwise Slide, otherwise Walk
+				if (Input.GetButtonDown("Jump")) // && !_inAir)
+				{
+					Debug.Log("JUMP!");
+					_velocity.y = 0;
+					Launch(jump);
+					_inAir = true;
+				}
+				else if (Input.GetButton(DUCK_BUTTON) && terrainAngle > 10f)
+				{
+					Debug.Log("SLIDING!");
+					Sliding(x, slopeDirection);
+				}
+				else
+				{
+					Walking(x, y, groundDetection);
+				}
 			}
-			//Ducking
-			else if (Input.GetButton(DUCK_BUTTON) && GetGroundSlope(transform.position, Vector3.down, 3f) > 15f)
-			{
-				Debug.Log("SLIDING!");
-				Sliding(x);
-			}
-			//Walking
 			else
-            {
-                Walking(x, y);
-            }
-
-			if(Input.GetButtonUp(DUCK_BUTTON))
 			{
-				Ducking(_duckDistance);
+				Strafing(x, y);
 			}
 
-            //Gravity
-            charCon.Move(_velocity * Time.deltaTime);
-            if (!charCon.isGrounded)
-            {
-                _velocity.y += _gravity * Time.deltaTime;
-            }
-            else
-            {
-                _velocity.y = 0;
-            }
+			//Ducking
+			if (Input.GetButtonDown(DUCK_BUTTON))
+				Ducking(-_duckDistance);
+			else if (Input.GetButtonUp(DUCK_BUTTON))
+				Ducking(_duckDistance);
 
+			//Gravity
+			charCon.Move(_velocity * Time.deltaTime);
+			if (!charCon.isGrounded)	_velocity.y += _gravity * Time.deltaTime;
+			else	_velocity.y = 0;
 
 			// Bobbing
-			HeadBob(x*_speed, y*_speed);
+			HeadBob(x * _speed, y * _speed);
+
+			//bool groundRay = Physics.Raycast(transform.position, Vector3.down * 2, 2f);
+			/*if (_velocity.y > 0)
+                groundRay = false; */
 		}
 	}
 
-	void Walking(float horizontal, float vertical)
+	void Strafing (float horizontal, float vertical)
 	{
-        Vector3 lookDir =_playerCam.forward;
-        lookDir.y = 0;
-        Vector3 move =
-			_playerCam.right * horizontal +
-            lookDir * vertical;
+		Vector3 lookDir = _playerCam.forward;
+		lookDir.y = 0;
+		Vector3 move =
+			_playerCam.right.normalized * horizontal +
+			lookDir.normalized * vertical;
+		charCon.Move(move * _strafingSpeed * Time.deltaTime);
+	}
+
+	void Walking(float horizontal, float vertical, RaycastHit ground)
+	{
+		Vector3 lookDir = _playerCam.forward;
+		lookDir.y = 0;
+		Vector3 move =
+			_playerCam.right.normalized * horizontal +
+			lookDir.normalized * vertical;
 		charCon.Move(move * _speed * Time.deltaTime);
+
+		//Post move distance to ground check
+		if(ground.distance <= _slopeWalkCorrection && !_inAir)
+		{
+			charCon.Move(Vector3.down * ground.distance);
+		}
 	}
 
 	void Ducking(float duckDirection)
 	{
-		Vector3 ducking  = new Vector3(0, duckDirection, 0);
+		Vector3 ducking = new Vector3(0, duckDirection, 0);
 		_playerCam.localPosition += ducking;
-		defPosY += duckDirection;
+		_defPosY += duckDirection;
 	}
 
-	void Sliding(float z)
+	void Sliding(float z, Vector3 slopeDirection)
 	{
 		Vector3 lookDir = _playerCam.forward;
-		lookDir.y = 0; 
+		lookDir.y = 0;
 		Vector3 move = new Vector3(slopeDirection.x, 0f, slopeDirection.z);
 		Vector3 strafe = Vector3.Cross(move, Vector3.up);   //Normalize Directin
-		Debug.Log(strafe);
-		move += strafe*-z;
+		Debug.Log("Sliding");
+		move += strafe * -z;
 		//Debug.Log(move * _speed * _slidingSpeedFactor * Time.deltaTime);
 		charCon.Move(move * _speed * _slidingSpeedFactor * Time.deltaTime);
 	}
 
-    void Teleport()
-    {
+	void Teleport()
+	{
 
-    }
+	}
 
 	void Launch(Vector3 launchVector)
 	{
 		_velocity += launchVector;
 	}
 
-	//Head Bobbing
-	void HeadBob (float x, float z)
+	//Head Bobbing !Stolen from the internet
+	void HeadBob(float x, float z)
 	{
 		if (Mathf.Abs(x) > 0.1f || Mathf.Abs(z) > 0.1f)
 		{
-			//Debug.Log("Is Headbobbing");
 			//Player is moving
 			_bobTimer += Time.deltaTime * _bobbingSpeed;
-			_playerCam.localPosition = new Vector3(_playerCam.localPosition.x, defPosY + Mathf.Sin(_bobTimer) * _bobbingAmount, _playerCam.localPosition.z);
+			_playerCam.localPosition = new Vector3(_playerCam.localPosition.x, 
+				_defPosY + Mathf.Sin(_bobTimer) * _bobbingAmount, _playerCam.localPosition.z);
 		}
 		else
 		{
-			//Debug.Log("Is Idlebobbing");
 			//Idle
 			_bobTimer = 0;
-			_playerCam.localPosition = new Vector3(_playerCam.localPosition.x, Mathf.Lerp(_playerCam.localPosition.y, defPosY, Time.deltaTime * _bobbingSpeed), _playerCam.localPosition.z);
+			_playerCam.localPosition = new Vector3(_playerCam.localPosition.x, 
+				Mathf.Lerp(_playerCam.localPosition.y, _defPosY, Time.deltaTime * _bobbingSpeed), _playerCam.localPosition.z);
 		}
 	}
 
-	float GetGroundSlope(Vector3 rayStart, Vector3 rayDirection, float rayDistance)
+	//Ground Detection !Stolen from the internet
+	bool GroundRay(Vector3 rayStart, Vector3 rayDirection, float rayDistance, out RaycastHit hit)
 	{
-		float terrainAngle = 0;
+		Ray groundRay = new Ray(rayStart, rayDirection);
 
-		Ray myRay = new Ray(rayStart, rayDirection); 
-		RaycastHit hit;
-
-		if (Physics.Raycast(myRay, out hit, rayDistance))
+		if (Physics.Raycast(groundRay, out hit, rayDistance))
 		{
-			if (hit.collider.gameObject.tag == "ground") // Our Ray has hit the ground
+			if (GROUND_TAG == "null" || hit.collider.gameObject.tag == GROUND_TAG)
 			{
-				terrainAngle = Vector3.Angle(Vector3.up, hit.normal);
-				slopeDirection = hit.normal;
+				//_slopeDirection = hit.normal;
+				//Debug.DrawRay(transform.position, slopeDirection, Color.magenta, 1f);
+				return true;
 			}
 		}
-
-		return terrainAngle;
+		return false;
 	}
 }

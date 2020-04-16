@@ -22,13 +22,13 @@ public class Interactor : MonoBehaviour
 		// === Flower Segment ===
 		// ==========================================
 		// This is debugging
-		List<string> flowerNames = FlowerLibrary.GetAllFlowerNames();
+		/*List<string> flowerNames = FlowerLibrary.GetAllFlowerNames();
 		string debugFlowerNames = "All flower names: ";
 		foreach (string name in flowerNames)
 		{
 			debugFlowerNames += name + " |";
 		}
-		Debug.Log(debugFlowerNames);
+		Debug.Log(debugFlowerNames);*/
 		// ===========================================
 
 		// === Load Log Stuff ===
