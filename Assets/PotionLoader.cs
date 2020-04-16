@@ -5,16 +5,21 @@ using UnityEngine.UI;
 
 public class PotionLoader : MonoBehaviour
 {
-	[SerializeField] int _potionID = -1;
+	[SerializeField] string _potionName = "";
 	[SerializeField] Text textObject;
 	List<Flower> recipe = new List<Flower>();
 	Potion _potion;
 
+	void Awake()
+	{
+		CreateThisPotion();
+	}
+
 	void Start()
 	{
-		_potion = FlowerLibrary.GetPotionType(_potionID);
-		recipe.AddRange(_potion.Recipe);
-		textObject.text = _potion.Name + "\n x" + _potion.Amount;
+		//_potion = FlowerLibrary.GetPotionType(_potionName);
+		//recipe.AddRange(_potion.Recipe);
+		textObject.text = _potionName + "\n x" + FlowerLibrary.GetPotionAmount(_potionName);
 	}
 
 	void OnEnable()
@@ -23,6 +28,12 @@ public class PotionLoader : MonoBehaviour
 		{
 			textObject.text = _potion.Name + "\n x" + _potion.Amount;
 		}
+	}
+
+	void CreateThisPotion ()
+	{
+		string[] recipe0 = new string[2] { "Tulip", "Tulip" };
+		Potion potion0 = new Potion(0, "Speed", 0, recipe0);
 	}
 
 	public void ActivatePotion()
@@ -44,7 +55,7 @@ public class PotionLoader : MonoBehaviour
 		{
 			recipe[i].Amount--;
 		}
-		if (hasIngredients) FlowerLibrary.IncrementPotion(_potionID);
+		if (hasIngredients) FlowerLibrary.IncrementPotion(_potionName, 1);
 		else Debug.Log("Not enough flowers");
 	}
 }

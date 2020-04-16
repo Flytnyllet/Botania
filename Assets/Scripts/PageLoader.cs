@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+// !WARNING, DO NOT LET THESE OBJECTS BE DISABLED ON START UP! THEY ARE REQUIRED TO RUN AT LEAST THEIR STARTING METHODS AS TO ALLOW THE FLOWER SYSTEM TO FUNCTION
 public class PageLoader : MonoBehaviour
 {
 	[SerializeField] List<Image> _imageObject = new List<Image>();
@@ -17,8 +18,8 @@ public class PageLoader : MonoBehaviour
 
 	void Awake()
 	{
-		_flower = CreateThisFlower();
-		FlowerLibrary.AddFlower(_flower);
+		/*_flower = CreateThisFlower();
+		FlowerLibrary.AddFlower(_flower);*/
 	}
 
 	void Start()
@@ -40,6 +41,7 @@ public class PageLoader : MonoBehaviour
 			Debug.LogError("Page load failure. Either the page name is incorrect or there is no flower by the name of " + _flowerLoadName);
 		}*/
 
+		/*
 		int ind = _textObject.Count;
 		Debug.Log("Number of text object: " + _textObject.Count);
 		for (int i = 0; i < ind; i++)
@@ -47,9 +49,8 @@ public class PageLoader : MonoBehaviour
 			Debug.Log("Added Text");
 			_textObject[i].text = _flower.LoreProgression[i];
 		}
-
-		_amountCounter.text = _flower.Amount.ToString();
-
+		*/
+		_amountCounter.text = FlowerLibrary.GetFlowerAmount(_flowerName).ToString();
 	}
 
 	void OnEnable()
@@ -63,7 +64,7 @@ public class PageLoader : MonoBehaviour
 
 	public Flower CreateThisFlower()
 	{
-		Flower flower = new Flower(_flowerName, _progressionPoints.ToArray(), _loreDescriptions.ToArray());
+		Flower flower = new Flower(_flowerName, _progressionPoints.ToArray());
 		return flower;
 	}
 
