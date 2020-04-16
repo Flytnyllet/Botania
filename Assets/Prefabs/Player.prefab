@@ -112,13 +112,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GROUND_TAG: null
-  _speed: 12
-  _jumpForce: 4
-  _gravity: -9.81
+  _speed:
+    _baseValue: 12
+  _jumpForce:
+    _baseValue: 1
+  _gravity:
+    _baseValue: -9.81
   _velocity: {x: 0, y: 0, z: 0}
   _crawlSpeedFactor: 0.5
   _duckDistance: 0.4
   _slidingSpeedFactor: 0.5
+  _groundRayDistance: 3
+  _minSlidingAngle: 25
+  _slopeWalkCorrection: 2
+  _strafingSpeed: 5
   _bobbingAmount: 0.05
   _bobbingSpeed: 1
   layerMask:

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 
 [Serializable]
 public class CharacterStats
@@ -49,6 +50,19 @@ public class CharacterStats
         statModifiers.Add(mod);
         statModifiers.Sort(CompareOrder);
     }
+    public virtual void AddModifier(StatModifier mod, float time)
+    {
+        isModified = true;
+        statModifiers.Add(mod);
+        statModifiers.Sort(CompareOrder);
+        Task task = Task.Run(async () =>
+            {
+                await Task.Delay(System.TimeSpan.FromSeconds(time));
+                RemoveModifier(mod);
+            });
+    }
+
+
 
     public virtual bool RemoveModifier(StatModifier mod)
     {
