@@ -1,5 +1,23 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-8591233099469799205
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Master.bank
+  m_EditorClassIdentifier: 
+  Path: FMOD/Build/Desktop/Master.bank
+  SubDir: 
+  lastModified: 637214245225921169
+  LoadResult: 0
+  FileSizes: []
+  Exists: 1
 --- !u!114 &-6094237811679974352
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17,7 +35,7 @@ MonoBehaviour:
   lastModified: 637217843744365619
   LoadResult: 0
   FileSizes: []
-  Exists: 1
+  Exists: 0
 --- !u!114 &-5997761786413377745
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -36,6 +54,24 @@ MonoBehaviour:
   LoadResult: 0
   FileSizes: []
   Exists: 1
+--- !u!114 &-3956347948069534178
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Master.bank
+  m_EditorClassIdentifier: 
+  Path: FMOD/Build/Desktop/Master.bank
+  SubDir: 
+  lastModified: 637214245225921169
+  LoadResult: 0
+  FileSizes: []
+  Exists: 1
 --- !u!114 &-2702018256126966122
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -50,7 +86,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Path: FMOD/Build/Desktop/Master.strings.bank
   SubDir: 
-  lastModified: 637217843744375588
+  lastModified: 637214245225941107
   LoadResult: 0
   FileSizes:
   - Name: 
@@ -70,14 +106,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   EditorBanks:
   - {fileID: -2702018256126966122}
-  - {fileID: -6094237811679974352}
+  - {fileID: -3956347948069534178}
   EditorEvents: []
   EditorParameters: []
   MasterBanks:
-  - {fileID: -6094237811679974352}
+  - {fileID: -3956347948069534178}
   StringsBanks:
   - {fileID: -2702018256126966122}
-  stringsBankWriteTime: 637217843744375588
+  stringsBankWriteTime: 637214245225941107
   cacheVersion: 3
 --- !u!114 &5361099260962645685
 MonoBehaviour:

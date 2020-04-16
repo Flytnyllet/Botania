@@ -38,8 +38,7 @@ public class PotionLoader : MonoBehaviour
 
 	public void ActivatePotion()
 	{
-        p = new TestPotion();
-        p.SpeedPot(player);
+        
 	}
 	public void AddPotion()
 	{
