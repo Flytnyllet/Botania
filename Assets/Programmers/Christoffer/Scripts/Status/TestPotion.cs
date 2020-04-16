@@ -4,15 +4,15 @@ using UnityEngine;
 
 public class TestPotion
 {
-    public void SpeedPot(Test p)
+    public void SpeedPot(FPSMovement p)
     {
         //simpler code (preference)
-        p.Speed.AddModifier(new StatModifier(20, StatType.Flat, this));
-        p.Speed.AddModifier(new StatModifier(0.3f, StatType.PercentMult, this));
+        p._speed.AddModifier(new StatModifier(20, StatType.Flat, this),3.0f);
+        p._speed.AddModifier(new StatModifier(0.3f, StatType.PercentMult, this));
     }
 
-    public void SpeedPotionEnd(Test p)
+    public void SpeedPotionEnd(FPSMovement p)
     {
-        p.Speed.RemoveAllModifiers(this);
+        p._speed.RemoveAllModifiers(this);
     }
 }

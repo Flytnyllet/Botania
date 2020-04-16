@@ -5,21 +5,21 @@ using UnityEngine.UI;
 
 public class ItemLoader : MonoBehaviour
 {
-	[SerializeField] int _flowerID = -1;
+	[SerializeField] string _flowerName;
 	[SerializeField] Text textObject;
-	Flower _flower;
+	int itemAmount = 0;
+	//Flower _flower;
 
     void Start()
     {
-		_flower = FlowerLibrary.GetFlowerType(_flowerID);
-		textObject.text = _flower.Name + "\n x" + _flower.Amount;
-    }
+		//itemAmount = FlowerLibrary.GetFlowerAmount(_flowerName);
+		textObject.text = _flowerName + "\n x" + itemAmount;
+
+	}
 
 	void OnEnable()
 	{
-		if(_flower != null)
-		{
-			textObject.text = _flower.Name + "\n x" + _flower.Amount;
-		}
+		//if(_flower != null)
+			textObject.text = _flowerName + "\n x" + itemAmount;
 	}
 }

@@ -8,9 +8,9 @@ public class Potion
 	int _amount;
 	string _name;
 	int _effectID;
-	Flower[] _recipe;
+	string[] _recipe;
 
-	public Potion(int id, string name, int effectID, Flower[] recipe)
+	public Potion(int id, string name, int effectID, string[] recipe)
 	{
 		_id = id;
 		_name = name;
@@ -33,7 +33,7 @@ public class Potion
 		get => _id;
 	}
 
-	public Flower[] Recipe
+	public string[] Recipe
 	{
 		get => _recipe;
 	}

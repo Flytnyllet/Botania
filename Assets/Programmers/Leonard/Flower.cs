@@ -5,18 +5,20 @@ using UnityEngine;
 [System.Serializable]
 public class Flower
 {
-	int _id;
+	//int _id;
 	string _name;
 	int _amount = 0;
 	int _unlockProgress = 0;
 	int[] _progressionCurve;
-	string[] _loreProgression;
+	//string[] _loreProgression;
 
-	public Flower(int id, string name = "NoName", int[] progressionCurve = null, string[] loreProgression = null)
+	public Flower(string name = "NoName", int[] progressionCurve = null
+		//, string[] loreProgression = null
+		)
 	{
 		this._name = name;
 		this._progressionCurve = progressionCurve;
-		this._loreProgression = loreProgression;
+		//this._loreProgression = loreProgression;
 	}
 
 	public string Name
@@ -40,8 +42,8 @@ public class Flower
 		get { return _progressionCurve; }
 		//set { _progressionCurve = value; }
 	}
-	public string[] LoreProgression
+	/*public string[] LoreProgression
 	{
 		get { return _loreProgression;  }
-	}
+	}*/
 }

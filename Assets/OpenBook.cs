@@ -11,9 +11,16 @@ public class OpenBook : MonoBehaviour
 	const string INPUT_INVENTORY = "Inventory";
 
 	[SerializeField] GameObject _bookObject;
+	[SerializeField] List<PageLoader> pages = new List<PageLoader>();
     [SerializeField] bool _startLoaded = false;
     private void Awake()
     {
+		foreach (PageLoader page in pages)
+		{
+			Flower flower = page.CreateThisFlower();
+			FlowerLibrary.AddFlower(flower.Name, 0);
+		}
+
         if (_bookObject == null)
         {
             _bookObject = transform.Find(BOOK_OBJECT_NAME).gameObject; //slow

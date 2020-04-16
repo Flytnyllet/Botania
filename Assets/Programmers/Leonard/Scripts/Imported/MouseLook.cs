@@ -58,7 +58,9 @@ public class MouseLook : MonoBehaviour
 
                 transform.localEulerAngles = new Vector3(-rotationY, rotationX, 0);
             }
-            else if (axes == RotationAxes.MouseX)
+
+			// This is not used currently
+            /*else if (axes == RotationAxes.MouseX)
             {
                 transform.Rotate(0, Input.GetAxis("Mouse X") * sensitivityX, 0);
             }
@@ -68,7 +70,7 @@ public class MouseLook : MonoBehaviour
                 rotationY = Mathf.Clamp(rotationY, minimumY, maximumY);
 
                 transform.localEulerAngles = new Vector3(-rotationY, transform.localEulerAngles.y, 0);
-            }
+            }*/
         }
     }
 
