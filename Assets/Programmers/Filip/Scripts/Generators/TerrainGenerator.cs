@@ -89,7 +89,11 @@ public class TerrainGenerator : MonoBehaviour
                     else
                     {
                         TerrainChunk newChunk = new TerrainChunk(viewedChunkCoord, _heightMapSettings, _meshSettings, _detailLevels, _colliderLODIndex, transform, _viewer, _mapMaterial, _biome);
-                        _mapGeneratorScript.AddChunkToMap(viewedChunkCoord);
+
+                        //Make mapchunk
+                        if (_mapGeneratorScript != null)
+                            _mapGeneratorScript.AddChunkToMap(viewedChunkCoord);
+
                         _terrainChunkDictionary.Add(viewedChunkCoord, newChunk);
                         newChunk.onVisibilityChanged += OnTerrainChunkVisibilityChanged;
                         newChunk.Load();
