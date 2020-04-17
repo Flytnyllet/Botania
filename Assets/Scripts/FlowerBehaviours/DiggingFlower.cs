@@ -46,7 +46,6 @@ public class DiggingFlower : MonoBehaviour
         float time = 0.0f;
         while (time < _hideTime)
         {
-            Debug.Log(_playerInArea);
             time += Time.deltaTime;
             if (_playerInArea) time = 0.0f;
             yield return null;
