@@ -9,6 +9,7 @@ public class Map : MonoBehaviour, IDragHandler, IScrollHandler
 
     [SerializeField] Canvas _parentCanvas;
     [SerializeField] RectTransform _spawnContainer;
+    [SerializeField] RectTransform _pivotSpawnContainer;
 
 
     [Header("Settings")]
@@ -26,18 +27,23 @@ public class Map : MonoBehaviour, IDragHandler, IScrollHandler
 
     public void OnDrag(PointerEventData eventData)
     {
-        _spawnContainer.anchoredPosition += eventData.delta * _dragSpeed / _parentCanvas.scaleFactor;
+        _spawnContainer.anchoredPosition += eventData.delta * _dragSpeed / _pivotSpawnContainer.localScale.x / _parentCanvas.scaleFactor;
     }
 
     public void OnScroll(PointerEventData eventData)
     {
+        Vector3 oldPosition = _spawnContainer.position;
+        _pivotSpawnContainer.position = eventData.position;
+
         float newScale;
 
         if (eventData.scrollDelta.y > 0)
-            newScale = _spawnContainer.localScale.x * _zoomInPercentage;
+            newScale = _pivotSpawnContainer.localScale.x * _zoomInPercentage;
         else
-            newScale = _spawnContainer.localScale.x * _zoomOutPercentage;
+            newScale = _pivotSpawnContainer.localScale.x * _zoomOutPercentage;
 
-        _spawnContainer.localScale = new Vector3(newScale, newScale, newScale);
+        _spawnContainer.position = oldPosition;
+
+        _pivotSpawnContainer.localScale = new Vector3(newScale, newScale, newScale);
     }
 }
