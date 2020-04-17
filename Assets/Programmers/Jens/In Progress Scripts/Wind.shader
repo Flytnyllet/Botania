@@ -53,7 +53,7 @@
 
 		  float sin, cos;
 		  sincos(_Time.y*_Speed, sin, cos);
-
+		  //Basic bitch shit right now
 		  v.vertex.x += cos * v.vertex.y*0.03f;
 		  v.vertex.y += sin * v.vertex.y*0.01f;
 	  }
