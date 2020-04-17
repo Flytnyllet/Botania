@@ -10,8 +10,5 @@ public class MapGeneratorPreview : Editor
         MapGenerator mapGenerator = (MapGenerator)target;
 
         DrawDefaultInspector();
-
-        if (GUILayout.Button("Generate"))
-            mapGenerator.DisplayMap();
     }
 }

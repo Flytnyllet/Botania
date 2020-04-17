@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public class TerrainChunk
 {
-    static readonly float COLLIDER_GENERATION_DISTANCE_THRESHOLD = 5;
+    static readonly float COLLIDER_GENERATION_DISTANCE_THRESHOLD = 35;
 
     public event System.Action<TerrainChunk, bool> onVisibilityChanged;
     public Vector2 Coord { get; private set; }

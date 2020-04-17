@@ -8,10 +8,11 @@ public class MapGenerator : MonoBehaviour
     Dictionary<Vector2, Texture2D> _renderedMapChunks;
     List<Vector2> _chunksInMap;
     List<GameObject> _spawnedMapChunks;
+    bool _displaying = false;
 
     [Header("Drop")]
 
-    [SerializeField] Canvas _canvas;
+    [SerializeField] Map _mapScript;
     [SerializeField] MapSettings _mapSettings;
     [SerializeField] MeshSettings _meshSettings;
 
@@ -20,25 +21,21 @@ public class MapGenerator : MonoBehaviour
 
     [SerializeField, Range(1, 100)] float _chunkSize = 20;
 
-    Timer _testTimer = new Timer(1);
-
     private void Awake()
     {
         _renderedMapChunks = new Dictionary<Vector2, Texture2D>();
         _chunksInMap = new List<Vector2>();
-        _spawnedMapChunks = new List<GameObject>();   
-    }
+        _spawnedMapChunks = new List<GameObject>();
 
-    private void Update()
-    {
-        _testTimer.Time += Time.deltaTime;
-
-        if (_testTimer.Expired())
+        for (int x = -20; x < 20; x++)
         {
-            Clear();
-            DisplayMap();
-            _testTimer.Reset();
+            for (int y = -20; y < 20; y++)
+            {
+                AddChunkToMap(new Vector2(x, y));
+            }
         }
+
+        Display(true);
     }
 
     public void AddChunkToMap(Vector2 chunkCoord)
@@ -63,42 +60,47 @@ public class MapGenerator : MonoBehaviour
 
     private void AddTexture(Texture2D texture, Vector2 chunkCoord)
     {
-        Debug.Log(chunkCoord);
+        if (!_renderedMapChunks.ContainsKey(chunkCoord))
+            _renderedMapChunks.Add(chunkCoord, texture);
+        else
+            Debug.LogError("This terrainchunk is already a key for a texture? Multiple callings??");
 
-        _renderedMapChunks.Add(chunkCoord, texture);
+        InstantiateChunk(texture, chunkCoord);
     }
 
-    public void DisplayMap()
+    private void InstantiateChunk(Texture2D texture, Vector2 chunkCoord)
     {
-        for (int i = 0; i < _chunksInMap.Count; i++)
+        //Create GameObject
+        GameObject mapChunk = new GameObject(chunkCoord.ToString());
+        mapChunk.transform.parent = _mapScript.SpawnContainer;
+        mapChunk.transform.rotation = Quaternion.Euler(0.0f, 0.0f, -90f);
+
+        //Position
+        mapChunk.transform.localScale = Vector3.one;
+        mapChunk.transform.localPosition = chunkCoord * _chunkSize;
+
+        //Add Texture
+        RawImage image = mapChunk.AddComponent<RawImage>();
+        image.texture = texture;
+        image.rectTransform.sizeDelta = new Vector2(_chunkSize, _chunkSize);
+        image.raycastTarget = false;
+
+        //Display mode
+        mapChunk.SetActive(_displaying);
+
+        _spawnedMapChunks.Add(mapChunk);
+    }
+
+    private void Display(bool status)
+    {
+        if (_displaying != status)
         {
-            if (_renderedMapChunks.ContainsKey(_chunksInMap[i]))
+            _displaying = status;
+
+            for (int i = 0; i < _spawnedMapChunks.Count; i++)
             {
-                Texture2D texture = _renderedMapChunks[_chunksInMap[i]];
-
-                GameObject mapChunk = new GameObject(_chunksInMap[i].ToString());
-                mapChunk.transform.parent = _canvas.transform;
-                mapChunk.transform.rotation = Quaternion.Euler(0.0f, 0.0f, -90f);
-
-                //Position
-                mapChunk.transform.localPosition = _chunksInMap[i] * _chunkSize * mapChunk.transform.localScale.x;
-
-                //Add Texture
-                RawImage image = mapChunk.AddComponent<RawImage>();
-                image.texture = texture;
-                image.rectTransform.sizeDelta = new Vector2(_chunkSize, _chunkSize);
-
-                _spawnedMapChunks.Add(mapChunk);
+                _spawnedMapChunks[i].SetActive(status);
             }
         }
-    }
-
-    public void Clear()
-    {
-        for (int i = 0; i < _spawnedMapChunks.Count; i++)
-        {
-            Destroy(_spawnedMapChunks[i]);
-        }
-        _spawnedMapChunks.Clear();
     }
 }
