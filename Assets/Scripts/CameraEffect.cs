@@ -55,7 +55,7 @@ public class CameraEffect : MonoBehaviour
     public void ActivateEffect(Material material, float time)
     {
         _material = material;
-        Task task = Task.Run(async () =>
+        Task.Run(async () =>
         {
             await Task.Delay(System.TimeSpan.FromSeconds(time));
             _material = null;
@@ -64,7 +64,7 @@ public class CameraEffect : MonoBehaviour
     void ActivateEffect( EventParameter eventParam)
     {
         _material = eventParam.materialParam;
-        Task task = Task.Run(async () =>
+        Task.Run(async () =>
         {
             await Task.Delay(System.TimeSpan.FromSeconds(eventParam.floatParam));
             _material = null;
@@ -73,7 +73,7 @@ public class CameraEffect : MonoBehaviour
     //public void ActivateEffect(float time)
     //{
     //    _active = true;
-    //    Task task = Task.Run(async () =>
+    //    Task.Run(async () =>
     //    {
     //        await Task.Delay(System.TimeSpan.FromSeconds(time));
     //        _active = false;

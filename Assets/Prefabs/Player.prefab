@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 946191594724661607}
   - component: {fileID: 946191594724661604}
   - component: {fileID: 946191594724661605}
-  - component: {fileID: 195250048}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -132,18 +131,6 @@ MonoBehaviour:
   layerMask:
     serializedVersion: 2
     m_Bits: 256
---- !u!114 &195250048
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 946191594724661627}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 10d69d23a37a2ca479ce26a67367ea8d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &946191596140822717
 GameObject:
   m_ObjectHideFlags: 0
@@ -157,6 +144,7 @@ GameObject:
   - component: {fileID: 946191596140822713}
   - component: {fileID: 946191596140822718}
   - component: {fileID: 946191596140822719}
+  - component: {fileID: 9209358986787311481}
   m_Layer: 0
   m_Name: PlayerCam
   m_TagString: MainCamera
@@ -246,8 +234,8 @@ MonoBehaviour:
   sensitivityY: 5
   minimumX: -360
   maximumX: 360
-  minimumY: -90
-  maximumY: 90
+  minimumY: -89
+  maximumY: 89
 --- !u!114 &946191596140822719
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -264,3 +252,15 @@ MonoBehaviour:
   distance: 10
   interactKey: 101
   interactLayerMask: 9
+--- !u!114 &9209358986787311481
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 946191596140822717}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10d69d23a37a2ca479ce26a67367ea8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

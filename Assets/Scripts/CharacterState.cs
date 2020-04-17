@@ -52,7 +52,7 @@ public static class CharacterState
     //public static void SetControlState(CHARACTER_CONTROL_STATE startState, CHARACTER_CONTROL_STATE endState, float time)
     //{
     //    _controlState = startState;
-    //    Task task = Task.Run(async () =>
+    //    Task.Run(async () =>
     //    {
     //        await Task.Delay(System.TimeSpan.FromSeconds(time));
     //        _controlState = endState;

@@ -99,7 +99,7 @@ public class PortalCameraController : MonoBehaviour
         lock (_lock)
         {
             _active = false;
-            var task = Task.Run(async () =>
+            Task.Run(async () =>
             {
                 await Task.Delay(System.TimeSpan.FromSeconds(1.0f));
                 _active = true;

@@ -46,6 +46,7 @@ public class RunAwayBehaviour : MonoBehaviour
     }
 
     //Runs until player is outside the collider for a set amount of time.
+    //I fall detta behöver läggas till på spårade objekt så borde detta göras före och efter while-loopen
     IEnumerator RunAway(Transform target, float time, float radius)
     {
         //consider locking if this shit actually becomes complex to the point where you regrett not making a state machine
