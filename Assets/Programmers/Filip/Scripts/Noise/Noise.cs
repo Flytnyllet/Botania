@@ -14,21 +14,24 @@ public static class Noise
     }
 
     //Combines different noises of one noise object into one final noise
-    public static float[,] GenerateNoiseMap(int mapWidth, int mapHeight, NoiseSettingsDataMerge[] settingsMerge, Vector2 sampleCenter)
+    public static float[,] GenerateNoiseMap(int mapWidth, int mapHeight, int detailLevel, NoiseSettingsDataMerge[] settingsMerge, Vector2 sampleCenter)
     {
-        float[,] noise = GenerateNoiseMap(mapWidth, mapHeight, settingsMerge[0].NoiseSettings, sampleCenter);
+        float[,] noise = GenerateNoiseMap(mapWidth, mapHeight, detailLevel, settingsMerge[0].NoiseSettings, sampleCenter);
 
         for (int i = 1; i < settingsMerge.Length; i++)
         {
-            noise = MergeNoise(mapWidth, mapHeight, noise, settingsMerge[i].NoiseSettings, settingsMerge[i - 1].MoiseMergeType, sampleCenter);
+            noise = MergeNoise(mapWidth, mapHeight, detailLevel, noise, settingsMerge[i].NoiseSettings, settingsMerge[i - 1].MoiseMergeType, sampleCenter);
         }
 
         return noise;
     }
 
-    public static float[,] GenerateNoiseMap(int mapWidth, int mapHeight, NoiseSettings settings, Vector2 sampleCenter)
+    public static float[,] GenerateNoiseMap(int mapWidth, int mapHeight, int detailLevel, NoiseSettings settings, Vector2 sampleCenter)
     {
-        float[,] noiseMap = new float[mapWidth, mapHeight];
+        if (detailLevel <= 0)
+            Debug.LogError("Detail level of noise may not be lower than 1!!");
+
+        float[,] noiseMap = new float[mapWidth / detailLevel, mapHeight / detailLevel];
 
         //This justs set everything to white and returns it
         if (settings.AllWhite)
@@ -73,9 +76,9 @@ public static class Noise
         float halfWidth = mapWidth / 2f;
         float halfHeight = mapHeight / 2f;
 
-        for (int y = 0; y < mapHeight; y++)
+        for (int y = 0; y < mapHeight; y+=detailLevel)
         {
-            for (int x = 0; x < mapWidth; x++)
+            for (int x = 0; x < mapWidth; x+=detailLevel)
             {
                 //amplitude and frequency are changed per octave
                 amplitude = 1;
@@ -98,7 +101,7 @@ public static class Noise
                 {
                     noiseHeight -= settings.Darken;
 
-                    if (settings.NormalizeMode == NormalizeMode.LOCAL && noiseHeight <= 0)
+                    if (settings.NormalizeMode == NormalizeMode.LOCAL && noiseHeight < 0)
                         noiseHeight = 0;
                 }
 
@@ -108,26 +111,30 @@ public static class Noise
                 if (noiseHeight < minLocalNoiseHeight)
                     minLocalNoiseHeight = noiseHeight;
 
-                noiseMap[x, y] = noiseHeight + settings.AddValue;
-                noiseMap[x, y] *= settings.Strength;
+                if (x / detailLevel < mapWidth / detailLevel && y / detailLevel < mapHeight / detailLevel)
+                {
+                    noiseMap[x / detailLevel, y / detailLevel] = noiseHeight + settings.AddValue;
+                    noiseMap[x / detailLevel, y / detailLevel] *= settings.Strength;
+                }
+            }
+        }
 
-                if (settings.NormalizeMode == NormalizeMode.GLOBAL)
+        //Normalize values in noiseMap
+        
+        for (int y = 0; y < noiseMap.GetLength(0); y++)
+        {
+            for (int x = 0; x < noiseMap.GetLength(1); x++)
+            {
+                if (settings.NormalizeMode == NormalizeMode.LOCAL)
+                    noiseMap[x, y] = Mathf.InverseLerp(minLocalNoiseHeight, maxLocalNoiseHeight, noiseMap[x, y]);
+                else
                 {
                     float normalizedHeight = (noiseMap[x, y] + 1) / (maxPossibleHeight / GLOBAL_MODE_ESTIMATE_MULTIPLIER);
                     noiseMap[x, y] = Mathf.Clamp(normalizedHeight, 0, int.MaxValue);
                 }
             }
         }
-
-        //Normalize values in noiseMap
-        if (settings.NormalizeMode == NormalizeMode.LOCAL)
-        {
-            for (int y = 0; y < mapHeight; y++)
-                for (int x = 0; x < mapWidth; x++)
-                {
-                    noiseMap[x, y] = Mathf.InverseLerp(minLocalNoiseHeight, maxLocalNoiseHeight, noiseMap[x, y]);
-                }
-        }
+                
             
         return noiseMap;
     }
@@ -199,37 +206,37 @@ public static class Noise
     }
 
     //Converts different input parameter data and sends it to base merge function ^
-    public static float[,] MergeNoise(int mapWidth, int mapHeight, NoiseSettingsDataMerge[] settingsMerge_1, NoiseSettingsDataMerge[] settingsMerge_2, NoiseMergeType noiseMergeType, Vector2 sampleCenter)
+    public static float[,] MergeNoise(int mapWidth, int mapHeight, int detailLevel, NoiseSettingsDataMerge[] settingsMerge_1, NoiseSettingsDataMerge[] settingsMerge_2, NoiseMergeType noiseMergeType, Vector2 sampleCenter)
     {
-        float[,] noise_1 = GenerateNoiseMap(mapWidth, mapHeight, settingsMerge_1, sampleCenter);
-        float[,] noise_2 = GenerateNoiseMap(mapWidth, mapHeight, settingsMerge_2, sampleCenter);
+        float[,] noise_1 = GenerateNoiseMap(mapWidth, mapHeight, detailLevel, settingsMerge_1, sampleCenter);
+        float[,] noise_2 = GenerateNoiseMap(mapWidth, mapHeight, detailLevel, settingsMerge_2, sampleCenter);
 
-        return MergeNoise(mapWidth, mapHeight, noise_1, noise_2, noiseMergeType, sampleCenter);
+        return MergeNoise(mapWidth / detailLevel, mapHeight / detailLevel, noise_1, noise_2, noiseMergeType, sampleCenter);
     }
-    public static float[,] MergeNoise(int mapWidth, int mapHeight, NoiseSettingsDataMerge[] settingsMerge_1, float[,] noise_2, NoiseMergeType noiseMergeType, Vector2 sampleCenter)
+    public static float[,] MergeNoise(int mapWidth, int mapHeight, int detailLevel, NoiseSettingsDataMerge[] settingsMerge_1, float[,] noise_2, NoiseMergeType noiseMergeType, Vector2 sampleCenter)
     {
-        float[,] noise_1 = GenerateNoiseMap(mapWidth, mapHeight, settingsMerge_1, sampleCenter);
+        float[,] noise_1 = GenerateNoiseMap(mapWidth, mapHeight, detailLevel, settingsMerge_1, sampleCenter);
 
-        return MergeNoise(mapWidth, mapHeight, noise_1, noise_2, noiseMergeType, sampleCenter);
+        return MergeNoise(mapWidth / detailLevel, mapHeight / detailLevel, noise_1, noise_2, noiseMergeType, sampleCenter);
     }
-    public static float[,] MergeNoise(int width, int height, NoiseSettings noiseSettings_1, NoiseSettings noiseSettings_2, NoiseMergeType noiseMergeType, Vector2 center)
+    public static float[,] MergeNoise(int width, int height, int detailLevel, NoiseSettings noiseSettings_1, NoiseSettings noiseSettings_2, NoiseMergeType noiseMergeType, Vector2 center)
     {
-        float[,] noise_1 = GenerateNoiseMap(width, height, noiseSettings_1, center);
-        float[,] noise_2 = GenerateNoiseMap(width, height, noiseSettings_2, center);
+        float[,] noise_1 = GenerateNoiseMap(width, height, detailLevel, noiseSettings_1, center);
+        float[,] noise_2 = GenerateNoiseMap(width, height, detailLevel, noiseSettings_2, center);
 
-        return MergeNoise(width, height, noise_1, noise_2, noiseMergeType, center);
+        return MergeNoise(width / detailLevel, height / detailLevel, noise_1, noise_2, noiseMergeType, center);
     }
-    public static float[,] MergeNoise(int width, int height, float[,] noise_1, NoiseSettings noiseSettings_2, NoiseMergeType noiseMergeType, Vector2 center)
+    public static float[,] MergeNoise(int width, int height, int detailLevel, float[,] noise_1, NoiseSettings noiseSettings_2, NoiseMergeType noiseMergeType, Vector2 center)
     {
-        float[,] noise_2 = GenerateNoiseMap(width, height, noiseSettings_2, center);
+        float[,] noise_2 = GenerateNoiseMap(width, height, detailLevel, noiseSettings_2, center);
 
-        return MergeNoise(width, height, noise_1, noise_2, noiseMergeType, center);
+        return MergeNoise(width / detailLevel, height / detailLevel, noise_1, noise_2, noiseMergeType, center);
     }
-    public static float[,] MergeNoise(int width, int height, NoiseSettings noiseSettings_1, float[,] noise_2, NoiseMergeType noiseMergeType, Vector2 center)
+    public static float[,] MergeNoise(int width, int height, int detailLevel, NoiseSettings noiseSettings_1, float[,] noise_2, NoiseMergeType noiseMergeType, Vector2 center)
     {
-        float[,] noise_1 = GenerateNoiseMap(width, height, noiseSettings_1, center);
+        float[,] noise_1 = GenerateNoiseMap(width, height, detailLevel, noiseSettings_1, center);
 
-        return MergeNoise(width, height, noise_1, noise_2, noiseMergeType, center);
+        return MergeNoise(width / detailLevel, height / detailLevel, noise_1, noise_2, noiseMergeType, center);
     }
 }
 
