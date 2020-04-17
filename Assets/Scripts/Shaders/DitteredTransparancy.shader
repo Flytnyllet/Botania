@@ -2,11 +2,10 @@
 {
 	Properties{
 		_MainTex("Base (RGB)", 2D) = "white" {}
-	//_Alpha("Alpha", 2D) = "white" {}
+			//_Alpha("Alpha", 2D) = "white" {}
 	}
 		SubShader{
 			Tags { "Queue" = "AlphaTest" "IgnoreProjector" = "True" "RenderType" = "TransparentCutout" }
-			Blend SrcAlpha OneMinusSrcAlpha
 			LOD 150
 			cull off
 

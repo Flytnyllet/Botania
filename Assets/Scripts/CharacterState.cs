@@ -7,12 +7,36 @@ using UnityEngine;
 // can be edidted by other objects for the sake of avoiding dependendies.
 
 public enum CHARACTER_CONTROL_STATE { PLAYERCONTROLLED = 0, CUTSCENE, MENU }
-public static class CharacterState 
+public static class CharacterState
 {
     static CHARACTER_CONTROL_STATE _controlState = 0;
     public static CHARACTER_CONTROL_STATE Control_State
     {
         get { return _controlState; }
+    }
+
+    //Förenkla läslighet i tillkopplad kod
+    public static bool MayMove
+    {
+        get
+        {
+            if (_controlState == CHARACTER_CONTROL_STATE.PLAYERCONTROLLED)
+            {
+                return true;
+            }
+            return false;
+        }
+    }
+    public static bool MouseLook
+    {
+        get
+        {
+            if (_controlState == CHARACTER_CONTROL_STATE.PLAYERCONTROLLED)
+            {
+                return true;
+            }
+            return false;
+        }
     }
 
     public static void SetControlState(CHARACTER_CONTROL_STATE state)

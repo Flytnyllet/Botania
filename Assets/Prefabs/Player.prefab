@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 946191594724661607}
   - component: {fileID: 946191594724661604}
   - component: {fileID: 946191594724661605}
+  - component: {fileID: 195250048}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -112,18 +113,37 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GROUND_TAG: null
-  _speed: 12
-  _jumpForce: 4
-  _gravity: -9.81
+  _speed:
+    _baseValue: 12
+  _jumpForce:
+    _baseValue: 1
+  _gravity:
+    _baseValue: -9.81
   _velocity: {x: 0, y: 0, z: 0}
   _crawlSpeedFactor: 0.5
   _duckDistance: 0.4
   _slidingSpeedFactor: 0.5
+  _groundRayDistance: 3
+  _minSlidingAngle: 25
+  _slopeWalkCorrection: 2
+  _strafingSpeed: 5
   _bobbingAmount: 0.05
   _bobbingSpeed: 1
   layerMask:
     serializedVersion: 2
     m_Bits: 256
+--- !u!114 &195250048
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 946191594724661627}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10d69d23a37a2ca479ce26a67367ea8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &946191596140822717
 GameObject:
   m_ObjectHideFlags: 0
@@ -183,7 +203,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 60
+  field of view: 90
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -222,12 +242,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   axes: 0
-  sensitivityX: 10
-  sensitivityY: 10
+  sensitivityX: 5
+  sensitivityY: 5
   minimumX: -360
   maximumX: 360
-  minimumY: -60
-  maximumY: 60
+  minimumY: -90
+  maximumY: 90
 --- !u!114 &946191596140822719
 MonoBehaviour:
   m_ObjectHideFlags: 0
