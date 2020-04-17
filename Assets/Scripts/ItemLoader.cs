@@ -10,16 +10,23 @@ public class ItemLoader : MonoBehaviour
 	int itemAmount = 0;
 	//Flower _flower;
 
+	/*
     void Start()
     {
 		//itemAmount = FlowerLibrary.GetFlowerAmount(_flowerName);
 		textObject.text = _flowerName + "\n x" + itemAmount;
-
-	}
+		
+	}*/
 
 	void OnEnable()
 	{
 		//if(_flower != null)
-			textObject.text = _flowerName + "\n x" + itemAmount;
+		itemAmount = FlowerLibrary.GetFlowerAmount(_flowerName);
+		textObject.text = _flowerName + "\n x" + itemAmount;
+	}
+
+	public void UseIngredient()
+	{
+
 	}
 }
