@@ -6,16 +6,12 @@ using UnityEngine.UI;
 public class MapGenerator : MonoBehaviour
 {
     Dictionary<Vector2, Texture2D> _renderedMapChunks;
-    List<Vector2> _chunksInMap;
-    List<GameObject> _spawnedMapChunks;
-    bool _displaying = false;
 
     [Header("Drop")]
 
-    [SerializeField] Map _mapScript;
     [SerializeField] MapSettings _mapSettings;
     [SerializeField] MeshSettings _meshSettings;
-
+    [SerializeField] Map _mapScript;
 
     [Header("General Settings")]
 
@@ -24,9 +20,10 @@ public class MapGenerator : MonoBehaviour
     private void Awake()
     {
         _renderedMapChunks = new Dictionary<Vector2, Texture2D>();
-        _chunksInMap = new List<Vector2>();
-        _spawnedMapChunks = new List<GameObject>();
 
+
+
+        //ONLY TESTING PURPOSES!
         for (int x = -20; x < 20; x++)
         {
             for (int y = -20; y < 20; y++)
@@ -35,12 +32,11 @@ public class MapGenerator : MonoBehaviour
             }
         }
 
-        Display(true);
+        _mapScript.Display(true);
     }
 
     public void AddChunkToMap(Vector2 chunkCoord)
     {
-        _chunksInMap.Add(chunkCoord);
         Vector2 sampleCenter = chunkCoord * _meshSettings.MeshWorldSize / _meshSettings.MeshScale;
 
         ThreadedDataRequester.RequestData(() => RequestTextureChunkData(chunkCoord, sampleCenter), ReceivedTextureChunkData);
@@ -85,22 +81,6 @@ public class MapGenerator : MonoBehaviour
         image.rectTransform.sizeDelta = new Vector2(_chunkSize, _chunkSize);
         image.raycastTarget = false;
 
-        //Display mode
-        mapChunk.SetActive(_displaying);
-
-        _spawnedMapChunks.Add(mapChunk);
-    }
-
-    private void Display(bool status)
-    {
-        if (_displaying != status)
-        {
-            _displaying = status;
-
-            for (int i = 0; i < _spawnedMapChunks.Count; i++)
-            {
-                _spawnedMapChunks[i].SetActive(status);
-            }
-        }
+        _mapScript.AddSpawnedChunk(mapChunk);
     }
 }

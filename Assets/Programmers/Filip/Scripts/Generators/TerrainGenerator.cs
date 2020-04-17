@@ -15,7 +15,6 @@ public class TerrainGenerator : MonoBehaviour
 
     [Header("Drop")]
 
-    [SerializeField] Transform _viewer;
     [SerializeField] Material _mapMaterial;
     [SerializeField] MeshSettings _meshSettings;
     [SerializeField] HeightMapSettings _heightMapSettings;
@@ -23,6 +22,7 @@ public class TerrainGenerator : MonoBehaviour
 
     [SerializeField] MapGenerator _mapGeneratorScript;
 
+    Transform _viewer;
     Vector2 _viewerPosition;
     Vector2 _viewerPositionOld;
     float _meshWorldSize;
@@ -34,6 +34,8 @@ public class TerrainGenerator : MonoBehaviour
 
     private void Start()
     {
+        _viewer = Player.GetPlayerTransform();
+
         _textureSettings.ApplyToMaterial(_mapMaterial);
         _textureSettings.UpdateMeshHeights(_mapMaterial, _heightMapSettings.MinHeight, _heightMapSettings.MaxHeight);
 
