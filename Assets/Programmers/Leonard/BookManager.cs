@@ -14,11 +14,12 @@ public class BookManager : MonoBehaviour
 	[SerializeField] GameObject _emptyPageTemplate;
 	//[SerializeField] GameObject _nextPageTemplate;
 	[SerializeField] Vector2[] _bookmarkPositions;
+	[SerializeField] Color[] _bookmarkColors;
 	int _currentBookmark = 0;
 	int _currentPage = 0;
 	[SerializeField] GameObject _book;
-	[SerializeField] GameObject _prevPage;
-	[SerializeField] GameObject _nextPage;
+	//[SerializeField] GameObject _prevPage;
+	//[SerializeField] GameObject _nextPage;
 
 	void Awake()
 	{
@@ -59,6 +60,7 @@ public class BookManager : MonoBehaviour
 		for(int i = 0; i<pages.Count; i++)
 		{
 			GameObject page = Instantiate<GameObject>(pages[i].gameObject, _bookmarks[pageParentID].transform);
+
 			if(i == _currentPage || i == _currentPage+1)
 			{
 				page.SetActive(true);
@@ -82,6 +84,8 @@ public class BookManager : MonoBehaviour
 	}
 	void SetupExtraBookmarks()
 	{
+		List<GameObject> bookmarks = new List<GameObject>();
+		//int[] bmI = new int[_bookmarks.Count]; //BookMarkIndex
 		for(int i = 0; i < _bookmarks.Count; i++)
 		{
 			GameObject bookmark = _bookmarks[i];
@@ -89,9 +93,21 @@ public class BookManager : MonoBehaviour
 			_bookmarks[i].transform.SetAsFirstSibling();
 			GameObject bookmarkObject = Instantiate<GameObject>(_bookmarkTemplate.gameObject, _book.transform);
 			RectTransform bookmarkTransform = bookmarkObject.GetComponent<RectTransform>();
-			bookmarkTransform.localPosition += Vector3.right*40*i;
+			bookmarkTransform.localPosition += Vector3.right*_bookmarkPositions[i].x + Vector3.up * _bookmarkPositions[i].y;
+			bookmarkObject.GetComponent<Image>().color = _bookmarkColors[i];
+
+			//bmI[i] = i;
+			bookmarkObject.name = i.ToString();
+			Debug.Log("Adding a lisener to a bookmark for index " + i);
+			bookmarkObject.GetComponent<Button>().onClick.AddListener(delegate { ToBookmark((int.Parse(bookmarkObject.name))); });
+			//bookmarkObject.GetComponent<Button>().
+			bookmarks.Add(bookmarkObject);
 			//bookmarkObject.transform.position = new Vector3(_bookmarkPositions[i].x, _bookmarkPositions[i].y, 0.0f);
-		}	
+		}
+		for (int i = 0; i < bookmarks.Count; i++)
+		{
+			bookmarks[i].transform.SetAsFirstSibling();
+		}
 	}
 	public void ChangePage(int change)
 	{
@@ -133,8 +149,11 @@ public class BookManager : MonoBehaviour
 		}
 	}
 
-	void ToBookmark()
+	void ToBookmark(int index)
 	{
-
+		Debug.Log("Current bookmark changed from " + _currentBookmark + " to " + index);
+		_bookmarks[_currentBookmark].SetActive(false);
+		_currentBookmark = index;
+		_bookmarks[_currentBookmark].SetActive(true);
 	}
 }

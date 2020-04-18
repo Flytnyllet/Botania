@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class FPSMovement : MonoBehaviour
 {
+	// FAKE SINGLETON
+	public static FPSMovement playerMovement;
+
     const string DUCK_BUTTON = "Duck";
     [SerializeField] string GROUND_TAG = "null";
 
@@ -33,9 +36,13 @@ public class FPSMovement : MonoBehaviour
 
     public LayerMask layerMask;
 
-    // !OBS Weird bug causing script to disable itself when awake is used.
+	// !OBS Weird bug causing script to disable itself when awake is used.
+	void Awake()
+	{
+		playerMovement = this;
+	}
 
-    void Start()
+	void Start()
     {
         charCon = GetComponent<CharacterController>();
         _playerCam = transform.Find("PlayerCam");
