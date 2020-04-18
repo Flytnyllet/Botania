@@ -8,8 +8,17 @@ public class Amb_SetCollider : MonoBehaviour
 {
     private EventInstance event_Instance;
     private EventDescription event_Description;
-    private float maxDistance;
+    private float _maxDistance;
     private bool _is3D;
+    private bool _hasPlayed = default;
+
+    [SerializeField]
+    private bool debug;
+
+    private PLAYBACK_STATE _event_State;
+    private int _state = default;
+    private int _lastState = default;
+
 
     private SphereCollider event_Collider;
     private Amb_GetRandomEvent amb_RandomEvent;
@@ -19,7 +28,7 @@ public class Amb_SetCollider : MonoBehaviour
     private void OnEnable()
     {
         amb_RandomEvent = GetComponent<Amb_GetRandomEvent>();
-        //amb_Local_Wind = GetComponentInChildren<Amb_Local_Wind>();
+        _hasPlayed = false;
     }
 
     private void Start()
@@ -31,11 +40,12 @@ public class Amb_SetCollider : MonoBehaviour
     {
         event_Instance = RuntimeManager.CreateInstance(amb_RandomEvent.Amb_RandomEvent);
         event_Description = RuntimeManager.GetEventDescription(amb_RandomEvent.Amb_RandomEvent);
-        event_Description.getMaximumDistance(out maxDistance);
+        event_Description.getMaximumDistance(out _maxDistance);
         event_Description.is3D(out _is3D);
         if (_is3D)
             RuntimeManager.AttachInstanceToGameObject(event_Instance, transform, GetComponent<Rigidbody>());
-        Set_Collider();
+        if (!_hasPlayed)
+            Set_Collider();
     }
 
     private void Set_Collider()
@@ -43,12 +53,51 @@ public class Amb_SetCollider : MonoBehaviour
         event_Collider = gameObject.AddComponent<SphereCollider>();
         event_Collider.isTrigger = true;
         event_Collider.center = Vector3.zero;
-        event_Collider.radius = maxDistance;
+        event_Collider.radius = _maxDistance;
     }
 
-    private void Stop_Collider()
+    private void CheckPlaybackState()
     {
-        event_Collider.gameObject.SetActive(false);
+        switch (_event_State)
+        {
+            case PLAYBACK_STATE.PLAYING:
+                _state = 0;
+                break;
+            case PLAYBACK_STATE.SUSTAINING:
+                _state = 1;
+                break;
+            case PLAYBACK_STATE.STOPPED:
+                _state = 2;
+                break;
+            case PLAYBACK_STATE.STARTING:
+                _state = 3;
+                break;
+            case PLAYBACK_STATE.STOPPING:
+                _state = 4;
+                break;
+        }
+        if (debug)
+        {
+            if (_state != _lastState)
+            {
+                Debug.Log("event_Instance on object: " + transform.parent.gameObject.name + " is in state: " + _event_State);
+                _lastState = _state;
+            }
+        }
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (debug)
+        {
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawWireSphere(transform.position, _maxDistance);
+        }
+
+        if (_event_State == PLAYBACK_STATE.PLAYING)
+        {
+            Gizmos.DrawIcon(transform.position, "FMOD/FMODEmitter.tiff", true);
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -56,9 +105,22 @@ public class Amb_SetCollider : MonoBehaviour
         if (other.gameObject.tag != "Player")
             return;
 
+        if (_hasPlayed)
+            Init_EventCollider();
+
         event_Instance.start();
         event_Instance.release();
+
         amb_Local_Wind.gameObject.SetActive(true);
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.gameObject.tag != "Player")
+            return;
+
+        event_Instance.getPlaybackState(out _event_State);
+        CheckPlaybackState();
     }
 
     private void OnTriggerExit(Collider other)
@@ -67,7 +129,13 @@ public class Amb_SetCollider : MonoBehaviour
             return;
 
         event_Instance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        event_Instance.getPlaybackState(out _event_State);
         event_Instance.clearHandle();
-        amb_Local_Wind.Stop_Local_Wind();
+        _hasPlayed = true;
+    }
+
+    public void Stop_Collider()
+    {
+        event_Collider.gameObject.SetActive(false);
     }
 }
