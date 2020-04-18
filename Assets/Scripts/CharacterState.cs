@@ -12,7 +12,7 @@ public static class CharacterState
     static CHARACTER_CONTROL_STATE _controlState = 0;
     public static CHARACTER_CONTROL_STATE Control_State
     {
-        get { return _controlState; }
+        get => _controlState; 
     }
 
     //Förenkla läslighet i tillkopplad kod

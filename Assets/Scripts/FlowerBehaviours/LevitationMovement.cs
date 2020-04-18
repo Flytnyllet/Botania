@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class LevitationMovement : MonoBehaviour
 {
+    [SerializeField] Shader _shader;
     //CharacterController _charCon;
     //float _randomStartValue;
 
@@ -15,15 +16,18 @@ public class LevitationMovement : MonoBehaviour
     //[SerializeField] float _hoptizontalZRangeRadious = 0.12f;
     //[SerializeField] float _hoptizontalZTimeMultiplier = 0.07f;
 
-
     private void Awake()
     {
-        GetComponent<MeshRenderer>().material.SetFloat("_Random", Random.Range(0.0f, 6.28f));
+        MeshRenderer renderer = GetComponent<MeshRenderer>();
+        Material material = new Material(_shader);
+        renderer.material = material;
+        //float f = Random.Range(0.0f, 6.28f);
+        renderer.material.SetFloat("_Random", Random.Range(0.0f, 6.28f));
 
         //_charCon = GetComponent<CharacterController>();
         //_randomStartValue = +Random.Range(0, 3.14f);
     }
-    
+
     //void Update()
     //{
     //    This shit is slow as fuck and either needs some good culling or complete replacement

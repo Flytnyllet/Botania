@@ -1,4 +1,4 @@
-﻿Shader "__Lab/Terrain"
+﻿Shader "Botania/Terrain"
 {
 	Properties
 	{
@@ -9,6 +9,8 @@
 		LOD 200
 
 		CGPROGRAM
+// Upgrade NOTE: excluded shader from DX11, OpenGL ES 2.0 because it uses unsized arrays
+#pragma exclude_renderers d3d11 gles
 		// Physically based Standard lighting model, and enable shadows on all light types
 		#pragma surface surf Standard fullforwardshadows
 
@@ -19,16 +21,15 @@
 		const static float EPSILON = 1E-4;
 
 		int layerCount;
-
 		float3 baseColors[MAX_COLOR_COUNT];
-		float baseStartHeights[MAX_COLOR_COUNT];
-		float baseBlends[MAX_COLOR_COUNT];
-
-		float baseColorStrength[MAX_COLOR_COUNT];
 		float baseTextureScales[MAX_COLOR_COUNT];
+		float noiseX[MAX_COLOR_COUNT];
+		float noiseY[MAX_COLOR_COUNT];
+		//float baseStartHeights[MAX_COLOR_COUNT];
+		//float baseBlends[MAX_COLOR_COUNT];
 
-		float minHeight;
-		float maxHeight;
+		//float minHeight;
+		//float maxHeight;
 
 
 		UNITY_DECLARE_TEX2DARRAY(baseTextures);
@@ -51,6 +52,7 @@
 		{
 			return saturate((value - a) / (b - a));
 		}
+
 		//triplanar mapping
 		float3 triplanar(float3 worldPos, float scale, float3 blendAxes, int textureIndex) {
 			float3 scaledWorldPos = worldPos / scale;
@@ -62,19 +64,18 @@
 
         void surf (Input IN, inout SurfaceOutputStandard o)
         {
-			float heightPercent = inverseLerp(minHeight, maxHeight, IN.worldPos.y);
 			float3 blendAxes = abs(IN.worldNormal);
 			blendAxes /= blendAxes.x + blendAxes.y + blendAxes.z;
 
 			float3 colour = float3(0, 0, 0);
 
 			for (int i = 0; i < layerCount; i++) {
-				float drawStrength = inverseLerp(-baseBlends[i] / 2 - EPSILON, baseBlends[i] / 2, heightPercent - baseStartHeights[i]);
+				//float drawStrength = inverseLerp(-baseBlends[i] / 2 - EPSILON, baseBlends[i] / 2, heightPercent - baseStartHeights[i]);
 
-				float3 baseColor = baseColors[i] * baseColorStrength[i];
-				float3 textureColor = triplanar(IN.worldPos, baseTextureScales[i], blendAxes, i) * (1 - baseColorStrength[i]);
+				//float3 baseColor = baseColors[i] * baseColorStrength[i];
+				float3 textureColor = triplanar(IN.worldPos, baseTextureScales[i], blendAxes, i);
 
-				o.Albedo = o.Albedo * (1 - drawStrength) + (baseColor + textureColor) * drawStrength;
+				//o.Albedo = o.Albedo * (1 - drawStrength) + (baseColor + textureColor) * drawStrength;
 			}
         }
         ENDCG

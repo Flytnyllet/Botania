@@ -23,7 +23,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5692127074445254231}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 1.455, y: 86.64, z: -4.0152063}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children:
@@ -121,7 +121,6 @@ GameObject:
   - component: {fileID: 5692127074817598974}
   - component: {fileID: 5692127074817598973}
   - component: {fileID: 5692127074817598851}
-  - component: {fileID: 5692127074817598850}
   m_Layer: 0
   m_Name: LevitatingFlower
   m_TagString: Untagged
@@ -204,25 +203,6 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.7
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &5692127074817598850
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5692127074817598849}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ac652232fd27cc4da13d852177e9e85, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _rotationSpeed: 10
-  _verticalRangeRadious: 0.1
-  _verticalTimeMultiplier: 0.39
-  _hoptizontalXRangeRadious: 0.06
-  _hoptizontalXTimeMultiplier: 0.12
-  _hoptizontalZRangeRadious: 0.12
-  _hoptizontalZTimeMultiplier: 0.07
 --- !u!1 &7112675833464950534
 GameObject:
   m_ObjectHideFlags: 0
