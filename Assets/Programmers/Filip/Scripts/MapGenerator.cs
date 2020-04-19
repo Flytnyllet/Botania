@@ -6,23 +6,34 @@ using UnityEngine.UI;
 
 public class MapGenerator : MonoBehaviour, IDragHandler, IScrollHandler
 {
+    static MapGenerator _singletonMapGenerator;
+
+    static MeshSettings _meshSettings;
+    static MapSettings _mapSettings;
+    static RectTransform _spawnContainer;
+    static RectTransform _markersContainer;
+
+    static float _chunkSize;
+    static float _markerSize;
 
     [Header("Drop")]
 
-    [SerializeField] MapSettings _mapSettings;
-    [SerializeField] MeshSettings _meshSettings;
+    [SerializeField] MapSettings _mapSettingsInstance;
+    [SerializeField] MeshSettings _meshSettingsInstance;
 
     [Header("Setup")]
 
     [SerializeField] Canvas _parentCanvas;
     [SerializeField] RectTransform _mapHolder;
-    [SerializeField] RectTransform _spawnContainer;
+    [SerializeField] RectTransform _spawnContainerInstance;
     [SerializeField] RectTransform _pivotSpawnContainer;
+    [SerializeField] RectTransform _markersContainerInstance;
     [SerializeField] Image _playerIcon;
 
     [Header("General Settings")]
 
-    [SerializeField, Range(1, 100)] float _chunkSize = 20;
+    [SerializeField, Range(1, 100)] float _chunkSizeInstance = 20;
+    [SerializeField, Range(1, 100)] float _markerSizeInstance = 5;
 
     [SerializeField, Range(0.01f, 20)] float _dragSpeed = 1;
     [SerializeField, Range(0, 4)] float _zoomInPercentage = 1.33f;
@@ -31,28 +42,36 @@ public class MapGenerator : MonoBehaviour, IDragHandler, IScrollHandler
     [SerializeField, Range(0, 15)] float _maxScale = 7.5f;
     [SerializeField, Range(0, 15)] float _minScale = 0.5f;
 
-    Dictionary<Vector2, Texture2D> _renderedMapChunks;
-    Transform _viewer;
-    List<GameObject> _spawnedMapChunks;
-    bool _displaying = false;
+    static Dictionary<Vector2, Texture2D> _renderedMapChunks;
+    static Transform _viewer;
+    static List<GameObject> _spawnedMapChunks;
+    static List<GameObject> _spawnedWorldMarkers;
+    static bool _displaying = false;
 
     private void Awake()
     {
-        _spawnedMapChunks = new List<GameObject>();
-        _renderedMapChunks = new Dictionary<Vector2, Texture2D>();
+        if (_singletonMapGenerator == null)
+        {
+            _singletonMapGenerator = this;
 
-        ////ONLY TESTING PURPOSES!
-        //for (int x = -20; x < 20; x++)
-        //{
-        //    for (int y = -20; y < 20; y++)
-        //    {
-        //        AddChunkToMap(new Vector2(x, y));
-        //    }
-        //}
+            _spawnedMapChunks = new List<GameObject>();
+            _spawnedWorldMarkers = new List<GameObject>();
+            _renderedMapChunks = new Dictionary<Vector2, Texture2D>();
 
-        _playerIcon.gameObject.SetActive(false);
+            _meshSettings = _meshSettingsInstance;
+            _mapSettings = _mapSettingsInstance;
+            _chunkSize = _chunkSizeInstance;
+            _spawnContainer = _spawnContainerInstance;
+            _markersContainer = _markersContainerInstance;
+            _markerSize = _markerSizeInstance;
 
-        Display(true);
+            _playerIcon.gameObject.SetActive(false);
+
+
+            Display(true); //ONLY TESTING
+        }
+        else
+            Destroy(_parentCanvas.gameObject);
     }
 
     private void Start()
@@ -64,21 +83,24 @@ public class MapGenerator : MonoBehaviour, IDragHandler, IScrollHandler
     {
         if (_displaying)
         {
-            //Update player icon
-            Vector3 newPosition = new Vector3(_viewer.position.x / _meshSettings.MeshWorldSize * _chunkSize, _viewer.position.z / _meshSettings.MeshWorldSize * _chunkSize, 0.0f);
-            _playerIcon.rectTransform.anchoredPosition = newPosition;
-            _playerIcon.transform.localRotation = Quaternion.Euler(0.0f, 0.0f, -_viewer.rotation.eulerAngles.y);
+            UpdatePlayerIcon();
         }
     }
 
+    private void UpdatePlayerIcon()
+    {
+        Vector3 newPosition = new Vector3(_viewer.position.x / _meshSettings.MeshWorldSize * _chunkSize, _viewer.position.z / _meshSettings.MeshWorldSize * _chunkSize, 0.0f);
+        _playerIcon.rectTransform.anchoredPosition = newPosition;
+        _playerIcon.transform.localRotation = Quaternion.Euler(0.0f, 0.0f, -_viewer.rotation.eulerAngles.y);
+    }
+
+    #region Map Manipulation
     public void FocusOnPlayer()
     {
         _pivotSpawnContainer.localPosition = Vector3.zero;
         _mapHolder.localPosition = -_playerIcon.rectTransform.localPosition;
     }
 
-
-    //Map Manipulation
     public void OnDrag(PointerEventData eventData)
     {
         _mapHolder.anchoredPosition += eventData.delta * _dragSpeed / _pivotSpawnContainer.localScale.x / _parentCanvas.scaleFactor;
@@ -102,28 +124,29 @@ public class MapGenerator : MonoBehaviour, IDragHandler, IScrollHandler
 
         _pivotSpawnContainer.localScale = new Vector3(newScale, newScale, newScale);
     }
+    #endregion
 
-
-    public void AddChunkToMap(Vector2 chunkCoord)
+    #region Add texture chunk to map
+    public static void AddChunkToMap(Vector2 chunkCoord)
     {
         Vector2 sampleCenter = chunkCoord * _meshSettings.MeshWorldSize / _meshSettings.MeshScale;
 
         ThreadedDataRequester.RequestData(() => RequestTextureChunkData(chunkCoord, sampleCenter), ReceivedTextureChunkData);
     }
 
-    private TextureChunkData RequestTextureChunkData(Vector2 chunkCoord, Vector2 sampleCenter)
+    private static TextureChunkData RequestTextureChunkData(Vector2 chunkCoord, Vector2 sampleCenter)
     {
         return TextureGenerator.DrawMap(_meshSettings.NumVertsPerLine, _mapSettings, sampleCenter, chunkCoord, 1);
     }
 
-    private void ReceivedTextureChunkData(object data)
+    private static void ReceivedTextureChunkData(object data)
     {
         TextureChunkData thisData = (TextureChunkData)data;
 
         AddTexture(TextureGenerator.TextureFromColorMap(thisData.colorMap, thisData.width, thisData.height), thisData.chunkCoord);
     }
 
-    private void AddTexture(Texture2D texture, Vector2 chunkCoord)
+    private static void AddTexture(Texture2D texture, Vector2 chunkCoord)
     {
         if (!_renderedMapChunks.ContainsKey(chunkCoord))
             _renderedMapChunks.Add(chunkCoord, texture);
@@ -133,7 +156,7 @@ public class MapGenerator : MonoBehaviour, IDragHandler, IScrollHandler
         InstantiateChunk(texture, chunkCoord);
     }
 
-    private void InstantiateChunk(Texture2D texture, Vector2 chunkCoord)
+    private static void InstantiateChunk(Texture2D texture, Vector2 chunkCoord)
     {
         //Create GameObject
         GameObject mapChunk = new GameObject(chunkCoord.ToString());
@@ -152,6 +175,29 @@ public class MapGenerator : MonoBehaviour, IDragHandler, IScrollHandler
 
         mapChunk.SetActive(_displaying);
         _spawnedMapChunks.Add(mapChunk);
+    }
+    #endregion
+
+    public static void AddWorldMarker(Sprite sprite, Vector3 worldPosition)
+    {
+        GameObject newMarker = new GameObject(sprite.name);
+        newMarker.transform.parent = _markersContainer;
+
+        //Position
+        newMarker.transform.localScale = Vector3.one;
+        Vector3 newPosition = new Vector3(worldPosition.x / _meshSettings.MeshWorldSize * _chunkSize, worldPosition.z / _meshSettings.MeshWorldSize * _chunkSize, 0.0f);
+        newMarker.transform.localPosition = newPosition;
+
+        //Add sprite
+        Image image = newMarker.AddComponent<Image>();
+        image.sprite = sprite;
+
+        //Size
+        image.rectTransform.sizeDelta = new Vector2(_markerSize, _markerSize);
+        image.raycastTarget = false;
+
+        newMarker.SetActive(_displaying);
+        _spawnedWorldMarkers.Add(newMarker);
     }
 
     public void Display(bool status)
