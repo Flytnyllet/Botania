@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using System.Threading;
+using System.Threading.Tasks;
+using System.Collections.Concurrent;
 
 public class ThreadedDataRequester : MonoBehaviour
 {
@@ -11,6 +13,7 @@ public class ThreadedDataRequester : MonoBehaviour
     private void Awake()
     {
         instance = FindObjectOfType<ThreadedDataRequester>(); //ÄNDRA SEN
+
     }
 
     Queue<ThreadInfo> _dataQueue = new Queue<ThreadInfo>();
@@ -45,6 +48,36 @@ public class ThreadedDataRequester : MonoBehaviour
             }
         }
     }
+
+
+    //static ConcurrentQueue<Action> callbacks = new ConcurrentQueue<Action>();
+
+    //public static void RequestData(Func<object> dataGenerator, Action<object> callback)
+    //{
+    //    Task.Run(() =>
+    //    {
+    //        try
+    //        {
+    //            var data = dataGenerator();
+
+    //            callbacks.Enqueue(() => callback(data));
+
+    //        }
+    //        catch (Exception e)
+    //        {
+    //            Debug.LogError(e);
+    //        }
+    //    });
+    //}
+
+    //private void Update()
+    //{
+    //    while (callbacks.TryDequeue(out var callback))
+    //    {
+    //        callback();
+    //    }
+    //} //Just testing some performance differences //Jens
+
 
     struct ThreadInfo
     {

@@ -1,21 +1,22 @@
-﻿Shader "Botania/Terrain"
+﻿Shader "__Lab/Terrain"
 {
 	Properties
 	{
+		_MainTex("Texture", 2D) = "white" {}
 	}
-	SubShader
+		SubShader
 	{
 		Tags { "RenderType" = "Opaque" }
 		LOD 200
 
 		CGPROGRAM
-// Upgrade NOTE: excluded shader from DX11, OpenGL ES 2.0 because it uses unsized arrays
-#pragma exclude_renderers d3d11 gles
 		// Physically based Standard lighting model, and enable shadows on all light types
-		#pragma surface surf Standard fullforwardshadows
+		 #pragma surface surf Lambert  addshadow
 
 		// Use shader model 3.0 target, to get nicer looking lighting
 		#pragma target 3.0
+
+		sampler2D _MainTex;
 
 		const static int MAX_COLOR_COUNT = 8;
 		const static float EPSILON = 1E-4;
@@ -31,20 +32,21 @@
 
 
 		UNITY_DECLARE_TEX2DARRAY(baseTextures);
+		UNITY_DECLARE_TEX2DARRAY(noiseTextures);
 
-        struct Input
-        {
+		struct Input
+		{
 			float3 worldPos;
 			float3 worldNormal;
-        };
+			float2 uv_MainTex;
+		};
 
-
-        // Add instancing support for this shader. You need to check 'Enable Instancing' on materials that use the shader.
-        // See https://docs.unity3d.com/Manual/GPUInstancing.html for more information about instancing.
-        // #pragma instancing_options assumeuniformscaling
-        UNITY_INSTANCING_BUFFER_START(Props)
-            // put more per-instance properties here
-        UNITY_INSTANCING_BUFFER_END(Props)
+		// Add instancing support for this shader. You need to check 'Enable Instancing' on materials that use the shader.
+		// See https://docs.unity3d.com/Manual/GPUInstancing.html for more information about instancing.
+		// #pragma instancing_options assumeuniformscaling
+		UNITY_INSTANCING_BUFFER_START(Props)
+			// put more per-instance properties here
+		UNITY_INSTANCING_BUFFER_END(Props)
 
 		float inverseLerp(float a, float b, float value)
 		{
@@ -60,23 +62,26 @@
 			return xProjection + yProjection + zProjection;
 		}
 
-        void surf (Input IN, inout SurfaceOutputStandard o)
-        {
+		void surf(Input IN, inout SurfaceOutput o)
+		{
 			float3 blendAxes = abs(IN.worldNormal);
 			blendAxes /= blendAxes.x + blendAxes.y + blendAxes.z;
 
 			float3 colour = float3(0, 0, 0);
-
+			float mainTexStrenght = 1;
 			for (int i = 0; i < layerCount; i++) {
+				float noiseStrenght = UNITY_SAMPLE_TEX2DARRAY(noiseTextures, float3(IN.uv_MainTex, i)).x;
 				//float drawStrength = inverseLerp(-baseBlends[i] / 2 - EPSILON, baseBlends[i] / 2, heightPercent - baseStartHeights[i]);
-
+				mainTexStrenght -= noiseStrenght;
 				//float3 baseColor = baseColors[i] * baseColorStrength[i];
-				float3 textureColor = triplanar(IN.worldPos, baseTextureScales[i], blendAxes, i);
+				float3 textureColor = triplanar(float3(IN.worldPos), baseTextureScales[i], blendAxes, i)*noiseStrenght;
 
-				//o.Albedo = o.Albedo * (1 - drawStrength) + (baseColor + textureColor) * drawStrength;
+				o.Albedo = textureColor;
 			}
-        }
-        ENDCG
-    }
-    FallBack "Diffuse"
+
+			//o.Albedo = UNITY_SAMPLE_TEX2DARRAY(noiseTextures, float3(IN.uv_MainTex,0));
+		}
+		ENDCG
+	}
+		FallBack "Diffuse"
 }

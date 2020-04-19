@@ -1,4 +1,4 @@
-﻿Shader "__Lab/Terrain"
+﻿Shader "Botania/Terrain"
 {
 	Properties
 	{
