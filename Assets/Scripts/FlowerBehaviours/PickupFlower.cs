@@ -32,6 +32,6 @@ public class PickupFlower : MonoBehaviour, IInteractable
             Destroy(_destroyOverload);
         }
 
-        return true; //Doesn't really have a purpose for this (Når man ens booleans efter Destroy()?)
+        return true; //Doesn't really have a purpose for this
     }
 }
