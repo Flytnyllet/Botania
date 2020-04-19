@@ -23,8 +23,6 @@
 		int layerCount;
 		float3 baseColors[MAX_COLOR_COUNT];
 		float baseTextureScales[MAX_COLOR_COUNT];
-		float noiseX[MAX_COLOR_COUNT];
-		float noiseY[MAX_COLOR_COUNT];
 		//float baseStartHeights[MAX_COLOR_COUNT];
 		//float baseBlends[MAX_COLOR_COUNT];
 

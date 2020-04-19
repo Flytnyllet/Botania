@@ -24,11 +24,12 @@ public class TempGroundTextureGenerator : MonoBehaviour
     void MakeMaterial(Vector2Int resolution, int detailLevel, Vector2 chunkCoord)
     {
         Material material = new Material(_shader);
-        float[][,] noises = new float[_layers.Length][,];
+        Texture2D[] noises = new Texture2D[_layers.Length];
 
         for (int i = 0; i < _layers.Length; i++)
         {
-            noises[i] = Noise.GenerateNoiseMap(resolution.x, resolution.y, _noiceDetailLevel, _layers[i].GetNoise.NoiseSettingsDataMerge, chunkCoord);
+            float[,] noise = Noise.GenerateNoiseMap(resolution.x, resolution.y, _noiceDetailLevel, _layers[i].GetNoise.NoiseSettingsDataMerge, chunkCoord);
+            noises[i] = TextureGenerator.TextureFromNoise(noise);
         }
         material.SetInt("layerCount", _layers.Length);
         Texture2DArray textureArray = GenerateTextureArray(_layers.Select(x => x.GetTexture()).ToArray());

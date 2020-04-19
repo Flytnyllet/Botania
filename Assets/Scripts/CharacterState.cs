@@ -8,10 +8,11 @@ using UnityEngine;
 public enum CHARACTER_CONTROL_STATE { PLAYERCONTROLLED = 0, CUTSCENE, MENU }
 public static class CharacterState
 {
+    static CursorUsabilityControll _cursorControll = new CursorUsabilityControll();
     static CHARACTER_CONTROL_STATE _controlState = 0;
     public static CHARACTER_CONTROL_STATE Control_State
     {
-        get => _controlState; 
+        get => _controlState;
     }
 
     //Förenkla läslighet i tillkopplad kod
@@ -41,6 +42,7 @@ public static class CharacterState
     public static void SetControlState(CHARACTER_CONTROL_STATE state)
     {
         _controlState = state;
+        _cursorControll.SetMouseState(state);
     }
     public static void SetControlState(int state)
     {
