@@ -12,14 +12,12 @@ public class Player : MonoBehaviour
     private void Awake()
     {
         if (_thisSingleton == null)
+        {
             _thisSingleton = this;
+            _playerTransform = GetComponent<Transform>();
+        }
         else
             Destroy(this);
-    }
-
-    private void Start()
-    {
-        _playerTransform = GetComponent<Transform>();
     }
 
     public static Transform GetPlayerTransform()
