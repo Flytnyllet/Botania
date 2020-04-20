@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
-using UnityEngine.UI;
+using System.Threading.Tasks;
+
 public class TempGroundTextureGenerator : MonoBehaviour
 {
     readonly static int TEXTURE_SIZE = 512;
@@ -12,6 +13,7 @@ public class TempGroundTextureGenerator : MonoBehaviour
     [SerializeField] Layer[] _layers;
     [SerializeField] Shader _shader;
     [SerializeField] int _noiseDetailLevel = 1;
+    //[SerializeField] Texture2D
     // Update is called once per frame
     private void Start()
     {
@@ -22,18 +24,19 @@ public class TempGroundTextureGenerator : MonoBehaviour
     {
         Material material = new Material(_shader);
         Texture2D[] noises = new Texture2D[_layers.Length];
-
-        float[] flatNoise = new float[512 * 512 * _layers.Length];
-
-        for (int i = 0; i < _layers.Length; i++)
+        Task task = new Task(async () =>
         {
-            float[,] noise = Noise.GenerateNoiseMap(TEXTURE_SIZE, TEXTURE_SIZE, _noiseDetailLevel, _layers[i].GetNoise.NoiseSettingsDataMerge, chunkCoord);
-            noises[i] = TextureGenerator.TextureFromNoise(noise);
-        }
+            for (int i = 0; i < _layers.Length; i++)
+            {
+                float[,] noise = Noise.GenerateNoiseMap(TEXTURE_SIZE, TEXTURE_SIZE, _noiseDetailLevel, _layers[i].GetNoise.NoiseSettingsDataMerge, chunkCoord);
+                noises[i] = TextureGenerator.TextureFromNoise(noise);
+            }
+            Texture2DArray noiseTextureArray = GenerateTextureArray(noises);
+            material.SetTexture("noiseTextures", noiseTextureArray);
 
-        Texture2DArray noiseTextureArray = GenerateTextureArray(noises);
-        material.SetTexture("noiseTextures", noiseTextureArray);
-
+        });
+        task.RunSynchronously();
+        
         material.SetInt("layerCount", _layers.Length);
         Texture2DArray textureArray = GenerateTextureArray(_layers.Select(x => x.GetTexture()).ToArray());
         material.SetTexture("baseTextures", textureArray);
