@@ -275,7 +275,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &346983706
 RectTransform:
   m_ObjectHideFlags: 0
@@ -292,10 +292,10 @@ RectTransform:
   m_Father: {fileID: 677939814}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 900, y: 640}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &346983707
 MonoBehaviour:
@@ -892,10 +892,10 @@ RectTransform:
   m_Father: {fileID: 1176638086}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -400, y: -200}
+  m_SizeDelta: {x: 900, y: 640}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &677939815
 MonoBehaviour:
@@ -925,13 +925,14 @@ MonoBehaviour:
   _emptyPageTemplate: {fileID: 6440083248673180045, guid: a3fbddd6c29b4754f8c1df918e044b66,
     type: 3}
   _bookmarkPositions:
-  - {x: 0, y: 0}
-  - {x: 40, y: -20}
-  - {x: 65, y: -20}
-  - {x: 90, y: -20}
+  - {x: 150, y: 0}
+  - {x: 250, y: 0}
+  - {x: 65, y: 0}
+  - {x: 90, y: 0}
+  _bookmarkColors:
+  - {r: 0.8584906, g: 0.19032574, b: 0.6075831, a: 1}
+  - {r: 0.41451588, g: 0.764151, b: 0.6167135, a: 1}
   _book: {fileID: 346983705}
-  _prevPage: {fileID: 0}
-  _nextPage: {fileID: 0}
 --- !u!1 &725529254
 GameObject:
   m_ObjectHideFlags: 0

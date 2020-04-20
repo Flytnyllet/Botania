@@ -138,18 +138,18 @@ public class Spawnable : UpdatableData
     public void Setup(float[,] parentNoise, int chunkSize, NoiseSettingsData offsetNoiseSettings, Vector2 center, Vector2 offsetNoiseOffset)
     {
         if (parentNoise != null)
-            _noise = Noise.MergeNoise(chunkSize, chunkSize, _noiseSettingsData.NoiseSettingsDataMerge, parentNoise, _noiseMergeType, center);
+            _noise = Noise.MergeNoise(chunkSize, chunkSize, 1, _noiseSettingsData.NoiseSettingsDataMerge, parentNoise, _noiseMergeType, new Vector2(center.x, -center.y));
         else
-            _noise = Noise.GenerateNoiseMap(chunkSize, chunkSize, _noiseSettingsData.NoiseSettingsDataMerge, center);
+            _noise = Noise.GenerateNoiseMap(chunkSize, chunkSize, 1, _noiseSettingsData.NoiseSettingsDataMerge, new Vector2(center.x, -center.y));
 
-        _offsetNoise = Noise.GenerateNoiseMap(chunkSize, chunkSize, offsetNoiseSettings.NoiseSettingsDataMerge, center + offsetNoiseOffset);
-        _spreadNoise = Noise.GenerateNoiseMap(chunkSize, chunkSize, offsetNoiseSettings.NoiseSettingsDataMerge, center + offsetNoiseOffset * 2);
+        _offsetNoise = Noise.GenerateNoiseMap(chunkSize, chunkSize, 1, offsetNoiseSettings.NoiseSettingsDataMerge, new Vector2(center.x, -center.y) + offsetNoiseOffset);
+        _spreadNoise = Noise.GenerateNoiseMap(chunkSize, chunkSize, 1, offsetNoiseSettings.NoiseSettingsDataMerge, new Vector2(center.x, -center.y) + offsetNoiseOffset * 2);
 
         _prefabMaxProbability = SpawnablePrefab.GetMaxSize(_prefabs);
 
         for (int i = 0; i < _subSpawners.Length; i++)
         {
-            _subSpawners[i].Setup(_noise, chunkSize, offsetNoiseSettings, center, offsetNoiseOffset * 2);
+            _subSpawners[i].Setup(_noise, chunkSize, offsetNoiseSettings, new Vector2(center.x, -center.y), offsetNoiseOffset * 2);
         }
     }
 

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class IceInteraction : MonoBehaviour, Interactable
+public class IceInteraction : MonoBehaviour, IInteractable
 {
     bool _activated = false;
     [SerializeField] float _meltTime = 1.0f;

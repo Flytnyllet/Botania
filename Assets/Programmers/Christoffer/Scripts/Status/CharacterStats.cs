@@ -55,7 +55,7 @@ public class CharacterStats
         isModified = true;
         statModifiers.Add(mod);
         statModifiers.Sort(CompareOrder);
-        Task task = Task.Run(async () =>
+        Task.Run(async () =>
             {
                 await Task.Delay(System.TimeSpan.FromSeconds(time));
                 RemoveModifier(mod);

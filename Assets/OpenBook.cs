@@ -15,11 +15,11 @@ public class OpenBook : MonoBehaviour
     [SerializeField] bool _startLoaded = false;
     private void Awake()
     {
-		foreach (PageLoader page in pages)
-		{
-			Flower flower = page.CreateThisFlower();
-			FlowerLibrary.AddFlower(flower.Name, 0);
-		}
+		//foreach (PageLoader page in pages)
+		//{
+		//	Flower flower = page.CreateThisFlower();
+		//	FlowerLibrary.AddFlower(flower.Name, 0);
+		//}
 
         if (_bookObject == null)
         {

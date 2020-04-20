@@ -4764,6 +4764,8 @@ GameObject:
   - component: {fileID: 4831623875008566632}
   - component: {fileID: 4831623875008566637}
   - component: {fileID: 4831623875008566634}
+  - component: {fileID: 3874391410265781132}
+  - component: {fileID: 1971515862538369151}
   m_Layer: 0
   m_Name: Capsule
   m_TagString: Untagged
@@ -4831,6 +4833,34 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!136 &3874391410265781132
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4831623875008566633}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.5
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1971515862538369151
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4831623875008566633}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee66933cb94b3af499283834dca2703c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _flowerName: 
+  _destroyOverload: {fileID: 4831623875451243846}
 --- !u!1 &4831623875451243846
 GameObject:
   m_ObjectHideFlags: 0
@@ -4842,7 +4872,6 @@ GameObject:
   - component: {fileID: 4831623875451243961}
   - component: {fileID: 4831623875451243963}
   - component: {fileID: 4831623875451243960}
-  - component: {fileID: 4831623875451243962}
   m_Layer: 0
   m_Name: DiggingFlower Base
   m_TagString: Untagged
@@ -4879,6 +4908,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _animator: {fileID: 4831623875642705623}
+  _capsuleCollider: {fileID: 3874391410265781132}
   _hideTime: 3
 --- !u!135 &4831623875451243960
 SphereCollider:
@@ -4893,20 +4923,6 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 3
   m_Center: {x: 0, y: 0, z: 0}
---- !u!136 &4831623875451243962
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4831623875451243846}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.25
-  m_Height: 1
-  m_Direction: 1
-  m_Center: {x: 0, y: 0.5, z: 0}
 --- !u!1 &4831623875642705617
 GameObject:
   m_ObjectHideFlags: 0

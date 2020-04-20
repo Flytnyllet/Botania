@@ -78,7 +78,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: New Text
+  m_Text: This text is unlocked from the start of the game.
 --- !u!1 &1895739258033272798
 GameObject:
   m_ObjectHideFlags: 0
@@ -313,7 +313,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: New Text
+  m_Text: 'This was unlocked after picking 3 flowers
+
+'
 --- !u!1 &1895739258890603610
 GameObject:
   m_ObjectHideFlags: 0
@@ -392,7 +394,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: New Text
+  m_Text: 'This was unlocked after picking 2 flowers
+
+'
 --- !u!1 &1895739259239717376
 GameObject:
   m_ObjectHideFlags: 0
@@ -486,15 +490,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e066798d427660844a945eb7de44144e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _imageObject:
-  - {fileID: 1895739258129656489}
-  _textObject:
-  - {fileID: 1895739257783276918}
-  - {fileID: 1895739258314254209}
-  - {fileID: 1895739258890603556}
+  _pageElements:
+  - _bookElement: {fileID: 1895739258129656489}
+    _unlockPoint: 0
+  - _bookElement: {fileID: 1895739258129656489}
+    _unlockPoint: 0
+  - _bookElement: {fileID: 1895739258890603556}
+    _unlockPoint: 2
+  - _bookElement: {fileID: 1895739258314254209}
+    _unlockPoint: 3
   _amountCounter: {fileID: 1895739258033272792}
   _flowerName: Poppy
-  _progressionPoints: 0100000003000000
-  _loreDescriptions:
-  - This is Lore
-  - THIS IS MORE LORE!

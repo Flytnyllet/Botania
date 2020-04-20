@@ -21,6 +21,8 @@ public class TerrainGenerator : MonoBehaviour
     [SerializeField] HeightMapSettings _heightMapSettings;
     [SerializeField] TextureData _textureSettings;
 
+    [SerializeField] MapGenerator _mapGeneratorScript;
+
     Vector2 _viewerPosition;
     Vector2 _viewerPositionOld;
     float _meshWorldSize;
@@ -87,6 +89,11 @@ public class TerrainGenerator : MonoBehaviour
                     else
                     {
                         TerrainChunk newChunk = new TerrainChunk(viewedChunkCoord, _heightMapSettings, _meshSettings, _detailLevels, _colliderLODIndex, transform, _viewer, _mapMaterial, _biome);
+
+                        //Make mapchunk
+                        if (_mapGeneratorScript != null)
+                            _mapGeneratorScript.AddChunkToMap(viewedChunkCoord);
+
                         _terrainChunkDictionary.Add(viewedChunkCoord, newChunk);
                         newChunk.onVisibilityChanged += OnTerrainChunkVisibilityChanged;
                         newChunk.Load();

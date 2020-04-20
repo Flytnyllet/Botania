@@ -144,6 +144,7 @@ GameObject:
   - component: {fileID: 946191596140822713}
   - component: {fileID: 946191596140822718}
   - component: {fileID: 946191596140822719}
+  - component: {fileID: 9209358986787311481}
   m_Layer: 0
   m_Name: PlayerCam
   m_TagString: MainCamera
@@ -190,7 +191,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 60
+  field of view: 90
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -229,12 +230,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   axes: 0
-  sensitivityX: 10
-  sensitivityY: 10
+  sensitivityX: 5
+  sensitivityY: 5
   minimumX: -360
   maximumX: 360
-  minimumY: -60
-  maximumY: 60
+  minimumY: -89
+  maximumY: 89
 --- !u!114 &946191596140822719
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -251,3 +252,15 @@ MonoBehaviour:
   distance: 10
   interactKey: 101
   interactLayerMask: 9
+--- !u!114 &9209358986787311481
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 946191596140822717}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10d69d23a37a2ca479ce26a67367ea8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

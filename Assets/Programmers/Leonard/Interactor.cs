@@ -58,9 +58,9 @@ public class Interactor : MonoBehaviour
 
 			if (hit)
 			{
-                foreach(Interactable interactable in collision.transform.GetComponents<Interactable>())
+                foreach(IInteractable interactable in collision.transform.GetComponents<IInteractable>())
                 {
-                    collision.collider.gameObject.GetComponent<Interactable>().Interact();
+                    collision.collider.gameObject.GetComponent<IInteractable>().Interact();
                 }
 
 			}

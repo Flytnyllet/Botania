@@ -15,8 +15,9 @@ public class PortalCameraController : MonoBehaviour
     MeshRenderer _screen;
     RenderTexture _texture;
     bool _active = true;
+    bool _playerInside = false;
     object _lock = new object();
-    
+
     public float nearClipLimit = 0.2f;
     // Start is called before the first frame update
     void Awake()
@@ -24,17 +25,18 @@ public class PortalCameraController : MonoBehaviour
         _playerCamera = Camera.main; //This searches on tags and is therefore slow, should be considered for change
         _internalCamera = GetComponentInChildren<Camera>();
         _internalCamera.fieldOfView = _playerCamera.fieldOfView;
+        _internalCamera.depth = _playerCamera.depth;
         _internalCamera.enabled = false;
         _screen = GetComponent<MeshRenderer>();
     }
 
     private void OnEnable()
     {
-        CameraEffect.Renders += Render;  //Ignore this, it's just an awful subscriptions to a static Action
+        CameraEffect.Renders += Render;  //awful subscriptions to a static Action
     }
     private void OnDisable()
     {
-        CameraEffect.Renders -= Render;  //Ignore this, it's just an awful subscriptions to a static Action
+        CameraEffect.Renders -= Render;  //awful subscriptions to a static Action
     }
 
     private void Start()
@@ -59,17 +61,37 @@ public class PortalCameraController : MonoBehaviour
         return GeometryUtility.TestPlanesAABB(frustumPlanes, renderer.bounds);
     }
 
+    Vector3 RotateOnY(Vector3 vec, float degrees)
+    {
+        float x = vec.x;
+        float z = vec.z;
+        float cos = Mathf.Cos(degrees);
+        float sin = Mathf.Sin(degrees);
+        vec.x = x * cos - sin * z;
+        vec.z = x * sin + z * cos;
+
+        return vec;
+    }
+
+
     public void Render()
     {
+
         if (!VisibleFromCamera(_screen, _playerCamera))
         {
             _screen.enabled = false;
         }
+
         var m = transform.localToWorldMatrix * _targetPortal.transform.worldToLocalMatrix * _playerCamera.transform.localToWorldMatrix;
+        //Vector3 pos = m.GetColumn(3);
         _internalCamera.transform.SetPositionAndRotation(m.GetColumn(3), m.rotation);
+
         SetNearClipPlane();
         _internalCamera.Render();
-        _screen.enabled = true;
+        if (!_playerInside)
+        {
+            _screen.enabled = true;
+        }
     }
 
     public void LockPortal(float time)
@@ -77,7 +99,7 @@ public class PortalCameraController : MonoBehaviour
         lock (_lock)
         {
             _active = false;
-            var task = Task.Run(async () =>
+            Task.Run(async () =>
             {
                 await Task.Delay(System.TimeSpan.FromSeconds(1.0f));
                 _active = true;
@@ -86,8 +108,6 @@ public class PortalCameraController : MonoBehaviour
     }
     void SetNearClipPlane()
     {
-        // Learning resource:
-        // http://www.terathon.com/lengyel/Lengyel-Oblique.pdf
         Transform clipPlane = transform;
         int dot = System.Math.Sign(Vector3.Dot(clipPlane.forward, transform.position - _internalCamera.transform.position));
 
@@ -109,18 +129,31 @@ public class PortalCameraController : MonoBehaviour
             _internalCamera.projectionMatrix = _playerCamera.projectionMatrix;
         }
     }
+    private void OnTriggerExit(Collider other)
+    {
+        _screen.enabled = true;
+        _playerInside = false;
+    }
+
+
     private void OnTriggerEnter(Collider other)
     {
-        if (_active == true && other.tag == "Player")
+        _screen.enabled = false;
+        _playerInside = true;
+        //Make sure you only enter from one side
+        Vector3 offset = transform.position - other.transform.position;
+        if (_active == true && other.tag == "Player" && Vector3.Dot(offset, transform.forward) > 0)
         {
             LockPortal(1.0f);
             _targetPortal.LockPortal(1.0f);
-            Vector3 m = transform.position - other.transform.position;
             _internalCamera.enabled = false;
+            var m = _targetPortal.transform.worldToLocalMatrix * transform.localToWorldMatrix *  other.transform.localToWorldMatrix;
             //fattar inte varför, men objektet kan bara flyttas om det stängs av...
             other.gameObject.SetActive(false);
-            other.transform.position = _targetPortal.transform.position - m;
-            other.transform.rotation = _targetPortal.transform.rotation;
+            other.transform.position = _targetPortal.transform.position - offset;
+            //Quaternion.Angle(transform.rotation, _targetPortal.transform.rotation)
+            //Rotate around the target portal so that the player gets the same relative position as to the portal they enter
+            other.transform.RotateAround(_targetPortal.transform.position, _targetPortal.transform.up, _targetPortal.transform.eulerAngles.y-transform.eulerAngles.y);
             other.gameObject.SetActive(true);
         }
     }

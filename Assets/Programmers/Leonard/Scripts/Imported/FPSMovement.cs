@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class FPSMovement : MonoBehaviour
 {
+	// FAKE SINGLETON
+	public static FPSMovement playerMovement;
+
     const string DUCK_BUTTON = "Duck";
     [SerializeField] string GROUND_TAG = "null";
 
@@ -33,9 +36,13 @@ public class FPSMovement : MonoBehaviour
 
     public LayerMask layerMask;
 
-    // !OBS Weird bug causing script to disable itself when awake is used.
+	// !OBS Weird bug causing script to disable itself when awake is used.
+	void Awake()
+	{
+		playerMovement = this;
+	}
 
-    void Start()
+	void Start()
     {
         charCon = GetComponent<CharacterController>();
         _playerCam = transform.Find("PlayerCam");
@@ -45,8 +52,8 @@ public class FPSMovement : MonoBehaviour
 
     void Update()
     {
-        if (CharacterState.Control_State == CHARACTER_CONTROL_STATE.PLAYERCONTROLLED)
-        {
+        //if (CharacterState.Control_State == CHARACTER_CONTROL_STATE.PLAYERCONTROLLED)
+        //{
             // == Variables ==
             //Input
             float x = Input.GetAxis("Horizontal");
@@ -107,7 +114,7 @@ public class FPSMovement : MonoBehaviour
             //bool groundRay = Physics.Raycast(transform.position, Vector3.down * 2, 2f);
             /*if (_velocity.y > 0)
                 groundRay = false; */
-        }
+        //}
     }
 
     void Strafing(float horizontal, float vertical)

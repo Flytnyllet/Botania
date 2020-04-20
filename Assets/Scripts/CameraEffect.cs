@@ -9,15 +9,18 @@ using System;
 //Can be activated by calling "StartCameraEffect" in the eventmanager
 public class CameraEffect : MonoBehaviour
 {
-    const string EVENT_NAME = "StartCameraEffect";
+    public static string CAMERA_EFFECT_EVENT_NAME = "StartCameraEffect";
     Material _material = null;
-    public static Action Renders; //awful static Action which should be faster than the central EventManager
+
+    //awful static Action which should be faster than the central EventManager,
+    //This is only used because when used it's run every frame
+    public static Action Renders; 
 
     private void OnPreRender()
     {
         //Controlling the rendering of portals which are subscribed to Renderers from PortalCameraController
         if (Renders != null)
-        Renders.Invoke();
+            Renders.Invoke();
     }
 
     void OnRenderImage(RenderTexture source, RenderTexture destination)
@@ -31,14 +34,15 @@ public class CameraEffect : MonoBehaviour
             Graphics.Blit(source, destination, _material);
         }
     }
+
     //Some events for activating effects
     private void OnEnable()
     {
-        EventManager.Subscribe(EVENT_NAME, ActivateEffect);
+        EventManager.Subscribe(CAMERA_EFFECT_EVENT_NAME, ActivateEffect);
     }
     private void OnDisable()
     {
-        EventManager.UnSubscribe(EVENT_NAME, ActivateEffect);
+        EventManager.UnSubscribe(CAMERA_EFFECT_EVENT_NAME, ActivateEffect);
     }
 
 
@@ -55,25 +59,18 @@ public class CameraEffect : MonoBehaviour
     public void ActivateEffect(Material material, float time)
     {
         _material = material;
-        Task task = Task.Run(async () =>
-        {
-            await Task.Delay(System.TimeSpan.FromSeconds(time));
-            _material = null;
-        });
+        ActionDelayer.RunAfterDelayAsync(() => { _material = null; }, time);
     }
-    void ActivateEffect( EventParameter eventParam)
+    void ActivateEffect(EventParameter eventParam)
     {
         _material = eventParam.materialParam;
-        Task task = Task.Run(async () =>
-        {
-            await Task.Delay(System.TimeSpan.FromSeconds(eventParam.floatParam));
-            _material = null;
-        });
+        ActionDelayer.RunAfterDelayAsync(() => { _material = null; }, eventParam.floatParam);
+        
     }
     //public void ActivateEffect(float time)
     //{
     //    _active = true;
-    //    Task task = Task.Run(async () =>
+    //    Task.Run(async () =>
     //    {
     //        await Task.Delay(System.TimeSpan.FromSeconds(time));
     //        _active = false;
