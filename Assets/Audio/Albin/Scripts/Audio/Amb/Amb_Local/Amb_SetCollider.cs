@@ -12,18 +12,17 @@ public class Amb_SetCollider : MonoBehaviour
     private bool _is3D;
     private bool _hasPlayed = default;
 
-    [SerializeField]
-    private bool debug;
-
     private PLAYBACK_STATE _event_State;
     private int _state = default;
     private int _lastState = default;
-
 
     private SphereCollider event_Collider;
     private Amb_GetRandomEvent amb_RandomEvent;
     [SerializeField]
     private Amb_Local_Wind amb_Local_Wind = default;
+
+    [SerializeField]
+    private bool debug;
 
     private void OnEnable()
     {
@@ -46,6 +45,8 @@ public class Amb_SetCollider : MonoBehaviour
             RuntimeManager.AttachInstanceToGameObject(event_Instance, transform, GetComponent<Rigidbody>());
         if (!_hasPlayed)
             Set_Collider();
+        event_Instance.getPlaybackState(out _event_State);
+        CheckPlaybackState();
     }
 
     private void Set_Collider()
@@ -130,6 +131,7 @@ public class Amb_SetCollider : MonoBehaviour
 
         event_Instance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
         event_Instance.getPlaybackState(out _event_State);
+        CheckPlaybackState();
         event_Instance.clearHandle();
         _hasPlayed = true;
     }
