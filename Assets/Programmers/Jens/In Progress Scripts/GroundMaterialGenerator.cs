@@ -3,47 +3,41 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using System.Threading.Tasks;
+using System;
 
-public class TempGroundTextureGenerator : MonoBehaviour
+[CreateAssetMenu(menuName = "MaterialMaker")]
+public class GroundMaterialGenerator : ScriptableObject
 {
     readonly static int TEXTURE_SIZE = 512;
     readonly static TextureFormat TEXTURE_FORMAT = TextureFormat.RGB565;
 
-
     [SerializeField] Layer[] _layers;
+    [SerializeField] MeshSettings _meshSettings;
     [SerializeField] Shader _shader;
     [SerializeField] int _noiseDetailLevel = 1;
-    //[SerializeField] Texture2D
+    [SerializeField] Texture2D _mainTex;
     // Update is called once per frame
-    private void Start()
-    {
-        MakeMaterial(transform.position);
-    }
 
-    void MakeMaterial(Vector2 chunkCoord)
+    public Material MakeMaterial(Vector2 chunkCoord)
     {
+        //Vector2 pos = chunkCoord * _meshSettings.MeshWorldSize / _meshSettings.MeshScale;
         Material material = new Material(_shader);
-        Texture2D[] noises = new Texture2D[_layers.Length];
-        Task task = new Task(async () =>
-        {
-            for (int i = 0; i < _layers.Length; i++)
-            {
-                float[,] noise = Noise.GenerateNoiseMap(TEXTURE_SIZE, TEXTURE_SIZE, _noiseDetailLevel, _layers[i].GetNoise.NoiseSettingsDataMerge, chunkCoord);
-                noises[i] = TextureGenerator.TextureFromNoise(noise);
-            }
-            Texture2DArray noiseTextureArray = GenerateTextureArray(noises);
-            material.SetTexture("noiseTextures", noiseTextureArray);
-
-        });
-        task.RunSynchronously();
-        
+        TaskScheduler mainThread = TaskScheduler.FromCurrentSynchronizationContext();
+        //Task.Run(() =>
+        //{
+        float[,] noise = Noise.GenerateNoiseMap(TEXTURE_SIZE, TEXTURE_SIZE, _noiseDetailLevel, _layers[0].GetNoise.NoiseSettingsDataMerge, chunkCoord);
+        Texture2D noiseTex = TextureGenerator.TextureFromNoise(noise);
+        material.SetTexture("_NoiseTextures", noiseTex);
+        //});
         material.SetInt("layerCount", _layers.Length);
         Texture2DArray textureArray = GenerateTextureArray(_layers.Select(x => x.GetTexture()).ToArray());
         material.SetTexture("baseTextures", textureArray);
+        material.SetTexture("_MainTex", _mainTex);
         material.SetColorArray("baseColors", _layers.Select(x => x.GetTint()).ToArray());
         material.SetFloatArray("baseTextureScales", _layers.Select(x => x.GetTextureScale()).ToArray());
+        material.SetFloatArray("baseTextureStrenght", _layers.Select(x => x.GetTextureStrenght()).ToArray());
 
-        GetComponent<MeshRenderer>().material = material;
+        return material;
 
     }
 
@@ -68,6 +62,7 @@ public class TempGroundTextureGenerator : MonoBehaviour
     {
         [SerializeField] NoiseSettingsData _noise;
         [SerializeField] Texture2D _texture;
+        [SerializeField, Range(0, 1)] float _textureStrenght;
         [SerializeField] Color _tint;
         [SerializeField, Range(0, 1)] float _textureScale;
 
@@ -75,6 +70,7 @@ public class TempGroundTextureGenerator : MonoBehaviour
         public Texture2D GetTexture() { return _texture; }
         public Color GetTint() { return _tint; }
         public float GetTextureScale() { return _textureScale; }
+        public float GetTextureStrenght() { return _textureStrenght; }
     }
 
 }

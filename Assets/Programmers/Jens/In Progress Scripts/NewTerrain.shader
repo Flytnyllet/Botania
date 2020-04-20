@@ -16,14 +16,17 @@
 		// Use shader model 3.0 target, to get nicer looking lighting
 		#pragma target 3.0
 
-		sampler2D _MainTex;
-
 		const static int MAX_COLOR_COUNT = 8;
 		const static float EPSILON = 1E-4;
+
+
+		sampler2D _MainTex;
+		sampler2D _NoiseTextures;
 
 		int layerCount;
 		float3 baseColors[MAX_COLOR_COUNT];
 		float baseTextureScales[MAX_COLOR_COUNT];
+		float baseTextureStrenght[MAX_COLOR_COUNT];
 		//float baseStartHeights[MAX_COLOR_COUNT];
 		//float baseBlends[MAX_COLOR_COUNT];
 
@@ -32,7 +35,7 @@
 
 
 		UNITY_DECLARE_TEX2DARRAY(baseTextures);
-		UNITY_DECLARE_TEX2DARRAY(noiseTextures);
+		//UNITY_DECLARE_TEX2DARRAY(noiseTextures);
 
 		struct Input
 		{
@@ -67,16 +70,16 @@
 			float3 blendAxes = abs(IN.worldNormal);
 			blendAxes /= blendAxes.x + blendAxes.y + blendAxes.z;
 
-			float3 colour = float3(0, 0, 0);
 			float mainTexStrenght = 1;
+			float noiseStrenght = tex2D(_NoiseTextures, IN.uv_MainTex).x*baseTextureStrenght[0];
+			float3 colour = tex2D(_MainTex, IN.uv_MainTex)*(1 - noiseStrenght);
 			for (int i = 0; i < layerCount; i++) {
-				float noiseStrenght = UNITY_SAMPLE_TEX2DARRAY(noiseTextures, float3(IN.uv_MainTex, i)).x;
-				//float drawStrength = inverseLerp(-baseBlends[i] / 2 - EPSILON, baseBlends[i] / 2, heightPercent - baseStartHeights[i]);
-				mainTexStrenght -= noiseStrenght;
+				//float drawStrength = inverseLerp();
+
 				//float3 baseColor = baseColors[i] * baseColorStrength[i];
 				float3 textureColor = triplanar(float3(IN.worldPos), baseTextureScales[i], blendAxes, i)*noiseStrenght;
 
-				o.Albedo = textureColor;
+				o.Albedo = textureColor + colour;
 			}
 
 			//o.Albedo = UNITY_SAMPLE_TEX2DARRAY(noiseTextures, float3(IN.uv_MainTex,0));
