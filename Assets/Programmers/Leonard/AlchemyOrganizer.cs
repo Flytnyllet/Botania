@@ -11,7 +11,7 @@ public class AlchemyOrganizer : MonoBehaviour
 	[SerializeField] List<Image> _slotImages = new List<Image>();
 	[SerializeField] Image _emptySlot;
 	PotionLoader _result = new PotionLoader();
-	TestPotion _modifiers = new TestPotion();
+	//TestPotion _modifiers = new TestPotion();
 	[SerializeField] float _potionDuration = 5;
 	
 
@@ -33,7 +33,7 @@ public class AlchemyOrganizer : MonoBehaviour
 	void ActivatePotion()
 	{
 		Debug.Log("Activating Potion");
-		_modifiers.SpeedPot(FPSMovement.playerMovement);
+		//_modifiers.SpeedPot(FPSMovement.playerMovement);
 		//StartCoroutine(ActivatePotion(_potionDuration));
 	}
 
