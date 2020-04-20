@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.00.00">
 	<object class="Event" id="{eccd76e5-5168-4195-86eb-0ec303ca89e8}">
 		<property name="name">
-			<value>amb___01_forest___bird_rnd_birdsong</value>
+			<value>amb___01_forest___bird_rnd_birdsong1</value>
 		</property>
 		<property name="outputFormat">
 			<value>2</value>
@@ -106,7 +106,7 @@
 			<value>true</value>
 		</property>
 		<property name="triggerProbability">
-			<value>27</value>
+			<value>19.5</value>
 		</property>
 		<property name="isAsync">
 			<value>true</value>
@@ -122,12 +122,6 @@
 		</property>
 		<relationship name="sounds">
 			<destination>{8d640ca1-40e3-4396-acd9-a981ecbe6e2a}</destination>
-			<destination>{eed32dc1-d5ec-4197-a81d-4596429835cb}</destination>
-			<destination>{79c2fe1d-363b-4844-ac35-af8bc88f5d34}</destination>
-			<destination>{578f88d8-388b-42d0-aa04-1cb2ace5d109}</destination>
-		</relationship>
-		<relationship name="playPercentages">
-			<destination>{f37e264f-0c6c-4635-90fd-331dad998985}</destination>
 		</relationship>
 	</object>
 	<object class="EventMixerGroup" id="{3ac2f736-a4c9-4678-b419-e72df35d167e}">
@@ -186,29 +180,6 @@
 	<object class="SingleSound" id="{8d640ca1-40e3-4396-acd9-a981ecbe6e2a}">
 		<relationship name="audioFile">
 			<destination>{04072fd2-15b2-47e5-bf98-3b922799a41d}</destination>
-		</relationship>
-	</object>
-	<object class="SingleSound" id="{eed32dc1-d5ec-4197-a81d-4596429835cb}">
-		<relationship name="audioFile">
-			<destination>{4bdeae82-ecf5-4d02-9b95-d7a2fb49df71}</destination>
-		</relationship>
-	</object>
-	<object class="SingleSound" id="{79c2fe1d-363b-4844-ac35-af8bc88f5d34}">
-		<relationship name="audioFile">
-			<destination>{3ecf4ba0-5286-4b0e-ad1d-5220d6c34889}</destination>
-		</relationship>
-	</object>
-	<object class="SingleSound" id="{578f88d8-388b-42d0-aa04-1cb2ace5d109}">
-		<relationship name="audioFile">
-			<destination>{75d641d1-3438-4686-bbf9-3dbde215c81e}</destination>
-		</relationship>
-	</object>
-	<object class="PlayPercentage" id="{f37e264f-0c6c-4635-90fd-331dad998985}">
-		<property name="percentage">
-			<value>55</value>
-		</property>
-		<relationship name="sound">
-			<destination>{eed32dc1-d5ec-4197-a81d-4596429835cb}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusEffectChain" id="{7847e0e4-8e57-4b6c-a80a-4de5f29ee7f5}">
