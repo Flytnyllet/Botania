@@ -66,7 +66,7 @@ public class GroundMaterialGenerator : ScriptableObject
         [SerializeField] Color _tint;
         [SerializeField, Range(0, 1)] float _textureScale;
 
-        public NoiseSettingsData GetNoise => _noise;
+        public NoiseSettingsData GetNoise { get => _noise;}
         public Texture2D GetTexture() { return _texture; }
         public Color GetTint() { return _tint; }
         public float GetTextureScale() { return _textureScale; }
