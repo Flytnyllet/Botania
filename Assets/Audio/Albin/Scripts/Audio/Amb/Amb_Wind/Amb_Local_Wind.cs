@@ -15,25 +15,16 @@ public class Amb_Local_Wind : MonoBehaviour
     [SerializeField]
     private Amb_Data amb_Data = default;
     private Amb_GetRandomEvent amb_RandomEvent;
-    private Amb_Global_Wind amb_Global_Wind;
 
     private void OnEnable()
     {
         amb_RandomEvent = GetComponentInParent<Amb_GetRandomEvent>();
-        amb_Global_Wind = GetComponentInParent<Amb_Global_Wind>();
-
-        Set_Global_Override();
         Init_Local_Wind();
     }
 
     private void OnDrawGizmos()
     {
         Gizmos.DrawIcon(transform.position, "FMOD/FMODEmitter.tiff", true);
-    }
-
-    private void Set_Global_Override()
-    {
-
     }
 
     private void Init_Local_Wind()
@@ -59,7 +50,6 @@ public class Amb_Local_Wind : MonoBehaviour
     public void Start_Local_Wind()
     {
         event_Instance.start();
-        event_Instance.release();
     }
 
     public void Stop_Local_Wind()
@@ -75,6 +65,7 @@ public class Amb_Local_Wind : MonoBehaviour
             return;
         else
         {
+            event_Instance.release();
             event_Instance.clearHandle();
             gameObject.SetActive(false);
         }

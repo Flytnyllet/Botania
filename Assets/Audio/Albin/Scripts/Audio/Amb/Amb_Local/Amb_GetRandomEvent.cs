@@ -21,11 +21,12 @@ public class Amb_GetRandomEvent : MonoBehaviour
             case "Amb_Forest":
                 amb_LocalData = new string[]
                 {
+                    amb_Data.bird_rnd_birdsong1,
+                    amb_Data.bird_rnd_birdsong2,
+                    amb_Data.bird_rnd_birdsong3,
+                    amb_Data.bird_rnd_birdsong4,
                     amb_Data.tree_rnd_woodcreak,
-                    amb_Data.tree_rnd_woodsnap,
-                    amb_Data.bird_rnd_birdsong,
-                    amb_Data.bird_rnd_dovecall,
-                    amb_Data.bird_rnd_woodpecker
+                    amb_Data.tree_rnd_woodsnap
                 };
                 break;
             case "Amb_Grassland":

@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.00.00">
 	<object class="Event" id="{8a8052e9-18af-4635-8568-f6e49b1f3701}">
 		<property name="name">
-			<value>p___00_mov___rnd_footsteps</value>
+			<value>p___001_mov___rnd_footsteps</value>
 		</property>
 		<property name="outputFormat">
 			<value>1</value>
@@ -79,6 +79,9 @@
 		</relationship>
 	</object>
 	<object class="EventMixerMaster" id="{8df1be48-34ae-485f-8e6f-d3354b9c3c1e}">
+		<property name="volume">
+			<value>-9.5</value>
+		</property>
 		<relationship name="effectChain">
 			<destination>{28dff33c-b5ec-4634-843f-6550b7271bcf}</destination>
 		</relationship>
@@ -113,9 +116,6 @@
 		</relationship>
 	</object>
 	<object class="EventMixerGroup" id="{5f945700-1017-4589-8ae0-4e19d04eddf0}">
-		<property name="volume">
-			<value>-11.5</value>
-		</property>
 		<property name="name">
 			<value>Audio 1</value>
 		</property>
@@ -198,8 +198,14 @@
 		<property name="lowGain">
 			<value>-76</value>
 		</property>
+		<property name="midGain">
+			<value>-9.5</value>
+		</property>
 		<property name="highGain">
-			<value>-8</value>
+			<value>-18.5</value>
+		</property>
+		<property name="highCrossover">
+			<value>3100</value>
 		</property>
 	</object>
 	<object class="MixerBusFader" id="{35d7238f-32ae-4b7f-b151-60020971ce9f}" />

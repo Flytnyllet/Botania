@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.00.00">
 	<object class="Event" id="{f79382c7-fdfc-4576-aa8e-4a9f47436dc3}">
 		<property name="name">
-			<value>amb___01_forest___tree_rnd_woodcreak</value>
+			<value>amb___001_forest___tree_rnd_woodcreak</value>
 		</property>
 		<property name="outputFormat">
 			<value>2</value>
@@ -82,6 +82,9 @@
 		</relationship>
 	</object>
 	<object class="EventMixerMaster" id="{ade82334-35c3-4b84-be6f-088f33b3e367}">
+		<property name="volume">
+			<value>-8</value>
+		</property>
 		<relationship name="effectChain">
 			<destination>{b8fe1b90-7013-44f2-ba77-d34ec23700d2}</destination>
 		</relationship>
@@ -103,13 +106,13 @@
 			<value>true</value>
 		</property>
 		<property name="triggerProbability">
-			<value>26.5</value>
+			<value>15</value>
 		</property>
 		<property name="isAsync">
 			<value>true</value>
 		</property>
 		<property name="start">
-			<value>0.052769688894954481</value>
+			<value>0.65625</value>
 		</property>
 		<property name="length">
 			<value>0.5</value>
@@ -147,7 +150,7 @@
 			<value>0</value>
 		</property>
 		<property name="length">
-			<value>2.3348675390767553</value>
+			<value>4.4375</value>
 		</property>
 		<relationship name="timeline">
 			<destination>{a0f1686a-5b14-44da-9be0-51246c60e27d}</destination>
@@ -217,7 +220,7 @@
 			<value>1.20000005</value>
 		</property>
 		<property name="maximumDistance">
-			<value>9</value>
+			<value>10</value>
 		</property>
 		<property name="extentMode">
 			<value>1</value>
@@ -231,13 +234,16 @@
 	</object>
 	<object class="ThreeEQEffect" id="{699286d1-7a90-4bef-b420-4d1bbe3e7182}">
 		<property name="lowGain">
-			<value>3</value>
+			<value>-8.5</value>
+		</property>
+		<property name="midGain">
+			<value>-0.5</value>
 		</property>
 		<property name="highGain">
-			<value>-1.5</value>
+			<value>-14.5</value>
 		</property>
 		<property name="lowCrossover">
-			<value>1250</value>
+			<value>2600</value>
 		</property>
 		<property name="highCrossover">
 			<value>3400</value>

@@ -14,13 +14,16 @@ public class Amb_Data : UnityEngine.ScriptableObject
     [Header("Amb_Forest")]
 
     [FMODUnity.EventRef]
-    public string bird_rnd_birdsong = null;
+    public string bird_rnd_birdsong1 = null;
 
     [FMODUnity.EventRef]
-    public string bird_rnd_dovecall = null;
+    public string bird_rnd_birdsong2 = null;
 
     [FMODUnity.EventRef]
-    public string bird_rnd_woodpecker = null;
+    public string bird_rnd_birdsong3 = null;
+
+    [FMODUnity.EventRef]
+    public string bird_rnd_birdsong4 = null;
 
     [Space(10)]
 
