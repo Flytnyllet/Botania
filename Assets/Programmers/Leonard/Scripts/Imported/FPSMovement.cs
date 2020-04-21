@@ -9,8 +9,9 @@ public class FPSMovement : MonoBehaviour
 
     const string DUCK_BUTTON = "Duck";
     [SerializeField] string GROUND_TAG = "null";
+	[SerializeField] string WATER_TAG = "null";
 
-    [Header("Movement")]
+	[Header("Movement")]
     CharacterController charCon;
     public CharacterStats _speed;
     public CharacterStats _jumpForce;
@@ -70,6 +71,7 @@ public class FPSMovement : MonoBehaviour
             //_inAir = !charCon.isGrounded;
 
             // Everything that can be done while grounded
+			if(groundDetection.collider.tag == )
             if (grounded)
             {
                 terrainAngle = Vector3.Angle(Vector3.up, groundDetection.normal);
