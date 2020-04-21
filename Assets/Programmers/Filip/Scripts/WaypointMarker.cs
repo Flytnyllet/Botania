@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using TMPro;
 
-public class WaypointMarker : DestroyWaypoint, IPointerEnterHandler, IPointerExitHandler
+public class WaypointMarker : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     public static readonly string STANDARD_WAYPOINT_NAME = "New Waypoint";
 
