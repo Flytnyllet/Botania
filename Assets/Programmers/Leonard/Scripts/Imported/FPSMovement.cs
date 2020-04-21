@@ -48,6 +48,7 @@ public class FPSMovement : MonoBehaviour
         _playerCam = transform.Find("PlayerCam");
         CharacterState.SetControlState(CHARACTER_CONTROL_STATE.PLAYERCONTROLLED);
         _defPosY = _playerCam.localPosition.y;
+		_groundRayDistance = Vector3.Distance(transform.position, charCon.bounds.ClosestPoint(transform.position - _groundRayDistance * Vector3.down)) - 0.01f;
     }
 
     void Update()
@@ -169,7 +170,7 @@ public class FPSMovement : MonoBehaviour
 
     void Launch(Vector3 launchVector)
     {
-        _velocity += launchVector;
+        _velocity = launchVector;
     }
 
     //Head Bobbing !Stolen from the internet
