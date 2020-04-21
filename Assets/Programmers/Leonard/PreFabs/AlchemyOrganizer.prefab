@@ -304,6 +304,11 @@ MonoBehaviour:
   recipe:
   - Poppy
   - Poppy
+  _potionType: 0
+  _potionDuration: 5
+  _potionFlag: 
+  _potionFactor: 0.3
+  _potionFlat: 5
 --- !u!114 &5721077886727123838
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -347,7 +352,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7827587078391630445}
+      - m_Target: {fileID: 53454559833086023}
         m_MethodName: ActivatePotion
         m_Mode: 1
         m_Arguments:
@@ -774,6 +779,11 @@ MonoBehaviour:
   _potionName: Glide
   textObject: {fileID: 53454560556529569}
   recipe: []
+  _potionType: 0
+  _potionDuration: 0
+  _potionFlag: 
+  _potionFactor: 0
+  _potionFlat: 0
 --- !u!1 &53454560556529571
 GameObject:
   m_ObjectHideFlags: 0
@@ -1412,6 +1422,11 @@ MonoBehaviour:
   _potionName: Jump
   textObject: {fileID: 53454560949620260}
   recipe: []
+  _potionType: 0
+  _potionDuration: 0
+  _potionFlag: 
+  _potionFactor: 0
+  _potionFlat: 0
 --- !u!1 &1205980943011086703
 GameObject:
   m_ObjectHideFlags: 0
@@ -2578,7 +2593,7 @@ GameObject:
   - component: {fileID: 2971103892190243595}
   - component: {fileID: 1353666828262311058}
   m_Layer: 5
-  m_Name: Item_SpeedPot2
+  m_Name: Item_WaterPot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2631,6 +2646,11 @@ MonoBehaviour:
   - Tulip
   - Poppy
   - Dandelion
+  _potionType: 1
+  _potionDuration: 20
+  _potionFlag: Water
+  _potionFactor: 0
+  _potionFlat: 0
 --- !u!114 &1353666828262311058
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2670,11 +2690,11 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 0}
+  m_TargetGraphic: {fileID: 6379746183053122329}
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7827587078391630445}
+      - m_Target: {fileID: 2971103892190243595}
         m_MethodName: ActivatePotion
         m_Mode: 1
         m_Arguments:

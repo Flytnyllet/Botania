@@ -16,6 +16,7 @@ public class FPSMovement : MonoBehaviour
 	public CharacterStats _speed;
 	public CharacterStats _jumpForce;
 	public CharacterStats _gravity;
+	public CharacterFlags _flags;
 	public Vector3 _velocity;
 	[SerializeField] float _crawlSpeedFactor = 0.5f;
 	[SerializeField] float _duckDistance = 0.4f;
@@ -26,6 +27,7 @@ public class FPSMovement : MonoBehaviour
 	[SerializeField] float _slopeWalkCorrection = 2f;
 	[SerializeField] float _strafingSpeed = 5f;
 	bool _inAir = false;
+	bool _isDucking = false;
 
 	[Header("Bobbing")]
 	[SerializeField] float _bobbingAmount = 0.05f;
@@ -34,7 +36,6 @@ public class FPSMovement : MonoBehaviour
 	float _defPosY;
 
 	Transform _playerCam;
-
 	public LayerMask layerMask;
 
 	// !OBS Weird bug causing script to disable itself when awake is used.
@@ -109,9 +110,15 @@ public class FPSMovement : MonoBehaviour
 
 		//Ducking
 		if (Input.GetButtonDown(DUCK_BUTTON))
+		{
 			Ducking(-_duckDistance);
+			_isDucking = true;
+		}
 		else if (Input.GetButtonUp(DUCK_BUTTON))
+		{
 			Ducking(_duckDistance);
+			_isDucking = false;
+		}
 
 		//Gravity
 		charCon.Move(_velocity * Time.deltaTime);
@@ -139,11 +146,19 @@ public class FPSMovement : MonoBehaviour
 
 	void Walking(float horizontal, float vertical, RaycastHit ground)
 	{
+		Vector2 temp = new Vector2(horizontal, vertical).normalized;
+		horizontal = temp.x;
+		vertical = temp.y;
+
 		Vector3 lookDir = _playerCam.forward;
 		lookDir.y = 0;
 		Vector3 move =
 			_playerCam.right.normalized * horizontal +
 			lookDir.normalized * vertical;
+		if(_isDucking)
+		{
+			move *= _crawlSpeedFactor;
+		}
 		charCon.Move(move * _speed.Value * Time.deltaTime);
 
 		//Post move distance to ground check
