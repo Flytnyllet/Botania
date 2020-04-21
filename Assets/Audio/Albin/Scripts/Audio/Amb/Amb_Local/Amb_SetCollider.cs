@@ -12,6 +12,11 @@ public class Amb_SetCollider : MonoBehaviour
     private bool _is3D;
     private bool _hasPlayed = default;
 
+    private int _parameterCount;
+    private bool _isShy = false;
+    public PARAMETER_ID IsShyParameterId { get { return _isShyParameterId; } }
+    private PARAMETER_ID _isShyParameterId;
+
     private PLAYBACK_STATE _event_State;
     private int _state = default;
     private int _lastState = default;
@@ -20,6 +25,8 @@ public class Amb_SetCollider : MonoBehaviour
     private Amb_GetRandomEvent amb_RandomEvent;
     [SerializeField]
     private Amb_Local_Wind amb_Local_Wind = default;
+    [SerializeField]
+    private Amb_ShyBehaviour amb_ShyBehaviour = default;
 
     [SerializeField]
     private bool debug;
@@ -43,10 +50,34 @@ public class Amb_SetCollider : MonoBehaviour
         event_Description.is3D(out _is3D);
         if (_is3D)
             RuntimeManager.AttachInstanceToGameObject(event_Instance, transform, GetComponent<Rigidbody>());
+        
         if (!_hasPlayed)
             Set_Collider();
         event_Instance.getPlaybackState(out _event_State);
         CheckPlaybackState();
+
+        event_Description.getParameterDescriptionCount(out int _parameterCount);
+        if (_parameterCount > 0)
+            Init_ShyBehaviour();
+        else
+        {
+            if (amb_ShyBehaviour)
+            {
+                Destroy(amb_ShyBehaviour.gameObject);
+            }
+        }
+        
+    }
+
+    private void Init_ShyBehaviour()
+    {
+        EventDescription isShyEventDescription;
+        event_Instance.getDescription(out isShyEventDescription);
+        PARAMETER_DESCRIPTION isShyParameterDescription;
+        isShyEventDescription.getParameterDescriptionByName("is_shy", out isShyParameterDescription);
+        _isShyParameterId = isShyParameterDescription.id;
+
+        _isShy = true;
     }
 
     private void Set_Collider()
@@ -113,6 +144,9 @@ public class Amb_SetCollider : MonoBehaviour
         event_Instance.release();
 
         amb_Local_Wind.gameObject.SetActive(true);
+
+        if (_isShy)
+            amb_ShyBehaviour.gameObject.SetActive(true);
     }
 
     private void OnTriggerStay(Collider other)
@@ -134,10 +168,27 @@ public class Amb_SetCollider : MonoBehaviour
         CheckPlaybackState();
         event_Instance.clearHandle();
         _hasPlayed = true;
+
+        amb_Local_Wind.Stop_Local_Wind();
+
+        if (_isShy)
+            amb_ShyBehaviour.gameObject.SetActive(false);
+    }
+
+    public void Set_Parameter(PARAMETER_ID id, float value)
+    {
+        event_Instance.setParameterByID(id, value);
     }
 
     public void Stop_Collider()
     {
-        event_Collider.gameObject.SetActive(false);
+        event_Instance.getPlaybackState(out _event_State);
+
+        if (_event_State != PLAYBACK_STATE.STOPPED)
+            return;
+        else
+        {
+            event_Collider.gameObject.SetActive(false);
+        }
     }
 }
