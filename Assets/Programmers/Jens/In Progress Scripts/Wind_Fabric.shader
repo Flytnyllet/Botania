@@ -4,6 +4,7 @@
 		_MainTex("Texture", 2D) = "white" {}
 		_EmissionMap("Emission Map", 2D) = "black" {}
 		_PhysicsMap("Physics Map", 2D) = "white" {}
+		_Alpha("Alpha Map", 2D) = "white" {}
 		_Speed("Speed", float) = 1.0
 	}
 		SubShader{
@@ -29,6 +30,7 @@
 		sampler2D _MainTex;
 		sampler2D _EmissionMap;
 		sampler2D _PhysicsMap;
+		sampler2D _Alpha;
 		float4 _Color;
 		half _Speed;
 
@@ -67,8 +69,8 @@
 
 	  void surf(Input IN, inout SurfaceOutput o) {
 		  fixed4 c = tex2D(_MainTex, IN.uv_MainTex)*_Color;
-		  o.Albedo = c.rgb;
-		  o.Alpha = c.a; 
+		  o.Albedo = c.rgb; 
+		  o.Alpha = tex2D(_Alpha, IN.uv_MainTex)*_Color;
 		  float2 pos = IN.screenPos.xy / IN.screenPos.w;
 		  pos *= _ScreenParams.xy; // pixel position
 		  float4x4 thresholdMatrix =

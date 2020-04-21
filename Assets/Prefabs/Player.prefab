@@ -112,17 +112,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GROUND_TAG: null
+  WATER_TAG: Water
   _speed:
-    _baseValue: 12
+    _baseValue: 6
   _jumpForce:
-    _baseValue: 1
+    _baseValue: 6
   _gravity:
     _baseValue: -9.81
   _velocity: {x: 0, y: 0, z: 0}
   _crawlSpeedFactor: 0.5
   _duckDistance: 0.4
-  _slidingSpeedFactor: 0.5
-  _groundRayDistance: 3
+  _slidingSpeedFactor: 2.5
+  _groundRayDistance: 2
   _minSlidingAngle: 25
   _slopeWalkCorrection: 2
   _strafingSpeed: 5

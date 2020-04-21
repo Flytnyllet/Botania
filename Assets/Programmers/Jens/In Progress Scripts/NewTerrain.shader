@@ -3,6 +3,8 @@
 	Properties
 	{
 		_MainTex("Texture", 2D) = "white" {}
+		_AltTex("Texture", 2D) = "white" {}
+		_NoiseTextures("Texture", 2D) = "white" {}
 	}
 		SubShader
 	{
@@ -21,6 +23,7 @@
 
 
 		sampler2D _MainTex;
+		sampler2D _AltTex;
 		sampler2D _NoiseTextures;
 
 		int layerCount;
@@ -34,7 +37,7 @@
 		//float maxHeight;
 
 
-		UNITY_DECLARE_TEX2DARRAY(baseTextures);
+		//UNITY_DECLARE_TEX2DARRAY(baseTextures);
 		//UNITY_DECLARE_TEX2DARRAY(noiseTextures);
 
 		struct Input
@@ -57,13 +60,13 @@
 		}
 
 		//triplanar mapping
-		float3 triplanar(float3 worldPos, float scale, float3 blendAxes, int textureIndex) {
-			float3 scaledWorldPos = worldPos / scale;
-			float3 xProjection = UNITY_SAMPLE_TEX2DARRAY(baseTextures, float3(scaledWorldPos.y, scaledWorldPos.z, textureIndex)) * blendAxes.x;
-			float3 yProjection = UNITY_SAMPLE_TEX2DARRAY(baseTextures, float3(scaledWorldPos.x, scaledWorldPos.z, textureIndex)) * blendAxes.y;
-			float3 zProjection = UNITY_SAMPLE_TEX2DARRAY(baseTextures, float3(scaledWorldPos.x, scaledWorldPos.y, textureIndex)) * blendAxes.z;
-			return xProjection + yProjection + zProjection;
-		}
+		//float3 triplanar(float3 worldPos, float scale, float3 blendAxes, int textureIndex) {
+		//	float3 scaledWorldPos = worldPos / scale;
+		//	float3 xProjection = UNITY_SAMPLE_TEX2DARRAY(baseTextures, float3(scaledWorldPos.y, scaledWorldPos.z, textureIndex)) * blendAxes.x;
+		//	float3 yProjection = UNITY_SAMPLE_TEX2DARRAY(baseTextures, float3(scaledWorldPos.x, scaledWorldPos.z, textureIndex)) * blendAxes.y;
+		//	float3 zProjection = UNITY_SAMPLE_TEX2DARRAY(baseTextures, float3(scaledWorldPos.x, scaledWorldPos.y, textureIndex)) * blendAxes.z;
+		//	return xProjection + yProjection + zProjection;
+		//}
 
 		void surf(Input IN, inout SurfaceOutput o)
 		{
@@ -71,18 +74,22 @@
 			blendAxes /= blendAxes.x + blendAxes.y + blendAxes.z;
 
 			float mainTexStrenght = 1;
-			float noiseStrenght = tex2D(_NoiseTextures, IN.uv_MainTex).x*baseTextureStrenght[0];
-			float3 colour = tex2D(_MainTex, IN.uv_MainTex)*(1 - noiseStrenght);
-			for (int i = 0; i < layerCount; i++) {
-				//float drawStrength = inverseLerp();
+			//float noiseStrenght = tex2D(_NoiseTextures, IN.uv_MainTex).x*baseTextureStrenght[0];
+			float noiseStrenght = smoothstep(0.3 ,0.7 , tex2D(_NoiseTextures, IN.uv_MainTex).x);
+			float3 altCol = tex2D(_AltTex, IN.uv_MainTex);
+			float3 colour = tex2D(_MainTex, IN.uv_MainTex);
+			//for (int i = 0; i < layerCount; i++) {
+			//	//float drawStrength = inverseLerp();
 
-				//float3 baseColor = baseColors[i] * baseColorStrength[i];
-				float3 textureColor = triplanar(float3(IN.worldPos), baseTextureScales[i], blendAxes, i)*noiseStrenght;
+			//	//float3 baseColor = baseColors[i] * baseColorStrength[i];
+			//	//float3 textureColor = triplanar(float3(IN.worldPos), baseTextureScales[i], blendAxes, i)*noiseStrenght;
+			//	float3 textureColor = triplanar(float3(IN.worldPos), baseTextureScales[i], blendAxes, i);
 
-				o.Albedo = textureColor + colour;
-			}
-
-			//o.Albedo = UNITY_SAMPLE_TEX2DARRAY(noiseTextures, float3(IN.uv_MainTex,0));
+			//	o.Albedo = colour;
+			//}
+			o.Albedo = lerp(colour, altCol, noiseStrenght);
+			//o.Albedo = altCol+colour;
+			//o.Albedo = tex2D(_NoiseTextures, IN.uv_MainTex);
 		}
 		ENDCG
 	}

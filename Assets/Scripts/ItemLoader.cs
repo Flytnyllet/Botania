@@ -21,12 +21,17 @@ public class ItemLoader : MonoBehaviour
 	void OnEnable()
 	{
 		//if(_flower != null)
-		itemAmount = FlowerLibrary.GetFlowerAmount(_flowerName);
-		textObject.text = _flowerName + "\n x" + itemAmount;
+		UpdateUI();
 	}
 
-	public void UseIngredient()
+	public string GetFlowerName()
 	{
+		return _flowerName;
+	}
 
+	public void UpdateUI()
+	{
+		itemAmount = FlowerLibrary.GetFlowerAmount(_flowerName);
+		textObject.text = _flowerName + "\n x" + itemAmount;
 	}
 }

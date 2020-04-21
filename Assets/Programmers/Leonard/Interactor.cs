@@ -50,7 +50,7 @@ public class Interactor : MonoBehaviour
 
 	void Update()
 	{
-		if (Input.GetKeyDown(interactKey))
+		if (Input.GetButtonDown("Fire1"))
 		{
 			RaycastHit collision;
 			bool hit = Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward) * distance, out collision, distance);
