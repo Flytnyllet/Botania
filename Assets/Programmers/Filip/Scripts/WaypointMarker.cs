@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using TMPro;
 
-public class WaypointMarker : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class WaypointMarker : DestroyWaypoint, IPointerEnterHandler, IPointerExitHandler
 {
     public static readonly string STANDARD_WAYPOINT_NAME = "New Waypoint";
 
@@ -19,13 +19,12 @@ public class WaypointMarker : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     [SerializeField] RectTransform _inputFieldRectTransform;
     [SerializeField] TMP_InputField _inputField;
     [SerializeField] TMP_Text _text;
+    [SerializeField] Image _image;
 
-    Image _image;
     RectTransform _rectTransform;
 
     private void Awake()
     {
-        _image = GetComponent<Image>();
         _rectTransform = GetComponent<RectTransform>();
     }
 
@@ -73,5 +72,13 @@ public class WaypointMarker : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         _rectTransform.sizeDelta = new Vector2(size, size);
 
         FormatText();
+    }
+
+    public void ToggleMovement(bool status)
+    {
+        if (status)
+            CharacterState.SetControlState(CHARACTER_CONTROL_STATE.MENU_NO_MOVEMENT);
+        else
+            CharacterState.SetControlState(CHARACTER_CONTROL_STATE.MENU);
     }
 }

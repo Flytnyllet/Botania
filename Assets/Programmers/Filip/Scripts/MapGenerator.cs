@@ -12,10 +12,14 @@ public class MapGenerator : MonoBehaviour, IDragHandler, IScrollHandler, IPointe
     static MapSettings _mapSettings;
     static RectTransform _spawnContainer;
     static RectTransform _markersContainer;
+    static RectTransform __waypointContainer;
     static RectTransform _pivotSpawnContainer;
     static RectTransform _mapHolder;
     static GameObject _enableDisableObject;
     static Image _playerIcon;
+    static GameObject _markerPrefab;
+
+    static AudioSource _waypointDestroyAudioSource;
 
     static float _chunkSize;
     static float _markerSize;
@@ -27,6 +31,7 @@ public class MapGenerator : MonoBehaviour, IDragHandler, IScrollHandler, IPointe
     [SerializeField] MapSettings _mapSettingsInstance;
     [SerializeField] MeshSettings _meshSettingsInstance;
     [SerializeField] GameObject _waypointPrefab;
+    [SerializeField] GameObject _markerPrefabInstance;
 
     [Header("Setup")]
 
@@ -35,9 +40,12 @@ public class MapGenerator : MonoBehaviour, IDragHandler, IScrollHandler, IPointe
     [SerializeField] RectTransform _spawnContainerInstance;
     [SerializeField] RectTransform _pivotSpawnContainerInstance;
     [SerializeField] RectTransform _markersContainerInstance;
+    [SerializeField] RectTransform _waypointContainerInstance;
     [SerializeField] GameObject _enableDisableObjectInstance;
     [SerializeField] Image _waypointSelectedImage;
     [SerializeField] Image _playerIconInstance;
+
+    [SerializeField] AudioSource _waypointDestroyAudioSourceInstance;
 
     [Header("General Settings")]
 
@@ -87,6 +95,7 @@ public class MapGenerator : MonoBehaviour, IDragHandler, IScrollHandler, IPointe
             _chunkSize = _chunkSizeInstance;
             _spawnContainer = _spawnContainerInstance;
             _markersContainer = _markersContainerInstance;
+            __waypointContainer = _waypointContainerInstance;
             _pivotSpawnContainer = _pivotSpawnContainerInstance;
             _markerSize = _markerSizeInstance;
             _waypointSize = _waypointSizeInstance;
@@ -94,6 +103,10 @@ public class MapGenerator : MonoBehaviour, IDragHandler, IScrollHandler, IPointe
             _mapHolder = _mapHolderInstance;
             _playerIcon = _playerIconInstance;
             _playerIconSize = _playerIconSizeInstance;
+            _markerPrefab = _markerPrefabInstance;
+
+
+            _waypointDestroyAudioSource = _waypointDestroyAudioSourceInstance;
 
             _canvasRectTransform = _parentCanvas.GetComponent<RectTransform>();
 
@@ -170,7 +183,7 @@ public class MapGenerator : MonoBehaviour, IDragHandler, IScrollHandler, IPointe
             float scale = 1 / _pivotSpawnContainer.localScale.x * _waypointSize;
             Vector3 waypointScale = new Vector3(scale, scale, scale);
 
-            GameObject newWaypoint = Instantiate(_waypointPrefab, Vector3.zero, Quaternion.identity, _markersContainer);
+            GameObject newWaypoint = Instantiate(_waypointPrefab, Vector3.zero, Quaternion.identity, __waypointContainer);
             newWaypoint.transform.localPosition = waypointPosition;
             newWaypoint.transform.localScale = waypointScale;
 
@@ -322,28 +335,25 @@ public class MapGenerator : MonoBehaviour, IDragHandler, IScrollHandler, IPointe
         float scale = 1 / _pivotSpawnContainer.localScale.x * _markerSize;
         Vector3 markerScale = new Vector3(scale, scale, scale);
 
-        GameObject newMarker = SpawnMarker(sprite, markerPosition, markerScale, _markerSize, false);
+        GameObject newMarker = SpawnMarker(sprite, markerPosition, markerScale, _markerSize);
         _spawnedWorldMarkers.Add(newMarker.transform);
     }
 
-    private static GameObject SpawnMarker(Sprite sprite, Vector3 position, Vector3 scale, float size, bool raycastTarget)
+    private static GameObject SpawnMarker(Sprite sprite, Vector3 position, Vector3 scale, float size)
     {
-        GameObject newMarker = new GameObject(sprite.name);
-        newMarker.transform.parent = _markersContainer;
+        GameObject newMarker = Instantiate(_markerPrefab, Vector3.zero, Quaternion.identity, _markersContainer);
+        newMarker.name = sprite.name;
 
-        //Position
-        newMarker.transform.localScale = scale;
         newMarker.transform.localPosition = position;
+        newMarker.transform.localScale = scale;
 
-        //Add sprite
-        Image image = newMarker.AddComponent<Image>();
+        Image image = newMarker.GetComponentInChildren<Image>();
         image.sprite = sprite;
 
-        //Size
         image.rectTransform.sizeDelta = new Vector2(size, size);
-        image.raycastTarget = raycastTarget;
+        image.raycastTarget = false;
 
-        _worldMarkers.Add(newMarker.transform, new WorldMarker(sprite, position, raycastTarget));
+        _worldMarkers.Add(newMarker.transform, new WorldMarker(sprite, position, false));
 
         return newMarker;
     }
@@ -357,6 +367,9 @@ public class MapGenerator : MonoBehaviour, IDragHandler, IScrollHandler, IPointe
 
     public static void RemoveWaypoint(Transform waypoint)
     {
+        if (_waypointDestroyAudioSource != null)
+            _waypointDestroyAudioSource.Play();
+
         _spawnedWaypoints.Remove(waypoint);
     }
 
@@ -372,9 +385,12 @@ public class MapGenerator : MonoBehaviour, IDragHandler, IScrollHandler, IPointe
 
             if (status)
             {
+                CharacterState.SetControlState(CHARACTER_CONTROL_STATE.MENU);
                 UpdatePlayerIcon();
                 FocusOnPlayer();
             }
+            else
+                CharacterState.SetControlState(CHARACTER_CONTROL_STATE.PLAYERCONTROLLED);
         }
     }
 }

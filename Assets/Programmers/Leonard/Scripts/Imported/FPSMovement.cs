@@ -52,8 +52,8 @@ public class FPSMovement : MonoBehaviour
 
     void Update()
     {
-        //if (CharacterState.Control_State == CHARACTER_CONTROL_STATE.PLAYERCONTROLLED)
-        //{
+        if (CharacterState.Control_State == CHARACTER_CONTROL_STATE.PLAYERCONTROLLED || CharacterState.Control_State == CHARACTER_CONTROL_STATE.MENU)
+        {
             // == Variables ==
             //Input
             float x = Input.GetAxis("Horizontal");
@@ -114,7 +114,7 @@ public class FPSMovement : MonoBehaviour
             //bool groundRay = Physics.Raycast(transform.position, Vector3.down * 2, 2f);
             /*if (_velocity.y > 0)
                 groundRay = false; */
-        //}
+        }
     }
 
     void Strafing(float horizontal, float vertical)
