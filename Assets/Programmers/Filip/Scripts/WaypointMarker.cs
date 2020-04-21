@@ -7,6 +7,8 @@ using TMPro;
 
 public class WaypointMarker : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
+    public static readonly string STANDARD_WAYPOINT_NAME = "New Waypoint";
+
     [Header("Settings")]
 
     [SerializeField, Range(0, 300)] float _minTextWidth = 30;
@@ -61,7 +63,7 @@ public class WaypointMarker : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
     public void NameChange()
     {
-        //MapGenerator.
+        MapGenerator.WaypointNameChange(transform, _inputField.text);
     }
 
     public void Setup(Sprite sprite, float size)
@@ -70,7 +72,6 @@ public class WaypointMarker : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         _image.raycastTarget = true;
         _rectTransform.sizeDelta = new Vector2(size, size);
 
-        _inputField.Select();
         FormatText();
     }
 }

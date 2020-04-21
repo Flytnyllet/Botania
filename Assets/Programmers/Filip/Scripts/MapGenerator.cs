@@ -13,9 +13,14 @@ public class MapGenerator : MonoBehaviour, IDragHandler, IScrollHandler, IPointe
     static RectTransform _spawnContainer;
     static RectTransform _markersContainer;
     static RectTransform _pivotSpawnContainer;
+    static RectTransform _mapHolder;
+    static GameObject _enableDisableObject;
+    static Image _playerIcon;
 
     static float _chunkSize;
     static float _markerSize;
+    static float _waypointSize;
+    static float _playerIconSize;
 
     [Header("Drop")]
 
@@ -26,19 +31,22 @@ public class MapGenerator : MonoBehaviour, IDragHandler, IScrollHandler, IPointe
     [Header("Setup")]
 
     [SerializeField] Canvas _parentCanvas;
-    [SerializeField] RectTransform _mapHolder;
+    [SerializeField] RectTransform _mapHolderInstance;
     [SerializeField] RectTransform _spawnContainerInstance;
     [SerializeField] RectTransform _pivotSpawnContainerInstance;
     [SerializeField] RectTransform _markersContainerInstance;
+    [SerializeField] GameObject _enableDisableObjectInstance;
     [SerializeField] Image _waypointSelectedImage;
-    [SerializeField] Image _playerIcon;
+    [SerializeField] Image _playerIconInstance;
 
     [Header("General Settings")]
 
     [SerializeField, Range(1, 100)] float _chunkSizeInstance = 20;
     [SerializeField, Range(1, 100)] float _markerSizeInstance = 5;
-    [SerializeField, Range(1, 100)] float _waypointSize = 7.5f;
-    [SerializeField, Range(0.01f, 100)] float _playerIconSize = 8;
+    [SerializeField, Range(1, 100)] float _waypointSizeInstance = 7.5f;
+    [SerializeField, Range(0.01f, 100)] float _playerIconSizeInstance = 8;
+    [SerializeField, Range(0.01f, 10)] float _centerMapScale = 2.5f;
+    [SerializeField, Range(0.01f, 5)] float _timePressTwiceToLockCenter = 0.5f;
 
     [SerializeField, Range(0.01f, 20)] float _dragSpeed = 1;
     [SerializeField, Range(0, 4)] float _zoomInPercentage = 1.33f;
@@ -48,12 +56,16 @@ public class MapGenerator : MonoBehaviour, IDragHandler, IScrollHandler, IPointe
     [SerializeField, Range(0, 15)] float _minScale = 0.5f;
 
     static Dictionary<Vector2, TextureSave> _renderedMapChunks;
-    static List<WorldMarker> _worldMarkers;
+    static Dictionary<Transform, WorldMarker> _worldMarkers;
     static Transform _viewer;
     static List<GameObject> _spawnedMapChunks;
     static List<Transform> _spawnedWorldMarkers;
     static List<Transform> _spawnedWaypoints;
     static bool _displaying = false;
+    static Vector3 _centerMapScaleVector;
+    static Timer _centerTwiceTimer;
+    static bool _lockedCenter = false;
+    static bool _justPressedCenter = false;
 
     Sprite _waypoint;
     RectTransform _canvasRectTransform;
@@ -68,7 +80,7 @@ public class MapGenerator : MonoBehaviour, IDragHandler, IScrollHandler, IPointe
             _spawnedWorldMarkers = new List<Transform>();
             _spawnedWaypoints = new List<Transform>();
             _renderedMapChunks = new Dictionary<Vector2, TextureSave>();
-            _worldMarkers = new List<WorldMarker>();
+            _worldMarkers = new Dictionary<Transform, WorldMarker>();
 
             _meshSettings = _meshSettingsInstance;
             _mapSettings = _mapSettingsInstance;
@@ -77,13 +89,17 @@ public class MapGenerator : MonoBehaviour, IDragHandler, IScrollHandler, IPointe
             _markersContainer = _markersContainerInstance;
             _pivotSpawnContainer = _pivotSpawnContainerInstance;
             _markerSize = _markerSizeInstance;
+            _waypointSize = _waypointSizeInstance;
+            _enableDisableObject = _enableDisableObjectInstance;
+            _mapHolder = _mapHolderInstance;
+            _playerIcon = _playerIconInstance;
+            _playerIconSize = _playerIconSizeInstance;
 
             _canvasRectTransform = _parentCanvas.GetComponent<RectTransform>();
 
-            _playerIcon.gameObject.SetActive(false);
+            _centerMapScaleVector = new Vector3(_centerMapScale, _centerMapScale, _centerMapScale);
 
-
-            Display(true); //ONLY TESTING
+            _centerTwiceTimer = new Timer(_timePressTwiceToLockCenter);
         }
         else
             Destroy(_parentCanvas.gameObject);
@@ -93,22 +109,43 @@ public class MapGenerator : MonoBehaviour, IDragHandler, IScrollHandler, IPointe
     {
         _viewer = Player.GetPlayerTransform();
         UpdateWaypointSprite();
+
+        Display(true); //ONLY TESTING
     }
 
     private void Update()
     {
+        //Only for testing
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            Display(!_displaying);
+        }
+
         if (_displaying)
         {
+            if (_justPressedCenter && !_lockedCenter)
+            {
+                _centerTwiceTimer.Time += Time.deltaTime;
+
+                if (_centerTwiceTimer.Expired())
+                    _justPressedCenter = false;
+            }
+
+            if (_lockedCenter)
+                FocusOnPlayer();
+
             UpdatePlayerIcon();
         }
     }
 
+    //If placing waypoint right now, this is the sprite to use
     public void UpdateWaypointSprite()
     {
         _waypoint = _waypointSelectedImage.sprite;
     }
 
-    private void UpdatePlayerIcon()
+    //If real player moves, move it on map
+    private static void UpdatePlayerIcon()
     {
         Vector3 newPosition = new Vector3(_viewer.position.x / _meshSettings.MeshWorldSize * _chunkSize, _viewer.position.z / _meshSettings.MeshWorldSize * _chunkSize, 0.0f);
         _playerIcon.rectTransform.anchoredPosition = newPosition;
@@ -140,29 +177,50 @@ public class MapGenerator : MonoBehaviour, IDragHandler, IScrollHandler, IPointe
             WaypointMarker script = newWaypoint.GetComponent<WaypointMarker>();
             script.Setup(_waypoint, _waypointSize);
 
-            newWaypoint.SetActive(_displaying);
-
-            _worldMarkers.Add(new WorldMarker(_waypoint, waypointPosition, true));
+            _worldMarkers.Add(newWaypoint.transform, new WorldMarker(_waypoint, waypointPosition, true, WaypointMarker.STANDARD_WAYPOINT_NAME));
 
             _spawnedWaypoints.Add(newWaypoint.transform);
         }
     }
 
     #region Map Manipulation
-    public void FocusOnPlayer()
+    //Used only for when the button is used to press for center
+    public void FocusOnPlayerButton()
+    {
+        if (!_justPressedCenter && !_lockedCenter)
+            _justPressedCenter = true;
+        else if (_justPressedCenter && !_lockedCenter)
+            _lockedCenter = true;
+        else if (_lockedCenter)
+            _lockedCenter = false;
+
+        _centerTwiceTimer.Reset();
+        FocusOnPlayer();
+    }
+
+    public static void FocusOnPlayer()
     {
         _pivotSpawnContainer.localPosition = Vector3.zero;
         _mapHolder.localPosition = -_playerIcon.rectTransform.localPosition;
+
+        _pivotSpawnContainer.localScale = _centerMapScaleVector;
+        ScaleMarkersByPivot();
     }
 
     public void OnDrag(PointerEventData eventData)
     {
         if (eventData.button != PointerEventData.InputButton.Right)
+        {
+            _lockedCenter = false;
             _mapHolder.anchoredPosition += eventData.delta * _dragSpeed / _pivotSpawnContainer.localScale.x / _parentCanvas.scaleFactor;
+        }
     }
 
+    //Make sure everything remains correct on zoom in and out around pivot
     public void OnScroll(PointerEventData eventData)
     {
+        _lockedCenter = false;
+
         Vector3 oldPosition = _mapHolder.position;
         _pivotSpawnContainer.position = eventData.position;
 
@@ -179,6 +237,11 @@ public class MapGenerator : MonoBehaviour, IDragHandler, IScrollHandler, IPointe
 
         _pivotSpawnContainer.localScale = new Vector3(newScale, newScale, newScale);
 
+        ScaleMarkersByPivot();
+    }
+
+    private static void ScaleMarkersByPivot()
+    {
         float markerScaleF = 1 / _pivotSpawnContainer.localScale.x * _markerSize;
         Vector3 markerScale = new Vector3(markerScaleF, markerScaleF, markerScaleF);
 
@@ -195,6 +258,7 @@ public class MapGenerator : MonoBehaviour, IDragHandler, IScrollHandler, IPointe
             _spawnedWaypoints[i].localScale = waypointScale;
         }
     }
+
     #endregion
 
     #region Add texture chunk to map
@@ -205,11 +269,13 @@ public class MapGenerator : MonoBehaviour, IDragHandler, IScrollHandler, IPointe
         ThreadedDataRequester.RequestData(() => RequestTextureChunkData(chunkCoord, sampleCenter), ReceivedTextureChunkData);
     }
 
+    //Threaded work
     private static TextureChunkData RequestTextureChunkData(Vector2 chunkCoord, Vector2 sampleCenter)
     {
         return TextureGenerator.DrawMap(_meshSettings.NumVertsPerLine, _mapSettings, sampleCenter, chunkCoord, 1);
     }
 
+    //Connect back with main thread
     private static void ReceivedTextureChunkData(object data)
     {
         TextureChunkData thisData = (TextureChunkData)data;
@@ -222,7 +288,7 @@ public class MapGenerator : MonoBehaviour, IDragHandler, IScrollHandler, IPointe
         if (!_renderedMapChunks.ContainsKey(chunkCoord))
             _renderedMapChunks.Add(chunkCoord, new TextureSave(texture, chunkCoord));
         else
-            Debug.LogError("This terrainchunk is already a key for a texture? Multiple callings??");
+            Debug.LogWarning("This terrainchunk is already a key for a texture? Multiple callings? Or reading savings?");
 
         InstantiateChunk(texture, chunkCoord);
     }
@@ -244,7 +310,6 @@ public class MapGenerator : MonoBehaviour, IDragHandler, IScrollHandler, IPointe
         image.rectTransform.sizeDelta = new Vector2(_chunkSize, _chunkSize);
         image.raycastTarget = false;
 
-        mapChunk.SetActive(_displaying);
         _spawnedMapChunks.Add(mapChunk);
     }
     #endregion
@@ -278,15 +343,16 @@ public class MapGenerator : MonoBehaviour, IDragHandler, IScrollHandler, IPointe
         image.rectTransform.sizeDelta = new Vector2(size, size);
         image.raycastTarget = raycastTarget;
 
-        newMarker.SetActive(_displaying);
-
-        _worldMarkers.Add(new WorldMarker(sprite, position, raycastTarget));
+        _worldMarkers.Add(newMarker.transform, new WorldMarker(sprite, position, raycastTarget));
 
         return newMarker;
     }
 
-    public static void WaypointNameChange(Transform waypoint)
+    //Used only for saving the name of waypoints
+    public static void WaypointNameChange(Transform waypoint, string newName)
     {
+        if (_worldMarkers.ContainsKey(waypoint))
+            _worldMarkers[waypoint].SetName(newName);
     }
 
     public static void RemoveWaypoint(Transform waypoint)
@@ -294,32 +360,26 @@ public class MapGenerator : MonoBehaviour, IDragHandler, IScrollHandler, IPointe
         _spawnedWaypoints.Remove(waypoint);
     }
 
-    public void Display(bool status)
+
+    //Show or don't show map
+    public static void Display(bool status)
     {
         if (_displaying != status)
         {
             _displaying = status;
 
-            _playerIcon.gameObject.SetActive(status);
+            _enableDisableObject.SetActive(status);
 
-            for (int i = 0; i < _spawnedMapChunks.Count; i++)
+            if (status)
             {
-                _spawnedMapChunks[i].SetActive(status);
-            }
-
-            for (int i = 0; i < _spawnedWorldMarkers.Count; i++)
-            {
-                _spawnedWorldMarkers[i].gameObject.SetActive(status);
-            }
-
-            for (int i = 0; i < _spawnedWaypoints.Count; i++)
-            {
-                _spawnedWaypoints[i].gameObject.SetActive(status);
+                UpdatePlayerIcon();
+                FocusOnPlayer();
             }
         }
     }
 }
 
+//These structs are only used to store saving info
 public struct TextureSave
 {
     public Texture2D Texture { get; private set; }
@@ -345,5 +405,10 @@ public struct WorldMarker
         this.LocalPosition = localPosition;
         this.Editable = editable;
         this.Name = name;
+    }
+
+    public void SetName(string newName)
+    {
+        Name = newName;
     }
 }

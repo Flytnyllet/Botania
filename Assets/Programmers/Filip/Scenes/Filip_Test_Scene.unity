@@ -1011,6 +1011,44 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 510057980}
   m_CullTransparentMesh: 0
+--- !u!1 &539111947
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 539111948}
+  m_Layer: 5
+  m_Name: Enable/Disable
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &539111948
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 539111947}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1713439939}
+  - {fileID: 2053180780}
+  - {fileID: 1777072514}
+  m_Father: {fileID: 929806564}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &627125171
 GameObject:
   m_ObjectHideFlags: 0
@@ -1037,7 +1075,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 627125171}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -1106,16 +1144,19 @@ MonoBehaviour:
   _waypointPrefab: {fileID: 1949051391833846197, guid: 005f7e1a457b83a499be2e47e0c9fd59,
     type: 3}
   _parentCanvas: {fileID: 929806567}
-  _mapHolder: {fileID: 1146494738}
+  _mapHolderInstance: {fileID: 1146494738}
   _spawnContainerInstance: {fileID: 235769369}
   _pivotSpawnContainerInstance: {fileID: 1713439939}
   _markersContainerInstance: {fileID: 2060747736}
+  _enableDisableObjectInstance: {fileID: 539111947}
   _waypointSelectedImage: {fileID: 310107426}
-  _playerIcon: {fileID: 510057982}
+  _playerIconInstance: {fileID: 510057982}
   _chunkSizeInstance: 20
   _markerSizeInstance: 5
-  _waypointSize: 6
-  _playerIconSize: 8
+  _waypointSizeInstance: 6.75
+  _playerIconSizeInstance: 8
+  _centerMapScale: 2.5
+  _timePressTwiceToLockCenter: 0.5
   _dragSpeed: 1
   _zoomInPercentage: 1.33
   _zoomOutPercentage: 0.75
@@ -1263,9 +1304,7 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 627125172}
-  - {fileID: 1713439939}
-  - {fileID: 1777072514}
-  - {fileID: 2053180780}
+  - {fileID: 539111948}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1885,13 +1924,13 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1713439938}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 4, y: 4, z: 4}
   m_Children:
   - {fileID: 1146494738}
-  m_Father: {fileID: 929806564}
-  m_RootOrder: 1
+  m_Father: {fileID: 539111948}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1960,17 +1999,17 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1777072513}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children:
   - {fileID: 1874550227}
-  m_Father: {fileID: 929806564}
+  m_Father: {fileID: 539111948}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 200, y: -25}
+  m_AnchoredPosition: {x: -709.99994, y: 464.83737}
   m_SizeDelta: {x: 30, y: 30}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1777072515
@@ -2017,7 +2056,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 627125176}
-        m_MethodName: FocusOnPlayer
+        m_MethodName: FocusOnPlayerButton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2168,7 +2207,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2053180779}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children:
@@ -2176,12 +2215,12 @@ RectTransform:
   - {fileID: 928674561}
   - {fileID: 310107425}
   - {fileID: 345055713}
-  m_Father: {fileID: 929806564}
-  m_RootOrder: 3
+  m_Father: {fileID: 539111948}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 25, y: -25}
+  m_AnchoredPosition: {x: -884.99994, y: 464.83737}
   m_SizeDelta: {x: 66.7, y: 30}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &2053180781
