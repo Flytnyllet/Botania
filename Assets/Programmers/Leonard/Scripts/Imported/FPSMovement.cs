@@ -71,7 +71,6 @@ public class FPSMovement : MonoBehaviour
             //_inAir = !charCon.isGrounded;
 
             // Everything that can be done while grounded
-			if(groundDetection.collider.tag == )
             if (grounded)
             {
                 terrainAngle = Vector3.Angle(Vector3.up, groundDetection.normal);
