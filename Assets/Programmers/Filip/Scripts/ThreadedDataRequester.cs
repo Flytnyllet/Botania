@@ -70,6 +70,18 @@ public class ThreadedDataRequester : MonoBehaviour
     //    });
     //}
 
+    //public static void AddToCallbackQueue(Action callback)
+    //{
+    //    try
+    //    {
+    //        callbacks.Enqueue(callback);
+    //    }
+    //    catch (Exception e)
+    //    {
+    //        Debug.LogError(e);
+    //    }
+    //}
+
     //private void Update()
     //{
     //    while (callbacks.TryDequeue(out var callback))

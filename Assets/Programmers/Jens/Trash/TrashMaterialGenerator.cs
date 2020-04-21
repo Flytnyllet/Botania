@@ -2,11 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
-using System.Threading.Tasks;
-using System;
 
-[CreateAssetMenu(menuName = "MaterialMaker")]
-public class GroundMaterialGenerator : ScriptableObject
+public class TrashMaterialGenerator : MonoBehaviour
 {
     readonly static int TEXTURE_SIZE = 512;
     readonly static TextureFormat TEXTURE_FORMAT = TextureFormat.RGB565;
@@ -18,40 +15,28 @@ public class GroundMaterialGenerator : ScriptableObject
     [SerializeField] Texture2D _mainTex;
     // Update is called once per frame
 
-    public Material MakeMaterial(int size, Vector2 pos)
+    private void Update()
     {
-        //int ChunkCoordX = Mathf.RoundToInt(pos.x / (meshObject.mesh.bounds.size.x));
-        //int ChunkCoordZ = Mathf.RoundToInt(pos.z / (meshObject.mesh.bounds.size.z));
-        //Vector2 coord = new Vector2(ChunkCoordX, ChunkCoordZ);
-        Material material = new Material(_shader);
-        ////Task.Run(() =>
-        ////{
-        //int size = (int)(meshObject.mesh.bounds.size.x * meshObject.transform.localScale.x);
-        //size /= 10;
-        size *= 10;
-
-        var mainThread = TaskScheduler.FromCurrentSynchronizationContext();
-        Task.Run(() =>
+        if (Input.GetKeyDown(KeyCode.P))
         {
-            try
-            {
-                float[,] noise = Noise.GenerateNoiseMap(size, size, _noiseDetailLevel, _layers[0].GetNoise.NoiseSettingsDataMerge, pos * 500);
-                Task.Delay(TimeSpan.FromSeconds(2)).ContinueWith(previous =>
-                {
-                    Texture2D noiseTex = TextureGenerator.TextureFromNoise(noise);
-                    material.SetTexture("_NoiseTextures", noiseTex);
-                }, mainThread);
-            }
-            catch (Exception e)
-            {
-                Debug.LogError(e);
-            }
+            MakeMaterial();
+        }
+    }
+    void MakeMaterial()
+    {
+        int ChunkCoordX = Mathf.RoundToInt(transform.position.x / (GetComponent<MeshFilter>().mesh.bounds.size.x));
+        int ChunkCoordZ = Mathf.RoundToInt(transform.position.z / (GetComponent<MeshFilter>().mesh.bounds.size.z));
+        Vector2 coord = new Vector2(ChunkCoordX, ChunkCoordZ);
+        Material material = new Material(_shader);
+        //Task.Run(() =>
+        //{
+        int size = (int)(GetComponent<MeshFilter>().mesh.bounds.size.x * transform.localScale.x);
+        Debug.Log(coord);
+        Debug.Log(size);
+        float[,] noise = Noise.GenerateNoiseMap(size, size, _noiseDetailLevel, _layers[0].GetNoise.NoiseSettingsDataMerge, coord*50);
+        Texture2D noiseTex = TextureGenerator.TextureFromNoise(noise);
 
-        });
-        //noise = Noise.GenerateNoiseMap(size, size, _noiseDetailLevel, _layers[0].GetNoise.NoiseSettingsDataMerge, pos * 500);
-        //Texture2D noiseTex = TextureGenerator.TextureFromNoise(noise);
-        //material.SetTexture("_NoiseTextures", noiseTex);
-
+        material.SetTexture("_NoiseTextures", noiseTex);
         material.SetTexture("_AltTex", _layers[0].GetTexture());
         //});
         material.SetInt("layerCount", _layers.Length);
@@ -62,8 +47,7 @@ public class GroundMaterialGenerator : ScriptableObject
         material.SetFloatArray("baseTextureScales", _layers.Select(x => x.GetTextureScale()).ToArray());
         material.SetFloatArray("baseTextureStrenght", _layers.Select(x => x.GetTextureStrenght()).ToArray());
 
-        return material;
-
+        GetComponent<MeshRenderer>().material = material;
     }
 
     Texture2DArray GenerateTextureArray(Texture2D[] textures)

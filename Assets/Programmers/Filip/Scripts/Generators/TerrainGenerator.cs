@@ -19,7 +19,8 @@ public class TerrainGenerator : MonoBehaviour
     [SerializeField] Material _mapMaterial;
     [SerializeField] MeshSettings _meshSettings;
     [SerializeField] HeightMapSettings _heightMapSettings;
-    [SerializeField] TextureData _textureSettings;
+    //[SerializeField] TextureData _textureSettings;
+    [SerializeField] GroundMaterialGenerator _textureSettings;
 
     [SerializeField] MapGenerator _mapGeneratorScript;
 
@@ -34,8 +35,8 @@ public class TerrainGenerator : MonoBehaviour
 
     private void Start()
     {
-        _textureSettings.ApplyToMaterial(_mapMaterial);
-        _textureSettings.UpdateMeshHeights(_mapMaterial, _heightMapSettings.MinHeight, _heightMapSettings.MaxHeight);
+        //_textureSettings.ApplyToMaterial(_mapMaterial);
+        //_textureSettings.UpdateMeshHeights(_mapMaterial, _heightMapSettings.MinHeight, _heightMapSettings.MaxHeight);
 
         float maxViewDistance = _detailLevels[_detailLevels.Length - 1].visableDstThreshold;
 
@@ -88,7 +89,7 @@ public class TerrainGenerator : MonoBehaviour
                         _terrainChunkDictionary[viewedChunkCoord].UpdateTerrainChunk();
                     else
                     {
-                        TerrainChunk newChunk = new TerrainChunk(viewedChunkCoord, _heightMapSettings, _meshSettings, _detailLevels, _colliderLODIndex, transform, _viewer, _mapMaterial, _biome);
+                        TerrainChunk newChunk = new TerrainChunk(viewedChunkCoord, _heightMapSettings, _meshSettings, _detailLevels, _colliderLODIndex, transform, _viewer, _mapMaterial, _biome, _textureSettings);
 
                         //Make mapchunk
                         if (_mapGeneratorScript != null)
