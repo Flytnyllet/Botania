@@ -76,12 +76,16 @@ public class FPSMovement : MonoBehaviour
 		RaycastHit groundDetection;
 		bool grounded = GroundRay(transform.position, Vector3.down, _groundRayDistance, out groundDetection);
 
-			// == Functions ==
-			//_inAir = !charCon.isGrounded;
+		// == Functions ==
+		//_inAir = !charCon.isGrounded;
 
-			// Everything that can be done while grounded
+		// Everything that can be done while grounded
+		if (charCon.isGrounded)
+		{
+			_inAir = false;
+		}
 
-		if (grounded)
+		if ((grounded && _inAir == false))
 		{
 			//DEBUG REMOVED!
 			/*if (groundDetection.collider.tag == WATER_TAG)
@@ -110,7 +114,10 @@ public class FPSMovement : MonoBehaviour
 				}*/
 				else
 				{
-					_inAir = false;
+					/*if (_lastJump <= Time.time)
+					{
+						_inAir = false;
+					}*/
 					//Debug.Log("Input axis" + x);
 					Walking(x, y, groundDetection);
 				}
