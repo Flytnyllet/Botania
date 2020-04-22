@@ -110,6 +110,7 @@ public class FPSMovement : MonoBehaviour
 				}*/
 				else
 				{
+					_inAir = false;
 					//Debug.Log("Input axis" + x);
 					Walking(x, y, groundDetection);
 				}
