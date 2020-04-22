@@ -65,8 +65,9 @@ public class WaypointMarker : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         MapGenerator.WaypointNameChange(transform, _inputField.text);
     }
 
-    public void Setup(Sprite sprite, float size)
+    public void Setup(Sprite sprite, string name, float size)
     {
+        _inputField.text = name;
         _image.sprite = sprite;
         _image.raycastTarget = true;
         _rectTransform.sizeDelta = new Vector2(size, size);
