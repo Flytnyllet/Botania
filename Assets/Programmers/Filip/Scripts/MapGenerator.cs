@@ -95,8 +95,6 @@ public class MapGenerator : MonoBehaviour, IDragHandler, IScrollHandler, IPointe
             _playerIcon = _playerIconInstance;
             _playerIconSize = _playerIconSizeInstance;
 
-            _canvasRectTransform = _parentCanvas.GetComponent<RectTransform>();
-
             _centerMapScaleVector = new Vector3(_centerMapScale, _centerMapScale, _centerMapScale);
 
             _centerTwiceTimer = new Timer(_timePressTwiceToLockCenter);
@@ -107,7 +105,10 @@ public class MapGenerator : MonoBehaviour, IDragHandler, IScrollHandler, IPointe
 
     private void Start()
     {
-        _viewer = Player.GetPlayerTransform();
+		_parentCanvas = GameObject.Find("Canvas").GetComponent<Canvas>();
+		_canvasRectTransform = _parentCanvas.GetComponent<RectTransform>();
+
+		_viewer = Player.GetPlayerTransform();
         UpdateWaypointSprite();
 
         Display(true); //ONLY TESTING
