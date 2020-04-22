@@ -28,14 +28,19 @@ public class GroundMaterialGenerator : ScriptableObject
         ////{
         //int size = (int)(meshObject.mesh.bounds.size.x * meshObject.transform.localScale.x);
         //size /= 10;
-        size *= 10;
+        size *= 1;
+        Debug.Log(size);
+        Debug.Log(pos);
+        
+        
+        
 
         var mainThread = TaskScheduler.FromCurrentSynchronizationContext();
         Task.Run(() =>
         {
             try
             {
-                float[,] noise = Noise.GenerateNoiseMap(size, size, _noiseDetailLevel, _layers[0].GetNoise.NoiseSettingsDataMerge, pos * 500);
+                float[,] noise = Noise.GenerateNoiseMap(size, size, _noiseDetailLevel, _layers[0].GetNoise.NoiseSettingsDataMerge, pos );
                 Task.Delay(TimeSpan.FromSeconds(2)).ContinueWith(previous =>
                 {
                     Texture2D noiseTex = TextureGenerator.TextureFromNoise(noise);

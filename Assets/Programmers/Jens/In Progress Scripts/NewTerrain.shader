@@ -87,9 +87,9 @@
 
 			//	o.Albedo = colour;
 			//}
-			o.Albedo = lerp(colour, altCol, noiseStrenght);
+			//o.Albedo = lerp(colour, altCol, noiseStrenght);
 			//o.Albedo = altCol+colour;
-			//o.Albedo = tex2D(_NoiseTextures, IN.uv_MainTex);
+			o.Albedo = tex2D(_NoiseTextures, IN.uv_MainTex);
 		}
 		ENDCG
 	}
