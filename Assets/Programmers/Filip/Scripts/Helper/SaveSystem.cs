@@ -7,6 +7,8 @@ public class SaveSystem : MonoBehaviour
     static SaveSystem _thisSaveSystem;
 
     [SerializeField, Range(1, 1200)] float _saveIntervalTime = 300;
+    [SerializeField] bool _save = true;
+    [SerializeField] bool _load = true;
 
     Timer _saveTimer;
 
@@ -39,11 +41,13 @@ public class SaveSystem : MonoBehaviour
 
     private void Load()
     {
-        MapGenerator.Load();
+        if (_load)
+            MapGenerator.Load();
     }
 
     private void Save()
     {
-        MapGenerator.Save();
+        if (_save)
+            MapGenerator.Save();
     }
 }

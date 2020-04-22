@@ -21,6 +21,8 @@ public class MapGenerator : MonoBehaviour, IDragHandler, IScrollHandler, IPointe
     static GameObject _waypointPrefab;
     static GameObject _markerPrefab;
 
+    static List<Sprite> _spriteAndIndexes;
+
     static AudioSource _waypointDestroyAudioSource;
 
     static float _chunkSize;
@@ -48,6 +50,10 @@ public class MapGenerator : MonoBehaviour, IDragHandler, IScrollHandler, IPointe
     [SerializeField] Image _playerIconInstance;
 
     [SerializeField] AudioSource _waypointDestroyAudioSourceInstance;
+
+    [Header("Marker Sprites")]
+
+    [SerializeField] List<Sprite> _spriteAndIndexesInstance;
 
     [Header("General Settings")]
 
@@ -110,8 +116,9 @@ public class MapGenerator : MonoBehaviour, IDragHandler, IScrollHandler, IPointe
             _playerIconSize = _playerIconSizeInstance;
             _markerPrefab = _markerPrefabInstance;
             _waypointPrefab = _waypointPrefabInstance;
-
             _standardWayPointName = _standardWayPointNameInstance;
+
+            _spriteAndIndexes = _spriteAndIndexesInstance;
 
             _waypointDestroyAudioSource = _waypointDestroyAudioSourceInstance;
 
@@ -158,6 +165,36 @@ public class MapGenerator : MonoBehaviour, IDragHandler, IScrollHandler, IPointe
         }
     }
 
+    //If placing waypoint right now, this is the sprite to use
+    public void UpdateWaypointSprite()
+    {
+        _waypoint = _waypointSelectedImage.sprite;
+    }
+
+    private static Sprite GetSpriteByIndex(int index)
+    {
+        if (index >= 0 && index < _spriteAndIndexes.Count)
+            return _spriteAndIndexes[index];
+        else
+            Debug.LogError("This is not a valid index to get a waypoint/marker sprite: " + index);
+
+        Debug.Log(_spriteAndIndexes.Count);
+
+        return _spriteAndIndexes[0];
+    }
+
+    private static int GetIndexBySprite(Sprite sprite)
+    {
+        for (int i = 0; i < _spriteAndIndexes.Count; i++)
+        {
+            if (_spriteAndIndexes[i] == sprite)
+                return i;
+        }
+        Debug.LogError("This sprite is not yet implemented in the saving system! Must be to be able to save it correctly!  :  " + sprite.name);
+        return 0;
+    }
+
+    #region Save and Load
     public static void Save()
     {
         List<TextureSave> textureSaves = _renderedMapChunks.Select(value => value.Value).ToList();
@@ -174,73 +211,20 @@ public class MapGenerator : MonoBehaviour, IDragHandler, IScrollHandler, IPointe
 
         if (textureSaves != null)
             for (int i = 0; i < textureSaves.Count; i++)
-                AddTexture(textureSaves[i].Texture, textureSaves[i].ChunkCoord);
+                AddChunkToMap(textureSaves[i].ChunkCoord);
 
         if (markerSaves != null)
         {
             for (int i = 0; i < markerSaves.Count; i++)
             {
-                if (markerSaves[i].Editable)
-                    AddWaypoint(markerSaves[i].LocalPosition, markerSaves[i].Name);
+                if (markerSaves[i].IsWaypoint)
+                    AddWaypoint(markerSaves[i].LocalPosition, markerSaves[i].Name, true, markerSaves[i].Index);
                 else
-                    AddWorldMarkerLocal(markerSaves[i].Sprite, markerSaves[i].LocalPosition, markerSaves[i].Name);
+                    AddWorldMarkerLocal(GetSpriteByIndex(markerSaves[i].Index), markerSaves[i].LocalPosition, markerSaves[i].Name);
             }
         }
     }
-
-    //If placing waypoint right now, this is the sprite to use
-    public void UpdateWaypointSprite()
-    {
-        _waypoint = _waypointSelectedImage.sprite;
-    }
-
-    //If real player moves, move it on map
-    private static void UpdatePlayerIcon()
-    {
-        Vector3 newPosition = new Vector3(_viewer.position.x / _meshSettings.MeshWorldSize * _chunkSize, _viewer.position.z / _meshSettings.MeshWorldSize * _chunkSize, 0.0f);
-        _playerIcon.rectTransform.anchoredPosition = newPosition;
-        _playerIcon.transform.localRotation = Quaternion.Euler(0.0f, 0.0f, -_viewer.rotation.eulerAngles.y);
-
-        float scale = 1 / _pivotSpawnContainer.localScale.x * _playerIconSize;
-        Vector3 playerScale = new Vector3(scale, scale, scale);
-
-        _playerIcon.transform.localScale = playerScale;
-    }
-
-    public void OnPointerDown(PointerEventData eventData)
-    {
-        if (eventData.button == PointerEventData.InputButton.Right)
-        {
-            //Position
-            float x = (eventData.position.x / Screen.width - 0.5f) * _canvasRectTransform.sizeDelta.x / _pivotSpawnContainer.localScale.x;
-            float y = (eventData.position.y / Screen.height - 0.5f) * _canvasRectTransform.sizeDelta.y / _pivotSpawnContainer.localScale.y;
-            Vector3 waypointPosition = new Vector3(x, y, 0.0f) - _mapHolder.localPosition - _pivotSpawnContainer.localPosition / _pivotSpawnContainer.localScale.x;
-
-            AddWaypoint(waypointPosition, _standardWayPointName);
-        }
-    }
-
-    private static void AddWaypoint(Vector3 position, string name)
-    {
-        //This waypoint is loaded in from memory
-        if (_worldMarkers.ContainsKey(position))
-            return;
-
-        //Scale
-        float scale = 1 / _pivotSpawnContainer.localScale.x * _waypointSize;
-        Vector3 waypointScale = new Vector3(scale, scale, scale);
-
-        GameObject newWaypoint = Instantiate(_waypointPrefab, Vector3.zero, Quaternion.identity, __waypointContainer);
-        newWaypoint.transform.localPosition = position;
-        newWaypoint.transform.localScale = waypointScale;
-
-        WaypointMarker script = newWaypoint.GetComponent<WaypointMarker>();
-        script.Setup(_waypoint, name, _waypointSize);
-
-        _worldMarkers.Add(position, new WorldMarker(_waypoint, position, true, WaypointMarker.STANDARD_WAYPOINT_NAME));
-
-        _spawnedWaypoints.Add(newWaypoint.transform);
-    }
+    #endregion
 
     #region Map Manipulation
     //Used only for when the button is used to press for center
@@ -264,6 +248,19 @@ public class MapGenerator : MonoBehaviour, IDragHandler, IScrollHandler, IPointe
 
         _pivotSpawnContainer.localScale = _centerMapScaleVector;
         ScaleMarkersByPivot();
+    }
+
+    //If real player moves, move it on map
+    private static void UpdatePlayerIcon()
+    {
+        Vector3 newPosition = new Vector3(_viewer.position.x / _meshSettings.MeshWorldSize * _chunkSize, _viewer.position.z / _meshSettings.MeshWorldSize * _chunkSize, 0.0f);
+        _playerIcon.rectTransform.anchoredPosition = newPosition;
+        _playerIcon.transform.localRotation = Quaternion.Euler(0.0f, 0.0f, -_viewer.rotation.eulerAngles.y);
+
+        float scale = 1 / _pivotSpawnContainer.localScale.x * _playerIconSize;
+        Vector3 playerScale = new Vector3(scale, scale, scale);
+
+        _playerIcon.transform.localScale = playerScale;
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -345,7 +342,7 @@ public class MapGenerator : MonoBehaviour, IDragHandler, IScrollHandler, IPointe
     private static void AddTexture(Texture2D texture, Vector2 chunkCoord)
     {
         if (!_renderedMapChunks.ContainsKey(chunkCoord))
-            _renderedMapChunks.Add(chunkCoord, new TextureSave(texture, chunkCoord));
+            _renderedMapChunks.Add(chunkCoord, new TextureSave(chunkCoord));
         else
             Debug.LogWarning("This terrainchunk is already a key for a texture? Multiple callings? Or reading savings?");
 
@@ -372,6 +369,43 @@ public class MapGenerator : MonoBehaviour, IDragHandler, IScrollHandler, IPointe
         _spawnedMapChunks.Add(mapChunk);
     }
     #endregion
+
+    #region Waypoints and Markers
+
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        if (eventData.button == PointerEventData.InputButton.Right)
+        {
+            //Position
+            float x = (eventData.position.x / Screen.width - 0.5f) * _canvasRectTransform.sizeDelta.x / _pivotSpawnContainer.localScale.x;
+            float y = (eventData.position.y / Screen.height - 0.5f) * _canvasRectTransform.sizeDelta.y / _pivotSpawnContainer.localScale.y;
+            Vector3 waypointPosition = new Vector3(x, y, 0.0f) - _mapHolder.localPosition - _pivotSpawnContainer.localPosition / _pivotSpawnContainer.localScale.x;
+
+            AddWaypoint(waypointPosition, _standardWayPointName, false);
+        }
+    }
+
+    private static void AddWaypoint(Vector3 position, string name, bool loadFromSave, int index = 0)
+    {
+        //Scale
+        float scale = 1 / _pivotSpawnContainer.localScale.x * _waypointSize;
+        Vector3 waypointScale = new Vector3(scale, scale, scale);
+
+        GameObject newWaypoint = Instantiate(_waypointPrefab, Vector3.zero, Quaternion.identity, __waypointContainer);
+        newWaypoint.transform.localPosition = position;
+        newWaypoint.transform.localScale = waypointScale;
+
+        WaypointMarker script = newWaypoint.GetComponent<WaypointMarker>();
+
+        Sprite sprite = loadFromSave ? GetSpriteByIndex(index) : _waypoint;
+        index = loadFromSave ? index : GetIndexBySprite(sprite);
+
+        script.Setup(sprite, name, _waypointSize);
+
+        _worldMarkers.Add(position, new WorldMarker(position, true, WaypointMarker.STANDARD_WAYPOINT_NAME, index));
+
+        _spawnedWaypoints.Add(newWaypoint.transform);
+    }
 
     public static void AddWorldMarkerGlobal(Sprite sprite, Vector3 worldPosition, string name)
     {
@@ -408,7 +442,7 @@ public class MapGenerator : MonoBehaviour, IDragHandler, IScrollHandler, IPointe
         image.rectTransform.sizeDelta = new Vector2(size, size);
         image.raycastTarget = false;
 
-        _worldMarkers.Add(position, new WorldMarker(sprite, position, false));
+        _worldMarkers.Add(position, new WorldMarker(position, false, name, GetIndexBySprite(sprite)));
 
         return newMarker;
     }
@@ -417,7 +451,11 @@ public class MapGenerator : MonoBehaviour, IDragHandler, IScrollHandler, IPointe
     public static void WaypointNameChange(Transform waypoint, string newName)
     {
         if (_worldMarkers.ContainsKey(waypoint.localPosition))
-            _worldMarkers[waypoint.localPosition].SetName(newName);
+        {
+            WorldMarker worldMarker = _worldMarkers[waypoint.localPosition];
+            worldMarker.SetName(newName);
+            _worldMarkers[waypoint.localPosition] = worldMarker;
+        }
     }
 
     public static void RemoveWaypoint(Transform waypoint)
@@ -426,8 +464,9 @@ public class MapGenerator : MonoBehaviour, IDragHandler, IScrollHandler, IPointe
             _waypointDestroyAudioSource.Play();
 
         _spawnedWaypoints.Remove(waypoint);
+        _worldMarkers.Remove(waypoint.localPosition);
     }
-
+    #endregion
 
     //Show or don't show map
     public static void Display(bool status)
@@ -450,16 +489,16 @@ public class MapGenerator : MonoBehaviour, IDragHandler, IScrollHandler, IPointe
     }
 }
 
+#region Save Structs
+
 //These structs are only used to store saving info
 [System.Serializable]
 public struct TextureSave
 {
-    public Texture2D Texture { get; private set; }
     public Vector3 ChunkCoord { get; private set; }
 
-    public TextureSave(Texture2D texture, Vector3 chunkCoord)
+    public TextureSave(Vector3 chunkCoord)
     {
-        this.Texture = texture;
         this.ChunkCoord = chunkCoord;
     }
 }
@@ -467,16 +506,16 @@ public struct TextureSave
 [System.Serializable]
 public struct WorldMarker
 {
-    public Sprite Sprite { get; private set; }
+    public int Index { get; private set; }
     public Vector3 LocalPosition { get; private set; }
-    public bool Editable { get; private set; }
+    public bool IsWaypoint { get; private set; }
     public string Name { get; private set; }
 
-    public WorldMarker(Sprite sprite, Vector3 localPosition, bool editable, string name = "")
+    public WorldMarker(Vector3 localPosition, bool isWaypoint, string name, int index = 0)
     {
-        this.Sprite = sprite;
+        this.Index = index;
         this.LocalPosition = localPosition;
-        this.Editable = editable;
+        this.IsWaypoint = isWaypoint;
         this.Name = name;
     }
 
@@ -485,3 +524,4 @@ public struct WorldMarker
         Name = newName;
     }
 }
+#endregion

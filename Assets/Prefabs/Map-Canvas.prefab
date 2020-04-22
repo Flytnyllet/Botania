@@ -36,7 +36,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1920, y: 890}
+  m_SizeDelta: {x: 1920, y: 1080}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &8933486552208652815
 GameObject:
@@ -107,6 +107,11 @@ MonoBehaviour:
   _waypointSelectedImage: {fileID: 8933486552931814558}
   _playerIconInstance: {fileID: 8933486553131895874}
   _waypointDestroyAudioSourceInstance: {fileID: 8933486552236548344}
+  _spriteAndIndexesInstance:
+  - {fileID: 21300000, guid: 80b296842e6e8434aa234424397a6154, type: 3}
+  - {fileID: 21300000, guid: ca9ac40b935b983418f7a105c2ef75eb, type: 3}
+  - {fileID: 21300000, guid: dc271ad540f578b409ddd57fdf9d9287, type: 3}
+  - {fileID: 21300000, guid: 77fc12c389e45744db788df751efde41, type: 3}
   _chunkSizeInstance: 20
   _markerSizeInstance: 5
   _waypointSizeInstance: 6.75
@@ -862,7 +867,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 8933486552810431677}
   m_HandleRect: {fileID: 8933486552810431676}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:

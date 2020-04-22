@@ -26,6 +26,9 @@ public class WaypointMarker : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     private void Awake()
     {
         _rectTransform = GetComponent<RectTransform>();
+
+        Select(true);
+        Select(false);
     }
 
     private void Update()
