@@ -133,48 +133,57 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e42a24b31e737da489ca5bf24866f834, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _curve:
+  _sizeCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
-      time: 0.015770227
-      value: 0.5126447
-      inSlope: 0.8920872
-      outSlope: 0.8920872
+      time: 0
+      value: 0
+      inSlope: 1
+      outSlope: 1
       tangentMode: 34
       weightedMode: 0
       inWeight: 0
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.6706848
-      value: 1.0968857
-      inSlope: 0.68995243
-      outSlope: 0.68995243
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.08522368
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.8562927
-      value: 0.9
-      inSlope: -0.035168454
-      outSlope: -0.035168454
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.36067468
+      outWeight: 0
     - serializedVersion: 3
       time: 1
       value: 1
-      inSlope: 0.69585913
-      outSlope: 0.69585913
+      inSlope: 1
+      outSlope: 1
       tangentMode: 34
       weightedMode: 0
-      inWeight: 0.33333334
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _alphaCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
   _labelTransform: {fileID: 0}
+  _spriteImage: {fileID: 2173884058723032139}
+  _labelImage: {fileID: 0}
   _plopTime: 0.5
+  _alphaTime: 0.75
   _lableSize: 0.25

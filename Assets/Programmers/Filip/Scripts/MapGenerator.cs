@@ -151,6 +151,12 @@ public class MapGenerator : MonoBehaviour, IDragHandler, IScrollHandler, IPointe
         }
     }
 
+    //public void Save()
+    //{
+    //    Serialization.Save("TESTTESTETSASDASD", _canvasRectTransform);
+    //    Serialization.Load("TESTTESTETSASDASD");
+    //}
+
     //If placing waypoint right now, this is the sprite to use
     public void UpdateWaypointSprite()
     {
@@ -396,6 +402,7 @@ public class MapGenerator : MonoBehaviour, IDragHandler, IScrollHandler, IPointe
 }
 
 //These structs are only used to store saving info
+[System.Serializable]
 public struct TextureSave
 {
     public Texture2D Texture { get; private set; }
@@ -408,6 +415,7 @@ public struct TextureSave
     }
 }
 
+[System.Serializable]
 public struct WorldMarker
 {
     public Sprite Sprite { get; private set; }
