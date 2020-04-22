@@ -15,15 +15,13 @@ public class TerrainGenerator : MonoBehaviour
 
     [Header("Drop")]
 
-    [SerializeField] Transform _viewer;
     [SerializeField] Material _mapMaterial;
     [SerializeField] MeshSettings _meshSettings;
     [SerializeField] HeightMapSettings _heightMapSettings;
     //[SerializeField] TextureData _textureSettings;
     [SerializeField] GroundMaterialGenerator _textureSettings;
 
-    [SerializeField] MapGenerator _mapGeneratorScript;
-
+    Transform _viewer;
     Vector2 _viewerPosition;
     Vector2 _viewerPositionOld;
     float _meshWorldSize;
@@ -35,8 +33,10 @@ public class TerrainGenerator : MonoBehaviour
 
     private void Start()
     {
-        //_textureSettings.ApplyToMaterial(_mapMaterial);
-        //_textureSettings.UpdateMeshHeights(_mapMaterial, _heightMapSettings.MinHeight, _heightMapSettings.MaxHeight);
+        _viewer = Player.GetPlayerTransform();
+
+        _textureSettings.ApplyToMaterial(_mapMaterial);
+        _textureSettings.UpdateMeshHeights(_mapMaterial, _heightMapSettings.MinHeight, _heightMapSettings.MaxHeight);
 
         float maxViewDistance = _detailLevels[_detailLevels.Length - 1].visableDstThreshold;
 
@@ -92,8 +92,7 @@ public class TerrainGenerator : MonoBehaviour
                         TerrainChunk newChunk = new TerrainChunk(viewedChunkCoord, _heightMapSettings, _meshSettings, _detailLevels, _colliderLODIndex, transform, _viewer, _mapMaterial, _biome, _textureSettings);
 
                         //Make mapchunk
-                        if (_mapGeneratorScript != null)
-                            _mapGeneratorScript.AddChunkToMap(viewedChunkCoord);
+                        MapGenerator.AddChunkToMap(viewedChunkCoord);
 
                         _terrainChunkDictionary.Add(viewedChunkCoord, newChunk);
                         newChunk.onVisibilityChanged += OnTerrainChunkVisibilityChanged;
