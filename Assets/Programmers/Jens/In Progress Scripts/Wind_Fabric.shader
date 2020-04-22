@@ -5,6 +5,7 @@
 		_EmissionMap("Emission Map", 2D) = "black" {}
 		_PhysicsMap("Physics Map", 2D) = "white" {}
 		_Alpha("Alpha Map", 2D) = "white" {}
+		_noiseTex("Noise", 2D) = "white" {}
 		_Speed("Speed", float) = 1.0
 	}
 		SubShader{

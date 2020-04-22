@@ -60,11 +60,11 @@
 		}
 
 		//triplanar mapping
-		float3 triplanar(float3 worldPos, float scale, float3 blendAxes, int textureIndex) {
+		float3 triplanar(sampler2D tex,float3 worldPos, float scale, float3 blendAxes, int textureIndex) {
 			float3 scaledWorldPos = worldPos / scale;
-			float3 xProjection = tex2D(_MainTex, float2(scaledWorldPos.y, scaledWorldPos.z))* blendAxes.x;
-			float3 yProjection = tex2D(_MainTex, float2(scaledWorldPos.x, scaledWorldPos.z)) * blendAxes.y;
-			float3 zProjection = tex2D(_MainTex, float2(scaledWorldPos.x, scaledWorldPos.y)) * blendAxes.z;
+			float3 xProjection = tex2D(tex, float2(scaledWorldPos.y, scaledWorldPos.z))* blendAxes.x;
+			float3 yProjection = tex2D(tex, float2(scaledWorldPos.x, scaledWorldPos.z)) * blendAxes.y;
+			float3 zProjection = tex2D(tex, float2(scaledWorldPos.x, scaledWorldPos.y)) * blendAxes.z;
 			return xProjection + yProjection + zProjection;
 		}
 
@@ -76,9 +76,10 @@
 			float mainTexStrenght = 1;
 			//float noiseStrenght = tex2D(_NoiseTextures, IN.uv_MainTex).x*baseTextureStrenght[0];
 			float noiseStrenght = smoothstep(0.01 ,0.05 , tex2D(_NoiseTextures, IN.uv_MainTex).x);
-			float3 altCol = tex2D(_AltTex, IN.uv_MainTex);
+			//float3 altCol = tex2D(_AltTex, IN.uv_MainTex);
+			float3 altCol = triplanar(_AltTex, IN.worldPos, baseTextureScales[0], blendAxes, 0);
 			//float3 colour = tex2D(_MainTex, IN.uv_MainTex);
-			float3 colour = triplanar(IN.worldPos, baseTextureScales[0], blendAxes, 0);
+			float3 colour = triplanar(_MainTex, IN.worldPos, 2, blendAxes, 0);
 			//for (int i = 0; i < layerCount; i++) {
 			//	//float drawStrength = inverseLerp();
 

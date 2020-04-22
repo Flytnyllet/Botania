@@ -127,6 +127,7 @@ MonoBehaviour:
   _minSlidingAngle: 35
   _slopeWalkCorrection: 2
   _strafingSpeed: 5
+  _jumpTimeout: 0.3
   _bobbingAmount: 0.05
   _bobbingSpeed: 1
   layerMask:
@@ -146,6 +147,7 @@ GameObject:
   - component: {fileID: 946191596140822718}
   - component: {fileID: 946191596140822719}
   - component: {fileID: 9209358986787311481}
+  - component: {fileID: 2126438947125818393}
   m_Layer: 0
   m_Name: PlayerCam
   m_TagString: MainCamera
@@ -263,5 +265,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 10d69d23a37a2ca479ce26a67367ea8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2126438947125818393
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 946191596140822717}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87d5de57c3b275843a4ebb5342c7073b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
