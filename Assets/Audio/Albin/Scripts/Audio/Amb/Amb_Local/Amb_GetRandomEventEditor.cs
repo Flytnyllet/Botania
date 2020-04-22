@@ -2,7 +2,7 @@
 using UnityEngine;
 using System.Collections;
 using System;
-
+#if (UNITY_EDITOR) 
 [CustomEditor(typeof(Amb_GetRandomEvent))]
 [CanEditMultipleObjects]
 public class Amb_GetRandomEventEditor : Editor
@@ -40,3 +40,4 @@ public class Amb_GetRandomEventEditor : Editor
         serializedObject.ApplyModifiedProperties();
     }
 }
+#endif
