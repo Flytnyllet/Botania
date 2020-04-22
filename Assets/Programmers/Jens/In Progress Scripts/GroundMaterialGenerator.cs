@@ -29,12 +29,8 @@ public class GroundMaterialGenerator : ScriptableObject
         //int size = (int)(meshObject.mesh.bounds.size.x * meshObject.transform.localScale.x);
         //size /= 10;
         size *= 1;
-        Debug.Log(size);
-        Debug.Log(pos);
         
         
-        
-
         var mainThread = TaskScheduler.FromCurrentSynchronizationContext();
         Task.Run(() =>
         {

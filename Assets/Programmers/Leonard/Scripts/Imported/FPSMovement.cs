@@ -171,10 +171,10 @@ public class FPSMovement : MonoBehaviour
 		charCon.Move(move * _speed.Value * Time.deltaTime);
 
 		//Post move distance to ground check
-		/*if (ground.distance <= _slopeWalkCorrection && !_inAir)
+		if (ground.distance <= _slopeWalkCorrection && !_inAir)
 		{
 			charCon.Move(Vector3.down * ground.distance);
-		}*/
+		}
 	}
 
 	void Ducking(float duckDirection)
