@@ -75,7 +75,7 @@
 
 			float mainTexStrenght = 1;
 			//float noiseStrenght = tex2D(_NoiseTextures, IN.uv_MainTex).x*baseTextureStrenght[0];
-			float noiseStrenght = smoothstep(0.3 ,0.7 , tex2D(_NoiseTextures, IN.uv_MainTex).x);
+			float noiseStrenght = smoothstep(0.01 ,0.05 , tex2D(_NoiseTextures, IN.uv_MainTex).x);
 			float3 altCol = tex2D(_AltTex, IN.uv_MainTex);
 			float3 colour = tex2D(_MainTex, IN.uv_MainTex);
 			//for (int i = 0; i < layerCount; i++) {
@@ -87,9 +87,9 @@
 
 			//	o.Albedo = colour;
 			//}
-			//o.Albedo = lerp(colour, altCol, noiseStrenght);
+			o.Albedo = lerp(colour, altCol, noiseStrenght);
 			//o.Albedo = altCol+colour;
-			o.Albedo = tex2D(_NoiseTextures, IN.uv_MainTex);
+			//o.Albedo = tex2D(_NoiseTextures, IN.uv_MainTex);
 		}
 		ENDCG
 	}

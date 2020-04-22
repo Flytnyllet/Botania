@@ -40,10 +40,10 @@ public class GroundMaterialGenerator : ScriptableObject
         {
             try
             {
-                float[,] noise = Noise.GenerateNoiseMap(size, size, _noiseDetailLevel, _layers[0].GetNoise.NoiseSettingsDataMerge, pos );
+                float[,] noise = Noise.GenerateNoiseMap(size, size, _noiseDetailLevel, _layers[0].GetNoise.NoiseSettingsDataMerge, pos*1  );
                 Task.Delay(TimeSpan.FromSeconds(2)).ContinueWith(previous =>
                 {
-                    Texture2D noiseTex = TextureGenerator.TextureFromNoise(noise);
+                    Texture2D noiseTex = TextureGenerator.TextureFromNoiseJens(noise);
                     material.SetTexture("_NoiseTextures", noiseTex);
                 }, mainThread);
             }

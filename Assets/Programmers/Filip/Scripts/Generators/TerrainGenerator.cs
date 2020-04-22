@@ -35,8 +35,8 @@ public class TerrainGenerator : MonoBehaviour
     {
         _viewer = Player.GetPlayerTransform();
 
-        _textureSettings.ApplyToMaterial(_mapMaterial);
-        _textureSettings.UpdateMeshHeights(_mapMaterial, _heightMapSettings.MinHeight, _heightMapSettings.MaxHeight);
+        //_textureSettings. ApplyToMaterial(_mapMaterial);
+        //_textureSettings.UpdateMeshHeights(_mapMaterial, _heightMapSettings.MinHeight, _heightMapSettings.MaxHeight);
 
         float maxViewDistance = _detailLevels[_detailLevels.Length - 1].visableDstThreshold;
 
