@@ -24,6 +24,7 @@ public class FPSMovement : MonoBehaviour
 	[SerializeField] float _slidingSpeedFactor = 0.5f;
 	//Vector3 _slopeDirection;
 	[SerializeField] float _groundRayExtraDist = 3f;
+	[SerializeField] float _allowedJumpDistance = 0.2f;
 	float _groundRayDistance;
 	[SerializeField] float _minSlidingAngle = 25f;
 	[SerializeField] float _slopeWalkCorrection = 2f;
@@ -94,7 +95,7 @@ public class FPSMovement : MonoBehaviour
 				Vector3 slopeDirection = groundDetection.normal;
 
 				// Jump, otherwise Slide, otherwise Walk
-				if (Input.GetButtonDown("Jump") && _lastJump <= Time.time) // && !_inAir)
+				if (Input.GetButtonDown("Jump") && groundDetection.distance < charCon.bounds.size.y /2 + _allowedJumpDistance && _lastJump <= Time.time) // && !_inAir)
 				{
 					Debug.Log("JUMP!");
 					_velocity.y = 0;
@@ -164,10 +165,10 @@ public class FPSMovement : MonoBehaviour
 		Vector3 move =
 			_playerCam.right.normalized * inputDirection.x +
 			lookDir.normalized * inputDirection.y;
-		/*if(_isDucking)
+		if(_isDucking)
 		{
 			move *= _crawlSpeedFactor;
-		}*/
+		}
 		charCon.Move(move * _speed.Value * Time.deltaTime);
 
 		//Post move distance to ground check
