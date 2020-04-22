@@ -13,7 +13,7 @@ public class PotionLoader : MonoBehaviour
 	Potion_Template _modifiers;
 	enum PotionType
 	{
-		Speed, Flag
+		Speed, Flag, Gravity, Jump
 	}
 	[SerializeField] PotionType _potionType;
 	[SerializeField] float _potionDuration;
@@ -33,6 +33,12 @@ public class PotionLoader : MonoBehaviour
 				break;
 			case PotionType.Flag:
 				_modifiers = new FlagPotion(_potionFlag, _potionDuration);
+				break;
+			case PotionType.Jump:
+				_modifiers = new SpeedPotion(CharacterStatType.Jump, _potionFactor, _potionFlat, _potionDuration);
+				break;
+			case PotionType.Gravity:
+				_modifiers = new SpeedPotion(CharacterStatType.Gravity, _potionFactor, _potionFlat, _potionDuration);
 				break;
 			default:
 				Debug.LogError("No potion type assigned in the potion loader of " + gameObject.name);
@@ -80,5 +86,7 @@ public class PotionLoader : MonoBehaviour
 	public void ActivatePotion()
 	{
 		_modifiers.PotionEffectStart(FPSMovement.playerMovement);
+		FlowerLibrary.IncrementPotion(_potionName, -1);
+		UpdateUI();
 	}
 }

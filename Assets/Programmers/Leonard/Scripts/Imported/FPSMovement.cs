@@ -26,6 +26,9 @@ public class FPSMovement : MonoBehaviour
 	[SerializeField] float _minSlidingAngle = 25f;
 	[SerializeField] float _slopeWalkCorrection = 2f;
 	[SerializeField] float _strafingSpeed = 5f;
+	[SerializeField] float _jumpTimeout = 0.3f;
+	float _lastJump = 0;
+
 	bool _inAir = false;
 	bool _isDucking = false;
 
@@ -85,11 +88,12 @@ public class FPSMovement : MonoBehaviour
 				Vector3 slopeDirection = groundDetection.normal;
 
 				// Jump, otherwise Slide, otherwise Walk
-				if (Input.GetButtonDown("Jump")) // && !_inAir)
+				if (Input.GetButtonDown("Jump") && _lastJump <= Time.time) // && !_inAir)
 				{
 					Debug.Log("JUMP!");
 					_velocity.y = 0;
 					Launch(jump);
+					_lastJump = Time.time + _jumpTimeout;
 					_inAir = true;
 				}
 				else if (Input.GetButton(DUCK_BUTTON) && terrainAngle > 10f)
