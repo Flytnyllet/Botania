@@ -7,6 +7,7 @@ public class FPSMovement : MonoBehaviour
 	// FAKE SINGLETON
 	public static FPSMovement playerMovement;
 
+	// Tag Handling (Replace with LayerMasks)
 	const string DUCK_BUTTON = "Duck";
 	[SerializeField] string GROUND_TAG = "null";
 	[SerializeField] string WATER_TAG = "null";
@@ -22,11 +23,13 @@ public class FPSMovement : MonoBehaviour
 	[SerializeField] float _duckDistance = 0.4f;
 	[SerializeField] float _slidingSpeedFactor = 0.5f;
 	//Vector3 _slopeDirection;
-	[SerializeField] float _groundRayDistance = 3f;
+	[SerializeField] float _groundRayExtraDist = 3f;
+	float _groundRayDistance;
 	[SerializeField] float _minSlidingAngle = 25f;
 	[SerializeField] float _slopeWalkCorrection = 2f;
 	[SerializeField] float _strafingSpeed = 5f;
 	[SerializeField] float _jumpTimeout = 0.3f;
+	[SerializeField] LayerMask layerMask;
 	float _lastJump = 0;
 
 	bool _inAir = false;
@@ -39,7 +42,7 @@ public class FPSMovement : MonoBehaviour
 	float _defPosY;
 
 	Transform _playerCam;
-	public LayerMask layerMask;
+	//public LayerMask layerMask;
 
 	// !OBS Weird bug causing script to disable itself when awake is used.
 	void Awake()
@@ -48,12 +51,13 @@ public class FPSMovement : MonoBehaviour
 	}
 
 	void Start()
-	{
+	{	
 		charCon = GetComponent<CharacterController>();
 		_playerCam = transform.Find("PlayerCam");
 		CharacterState.SetControlState(CHARACTER_CONTROL_STATE.PLAYERCONTROLLED);
 		_defPosY = _playerCam.localPosition.y;
-		_groundRayDistance = Vector3.Distance(transform.position, charCon.bounds.ClosestPoint(transform.position - _groundRayDistance * Vector3.down)) - 0.01f;
+		_groundRayDistance = charCon.bounds.size.y /2 + _groundRayExtraDist;//Vector3.Distance(transform.position, (charCon.bounds.size.y / 2) * Vector3.down) + _groundRayExtraDist;
+		//Debug.DrawRay()
 	}
 
 	void Update()
@@ -69,7 +73,7 @@ public class FPSMovement : MonoBehaviour
 		//Ground Detection
 		float terrainAngle;
 		RaycastHit groundDetection;
-		bool grounded = GroundRay(transform.position, Vector3.down, 3f, out groundDetection);
+		bool grounded = GroundRay(transform.position, Vector3.down, _groundRayDistance, out groundDetection);
 
 			// == Functions ==
 			//_inAir = !charCon.isGrounded;
@@ -78,11 +82,13 @@ public class FPSMovement : MonoBehaviour
 
 		if (grounded)
 		{
-			if (groundDetection.collider.tag == WATER_TAG)
+			//DEBUG REMOVED!
+			/*if (groundDetection.collider.tag == WATER_TAG)
 			{
 				charCon.Move(_velocity * Time.deltaTime);
 			}
-			else
+			else*/
+			if(true) //remove this
 			{
 				terrainAngle = Vector3.Angle(Vector3.up, groundDetection.normal);
 				Vector3 slopeDirection = groundDetection.normal;
@@ -96,13 +102,14 @@ public class FPSMovement : MonoBehaviour
 					_lastJump = Time.time + _jumpTimeout;
 					_inAir = true;
 				}
-				else if (Input.GetButton(DUCK_BUTTON) && terrainAngle > 10f)
+				/*else if (Input.GetButton(DUCK_BUTTON) && terrainAngle > 10f)
 				{
 					Debug.Log("SLIDING!");
 					Sliding(x, slopeDirection);
-				}
+				}*/
 				else
 				{
+					//Debug.Log("Input axis" + x);
 					Walking(x, y, groundDetection);
 				}
 			}
@@ -150,26 +157,24 @@ public class FPSMovement : MonoBehaviour
 
 	void Walking(float horizontal, float vertical, RaycastHit ground)
 	{
-		Vector2 temp = new Vector2(horizontal, vertical).normalized;
-		horizontal = temp.x;
-		vertical = temp.y;
+		Vector2 inputDirection = new Vector2(horizontal, vertical).normalized;
 
 		Vector3 lookDir = _playerCam.forward;
 		lookDir.y = 0;
 		Vector3 move =
-			_playerCam.right.normalized * horizontal +
-			lookDir.normalized * vertical;
-		if(_isDucking)
+			_playerCam.right.normalized * inputDirection.x +
+			lookDir.normalized * inputDirection.y;
+		/*if(_isDucking)
 		{
 			move *= _crawlSpeedFactor;
-		}
+		}*/
 		charCon.Move(move * _speed.Value * Time.deltaTime);
 
 		//Post move distance to ground check
-		if (ground.distance <= _slopeWalkCorrection && !_inAir)
+		/*if (ground.distance <= _slopeWalkCorrection && !_inAir)
 		{
 			charCon.Move(Vector3.down * ground.distance);
-		}
+		}*/
 	}
 
 	void Ducking(float duckDirection)
@@ -223,10 +228,19 @@ public class FPSMovement : MonoBehaviour
 	//Ground Detection !Stolen from the internet
 	bool GroundRay(Vector3 rayStart, Vector3 rayDirection, float rayDistance, out RaycastHit hit)
 	{
-		Ray groundRay = new Ray(rayStart, rayDirection);
+		bool hitBool = Physics.Raycast(transform.position, transform.TransformDirection(Vector3.down) * rayDistance, out hit, rayDistance, layerMask);
+		Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.down) * rayDistance, Color.green, 1f);
 
-		if (Physics.Raycast(groundRay, out hit, rayDistance))
+		return hitBool;
+
+		//Ray groundRay = new Ray(rayStart, rayDirection);
+		/*
+		Debug.DrawRay(rayStart, rayDirection*rayDistance, Color.red, 0.5f);
+		if (Physics.Raycast(rayStart, rayDirection, out hit, rayDistance, layerMask))
 		{
+			Debug.Log("Grounded, Ray colliding with " + hit.collider.name);
+
+
 			if (GROUND_TAG == "null" || hit.collider.gameObject.tag == GROUND_TAG)
 			{
 				//_slopeDirection = hit.normal;
@@ -234,6 +248,6 @@ public class FPSMovement : MonoBehaviour
 				return true;
 			}
 		}
-		return false;
+		return false;*/
 	}
 }
