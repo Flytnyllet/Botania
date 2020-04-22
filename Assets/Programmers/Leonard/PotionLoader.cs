@@ -85,8 +85,15 @@ public class PotionLoader : MonoBehaviour
 
 	public void ActivatePotion()
 	{
-		_modifiers.PotionEffectStart(FPSMovement.playerMovement);
-		FlowerLibrary.IncrementPotion(_potionName, -1);
-		UpdateUI();
+		if (FlowerLibrary.GetPotionAmount(_potionName) > 0)
+		{
+			_modifiers.PotionEffectStart(FPSMovement.playerMovement);
+			FlowerLibrary.IncrementPotion(_potionName, -1);
+			UpdateUI();
+		}
+		else
+		{
+			Debug.Log("Not enough of " + _potionName);
+		}
 	}
 }
