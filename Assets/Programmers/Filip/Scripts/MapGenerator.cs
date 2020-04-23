@@ -78,7 +78,7 @@ public class MapGenerator : MonoBehaviour, IDragHandler, IScrollHandler, IPointe
     static List<GameObject> _spawnedMapChunks;
     static List<Transform> _spawnedWorldMarkers;
     static List<Transform> _spawnedWaypoints;
-    static bool _displaying = false;
+    static bool _displaying = true;
     static Vector3 _centerMapScaleVector;
     static Timer _centerTwiceTimer;
     static bool _lockedCenter = false;
@@ -138,7 +138,7 @@ public class MapGenerator : MonoBehaviour, IDragHandler, IScrollHandler, IPointe
 		_viewer = Player.GetPlayerTransform();
         UpdateWaypointSprite();
 
-        Display(true); //ONLY TESTING
+        Display(false); //ONLY TESTING
     }
 
     private void Update()
