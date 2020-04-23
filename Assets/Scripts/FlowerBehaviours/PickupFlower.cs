@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PickupFlower : MonoBehaviour, IInteractable
+public class PickupFlower : InteractableSaving, IInteractable
 {
     [SerializeField] string _flowerName;
     [SerializeField] Texture2D _pickupAlpha;
@@ -12,6 +12,9 @@ public class PickupFlower : MonoBehaviour, IInteractable
 
     public bool Interact()
     {
+        //Pickup save system
+        PickUp();
+
         string debugFlowerNames = "Trying to pick up a " + _flowerName
             + ". Accepted flower types are: [";
         string[] flowerTypes = FlowerLibrary.GetAllFlowerNames();

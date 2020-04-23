@@ -223,7 +223,7 @@ PrefabInstance:
         type: 3}
       propertyPath: _textureSettings
       value: 
-      objectReference: {fileID: 11400000, guid: 7695465a12724bf4c8c08eb38c70eb8e,
+      objectReference: {fileID: 11400000, guid: 752ab02085f5c7440bfb1fb48f71a4e1,
         type: 2}
     - target: {fileID: 3217619196147007213, guid: 33b68fb93d19bfc46bbcf2ca71609534,
         type: 3}
@@ -520,6 +520,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1223879523873368332, guid: c5b2c4b49a19dda44b1287dede7d68e2,
+        type: 3}
+      propertyPath: _saveIntervalTime
+      value: 5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c5b2c4b49a19dda44b1287dede7d68e2, type: 3}
 --- !u!81 &4499782922907414594
@@ -750,6 +755,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GROUND_TAG: null
+  WATER_TAG: null
   _speed:
     _baseValue: 12
   _jumpForce:
@@ -760,15 +766,17 @@ MonoBehaviour:
   _crawlSpeedFactor: 0.5
   _duckDistance: 0.4
   _slidingSpeedFactor: 0.5
-  _groundRayDistance: 3
+  _groundRayExtraDist: 3
+  _allowedJumpDistance: 0.2
   _minSlidingAngle: 25
   _slopeWalkCorrection: 2
   _strafingSpeed: 5
-  _bobbingAmount: 0.05
-  _bobbingSpeed: 1
+  _jumpTimeout: 0.3
   layerMask:
     serializedVersion: 2
     m_Bits: 256
+  _bobbingAmount: 0.05
+  _bobbingSpeed: 1
 --- !u!143 &4499782923509754271
 CharacterController:
   m_ObjectHideFlags: 0
@@ -941,10 +949,15 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8933486552810431676, guid: e9260d934c5fdee4f95ce8acba24ea2e,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8933486553258090300, guid: e9260d934c5fdee4f95ce8acba24ea2e,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.000009536743
+      value: 0.0000019073486
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e9260d934c5fdee4f95ce8acba24ea2e, type: 3}

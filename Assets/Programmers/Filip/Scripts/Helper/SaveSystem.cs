@@ -60,7 +60,10 @@ public class SaveSystem : MonoBehaviour
     private void Load()
     {
         if (_load)
+        {
+            PrefabSpawnerSaveData.Load();
             MapGenerator.Load();
+        }
     }
 
     //Saves things that should be saved
@@ -69,6 +72,7 @@ public class SaveSystem : MonoBehaviour
         if (_save)
         {
             StartCoroutine(SaveIconAlpha());
+            PrefabSpawnerSaveData.Save();
             MapGenerator.Save();
         }
     }
