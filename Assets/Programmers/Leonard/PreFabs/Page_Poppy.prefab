@@ -409,6 +409,7 @@ GameObject:
   - component: {fileID: 1895739259239717388}
   - component: {fileID: 1895739259239717389}
   - component: {fileID: 1895739259239717378}
+  - component: {fileID: 1361866978555535512}
   m_Layer: 5
   m_Name: Page_Poppy
   m_TagString: Untagged
@@ -499,5 +500,23 @@ MonoBehaviour:
     _unlockPoint: 2
   - _bookElement: {fileID: 1895739258314254209}
     _unlockPoint: 3
-  _amountCounter: {fileID: 1895739258033272792}
   _flowerName: Poppy
+--- !u!114 &1361866978555535512
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1895739259239717376}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e6b69373c76ec1419e939d957cbcbb9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _pageElements:
+  - _bookElement: {fileID: 1895739258314254209}
+    _unlockPoint: 3
+  - _bookElement: {fileID: 1895739258890603556}
+    _unlockPoint: 2
+  _flowerName: Poppy
+  _amountCounter: {fileID: 1895739258033272792}
