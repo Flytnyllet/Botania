@@ -14,4 +14,9 @@ public abstract class InteractableSaving : MonoBehaviour
     {
         GetComponentInChildren<PrefabSaveData>().StoreInPrefabSpawnerSaveData();
     }
+
+    public virtual void PickedUpAlready()
+    {
+        Debug.LogError(this.name + " is trying to partially spawn without having overriden the function PickedUpAlready() from InteractableSaving");
+    }
 }

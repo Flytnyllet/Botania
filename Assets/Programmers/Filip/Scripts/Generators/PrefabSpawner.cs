@@ -34,7 +34,7 @@ public class PrefabSpawner : MonoBehaviour
 
         //Spawn Water - water has detail type of highest level even if it spawns in low LOD because it has no need to check normals
         if (firstCall)
-            spawnInfo.Add(new SpawnInfo(biome.WaterChunk, 0, new Vector3(chunkPosition.x, biome.WaterHeight, -chunkPosition.y), Vector3.up, 0, 0, chunkCoord, Vector2.zero, false, new Vector3((meshSettings.ChunkSize - 1) * meshSettings.MeshScale, 1, (meshSettings.ChunkSize - 1) * meshSettings.MeshScale)));
+            spawnInfo.Add(new SpawnInfo(biome.WaterChunk, 0, new Vector3(chunkPosition.x, biome.WaterHeight, -chunkPosition.y), Vector3.up, 0, 0, chunkCoord, Vector2.zero, false, new Vector3((meshSettings.ChunkSize - 1) * meshSettings.MeshScale, 1, (meshSettings.ChunkSize - 1) * meshSettings.MeshScale), false));
 
         for (int i = 0; i < spawnables.Length; i++)
         {
@@ -55,13 +55,21 @@ public class PrefabSpawner : MonoBehaviour
                 for (int y = 0; y < meshSettings.ChunkSize - spawnableSizeForGridAlign; y++)
                 {
                     Vector2 itemIndex = new Vector2(x, y);
+                    ChunkCoordIndex chunkCoordIndex = new ChunkCoordIndex(chunkCoord, itemIndex);
+                    bool shouldSpawn = true;
+                    bool partialSpawn = false;
 
                     //This thing is already picked up! (Size > 0 is just to check if the thing is pickable)
-                    if (spawnables[i].Size > 0 && PrefabSpawnerSaveData.ContainsChunkCoordIndex(new ChunkCoordIndex(chunkCoord, itemIndex)))
+                    if (spawnables[i].Size > 0 && PrefabSpawnerSaveData.ContainsChunkCoordIndex(chunkCoordIndex))
                     {
-                        //ADD STUFF HERE IF THERE SHOULD BE REGROWTH OR SOMETHING!
+                        StoredSaveData data = PrefabSpawnerSaveData.GetStoredSaveData(chunkCoordIndex);
+
+                        if (data.PartialSpawn)
+                            partialSpawn = true;
+                        else
+                            shouldSpawn = false;
                     }
-                    else
+                    if (shouldSpawn)
                     {
                         //No use in checking if it can spawn if that square is occopied
                         if (CanObjectSpawn(x, y, spawnables[i].Size, heightMap.heightMap, spawnables[i].SpawnDifferencial, meshSettings.ChunkSize))
@@ -113,7 +121,7 @@ public class PrefabSpawner : MonoBehaviour
                                 GameObject spawnObject = spawnables[i].GetPrefab(x, y);
                                 float localRotationAmount = spawnables[i].OffsetNoise[x, y] * DEGREES_360 * spawnables[i].RotationAmount;
 
-                                spawnInfo.Add(new SpawnInfo(spawnObject, detailType, objectPosition, normal, tiltAmount, localRotationAmount, chunkCoord, itemIndex, spawnables[i]. Size != 0, Vector3.one));
+                                spawnInfo.Add(new SpawnInfo(spawnObject, detailType, objectPosition, normal, tiltAmount, localRotationAmount, chunkCoord, itemIndex, spawnables[i]. Size != 0, Vector3.one, partialSpawn));
                             }
                         }
                     }            
@@ -206,8 +214,9 @@ public class SpawnInfo : MonoBehaviour
 
     public Vector2 ItemIndex { get; set; }
     public int DetailType { get; set; }
+    bool PartialSpawn { get; set; }
 
-    public SpawnInfo(GameObject prefab, int detailType, Vector3 spawnPosition, Vector3 normal, float tiltAmount, float localRotationAmount, Vector2 chunkCoord, Vector2 itemIndex, bool correctSizeForPickup, Vector3 scale)
+    public SpawnInfo(GameObject prefab, int detailType, Vector3 spawnPosition, Vector3 normal, float tiltAmount, float localRotationAmount, Vector2 chunkCoord, Vector2 itemIndex, bool correctSizeForPickup, Vector3 scale, bool partialSpawn)
     {
         this._prefab = prefab;
         this._spawnPosition = spawnPosition;
@@ -221,6 +230,8 @@ public class SpawnInfo : MonoBehaviour
         this.DetailType = detailType;
 
         this._correctSizeForPickup = correctSizeForPickup;
+
+        this.PartialSpawn = partialSpawn;
     }
 
     public void SetNormal(MeshData meshData, int chunkSize)
@@ -242,12 +253,24 @@ public class SpawnInfo : MonoBehaviour
 
         PrefabSaveData saveDataScript = newObject.GetComponent<PrefabSaveData>();
 
+        //Enter this loop only for object dealing with saving
         if (saveDataScript != null)
         {
             if (_correctSizeForPickup)
                 saveDataScript.SetSaveData(new StoredSaveData(_chunkCoord, ItemIndex));
             else
                 Debug.LogError("You are trying to spawn a prefab which should be picked up with the wrong size! Size must not be 0 for pickups!!!");
+
+            //This object has already been picked up in saves!
+            if (PartialSpawn)
+            {
+                InteractableSaving script = newObject.GetComponentInChildren<InteractableSaving>();
+
+                if (script != null)
+                    script.PickedUpAlready();
+                else
+                    Debug.LogError("This object is saved as to be partially picked but does not have a InteractableSaving script on it!!! : " + newObject.name);
+            }
         }
     }
 
