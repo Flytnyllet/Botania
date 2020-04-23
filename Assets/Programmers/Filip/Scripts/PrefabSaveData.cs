@@ -21,7 +21,7 @@ public class PrefabSaveData : MonoBehaviour
     }
 }
 
-
+[System.Serializable]
 public struct StoredSaveData
 {
     //The key for dictionary which holds chunk coord and index in coord
@@ -39,17 +39,46 @@ public struct StoredSaveData
 }
 
 //The key for dictionary which holds chunk coord and index in coord
+[System.Serializable]
 public struct ChunkCoordIndex
 {
-    Vector2 _chunkCoord;
-    Vector2 _itemIndex;
+    float _chunkCoord_X;
+    float _chunkCoord_Y;
 
-    public Vector2 ChunkCoord { get { return _chunkCoord; } private set { _chunkCoord = value; } }
-    public Vector2 ItemIndex { get { return _itemIndex; } private set { _itemIndex = value; } }
+    float _itemIndex_X;
+    float _itemIndex_Y;
+
+    public Vector2 ChunkCoord
+    {
+        get
+        {
+            return new Vector2(_chunkCoord_X, _chunkCoord_Y);
+        }
+        private set
+        {
+            _chunkCoord_X = value.x;
+            _chunkCoord_Y = value.y;
+        }
+    }
+
+    public Vector2 ItemIndex
+    {
+        get
+        {
+            return new Vector2(_itemIndex_X, _itemIndex_Y);
+        }
+        private set
+        {
+            _itemIndex_X = value.x;
+            _itemIndex_Y = value.y;
+        }
+    }
 
     public ChunkCoordIndex(Vector2 chunkCoord, Vector2 itemIndex)
     {
-        this._chunkCoord = chunkCoord;
-        this._itemIndex = itemIndex;
+        _chunkCoord_X = chunkCoord.x;
+        _chunkCoord_Y = chunkCoord.y;
+        _itemIndex_X = itemIndex.x;
+        _itemIndex_Y = itemIndex.y;
     }
 }
