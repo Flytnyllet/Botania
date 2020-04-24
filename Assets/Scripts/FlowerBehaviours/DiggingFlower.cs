@@ -5,8 +5,8 @@ using UnityEngine;
 public class DiggingFlower : MonoBehaviour
 {
     //Detta använder animationer med states och kräver controllern "Digging Fllower"
-    public enum FlowerState { Idle, Digging, Hidden, Interactable };
-    FlowerState _flowerState = FlowerState.Idle;
+    public enum FlowerState { Idle, Digging, Hidden, Interactable }; //använder nog inte alla
+    FlowerState _flowerState = FlowerState.Idle; 
     bool _playerInArea = false;
     [SerializeField] Animator _animator;
     [Tooltip("Skall sättas på objektet som har script och collider för att plockas upp")]
@@ -26,7 +26,8 @@ public class DiggingFlower : MonoBehaviour
 
             if (_flowerState == FlowerState.Idle)
             {
-                _animator.Play("DigDown"); //Rör sig lite, kallar på animatorn, och gör sig liten.
+                Debug.Log("Dig down");
+                _animator.Play("Take001"); //Rör sig lite, kallar på animatorn, och gör sig liten.
                 StartCoroutine(CheckIfAlone());
                 _flowerState = FlowerState.Digging;
             }
@@ -50,7 +51,7 @@ public class DiggingFlower : MonoBehaviour
             if (_playerInArea) time = 0.0f;
             yield return null;
         }
-        _animator.Play("DigUpp");
+        _animator.Play("Take002");
         //Detta innebär att blomman är i "Idle" när den gräver upp, vilket kan skapa problem i framtiden.
         _flowerState = FlowerState.Idle;
     }
@@ -58,8 +59,7 @@ public class DiggingFlower : MonoBehaviour
     //Detta är funktionen som ska kallas när en abbility gör blomman användbar, hur detta görs är inte kritiskt i nuläget
     public void MakeInteractable()
     {
-        _animator.StopPlayback();
-        _animator.WriteDefaultValues();
+        _animator.Play("BaseState");
         _capsuleCollider.enabled = true;
         _flowerState = FlowerState.Interactable;
     }

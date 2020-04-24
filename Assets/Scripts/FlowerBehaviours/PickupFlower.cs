@@ -24,19 +24,28 @@ public class PickupFlower : InteractableSaving, IInteractable
         }
         debugFlowerNames += "]";
 
-        Debug.Log(debugFlowerNames);
+        //Debug.Log(debugFlowerNames);
 
         FlowerLibrary.IncrementFlower(_flowerName, 1);
 
         if (_gameobjectOverload == null)
         {
-            GetComponent<MeshRenderer>().material.SetTexture("_Alpha", _pickupAlpha);
+            if (_pickupAlpha != null)
+            {
+                GetComponent<MeshRenderer>().material.SetTexture("_Alpha", _pickupAlpha);
+                GetComponent<Collider>().enabled = false; //This may not work since there are multiple colliders
+            }
+            else { Destroy(this.gameObject); }
         }
         else
         {
-            _gameobjectOverload.GetComponent<MeshRenderer>().material.SetTexture("_Alpha", _pickupAlpha);
+            if (_pickupAlpha != null)
+            {
+                _gameobjectOverload.GetComponent<MeshRenderer>().material.SetTexture("_Alpha", _pickupAlpha);
+                GetComponent<Collider>().enabled = false;//This may not work since there are multiple colliders
+            }
+            else { Destroy(this.gameObject); }
         }
-        GetComponent<Collider>().enabled = false;
         return true; //Doesn't really have a purpose for this
     }
 }

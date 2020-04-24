@@ -49,7 +49,6 @@ public class GroundMaterialGenerator : ScriptableObject
             {
                 Debug.LogError(e);
             }
-
         });
         material.SetTexture("_AltTex", _layer.GetTexture());
         material.SetTexture("_MainTex", _mainTex);
