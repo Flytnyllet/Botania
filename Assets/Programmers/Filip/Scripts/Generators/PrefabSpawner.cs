@@ -60,7 +60,7 @@ public class PrefabSpawner : MonoBehaviour
                     bool partialSpawn = false;
 
                     //This thing is already picked up! (Size > 0 is just to check if the thing is pickable)
-                    if (spawnables[i].Size > 0 && PrefabSpawnerSaveData.ContainsChunkCoordIndex(chunkCoordIndex))
+                    if (!spawnables[i].OthersCanSpawnInside && PrefabSpawnerSaveData.ContainsChunkCoordIndex(chunkCoordIndex))
                     {
                         StoredSaveData data = PrefabSpawnerSaveData.GetStoredSaveData(chunkCoordIndex);
 
