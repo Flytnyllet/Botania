@@ -5,19 +5,25 @@ using UnityEngine;
 public class FlowerTeleportation : MonoBehaviour
 {
     [SerializeField] LayerMask _layerMask;
+    [SerializeField] PickupFlower _pickupScript;
     [SerializeField] float _teleportationRange;
     [SerializeField] float _heighCheck;
     [SerializeField] FlowerTeleportationTrailMovement _trailObject;
     [SerializeField] ParticleSystem _particles;
+    [SerializeField] int _Maxjumps = 3;
+    int _jumps = 0;
 
     Vector3 groundOffset = new Vector3(0, 0.05f, 0);
     Vector3 _objectHeight;
-    CapsuleCollider _collider;
+    CapsuleCollider _capCollider;
+    SphereCollider _sphereCollider;
     private void Awake()
     {
-        _collider = GetComponent<CapsuleCollider>();
-        _objectHeight = new Vector3(0, _collider.bounds.size.y, 0);
-        _collider.enabled = false;
+        _pickupScript.SetEnabled = false;
+        _capCollider = GetComponent<CapsuleCollider>();
+        _sphereCollider = GetComponent<SphereCollider>();
+        _objectHeight = new Vector3(0, _capCollider.bounds.size.y, 0);
+        _capCollider.enabled = false;
     }
 
     void ReleaseTrailObject(Vector3 pos)
@@ -25,15 +31,21 @@ public class FlowerTeleportation : MonoBehaviour
         bool trailActive = _trailObject.gameObject.activeSelf;
         _trailObject.gameObject.SetActive(true);
         _trailObject.transform.parent = null;
-        //GameObject gObject = Instantiate(_particles.gameObject, this.transform);
-        //gObject.SetActive(true);
-        //gObject.transform.parent = this.transform.parent;
-        //_particles.gameObject.SetActive(true);
 
         pos.y -= 0.05f;
+        _jumps++;
         transform.position = pos + _objectHeight * 0.5f;
 
-        /*if (!trailActive)*/ StartCoroutine(_trailObject.followTarget(this.transform));
+        /*if (!trailActive)*/
+        StartCoroutine(_trailObject.followTarget(this.transform));
+
+        if (_Maxjumps <= _jumps)
+        {
+            _sphereCollider.enabled = false;
+            _capCollider.enabled = true;
+            _pickupScript.enabled = true;
+            Destroy(this);
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -55,7 +67,7 @@ public class FlowerTeleportation : MonoBehaviour
                 if (Physics.Raycast(position + groundOffset, Vector3.down, out hit, _heighCheck, _layerMask))
                 {
                     Vector3 hitPos = hit.point;
-                    if (!Physics.CheckCapsule(hitPos + groundOffset, hitPos + _objectHeight * 1.1f, _collider.bounds.size.x))
+                    if (!Physics.CheckCapsule(hitPos + groundOffset, hitPos + _objectHeight * 1.1f, _capCollider.bounds.size.x))
                     {
                         ReleaseTrailObject(hitPos);
                         break;
@@ -70,8 +82,8 @@ public class FlowerTeleportation : MonoBehaviour
                         break;
                     }
                 }
-                Debug.DrawRay(position, Vector3.down* _heighCheck, Color.red, 5);
-                Debug.DrawRay(position, Vector3.up* _heighCheck, Color.red, 5);
+                Debug.DrawRay(position, Vector3.down * _heighCheck, Color.red, 5);
+                Debug.DrawRay(position, Vector3.up * _heighCheck, Color.red, 5);
             }
             if (i == 100)
             {

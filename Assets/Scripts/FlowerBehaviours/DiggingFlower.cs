@@ -2,19 +2,24 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DiggingFlower : MonoBehaviour
+public class DiggingFlower : MonoBehaviour, IInteractable
 {
     //Detta använder animationer med states och kräver controllern "Digging Fllower"
     public enum FlowerState { Idle, Digging, Hidden, Interactable }; //använder nog inte alla
-    FlowerState _flowerState = FlowerState.Idle; 
+    [SerializeField] PickupFlower _pickupScript;
+    FlowerState _flowerState = FlowerState.Idle;
     bool _playerInArea = false;
     [SerializeField] Animator _animator;
     [Tooltip("Skall sättas på objektet som har script och collider för att plockas upp")]
-    [SerializeField] CapsuleCollider _capsuleCollider;
+    CapsuleCollider _capsuleCollider;
+    SphereCollider _sphereCol;
     [SerializeField] float _hideTime = 3.0f;
 
     private void Awake()
     {
+        _sphereCol = GetComponent<SphereCollider>();
+        _capsuleCollider = GetComponent<CapsuleCollider>();
+        _pickupScript.SetEnabled = false;
         _capsuleCollider.enabled = false; //Se till att bloman inte kan plockas upp innan spelaren har förmågan
     }
 
@@ -59,8 +64,16 @@ public class DiggingFlower : MonoBehaviour
     //Detta är funktionen som ska kallas när en abbility gör blomman användbar, hur detta görs är inte kritiskt i nuläget
     public void MakeInteractable()
     {
+        _pickupScript.SetEnabled = true;
         _animator.Play("BaseState");
         _capsuleCollider.enabled = true;
         _flowerState = FlowerState.Interactable;
+        Destroy(this);
+    }
+
+    public bool Interact()
+    {
+        MakeInteractable();
+        return true;
     }
 }
