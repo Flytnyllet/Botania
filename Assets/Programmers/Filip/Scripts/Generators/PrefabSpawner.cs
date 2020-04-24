@@ -88,7 +88,6 @@ public class PrefabSpawner : MonoBehaviour
                             if (levelOfDetail == 0)
                                 normal = meshData.GetNormal(y * (meshSettings.ChunkSize) + x);
 
-
                             float slopeAngle = Vector3.Angle(Vector3.up, normal);
 
                             bool minSlope = (slopeAngle <= spawnables[i].SoftMinSlope * spawnables[i].OffsetNoise[x, y]);

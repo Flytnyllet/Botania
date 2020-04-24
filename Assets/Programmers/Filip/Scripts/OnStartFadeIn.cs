@@ -15,10 +15,15 @@ public class OnStartFadeIn : MonoBehaviour
     [SerializeField] Image _image;
 
     Timer _fadeTimer;
+    Color _startColor;
 
     private void Awake()
     {
         _fadeTimer = new Timer(_speed);
+        _startColor = _image.color;
+        Color color = _startColor;
+        color.a = 0.0f;
+        _image.color = color;
     }
 
     private void Update()
@@ -27,7 +32,10 @@ public class OnStartFadeIn : MonoBehaviour
 
         if (!_fadeTimer.Expired())
         {
-
+            float point = _curve.Evaluate(_fadeTimer.Ratio());
+            Color newColor = _startColor;
+            newColor.a = point;
+            _image.color = newColor;
         }
         else
             Destroy(this.gameObject);
