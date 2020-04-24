@@ -88,12 +88,6 @@ public static class TextureGenerator
         int height = noise.GetLength(1);
 
         Color[] colorMap = new Color[width * height];
-
-        float maxValue;
-        float minValue;
-        GetMinMax(noise, out minValue, out maxValue);
-
-        
         for (int y = 0; y < height; y++)
             for (int x = 0; x < width; x++)
                 colorMap[y * width + x] = Color.Lerp(Color.black, Color.white, Mathf.InverseLerp(0, 1, noise[x, y]));

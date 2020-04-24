@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PrefabSaveData : MonoBehaviour
 {
+    [SerializeField, Tooltip("With this true it will still spawn it but only partially! Make sure this prefab support that!")] bool _spawnPartially = false;
+
     StoredSaveData _saveData;
 
     //Content of this is what needs to be saved (right now only contains way to identify object)
@@ -12,6 +14,7 @@ public class PrefabSaveData : MonoBehaviour
     public void SetSaveData(StoredSaveData saveData)
     {
         this._saveData = saveData;
+        _saveData.SetPartialSpawn(_spawnPartially);
     }
 
     //Call this function on pickup
@@ -27,13 +30,20 @@ public struct StoredSaveData
     //The key for dictionary which holds chunk coord and index in coord
     ChunkCoordIndex _chunkCoordIndex;
 
-    //ROOM TO ADD NEW INFO TO STORE
+    bool _partialSpawn;
 
     public ChunkCoordIndex ChunkCoordIndex { get { return _chunkCoordIndex; } private set { _chunkCoordIndex = value; } } //Identify this specific object!
+    public bool PartialSpawn { get { return _partialSpawn; } private set { _partialSpawn = value; } }
+
+    public void SetPartialSpawn(bool partialSpawn)
+    {
+        this._partialSpawn = partialSpawn;
+    }
 
     //Is only created in the prefab spawner and set only there
     public StoredSaveData(Vector2 chunkCoord, Vector2 itemIndex)
     {
+        this._partialSpawn = false;
         this._chunkCoordIndex = new ChunkCoordIndex(chunkCoord, itemIndex);
     }
 }

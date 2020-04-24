@@ -47,6 +47,12 @@ public static class PrefabSpawnerSaveData
             _storedSaveDataDic.Remove(saveDataToStore.ChunkCoordIndex);
     }
 
+    //Used only by spawning to check if it should spawn
+    public static StoredSaveData GetStoredSaveData(ChunkCoordIndex index)
+    {
+        return _storedSaveDataDic[index];
+    }
+
     //Checks if it should spawn depending on key (used in spawning script only)
     public static bool ContainsChunkCoordIndex(ChunkCoordIndex chunkCoordIndex)
     {

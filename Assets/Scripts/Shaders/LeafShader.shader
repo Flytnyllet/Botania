@@ -22,9 +22,9 @@
 
 		sampler2D _MainTex;
 		sampler2D _EmissionMap;
+		sampler2D _Alpha;
 		sampler2D _Metal;
 		sampler2D _Rough;
-		sampler2D _Alpha;
 
 		half _Metallic;
 

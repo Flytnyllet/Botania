@@ -27,7 +27,8 @@ public class Spawnable : UpdatableData
 
     [Header("Size Settings")]
 
-    [SerializeField, Range(0, 30), Tooltip("How many squares does this object occupy? (ZERO will be treated as the object can spawn inside other objects (such as grass))")] int _size;
+    [SerializeField, Range(1, 30), Tooltip("How many squares does this object occupy?")] int _size;
+    [SerializeField, Tooltip("Do not have this enabled for pickups!!! It will crash!")] bool _othersCanSpawnInside = false;
     [SerializeField, Range(0, 15), Tooltip("How high can the difference between highest and lowest point in spawn area be for it to spawn?")] float _spawnDifferencial;
 
 
@@ -72,6 +73,7 @@ public class Spawnable : UpdatableData
     public float Height                               { get { return _height; }                     private set { _height = value; } }
 
     public int Size                                   { get { return _size; }                       private set { _size = value; } }
+    public bool OthersCanSpawnInside                  { get { return _othersCanSpawnInside; }       private set { _othersCanSpawnInside = value; } }
     public float SpawnDifferencial                    { get { return _spawnDifferencial; }          private set { _spawnDifferencial = value; } }
 
     public float SoftMinAmount                        { get { return _softMinAmount; }              private set { _softMinAmount = value; } }
@@ -104,6 +106,7 @@ public class Spawnable : UpdatableData
         this._offsetAmount = spawnable._offsetAmount;
         this._height = spawnable._height;
         this._size = spawnable._size;
+        this._othersCanSpawnInside = spawnable._othersCanSpawnInside;
         this._spawnDifferencial = spawnable._spawnDifferencial;
         this._softMinAmount = spawnable._softMinAmount;
         this._hardMinHeight = spawnable._hardMinHeight;
