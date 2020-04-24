@@ -13,6 +13,7 @@ public class FlowerTeleportationTrailMovement : MonoBehaviour
 
     public IEnumerator followTarget(Transform target)
     {
+        Debug.Log("hello");
         while (Vector3.Distance(this.transform.position, target.position) > 0.4)
         {
             Vector3 direction = (target.position - this.transform.position).normalized;

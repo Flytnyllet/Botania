@@ -214,7 +214,7 @@ MonoBehaviour:
   Max: 1
   Default: 0
   Exists: 0
---- !u!114 &-8448049869118835349
+--- !u!114 &-8360614563861662606
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -223,17 +223,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
-  m_Name: bank:/Master.strings.bank
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/amb/amb___002_grassland___insect_rnd_cricket
   m_EditorClassIdentifier: 
-  Path: FMOD/Build/Desktop/Master.strings.bank
-  SubDir: 
-  lastModified: 637232298962407440
-  LoadResult: 0
-  FileSizes:
-  - Name: 
-    Value: 2068
-  Exists: 1
+  Path: event:/amb/amb___002_grassland___insect_rnd_cricket
+  guid: 66f6d7773c1e8b4eb6be5065482cbb57
+  Banks:
+  - {fileID: 8355976913014547924}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &-8331528750325064998
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -269,6 +272,30 @@ MonoBehaviour:
   Max: 1
   Default: 0
   Exists: 0
+--- !u!114 &-8235441464045231305
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/player/p___001_mov___rnd_footsteps
+  m_EditorClassIdentifier: 
+  Path: event:/player/p___001_mov___rnd_footsteps
+  guid: e952808aaf1835468568f6e49b1f3701
+  Banks:
+  - {fileID: 8355976913014547924}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters:
+  - {fileID: -7607308114990595446}
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 0
 --- !u!114 &-8198468642779661740
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -545,6 +572,23 @@ MonoBehaviour:
   LoadResult: 0
   FileSizes: []
   Exists: 0
+--- !u!114 &-7607308114990595446
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/p___001_mov___rnd_footsteps/ground_material
+  m_EditorClassIdentifier: 
+  Name: ground_material
+  Min: 0
+  Max: 1
+  Default: 0
+  Exists: 1
 --- !u!114 &-7496515907890818968
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -658,7 +702,7 @@ MonoBehaviour:
   Max: 0
   Default: 0
   Exists: 0
---- !u!114 &-7228308063559576705
+--- !u!114 &-7069442361191984894
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -668,14 +712,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
-  m_Name: parameter:/p___001_mov___rnd_jump/ground_material
+  m_Name: parameter:/amb___001_forest___bird_rnd_birdsong2/is_shy
   m_EditorClassIdentifier: 
-  Name: ground_material
+  Name: is_shy
   Min: 0
   Max: 1
   Default: 0
   Exists: 1
---- !u!114 &-7069442361191984894
+--- !u!114 &-7048422858646297324
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -816,6 +860,29 @@ MonoBehaviour:
   guid: b94462a7bf7c564b9cd4f91901b16013
   Banks:
   - {fileID: 971589470395989689}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 25
+  Length: 5500
+--- !u!114 &-6672522038102505829
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/amb/amb___001_forest___bird_rnd_birdsong3
+  m_EditorClassIdentifier: 
+  Path: event:/amb/amb___001_forest___bird_rnd_birdsong3
+  guid: 04f3b660e07610408def68da56a763ef
+  Banks:
+  - {fileID: 8355976913014547924}
   IsStream: 0
   Is3D: 1
   IsOneShot: 0
@@ -980,23 +1047,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
   m_Name: parameter:/p___001_mov___rnd_footsteps/ground_material
   m_EditorClassIdentifier: 
-  Name: ground_material
-  Min: 0
-  Max: 1
-  Default: 0
-  Exists: 1
---- !u!114 &-6435229634108891043
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
-  m_Name: wind_intensity
-  m_EditorClassIdentifier: 
   Name: 
   Min: 0
   Max: 0
@@ -1019,6 +1069,29 @@ MonoBehaviour:
   Max: 1
   Default: 0
   Exists: 0
+--- !u!114 &-6278630010935103124
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/amb/amb___001_forest___bird_rnd_birdsong1
+  m_EditorClassIdentifier: 
+  Path: event:/amb/amb___001_forest___bird_rnd_birdsong1
+  guid: e576cdec6851954186eb0ec303ca89e8
+  Banks:
+  - {fileID: 8355976913014547924}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 25
+  Length: 5500
 --- !u!114 &-6267765521127876887
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1038,41 +1111,6 @@ MonoBehaviour:
   FileSizes: []
   Exists: 0
 --- !u!114 &-6158479525970510120
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
-  m_Name: parameter:/p___001_mov___rnd_footsteps/ground_material
-  m_EditorClassIdentifier: 
-  Name: ground_material
-  Min: 0
-  Max: 1
-  Default: 0
-  Exists: 0
---- !u!114 &-6126514255328620000
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
-  m_Name: bank:/void.bank
-  m_EditorClassIdentifier: 
-  Path: FMOD/Build/Desktop/void.bank
-  SubDir: 
-  lastModified: 637231608355733642
-  LoadResult: 0
-  FileSizes: []
-  Exists: 1
---- !u!114 &-6123142820424754217
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1644,7 +1682,30 @@ MonoBehaviour:
   Max: 1
   Default: 0
   Exists: 0
---- !u!114 &-5109011162261423783
+--- !u!114 &-5060327760465031659
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/amb/amb___001_forest___bird_rnd_birdsongTEST
+  m_EditorClassIdentifier: 
+  Path: event:/amb/amb___001_forest___bird_rnd_birdsongTEST
+  guid: e837710840a45b45927bbcb1d45c9aa8
+  Banks:
+  - {fileID: 8355976913014547924}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 8.8
+  Length: 33000
+--- !u!114 &-5031690266284012782
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1825,6 +1886,29 @@ MonoBehaviour:
   LoadResult: 0
   FileSizes: []
   Exists: 0
+--- !u!114 &-4858421404419152182
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/player/p___002_inv___book_open
+  m_EditorClassIdentifier: 
+  Path: event:/player/p___002_inv___book_open
+  guid: 5a001b43eea7e74088d3d822c1517eeb
+  Banks:
+  - {fileID: 8355976913014547924}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 1400
 --- !u!114 &-4813502242192682594
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2119,6 +2203,29 @@ MonoBehaviour:
   Max: 1
   Default: 0
   Exists: 0
+--- !u!114 &-4392012039117531710
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/player/p___002_inv___book_rnd_page_forward
+  m_EditorClassIdentifier: 
+  Path: event:/player/p___002_inv___book_rnd_page_forward
+  guid: b786d1e0da6b8a44ae050707fa2d9ec7
+  Banks:
+  - {fileID: 8355976913014547924}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 500
 --- !u!114 &-4376723977876927808
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2154,23 +2261,6 @@ MonoBehaviour:
   Max: 1
   Default: 0
   Exists: 0
---- !u!114 &-4230646196331724811
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
-  m_Name: parameter:/amb___001_forest___bird_rnd_birdsong2/is_shy
-  m_EditorClassIdentifier: 
-  Name: is_shy
-  Min: 0
-  Max: 1
-  Default: 0
-  Exists: 1
 --- !u!114 &-4219443924123163858
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2184,46 +2274,6 @@ MonoBehaviour:
   m_Name: parameter:/p___00_mov___rnd_footsteps/ground_material
   m_EditorClassIdentifier: 
   Name: ground_material
-  Min: 0
-  Max: 1
-  Default: 0
-  Exists: 1
---- !u!114 &-4204116609973436348
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/amb/amb___002_grassland___insect_rnd_cricket
-  m_EditorClassIdentifier: 
-  Path: event:/amb/amb___002_grassland___insect_rnd_cricket
-  guid: 66f6d7773c1e8b4eb6be5065482cbb57
-  Banks:
-  - {fileID: 654500011410942413}
-  IsStream: 0
-  Is3D: 1
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 0
---- !u!114 &-4133501587662590647
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
-  m_Name: wind_intensity
-  m_EditorClassIdentifier: 
-  Name: wind_intensity
   Min: 0
   Max: 1
   Default: 0
@@ -2954,6 +3004,29 @@ MonoBehaviour:
   MinDistance: 1.2
   MaxDistance: 6.2000003
   Length: 2334
+--- !u!114 &-2517990174858431203
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/player/p___002_inv___book_rnd_page_back
+  m_EditorClassIdentifier: 
+  Path: event:/player/p___002_inv___book_rnd_page_back
+  guid: 3391f0ad95daf748a37e688334ae7e9e
+  Banks:
+  - {fileID: 8355976913014547924}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 218
 --- !u!114 &-2431745945081644213
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2971,6 +3044,26 @@ MonoBehaviour:
   Max: 1
   Default: 0
   Exists: 0
+--- !u!114 &-2340245412689183144
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/void.bank
+  m_EditorClassIdentifier: 
+  Path: C:/Users/Krille/Desktop/Botania/FMOD/Build/Desktop/void.bank
+  SubDir: 
+  lastModified: 637231486779109743
+  LoadResult: 0
+  FileSizes:
+  - Name: 
+    Value: 1426
+  Exists: 1
 --- !u!114 &-2339422324368608811
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3023,6 +3116,29 @@ MonoBehaviour:
   Max: 1
   Default: 0
   Exists: 0
+--- !u!114 &-2291118885988263982
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/amb/amb_local_wind/amb_forest_wind
+  m_EditorClassIdentifier: 
+  Path: event:/amb/amb_local_wind/amb_forest_wind
+  guid: 0ac09bf16307ed49a0d81216aea5355b
+  Banks:
+  - {fileID: 8355976913014547924}
+  IsStream: 1
+  Is3D: 1
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 12
+  Length: 750
 --- !u!114 &-2282797333567744823
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3058,6 +3174,23 @@ MonoBehaviour:
   Max: 1
   Default: 0
   Exists: 0
+--- !u!114 &-2178808098806450505
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/amb_global_wind/amb_global_override
+  m_EditorClassIdentifier: 
+  Name: amb_global_override
+  Min: 0
+  Max: 1
+  Default: 0
+  Exists: 1
 --- !u!114 &-2169642417559782271
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3356,24 +3489,7 @@ MonoBehaviour:
   Max: 1
   Default: 0
   Exists: 0
---- !u!114 &-1373392499985598373
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
-  m_Name: parameter:/p___001_mov___rnd_jump/ground_material
-  m_EditorClassIdentifier: 
-  Name: ground_material
-  Min: 0
-  Max: 1
-  Default: 0
-  Exists: 0
---- !u!114 &-1271703226940782673
+--- !u!114 &-1259259038592578670
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3710,7 +3826,7 @@ MonoBehaviour:
   MinDistance: 1.6
   MaxDistance: 12
   Length: 0
---- !u!114 &-380212712747277417
+--- !u!114 &-317960947073156808
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3719,14 +3835,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
-  m_Name: wind_intensity
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/amb/amb___001_forest___tree_rnd_woodsnap
   m_EditorClassIdentifier: 
-  Name: wind_intensity
-  Min: 0
-  Max: 1
-  Default: 0
-  Exists: 0
+  Path: event:/amb/amb___001_forest___tree_rnd_woodsnap
+  guid: b7f2d459ee1ed743bf4b6414c79da038
+  Banks:
+  - {fileID: 8355976913014547924}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 1.8000001
+  MaxDistance: 15
+  Length: 1245
 --- !u!114 &-301777108028484217
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3863,36 +3985,36 @@ MonoBehaviour:
   m_Name: FMODStudioCache
   m_EditorClassIdentifier: 
   EditorBanks:
-  - {fileID: -8448049869118835349}
-  - {fileID: 654500011410942413}
-  - {fileID: 4605224842219023286}
+  - {fileID: 825777465916088615}
+  - {fileID: 8355976913014547924}
+  - {fileID: -2340245412689183144}
   EditorEvents:
-  - {fileID: 6866412725903696509}
-  - {fileID: -4009316627044779927}
-  - {fileID: -8971808338580277050}
-  - {fileID: -1735706153364773501}
-  - {fileID: 7240392098266342638}
-  - {fileID: 4350100561283035808}
-  - {fileID: -4204116609973436348}
-  - {fileID: 2798821560513110847}
-  - {fileID: 7101653410855780513}
-  - {fileID: 1621340206468987007}
-  - {fileID: 4805254770919914044}
-  - {fileID: -934742925767794278}
-  - {fileID: -5687408182976112464}
-  - {fileID: 2628915099868700249}
-  - {fileID: 2132329283752421726}
-  - {fileID: 6225488878778928808}
-  - {fileID: 6295283441853554712}
-  - {fileID: 6776857334710381223}
-  - {fileID: 1486190248590976311}
+  - {fileID: -6672522038102505829}
+  - {fileID: -2291118885988263982}
+  - {fileID: -2517990174858431203}
+  - {fileID: 8436517162099044629}
+  - {fileID: 283001588510743681}
+  - {fileID: -4858421404419152182}
+  - {fileID: -8360614563861662606}
+  - {fileID: 2038855292559762124}
+  - {fileID: 4849846029870950036}
+  - {fileID: -4392012039117531710}
+  - {fileID: -317960947073156808}
+  - {fileID: 1035726321990544631}
+  - {fileID: 9053168163278174254}
+  - {fileID: 8109515190554635315}
+  - {fileID: 8507493228470678200}
+  - {fileID: -6278630010935103124}
+  - {fileID: -5060327760465031659}
+  - {fileID: -8235441464045231305}
+  - {fileID: 5860627746440664422}
   EditorParameters:
-  - {fileID: -2813895891248196873}
+  - {fileID: 3076798503946853103}
   MasterBanks:
-  - {fileID: 654500011410942413}
+  - {fileID: 8355976913014547924}
   StringsBanks:
-  - {fileID: -8448049869118835349}
-  stringsBankWriteTime: 637232298962407440
+  - {fileID: 825777465916088615}
+  stringsBankWriteTime: 637231486779026657
   cacheVersion: 3
 --- !u!114 &4643760811055539
 MonoBehaviour:
@@ -4025,7 +4147,7 @@ MonoBehaviour:
   Max: 1
   Default: 0
   Exists: 1
---- !u!114 &376609739816826294
+--- !u!114 &283001588510743681
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4034,31 +4156,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
-  m_Name: parameter:/amb_global_wind/amb_global_override
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/player/p___001_mov___rnd_pickup
   m_EditorClassIdentifier: 
-  Name: amb_global_override
-  Min: 0
-  Max: 1
-  Default: 0
-  Exists: 1
---- !u!114 &384373187893664274
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
-  m_Name: parameter:/p___001_mov___rnd_jump/ground_material
-  m_EditorClassIdentifier: 
-  Name: ground_material
-  Min: 0
-  Max: 1
-  Default: 0
-  Exists: 1
+  Path: event:/player/p___001_mov___rnd_pickup
+  guid: 432321b12e596943bd81279430795674
+  Banks:
+  - {fileID: 8355976913014547924}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 0
 --- !u!114 &536975331387309211
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4074,59 +4185,6 @@ MonoBehaviour:
   Path: FMOD/Build/Desktop/void.bank
   SubDir: 
   lastModified: 637229958100000000
-  LoadResult: 0
-  FileSizes: []
-  Exists: 0
---- !u!114 &654500011410942413
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
-  m_Name: bank:/Master.bank
-  m_EditorClassIdentifier: 
-  Path: FMOD/Build/Desktop/Master.bank
-  SubDir: 
-  lastModified: 637232298962397467
-  LoadResult: 0
-  FileSizes: []
-  Exists: 1
---- !u!114 &657753665917452568
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
-  m_Name: parameter:/amb___001_forest___bird_rnd_birdsong2/is_shy
-  m_EditorClassIdentifier: 
-  Name: is_shy
-  Min: 0
-  Max: 1
-  Default: 0
-  Exists: 1
---- !u!114 &668137693029495804
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
-  m_Name: bank:/void.bank
-  m_EditorClassIdentifier: 
-  Path: FMOD/Build/Desktop/void.bank
-  SubDir: 
-  lastModified: 637231488040000000
   LoadResult: 0
   FileSizes: []
   Exists: 0
@@ -4152,6 +4210,26 @@ MonoBehaviour:
   MinDistance: 0
   MaxDistance: 0
   Length: 0
+--- !u!114 &825777465916088615
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Master.strings.bank
+  m_EditorClassIdentifier: 
+  Path: C:/Users/Krille/Desktop/Botania/FMOD/Build/Desktop/Master.strings.bank
+  SubDir: 
+  lastModified: 637231486779026657
+  LoadResult: 0
+  FileSizes:
+  - Name: 
+    Value: 2068
+  Exists: 1
 --- !u!114 &835912959544559820
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4205,6 +4283,29 @@ MonoBehaviour:
   Max: 1
   Default: 0
   Exists: 0
+--- !u!114 &1035726321990544631
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/amb/amb___001_forest___bird_rnd_birdsong4
+  m_EditorClassIdentifier: 
+  Path: event:/amb/amb___001_forest___bird_rnd_birdsong4
+  guid: b94462a7bf7c564b9cd4f91901b16013
+  Banks:
+  - {fileID: 8355976913014547924}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 25
+  Length: 5500
 --- !u!114 &1194911996686770894
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4333,29 +4434,6 @@ MonoBehaviour:
   Max: 0
   Default: 0
   Exists: 0
---- !u!114 &1486190248590976311
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/mus/mus___000
-  m_EditorClassIdentifier: 
-  Path: event:/mus/mus___000
-  guid: 3d72eb0d1f49064ab7abdb437febe980
-  Banks:
-  - {fileID: 4605224842219023286}
-  IsStream: 0
-  Is3D: 1
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 0
 --- !u!114 &1516160565022718734
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4620,7 +4698,7 @@ MonoBehaviour:
   MinDistance: 0
   MaxDistance: 0
   Length: 0
---- !u!114 &2074173406167208547
+--- !u!114 &2038855292559762124
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4629,15 +4707,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
-  m_Name: bank:/Master.bank
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/player/p___001_mov___rnd_jump
   m_EditorClassIdentifier: 
-  Path: FMOD/Build/Desktop/Master.bank
-  SubDir: 
-  lastModified: 637232317460632220
-  LoadResult: 0
-  FileSizes: []
-  Exists: 1
+  Path: event:/player/p___001_mov___rnd_jump
+  guid: 7ade8b1fc35ab64285998a24b5a9192b
+  Banks:
+  - {fileID: 8355976913014547924}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters:
+  - {fileID: -1259259038592578670}
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 0
 --- !u!114 &2081262605757273525
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4698,30 +4782,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/amb/amb_global_wind/amb_global_wind
-  m_EditorClassIdentifier: 
-  Path: event:/amb/amb_global_wind/amb_global_wind
-  guid: d49dde82723cf44dbc65b9b99602a55f
-  Banks:
-  - {fileID: 654500011410942413}
-  IsStream: 1
-  Is3D: 1
-  IsOneShot: 0
-  Parameters:
-  - {fileID: 376609739816826294}
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 2000
---- !u!114 &2135668298578435848
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
   m_Name: parameter:/amb_global_wind/amb_global_override
   m_EditorClassIdentifier: 
@@ -4739,8 +4799,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
-  m_Name: bank:/void.bank
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/amb_global_wind/amb_global_override
   m_EditorClassIdentifier: 
   Path: event:/amb/amb___01_forest___tree_rnd_woodcreak
   SubDir: 
@@ -4945,46 +5005,6 @@ MonoBehaviour:
   Max: 0
   Default: 0
   Exists: 0
---- !u!114 &2628915099868700249
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/player/p___002_inv___book_close
-  m_EditorClassIdentifier: 
-  Path: event:/player/p___002_inv___book_close
-  guid: cdbe819abeff0d46b60fd4a9ffc31154
-  Banks:
-  - {fileID: 654500011410942413}
-  IsStream: 0
-  Is3D: 0
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 0
-  MaxDistance: 0
-  Length: 1414
---- !u!114 &2632245161353574137
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
-  m_Name: parameter:/p___001_mov___rnd_footsteps/ground_material
-  m_EditorClassIdentifier: 
-  Name: ground_material
-  Min: 0
-  Max: 1
-  Default: 0
-  Exists: 1
 --- !u!114 &2767797443287409188
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5018,30 +5038,6 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
   m_Name: event:/player/p___001_mov___rnd_jump
-  m_EditorClassIdentifier: 
-  Path: event:/player/p___001_mov___rnd_jump
-  guid: 7ade8b1fc35ab64285998a24b5a9192b
-  Banks:
-  - {fileID: 654500011410942413}
-  IsStream: 0
-  Is3D: 0
-  IsOneShot: 1
-  Parameters:
-  - {fileID: -1271703226940782673}
-  MinDistance: 0
-  MaxDistance: 0
-  Length: 0
---- !u!114 &2850420440440285511
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
-  m_Name: bank:/Master.bank
   m_EditorClassIdentifier: 
   Path: event:/mus/mus___prototyp
   SubDir: 
@@ -5102,6 +5098,23 @@ MonoBehaviour:
   LoadResult: 0
   FileSizes: []
   Exists: 0
+--- !u!114 &3076798503946853103
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: wind_intensity
+  m_EditorClassIdentifier: 
+  Name: wind_intensity
+  Min: 0
+  Max: 1
+  Default: 0
+  Exists: 1
 --- !u!114 &3087065383721408887
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5137,7 +5150,7 @@ MonoBehaviour:
   Max: 0
   Default: 0
   Exists: 1
---- !u!114 &3269717654431113867
+--- !u!114 &3279305930542744906
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5155,23 +5168,6 @@ MonoBehaviour:
   Default: 0
   Exists: 1
 --- !u!114 &3279305930542744906
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
-  m_Name: parameter:/p___00_mov___rnd_footsteps/ground_material
-  m_EditorClassIdentifier: 
-  Name: ground_material
-  Min: 0
-  Max: 1
-  Default: 0
-  Exists: 1
---- !u!114 &3289488867943985792
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5606,8 +5602,31 @@ MonoBehaviour:
   lastModified: 637232298962407440
   LoadResult: 0
   FileSizes: []
-  Exists: 1
---- !u!114 &4656869815784959024
+  Exists: 0
+--- !u!114 &4849846029870950036
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/mus/mus___prototyp
+  m_EditorClassIdentifier: 
+  Path: event:/mus/mus___prototyp
+  guid: b3243b021a647e4ca48edf2c877555bb
+  Banks:
+  - {fileID: 8355976913014547924}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 85289
+--- !u!114 &4917973778185864986
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5901,23 +5920,6 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 12
   Length: 750
---- !u!114 &5461043981827134189
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
-  m_Name: parameter:/amb_global_wind/amb_global_override
-  m_EditorClassIdentifier: 
-  Name: amb_global_override
-  Min: 0
-  Max: 1
-  Default: 0
-  Exists: 1
 --- !u!114 &5491471431228140921
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6011,6 +6013,29 @@ MonoBehaviour:
   LoadResult: 0
   FileSizes: []
   Exists: 1
+--- !u!114 &5860627746440664422
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/mus/mus___000
+  m_EditorClassIdentifier: 
+  Path: event:/mus/mus___000
+  guid: 3d72eb0d1f49064ab7abdb437febe980
+  Banks:
+  - {fileID: -2340245412689183144}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &5933965317581535254
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6357,29 +6382,6 @@ MonoBehaviour:
   Max: 1
   Default: 0
   Exists: 0
---- !u!114 &6866412725903696509
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/amb/amb___001_forest___bird_rnd_birdsong3
-  m_EditorClassIdentifier: 
-  Path: event:/amb/amb___001_forest___bird_rnd_birdsong3
-  guid: 04f3b660e07610408def68da56a763ef
-  Banks:
-  - {fileID: 654500011410942413}
-  IsStream: 0
-  Is3D: 1
-  IsOneShot: 0
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 25
-  Length: 5500
 --- !u!114 &6984977451749228484
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6398,29 +6400,6 @@ MonoBehaviour:
   LoadResult: 0
   FileSizes: []
   Exists: 0
---- !u!114 &7101653410855780513
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/mus/mus___prototyp
-  m_EditorClassIdentifier: 
-  Path: event:/mus/mus___prototyp
-  guid: b3243b021a647e4ca48edf2c877555bb
-  Banks:
-  - {fileID: 654500011410942413}
-  IsStream: 1
-  Is3D: 0
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 0
-  MaxDistance: 0
-  Length: 85289
 --- !u!114 &7116645242287178112
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6491,29 +6470,6 @@ MonoBehaviour:
   LoadResult: 0
   FileSizes: []
   Exists: 0
---- !u!114 &7240392098266342638
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/player/p___001_mov___rnd_pickup
-  m_EditorClassIdentifier: 
-  Path: event:/player/p___001_mov___rnd_pickup
-  guid: 432321b12e596943bd81279430795674
-  Banks:
-  - {fileID: 654500011410942413}
-  IsStream: 0
-  Is3D: 0
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 0
-  MaxDistance: 0
-  Length: 0
 --- !u!114 &7274296254023206413
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6640,23 +6596,6 @@ MonoBehaviour:
   Max: 1
   Default: 0
   Exists: 0
---- !u!114 &7681441985997800643
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
-  m_Name: parameter:/amb_global_wind/amb_global_override
-  m_EditorClassIdentifier: 
-  Name: amb_global_override
-  Min: 0
-  Max: 1
-  Default: 0
-  Exists: 0
 --- !u!114 &7691500550876324758
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6743,7 +6682,7 @@ MonoBehaviour:
   Max: 1
   Default: 0
   Exists: 0
---- !u!114 &8106247123045773691
+--- !u!114 &8109515190554635315
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -6752,15 +6691,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
-  m_Name: bank:/Master.bank
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/player/p___002_inv___book_close
   m_EditorClassIdentifier: 
-  Path: FMOD/Build/Desktop/Master.bank
-  SubDir: 
-  lastModified: 637231612736730633
-  LoadResult: 0
-  FileSizes: []
-  Exists: 1
+  Path: event:/player/p___002_inv___book_close
+  guid: cdbe819abeff0d46b60fd4a9ffc31154
+  Banks:
+  - {fileID: 8355976913014547924}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 1414
 --- !u!114 &8149986229012049479
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6878,6 +6822,50 @@ MonoBehaviour:
   MinDistance: 0
   MaxDistance: 0
   Length: 500
+--- !u!114 &8355976913014547924
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Master.bank
+  m_EditorClassIdentifier: 
+  Path: C:/Users/Krille/Desktop/Botania/FMOD/Build/Desktop/Master.bank
+  SubDir: 
+  lastModified: 637231486780168955
+  LoadResult: 0
+  FileSizes:
+  - Name: 
+    Value: 3859680
+  Exists: 1
+--- !u!114 &8436517162099044629
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/amb/amb___001_forest___bird_rnd_birdsong2
+  m_EditorClassIdentifier: 
+  Path: event:/amb/amb___001_forest___bird_rnd_birdsong2
+  guid: 3a0f15686d6ad24eabf8a409e5d9b1f0
+  Banks:
+  - {fileID: 8355976913014547924}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 0
+  Parameters:
+  - {fileID: -7048422858646297324}
+  MinDistance: 1
+  MaxDistance: 25
+  Length: 8250
 --- !u!114 &8477827555286534971
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6896,6 +6884,30 @@ MonoBehaviour:
   LoadResult: 0
   FileSizes: []
   Exists: 0
+--- !u!114 &8507493228470678200
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/amb/amb_global_wind/amb_global_wind
+  m_EditorClassIdentifier: 
+  Path: event:/amb/amb_global_wind/amb_global_wind
+  guid: d49dde82723cf44dbc65b9b99602a55f
+  Banks:
+  - {fileID: 8355976913014547924}
+  IsStream: 1
+  Is3D: 1
+  IsOneShot: 0
+  Parameters:
+  - {fileID: -2178808098806450505}
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 2000
 --- !u!114 &8565921147314749130
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6993,6 +7005,29 @@ MonoBehaviour:
   Max: 1
   Default: 0
   Exists: 0
+--- !u!114 &9053168163278174254
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/amb/amb___001_forest___tree_rnd_woodcreak
+  m_EditorClassIdentifier: 
+  Path: event:/amb/amb___001_forest___tree_rnd_woodcreak
+  guid: c78293f7fcfd7645aa8e4a9f47436dc3
+  Banks:
+  - {fileID: 8355976913014547924}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 1.2
+  MaxDistance: 10
+  Length: 4437
 --- !u!114 &9134487355540899488
 MonoBehaviour:
   m_ObjectHideFlags: 0
