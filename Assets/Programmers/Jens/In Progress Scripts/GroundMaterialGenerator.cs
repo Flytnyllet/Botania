@@ -11,37 +11,39 @@ public class GroundMaterialGenerator : ScriptableObject
     readonly static int TEXTURE_SIZE = 512;
     readonly static TextureFormat TEXTURE_FORMAT = TextureFormat.RGB565;
 
-    [SerializeField] Layer[] _layers;
+    [SerializeField] Layer _layer;
     [SerializeField] MeshSettings _meshSettings;
     [SerializeField] Shader _shader;
     [SerializeField] int _noiseDetailLevel = 1;
     [SerializeField] Texture2D _mainTex;
     // Update is called once per frame
+    object obj;
 
     public Material MakeMaterial(int size, Vector2 pos)
     {
-        //int ChunkCoordX = Mathf.RoundToInt(pos.x / (meshObject.mesh.bounds.size.x));
-        //int ChunkCoordZ = Mathf.RoundToInt(pos.z / (meshObject.mesh.bounds.size.z));
-        //Vector2 coord = new Vector2(ChunkCoordX, ChunkCoordZ);
         Material material = new Material(_shader);
-        ////Task.Run(() =>
-        ////{
-        //int size = (int)(meshObject.mesh.bounds.size.x * meshObject.transform.localScale.x);
-        //size /= 10;
-        size *= 1;
-        
-        
-        var mainThread = TaskScheduler.FromCurrentSynchronizationContext();
+        Texture2D noiseTex = new Texture2D(size, size);
+        Color[] colorMap = new Color[1];
+
         Task.Run(() =>
         {
             try
             {
-                float[,] noise = Noise.GenerateNoiseMap(size, size, _noiseDetailLevel, _layers[0].GetNoise.NoiseSettingsDataMerge, pos*1  );
-                Task.Delay(TimeSpan.FromSeconds(2)).ContinueWith(previous =>
+                colorMap = new Color[size * size];
+                float[,] noise = Noise.GenerateNoiseMap(size, size, _noiseDetailLevel, _layer.GetNoise.NoiseSettingsDataMerge, pos);
+
+
+                for (int y = 0; y < size; y++)
+                    for (int x = 0; x < size; x++)
+                        colorMap[y * size + x] = Color.Lerp(Color.black, Color.white, Mathf.InverseLerp(0, 1, noise[x, y]));
+
+                ThreadedDataRequester.AddToCallbackQueue(() =>
                 {
-                    Texture2D noiseTex = TextureGenerator.TextureFromNoiseJens(noise);
+                    noiseTex.SetPixels(colorMap);
+                    noiseTex.Apply();
                     material.SetTexture("_NoiseTextures", noiseTex);
-                }, mainThread);
+
+                });
             }
             catch (Exception e)
             {
@@ -49,20 +51,10 @@ public class GroundMaterialGenerator : ScriptableObject
             }
 
         });
-        //noise = Noise.GenerateNoiseMap(size, size, _noiseDetailLevel, _layers[0].GetNoise.NoiseSettingsDataMerge, pos * 500);
-        //Texture2D noiseTex = TextureGenerator.TextureFromNoise(noise);
-        //material.SetTexture("_NoiseTextures", noiseTex);
-
-        material.SetTexture("_AltTex", _layers[0].GetTexture());
-        //});
-        material.SetInt("layerCount", _layers.Length);
-        Texture2DArray textureArray = GenerateTextureArray(_layers.Select(x => x.GetTexture()).ToArray());
-        material.SetTexture("baseTextures", textureArray);
+        material.SetTexture("_AltTex", _layer.GetTexture());
         material.SetTexture("_MainTex", _mainTex);
-        material.SetColorArray("baseColors", _layers.Select(x => x.GetTint()).ToArray());
-        material.SetFloatArray("baseTextureScales", _layers.Select(x => x.GetTextureScale()).ToArray());
-        material.SetFloatArray("baseTextureStrenght", _layers.Select(x => x.GetTextureStrenght()).ToArray());
-
+        material.SetColor("baseColor", _layer.GetTint());
+        material.SetFloat("baseTextureScale", _layer.GetTextureScale());
         return material;
 
     }

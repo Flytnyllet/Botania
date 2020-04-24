@@ -18,27 +18,18 @@
 		// Use shader model 3.0 target, to get nicer looking lighting
 		#pragma target 3.0
 
-		const static int MAX_COLOR_COUNT = 8;
 		const static float EPSILON = 1E-4;
-
-
+	
 		sampler2D _MainTex;
 		sampler2D _AltTex;
 		sampler2D _NoiseTextures;
 
-		int layerCount;
-		float3 baseColors[MAX_COLOR_COUNT];
-		float baseTextureScales[MAX_COLOR_COUNT];
-		float baseTextureStrenght[MAX_COLOR_COUNT];
-		//float baseStartHeights[MAX_COLOR_COUNT];
-		//float baseBlends[MAX_COLOR_COUNT];
+		float3 baseColor;
+		float baseTextureScale;
 
 		//float minHeight;
 		//float maxHeight;
 
-
-		//UNITY_DECLARE_TEX2DARRAY(baseTextures);
-		//UNITY_DECLARE_TEX2DARRAY(noiseTextures);
 
 		struct Input
 		{
@@ -73,9 +64,10 @@
 			float3 blendAxes = abs(IN.worldNormal);
 			blendAxes /= blendAxes.x + blendAxes.y + blendAxes.z;
 
-			float mainTexStrenght = 1;
 			//float noiseStrenght = tex2D(_NoiseTextures, IN.uv_MainTex).x*baseTextureStrenght[0];
 			float noiseStrenght = smoothstep(0.01 ,0.05 , tex2D(_NoiseTextures, IN.uv_MainTex).x);
+			//int2 pixelCoord = IN.uv_MainTex*_NoiseSize;
+			//float noiseStrenght = smoothstep(0.01 ,0.05 , _NoiseArray[pixelCoord.x, pixelCoord.y].x);
 			//float3 altCol = tex2D(_AltTex, IN.uv_MainTex);
 			float3 altCol = triplanar(_AltTex, IN.worldPos, 2, blendAxes, 0);
 			//float3 colour = tex2D(_MainTex, IN.uv_MainTex);
@@ -94,6 +86,6 @@
 			//o.Albedo = tex2D(_NoiseTextures, IN.uv_MainTex);
 		}
 		ENDCG
-				}
-				FallBack "Diffuse"
+	}
+		FallBack "Diffuse"
 }
