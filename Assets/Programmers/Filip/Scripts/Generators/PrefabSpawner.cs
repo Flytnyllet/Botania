@@ -10,11 +10,10 @@ public class PrefabSpawner : MonoBehaviour
     bool[,] _occupiedGrid;
     List<SpawnInfo> _gameObjectsInChunkWithNoNormals = new List<SpawnInfo>();
 
-    public bool[,] OccupiedGrid { get { return _occupiedGrid; } private set { _occupiedGrid = value; } }
-
     public List<SpawnInfo> SpawnOnChunk(int detailType, int levelOfDetail, Biome biome, HeightMap heightMap, MeshData meshData, MeshSettings meshSettings, Vector2 chunkPosition, Vector2 chunkCoord)
     {
-        _occupiedGrid = new bool[meshSettings.ChunkSize - 1, meshSettings.ChunkSize - 1];
+        if (_occupiedGrid == null)
+            _occupiedGrid = new bool[meshSettings.ChunkSize - 1, meshSettings.ChunkSize - 1];
 
         //Generate all noises according to chunk position
         biome.Setup(chunkPosition); 
@@ -47,12 +46,13 @@ public class PrefabSpawner : MonoBehaviour
 
             //Get noise specific to this prefab
             float[,] spawnNoise = spawnables[i].GetNoise;
-            float spawnableSizeForGridAlign = spawnables[i].Size == 0 ? 1 : spawnables[i].Size;
+            //Local size occupation
+            bool[,] localOccupiedGrid = new bool[_occupiedGrid.GetLength(0), _occupiedGrid.GetLength(1)];
 
             //+ 1 offset in loops are due to border around mesh
-            for (int x = 0; x < meshSettings.ChunkSize - spawnableSizeForGridAlign; x++)
+            for (int x = 0; x < meshSettings.ChunkSize - spawnables[i].Size; x++)
             {
-                for (int y = 0; y < meshSettings.ChunkSize - spawnableSizeForGridAlign; y++)
+                for (int y = 0; y < meshSettings.ChunkSize - spawnables[i].Size; y++)
                 {
                     Vector2 itemIndex = new Vector2(x, y);
                     ChunkCoordIndex chunkCoordIndex = new ChunkCoordIndex(chunkCoord, itemIndex);
@@ -71,8 +71,11 @@ public class PrefabSpawner : MonoBehaviour
                     }
                     if (shouldSpawn)
                     {
+                        bool canObjectSpawnSize = CanObjectSpawnSize(x, y, spawnables[i].Size, meshSettings.ChunkSize, ref localOccupiedGrid) && (CanObjectSpawnSize(x, y, spawnables[i].Size, meshSettings.ChunkSize, ref _occupiedGrid) || spawnables[i].OthersCanSpawnInside);
+                        bool canObjectSpawnDiff = CanObjectSpawnDiff(x, y, spawnables[i].Size, spawnables[i].OthersCanSpawnInside, heightMap.heightMap, spawnables[i].SpawnDifferencial, meshSettings.ChunkSize);
+
                         //No use in checking if it can spawn if that square is occopied
-                        if (CanObjectSpawn(x, y, spawnables[i].Size, heightMap.heightMap, spawnables[i].SpawnDifferencial, meshSettings.ChunkSize))
+                        if (canObjectSpawnSize && canObjectSpawnDiff)
                         {
                             bool insideNoise = spawnNoise[x, y] > spawnables[i].NoiseStartPoint; //is it inside the noise?
                             bool gradientSpawn = spawnNoise[x, y] + spawnables[i].OffsetNoise[x, y] > spawnables[i].Thickness; //If it is, transition?
@@ -101,12 +104,15 @@ public class PrefabSpawner : MonoBehaviour
                             if (insideNoise && gradientSpawn && uniformSpread && noiseSpread && minHeight && maxHeight && minSlope && maxSlope)
                             {
                                 //Since the object can spawn, mark it's space as occopied
-                                OccupyWithObject(x, y, spawnables[i].Size, meshSettings.ChunkSize);
+                                if (spawnables[i].OthersCanSpawnInside)
+                                    OccupyWithObject(x, y, spawnables[i].Size, meshSettings.ChunkSize, ref _occupiedGrid);
+
+                                OccupyWithObject(x, y, spawnables[i].Size, meshSettings.ChunkSize, ref localOccupiedGrid);
 
                                 //Current local positions in x and y in chunk, used only to spawn from
-                                float xPos = x + STANDARD_GRID_OFFSET + (STANDARD_GRID_OFFSET * spawnableSizeForGridAlign) - meshSettings.ChunkSize / 2 - 1; //Due to the border around the mesh + STANDARD_GRID_OFFSET corrects it to the right grid position
-                                float zPos = y + STANDARD_GRID_OFFSET + (STANDARD_GRID_OFFSET * spawnableSizeForGridAlign) - meshSettings.ChunkSize / 2 - 1; //Due to the border around the mesh + STANDARD_GRID_OFFSET corrects it to the right grid position
-                                float yPos = heightMap.heightMap[x + (int)(STANDARD_GRID_OFFSET * spawnableSizeForGridAlign) + 1, y + (int)(STANDARD_GRID_OFFSET * spawnableSizeForGridAlign) + 1] + spawnables[i].Height;
+                                float xPos = x + STANDARD_GRID_OFFSET + (STANDARD_GRID_OFFSET * spawnables[i].Size) - meshSettings.ChunkSize / 2 - 1; //Due to the border around the mesh + STANDARD_GRID_OFFSET corrects it to the right grid position
+                                float zPos = y + STANDARD_GRID_OFFSET + (STANDARD_GRID_OFFSET * spawnables[i].Size) - meshSettings.ChunkSize / 2 - 1; //Due to the border around the mesh + STANDARD_GRID_OFFSET corrects it to the right grid position
+                                float yPos = heightMap.heightMap[x + (int)(STANDARD_GRID_OFFSET * spawnables[i].Size) + 1, y + (int)(STANDARD_GRID_OFFSET * spawnables[i].Size) + 1] + spawnables[i].Height;
 
                                 //Position from grid in world
                                 Vector3 objectPosition = new Vector3((xPos + chunkPosition.x) * meshSettings.MeshScale, yPos, -(zPos + chunkPosition.y) * meshSettings.MeshScale);
@@ -132,8 +138,8 @@ public class PrefabSpawner : MonoBehaviour
         return spawnInfo;
     }
 
-    //Returns true if the object can fit in chunk where it is trying to fit
-    public bool CanObjectSpawn(int x, int y, int size, float[,] heightMap, float spawnDifferencial, int chunkSize)
+    //Returns true if the object can fit in chunk where it is trying to fit depending on difference in highest and lowest point in spawn area
+    public bool CanObjectSpawnDiff(int x, int y, int size, bool othersCanSpawnInside, float[,] heightMap, float spawnDifferencial, int chunkSize)
     {
         int maxX = x + size < chunkSize - 1 ? x + size : chunkSize - 1;
         int maxY = y + size < chunkSize - 1 ? y + size : chunkSize - 1;
@@ -145,9 +151,6 @@ public class PrefabSpawner : MonoBehaviour
         {
             for (int checkY = y; checkY < maxY; checkY++)
             {
-                if (_occupiedGrid[checkX, checkY])
-                    return false;
-
                 if (currentMin > heightMap[checkX, checkY])
                     currentMin = heightMap[checkX, checkY];
                 if (currentMax < heightMap[checkX, checkY])
@@ -161,8 +164,29 @@ public class PrefabSpawner : MonoBehaviour
             return false;
     }
 
+    public bool CanObjectSpawnSize(int x, int y, int size, int chunkSize, ref bool[,] grid)
+    {
+        int maxX = x + size < chunkSize - 1 ? x + size : -1;
+        int maxY = y + size < chunkSize - 1 ? y + size : -1;
+
+        //Object is trying to fit in on the corner on a chunk -> no room!
+        if (maxX == -1 || maxY == -1)
+            return false;
+
+        for (int checkX = x; checkX < maxX; checkX++)
+        {
+            for (int checkY = y; checkY < maxY; checkY++)
+            {
+                if (grid[checkX, checkY])
+                    return false;
+            }
+        }
+
+        return true;
+    }
+
     //Tells other objects this spot it taken lol
-    public void OccupyWithObject(int x, int y, int size, int chunkSize)
+    public void OccupyWithObject(int x, int y, int size, int chunkSize, ref bool[,] grid)
     {
         int maxX = x + size < chunkSize - 1 ? x + size : chunkSize - 1;
         int maxY = y + size < chunkSize - 1 ? y + size : chunkSize - 1;
@@ -171,7 +195,7 @@ public class PrefabSpawner : MonoBehaviour
         {
             for (int checkY = y; checkY < maxY; checkY++)
             {
-                _occupiedGrid[checkX, checkY] = true;
+                grid[checkX, checkY] = true;
             }
         }
     }
