@@ -24,22 +24,23 @@ public class FlowerTeleportation : MonoBehaviour
         bool trailActive = _trailObject.gameObject.activeSelf;
         _trailObject.gameObject.SetActive(true);
         _trailObject.transform.parent = null;
-        GameObject gObject = Instantiate(_particles.gameObject, this.transform);
-        gObject.SetActive(true);
-        _particles.gameObject.SetActive(true);
-        gObject.transform.parent = this.transform.parent;
+        //GameObject gObject = Instantiate(_particles.gameObject, this.transform);
+        //gObject.SetActive(true);
+        //gObject.transform.parent = this.transform.parent;
         //_particles.gameObject.SetActive(true);
 
         pos.y -= 0.05f;
         transform.position = pos + _objectHeight * 0.5f;
 
-        if (!trailActive) StartCoroutine(_trailObject.followTarget(this.transform));
+        /*if (!trailActive)*/ StartCoroutine(_trailObject.followTarget(this.transform));
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Player")
         {
+            _particles.gameObject.SetActive(true);
+            _particles.Emit(20);
             RaycastHit hit;
             int i;
             for (i = 0; i < 100; i++)
