@@ -50,11 +50,17 @@ public class TerrainGenerator : MonoBehaviour
     {
         _viewerPosition = new Vector2(_viewer.position.x, _viewer.position.z);
 
+        //This is stupid and should not be needed but here it is, kms
+        //Without this idiotic little poop the player clips through the world when in origin
+        //Why? Who knows...
+        if (_viewerPosition == Vector2.zero)
+            _viewerPosition += Vector2.right * 0.01f;
+
         if (_viewerPosition != _viewerPositionOld)
         {
-            foreach (TerrainChunk chunk in _visibleTerrainChunks)
+            for (int i = 0; i < _visibleTerrainChunks.Count; i++)
             {
-                chunk.UpdateCollisionMesh();
+                _visibleTerrainChunks[i].UpdateCollisionMesh();
             }
         }
 
