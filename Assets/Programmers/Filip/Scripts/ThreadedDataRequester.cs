@@ -16,6 +16,7 @@ public class ThreadedDataRequester : MonoBehaviour
 
     }
 
+    static ConcurrentQueue<Action> callbacks = new ConcurrentQueue<Action>();
     Queue<ThreadInfo> _dataQueue = new Queue<ThreadInfo>();
 
 
@@ -37,6 +38,18 @@ public class ThreadedDataRequester : MonoBehaviour
         }
     }
 
+    public static void AddToCallbackQueue(Action callback)
+    {
+        try
+        {
+            callbacks.Enqueue(callback);
+        }
+        catch (Exception e)
+        {
+            Debug.LogError(e);
+        }
+    }
+
     private void Update()
     {
         if (_dataQueue.Count > 0)
@@ -47,10 +60,20 @@ public class ThreadedDataRequester : MonoBehaviour
                 threadInfo.callback(threadInfo.parameter);
             }
         }
+        while (callbacks.TryDequeue(out var callback))
+        {
+            try
+            {
+                callback();
+            }
+            catch (Exception e)
+            {
+                Debug.LogError(e);
+            }
+        }
     }
 
 
-    //static ConcurrentQueue<Action> callbacks = new ConcurrentQueue<Action>();
 
     //public static void RequestData(Func<object> dataGenerator, Action<object> callback)
     //{
@@ -70,25 +93,7 @@ public class ThreadedDataRequester : MonoBehaviour
     //    });
     //}
 
-    //public static void AddToCallbackQueue(Action callback)
-    //{
-    //    try
-    //    {
-    //        callbacks.Enqueue(callback);
-    //    }
-    //    catch (Exception e)
-    //    {
-    //        Debug.LogError(e);
-    //    }
-    //}
 
-    //private void Update()
-    //{
-    //    while (callbacks.TryDequeue(out var callback))
-    //    {
-    //        callback();
-    //    }
-    //} //Just testing some performance differences //Jens
 
 
     struct ThreadInfo
