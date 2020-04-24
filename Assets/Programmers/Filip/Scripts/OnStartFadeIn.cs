@@ -1,0 +1,35 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class OnStartFadeIn : MonoBehaviour
+{
+    [Header("Settings")]
+
+    [SerializeField] AnimationCurve _curve;
+    [SerializeField, Range(0.01f, 20)] float _speed;
+
+    [Header("Drop")]
+
+    [SerializeField] Image _image;
+
+    Timer _fadeTimer;
+
+    private void Awake()
+    {
+        _fadeTimer = new Timer(_speed);
+    }
+
+    private void Update()
+    {
+        _fadeTimer.Time += Time.deltaTime;
+
+        if (!_fadeTimer.Expired())
+        {
+
+        }
+        else
+            Destroy(this.gameObject);
+    }
+}
