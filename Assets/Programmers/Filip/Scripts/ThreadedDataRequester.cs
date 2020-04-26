@@ -100,6 +100,13 @@ public class ThreadedDataRequester : MonoBehaviour
         }
     }
 
+    //IEnumerator Callback(Action<object> callback, object parameter, int waitAmount)
+    //{
+    //    float waitTime = UnityEngine.Random.Range(0, 1);
+    //    yield return new WaitForSecondsRealtime(waitTime);
+    //    callback(parameter);
+    //}
+
 
 
     public static void RequestData(Func<object> dataGenerator, Action<object> callback)
