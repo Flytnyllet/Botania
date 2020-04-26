@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DiggingFlower : MonoBehaviour, IInteractable
+public class DiggingFlower : MonoBehaviour
 {
     //Detta använder animationer med states och kräver controllern "Digging Fllower"
     public enum FlowerState { Idle, Digging, Hidden, Interactable }; //använder nog inte alla
@@ -21,11 +21,26 @@ public class DiggingFlower : MonoBehaviour, IInteractable
         _capsuleCollider = GetComponent<CapsuleCollider>();
         _pickupScript.SetEnabled = false;
         _capsuleCollider.enabled = false; //Se till att bloman inte kan plockas upp innan spelaren har förmågan
+
     }
+
+    private void OnEnable()
+    {
+        EventManager.Subscribe("StartInvissible", PlayerInvissible);
+    }
+    private void OnDisable()
+    {
+        EventManager.UnSubscribe("StartInvissible", PlayerInvissible);
+    }
+    void PlayerInvissible(EventParameter param)
+    {
+        _playerInArea = param.boolParam;
+    }
+
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Player")
+        if (other.tag == "Player" /*&& PlayerNotInvissible */)
         {
             _playerInArea = true; //I hate this
 
@@ -69,11 +84,5 @@ public class DiggingFlower : MonoBehaviour, IInteractable
         _capsuleCollider.enabled = true;
         _flowerState = FlowerState.Interactable;
         Destroy(this);
-    }
-
-    public bool Interact()
-    {
-        MakeInteractable();
-        return true;
     }
 }

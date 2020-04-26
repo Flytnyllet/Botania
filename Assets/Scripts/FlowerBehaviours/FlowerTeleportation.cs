@@ -36,14 +36,15 @@ public class FlowerTeleportation : MonoBehaviour
         _jumps++;
         transform.position = pos + _objectHeight * 0.5f;
 
-        /*if (!trailActive)*/
-        StartCoroutine(_trailObject.followTarget(this.transform));
+        if (!trailActive)
+            _trailObject.StartMovement(this.transform);
 
         if (_Maxjumps <= _jumps)
         {
             _sphereCollider.enabled = false;
             _capCollider.enabled = true;
-            _pickupScript.enabled = true;
+            _pickupScript.SetEnabled = true;
+            _sphereCollider.enabled = false;
             Destroy(this);
         }
     }

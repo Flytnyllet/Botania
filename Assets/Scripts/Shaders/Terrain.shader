@@ -2,9 +2,9 @@
 {
 	Properties
 	{
-		_MainTex("Texture", 2D) = "white" {}
-		_AltTex("Texture", 2D) = "white" {}
-		_NoiseTextures("Texture", 2D) = "white" {}
+		[PerRendererData]_MainTex("Texture", 2D) = "white" {}
+		[PerRendererData]_AltTex("Texture", 2D) = "white" {}
+		[PerRendererData]_NoiseTextures("Texture", 2D) = "white" {}
 	}
 		SubShader
 	{
