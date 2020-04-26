@@ -15,8 +15,7 @@ public class PrefabSpawner
         if (_occupiedGrid == null)
             _occupiedGrid = new bool[meshSettings.ChunkSize - 1, meshSettings.ChunkSize - 1];
 
-        //Generate all noises according to chunk position
-        biome.Setup(chunkPosition); 
+        biome.Setup(chunkPosition, detailType);
 
         switch(detailType)
         {
