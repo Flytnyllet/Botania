@@ -58,6 +58,7 @@ public class ThreadedDataRequester : MonoBehaviour
             {
                 ThreadInfo threadInfo = _dataQueue.Dequeue();
                 threadInfo.callback(threadInfo.parameter);
+                //StartCoroutine(Callback(threadInfo.callback, threadInfo.parameter, i));
             }
         }
         while (callbacks.TryDequeue(out var callback))
@@ -72,6 +73,13 @@ public class ThreadedDataRequester : MonoBehaviour
             }
         }
     }
+
+    //IEnumerator Callback(Action<object> callback, object parameter, int waitAmount)
+    //{
+    //    float waitTime = UnityEngine.Random.Range(0, 1);
+    //    yield return new WaitForSecondsRealtime(waitTime);
+    //    callback(parameter);
+    //}
 
 
 

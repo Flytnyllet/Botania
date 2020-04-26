@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PrefabSpawner : MonoBehaviour
+public class PrefabSpawner
 {
     static readonly int DEGREES_360 = 360;
     static readonly float STANDARD_GRID_OFFSET = 0.5f;
@@ -219,7 +219,7 @@ public class PrefabSpawner : MonoBehaviour
     }
 }
 
-public class SpawnInfo : MonoBehaviour
+public class SpawnInfo
 {
     Transform _spawnedTransform;
     GameObject _prefab;
@@ -268,7 +268,7 @@ public class SpawnInfo : MonoBehaviour
 
     public void Spawn(Transform container)
     {
-        GameObject newObject = Instantiate(_prefab, _spawnPosition, CalculateRotation(), container) as GameObject;
+        GameObject newObject = GameObject.Instantiate(_prefab, _spawnPosition, CalculateRotation(), container) as GameObject;
         newObject.transform.RotateAround(_spawnPosition, newObject.transform.up, _localRotationAmount);
         newObject.transform.localScale = _scale;
 
