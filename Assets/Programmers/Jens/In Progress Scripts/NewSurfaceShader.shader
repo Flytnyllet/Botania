@@ -1,5 +1,4 @@
-﻿
-Shader "Tree" {
+﻿Shader "Tree" {
 	Properties{
 		_MainTex("Texture", 2D) = "white" {}
 		_Noise("Noise", 2D) = "white" {}

@@ -52,6 +52,7 @@ public class CharacterStats
     }
     public virtual void AddModifier(StatModifier mod, float time)
     {
+		Debug.Log("Added stat effect, increasing the stat type " + mod.Type + " by " + mod.Value);
         isModified = true;
         statModifiers.Add(mod);
         statModifiers.Sort(CompareOrder);
@@ -59,10 +60,15 @@ public class CharacterStats
             {
                 await Task.Delay(System.TimeSpan.FromSeconds(time));
                 RemoveModifier(mod);
-            });
+				Debug.Log("Removed stat effect on the stat type " + mod.Type);
+			});
     }
 
 
+	public List<StatModifier> GetStatModifiers()
+	{
+		return statModifiers;
+	}
 
     public virtual bool RemoveModifier(StatModifier mod)
     {
