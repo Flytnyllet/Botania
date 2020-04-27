@@ -2,9 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
-
-
 public static class FlowerLibrary
 {
     [System.Serializable]

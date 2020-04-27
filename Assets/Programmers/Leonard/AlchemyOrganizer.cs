@@ -3,26 +3,114 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+
 public class AlchemyOrganizer : MonoBehaviour
 {
 	[SerializeField] List<ItemLoader> _allIngredients = new List<ItemLoader>();
 	[SerializeField] Dictionary<int, ItemLoader> _currentIngredients = new Dictionary<int, ItemLoader>();
+	[SerializeField, Tooltip("Includes icons for all ingredients and potions")]
+	List<ItemDataContainer> _items = new List<ItemDataContainer>();
+	//ImageDictionary _imageCollection = new ImageDictionary();
+	//Dictionary<string, Image> _imageCollection = new Dictionary<string, Image>();
 	/*[SerializeField] List<ItemLoader> _currentIngredients = new List<ItemLoader>();
 	int nextEmptySlot = 0;*/
-	[SerializeField] List<List<string>> _recipieList = new List<List<string>>();
+	[SerializeField] List<List<ItemDataContainer>> _recipieList = new List<List<ItemDataContainer>>();
 	[SerializeField] List<PotionLoader> _availablePotions = new List<PotionLoader>();
 	[SerializeField] List<GameObject> _slots = new List<GameObject>();
 	[SerializeField] GameObject _potionSlot;
+	[SerializeField] List<Transform> _pages = new List<Transform>();
+	[SerializeField] GameObject _recipePrefab;
 	PotionLoader _result = new PotionLoader();
-	TestPotion _modifiers = new TestPotion();
 	[SerializeField] float _potionDuration = 5;
-
 
 	void Awake()
 	{
 		AddIngredientButton();
 	}
+	void Start()
+	{
+		SetupRecipes();
+	}
+	public List<Transform> GetPages()
+	{
+		return _pages;
+	}
+	void SetupRecipes()
+	{
+		for (int i = 0; i < _availablePotions.Count; i++)
+		{
+			Sprite potionIcon;
+			if (GetImageFromCollection(_availablePotions[i].GetPotionItemData(), out potionIcon))
+			{
+				GameObject go = Instantiate<GameObject>(_recipePrefab, _pages[2]);
+				Image[] imageObjects = go.GetComponentsInChildren<Image>();
 
+				Text recipeName = go.GetComponentInChildren<Text>();
+				//Debug.Log("Name of recipe object: " + recipeName.name);
+				recipeName.text = _availablePotions[i].GetPotionItemData().itemName;
+
+				Sprite ingredientIcon;
+				for (int ii = 0; ii < imageObjects.Length; ii++)
+				{
+					List<ItemDataContainer> recipe = _availablePotions[i].GetRecipe();
+					if (imageObjects[ii].name.Contains("1"))
+					{
+						if (GetImageFromCollection(recipe[0], out ingredientIcon))
+						{
+							imageObjects[ii].sprite = ingredientIcon;
+						}
+					}
+					else if (imageObjects[ii].name.Contains("2"))
+					{
+						if (recipe.Count > 1)
+						{
+							if (GetImageFromCollection(recipe[1], out ingredientIcon))
+							{
+								imageObjects[ii].sprite = ingredientIcon;
+							}
+						}
+						else
+						{
+							imageObjects[ii].gameObject.SetActive(false);
+						}
+					}
+					else if (imageObjects[ii].name.Contains("3"))
+					{
+						if (recipe.Count > 2)
+						{
+							if (GetImageFromCollection(recipe[2], out ingredientIcon))
+							{
+								imageObjects[ii].sprite = ingredientIcon;
+							}
+						}
+						else
+						{
+							imageObjects[ii].gameObject.SetActive(false);
+						}
+					}
+					else
+					{
+						imageObjects[ii].sprite = potionIcon;
+					}
+				}
+			}
+		}
+	}
+	bool GetImageFromCollection(ItemDataContainer identifier, out Sprite image)
+	{
+		for (int i = 0; i < _items.Count; i++)
+		{
+			if (_items[i] == identifier)
+			{
+				image = _items[i].itemIcon;
+				return true;
+			}
+		}
+		Debug.LogWarning("OBS! Every potion and flower name should be connected to an entry in the Image Collection, this is not true for "
+			+ identifier);
+		image = null;
+		return false;
+	}
 	void AddIngredientButton()
 	{
 		for (int i = 0; i < _allIngredients.Count; i++)
@@ -31,15 +119,13 @@ public class AlchemyOrganizer : MonoBehaviour
 			_allIngredients[i].GetComponent<Button>().onClick.AddListener(delegate { AddIngredient(itemLoader); });
 		}
 	}
-
-
-	void ActivatePotion()
+	/*
+	void ActivatePotion(PotionType type, float duration, int )
 	{
 		Debug.Log("Activating Potion");
-		_modifiers.SpeedPot(FPSMovement.playerMovement);
+		_modifiers.PotionEffectStart(FPSMovement.playerMovement);
 		//StartCoroutine(ActivatePotion(_potionDuration));
-	}
-
+	}*/
 	/*IEnumerator ActivatePotion(float t)
 	{
 		_modifiers.SpeedPot(FPSMovement.playerMovement);
@@ -48,8 +134,6 @@ public class AlchemyOrganizer : MonoBehaviour
 		_modifiers.SpeedPotionEnd(FPSMovement.playerMovement);
 		Debug.Log("Speed Potion Removed");
 	}*/
-
-
 	void AddIngredient(ItemLoader ingredient)
 	{
 		if (FlowerLibrary.GetFlowerAmount(ingredient.GetFlowerName()) > 0)
@@ -84,7 +168,6 @@ public class AlchemyOrganizer : MonoBehaviour
 			Debug.Log("Not enough ingredients");
 		}
 	}
-
 	int FindNextEmptyKey()
 	{
 		int i = 0;
@@ -96,7 +179,6 @@ public class AlchemyOrganizer : MonoBehaviour
 		}
 		return -1;
 	}
-
 	public void ClearAllIngredients()
 	{
 		foreach (int key in _currentIngredients.Keys)
@@ -108,7 +190,6 @@ public class AlchemyOrganizer : MonoBehaviour
 
 		IsRecipe(GetIngredientNames());
 	}
-
 	public void RemoveIngredient(int index)
 	{
 		Image image = _slots[index].GetComponentInChildren<Image>();
@@ -124,14 +205,13 @@ public class AlchemyOrganizer : MonoBehaviour
 			}
 		}*/
 	}
-
-	List<string> GetIngredientNames()
+	List<ItemDataContainer> GetIngredientNames()
 	{
-		List<string> itemNames = new List<string>();
+		List<ItemDataContainer> itemNames = new List<ItemDataContainer>();
 
 		foreach (ItemLoader item in _currentIngredients.Values)
 		{
-			itemNames.Add(item.GetFlowerName());
+			itemNames.Add(item.GetItemData());
 		}
 		return itemNames;
 	}
@@ -146,7 +226,7 @@ public class AlchemyOrganizer : MonoBehaviour
 		return itemNames;
 	}*/
 
-	bool IsRecipe(List<string> recipe)
+	bool IsRecipe(List<ItemDataContainer> recipe)
 	{
 		if (_recipieList.Count < 1)
 		{
@@ -155,7 +235,7 @@ public class AlchemyOrganizer : MonoBehaviour
 
 		bool isRecipe = false;
 		int index = -1;
-		for(int i = 0; i < _recipieList.Count; i++)
+		for (int i = 0; i < _recipieList.Count; i++)
 		{
 			if (CompareRecipes(_recipieList[i], recipe))
 			{
@@ -166,14 +246,14 @@ public class AlchemyOrganizer : MonoBehaviour
 
 		if (isRecipe)
 		{
-			Debug.Log("Recipe available");
+			//Debug.Log("Recipe available");
 			if (_potionSlot.transform.childCount > 0)
 			{
 				Destroy(_potionSlot.transform.GetChild(0).gameObject);
 			}
-			
+
 			//int index = _recipieList.IndexOf(recipe);
-			Debug.Log("Index of recipe is: " + index);
+			//Debug.Log("Index of recipe is: " + index);
 			//PotionLoader potion = _availablePotions[index];
 			_result = _availablePotions[index];
 			GameObject imageGO = _result.gameObject.GetComponentInChildren<Image>().gameObject;
@@ -192,16 +272,16 @@ public class AlchemyOrganizer : MonoBehaviour
 		return isRecipe;
 	}
 
-	bool CompareRecipes(List<string> recipeA, List<string> recipeB)
+	bool CompareRecipes(List<ItemDataContainer> recipeA, List<ItemDataContainer> recipeB)
 	{
-		List<string> checkedStrings = new List<string>();
+		//List<ItemDataContainer> checkedItems = new List<ItemDataContainer>();
 		if (recipeA.Count != recipeB.Count)
 		{
 			return false;
 		}
-		for(int i = 0; i < recipeA.Count; i++)
+		for (int i = 0; i < recipeA.Count; i++)
 		{
-			if(recipeA[i] != recipeB[i])
+			if (recipeA[i] != recipeB[i])
 			{
 				return false;
 			}
@@ -216,20 +296,20 @@ public class AlchemyOrganizer : MonoBehaviour
 
 	void CreateAllRecipes()
 	{
-		string debug = "Creating all recipes, possible recipes are: ";
-		Debug.Log("Number of recipes: " + _availablePotions.Count);
+		//string debug = "Creating all recipes, possible recipes are: ";
+		//Debug.Log("Number of recipes: " + _availablePotions.Count);
 		for (int i = 0; i < _availablePotions.Count; i++)
 		{
-			Debug.Log("LOOP");
-			List<string> recipe = _availablePotions[i].GetRecipe();
+			//Debug.Log("LOOP");
+			List<ItemDataContainer> recipe = _availablePotions[i].GetRecipe();
 			_recipieList.Add(recipe);
-			debug += "\n \t ";
+			/*debug += "\n \t ";
 			for (int j = 0; j < recipe.Count; j++)
 			{
 				debug += recipe[j] + ", ";
-			}
+			}*/
 		}
-		Debug.Log(debug);
+		//Debug.Log(debug);
 	}
 
 	void UpdateIngredients()

@@ -10,6 +10,7 @@ public class EventParameter //Add more Event Parameter Variables here if needed
     public string stringParam;
     public int intParam;
     public float floatParam;
+    public bool boolParam;
     public Color colourParam = Color.white;
     public Vector2 posParam;
     public Transform transformParam;
@@ -22,9 +23,6 @@ public static class EventManager
 {
     //Actions with parameters
     private static Dictionary<string, Action<EventParameter>> eventDicionaryA = new Dictionary<string, Action<EventParameter>>();
-
-    //UnityActions with parameters
-    private static Dictionary<string, UnityEvent<EventParameter>> eventDictionaryB = new Dictionary<string, UnityEvent<EventParameter>>();
 
     //Events subscribed to needs to be unsubsribed from as well, do this by adding a call for UnSubscribe() on the object's OnDissable call
     public static void Subscribe(string eventName, Action<EventParameter> subscription)

@@ -1,10 +1,32 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public static class PrefabSpawnerSaveData
 {
     static Dictionary<ChunkCoordIndex, StoredSaveData> _storedSaveDataDic = new Dictionary<ChunkCoordIndex, StoredSaveData>();
+
+    public static void Save()
+    {
+        List<StoredSaveData> saveData = _storedSaveDataDic.Select(value => value.Value).ToList();
+        Serialization.Save(Saving.FileNames.PREFAB_SPAWNING, saveData);
+    }
+
+    public static void Load()
+    {
+        _storedSaveDataDic = new Dictionary<ChunkCoordIndex, StoredSaveData>();
+
+        List<StoredSaveData> saveData = (List<StoredSaveData>)Serialization.Load(Saving.FileNames.PREFAB_SPAWNING);
+
+        if (saveData != null)
+        {
+            for (int i = 0; i < saveData.Count; i++)
+            {
+                AddPickup(saveData[i]);
+            }
+        }
+    }
 
     public static void AddPickup(StoredSaveData saveDataToStore)
     {
@@ -23,6 +45,12 @@ public static class PrefabSpawnerSaveData
     {
         if (_storedSaveDataDic.ContainsKey(saveDataToStore.ChunkCoordIndex))
             _storedSaveDataDic.Remove(saveDataToStore.ChunkCoordIndex);
+    }
+
+    //Used only by spawning to check if it should spawn
+    public static StoredSaveData GetStoredSaveData(ChunkCoordIndex index)
+    {
+        return _storedSaveDataDic[index];
     }
 
     //Checks if it should spawn depending on key (used in spawning script only)

@@ -5,7 +5,7 @@ using UnityEngine;
 
 //This is supposed to act as a place to store character variables which
 // can be edidted by other objects for the sake of avoiding dependendies.
-public enum CHARACTER_CONTROL_STATE { PLAYERCONTROLLED = 0, CUTSCENE, MENU }
+public enum CHARACTER_CONTROL_STATE { PLAYERCONTROLLED = 0, CUTSCENE, MENU, MENU_NO_MOVEMENT }
 public static class CharacterState
 {
     static CursorUsabilityControll _cursorControll = new CursorUsabilityControll();
@@ -20,7 +20,7 @@ public static class CharacterState
     {
         get
         {
-            if (_controlState == CHARACTER_CONTROL_STATE.PLAYERCONTROLLED)
+            if (_controlState == CHARACTER_CONTROL_STATE.PLAYERCONTROLLED || _controlState == CHARACTER_CONTROL_STATE.MENU)
             {
                 return true;
             }

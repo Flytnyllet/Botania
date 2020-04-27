@@ -16,17 +16,20 @@ public class MultiSceneController : MonoBehaviour
 
     void Start()
     {
+        Scene activeScene = SceneManager.GetActiveScene();
+
         foreach (string scene in _sceneNames)
         {
-            StartCoroutine(AddScene(scene));
+            StartCoroutine(AddScene(scene, activeScene));
         }
     }
 
     //Just making sure that these things are being loaded in without freezing the game
-	IEnumerator AddScene(string sceneName)
+	IEnumerator AddScene(string sceneName, Scene mainScene)
     {
         SceneManager.LoadScene(sceneName, LoadSceneMode.Additive);
         yield return null;
         SceneManager.SetActiveScene(SceneManager.GetSceneByName(sceneName));
+        SceneManager.SetActiveScene(mainScene);
     }
 }

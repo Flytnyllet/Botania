@@ -27,7 +27,7 @@ public class BookManager : MonoBehaviour
 		SetupPage(_flowerOrganizerId, _flowerPages);
 		foreach (PageLoader page in _flowerPages)
 		{
-			
+
 		}
 
 		/*
@@ -57,11 +57,11 @@ public class BookManager : MonoBehaviour
 
 	void SetupPage(int pageParentID, List<PageLoader> pages)
 	{
-		for(int i = 0; i<pages.Count; i++)
+		for (int i = 0; i < pages.Count; i++)
 		{
 			GameObject page = Instantiate<GameObject>(pages[i].gameObject, _bookmarks[pageParentID].transform);
 
-			if(i == _currentPage || i == _currentPage+1)
+			if (i == _currentPage || i == _currentPage + 1)
 			{
 				page.SetActive(true);
 			}
@@ -70,11 +70,11 @@ public class BookManager : MonoBehaviour
 				page.SetActive(false);
 			}
 			pages[i] = page.GetComponent<PageLoader>();
-			
+
 			//Flower flower = pages[i].CreateThisFlower();
 			//FlowerLibrary.AddFlower(flower.Name, 0);
 		}
-		if(pages.Count % 2 == 1)
+		if (pages.Count % 2 == 1)
 		{
 			GameObject emptyPage = Instantiate<GameObject>(_emptyPageTemplate, _bookmarks[pageParentID].transform);
 			emptyPage.gameObject.SetActive(false);
@@ -86,14 +86,14 @@ public class BookManager : MonoBehaviour
 	{
 		List<GameObject> bookmarks = new List<GameObject>();
 		//int[] bmI = new int[_bookmarks.Count]; //BookMarkIndex
-		for(int i = 0; i < _bookmarks.Count; i++)
+		for (int i = 0; i < _bookmarks.Count; i++)
 		{
 			GameObject bookmark = _bookmarks[i];
 			_bookmarks[i] = Instantiate<GameObject>(bookmark, _book.transform);
 			_bookmarks[i].transform.SetAsFirstSibling();
 			GameObject bookmarkObject = Instantiate<GameObject>(_bookmarkTemplate.gameObject, _book.transform);
 			RectTransform bookmarkTransform = bookmarkObject.GetComponent<RectTransform>();
-			bookmarkTransform.localPosition += Vector3.right*_bookmarkPositions[i].x + Vector3.up * _bookmarkPositions[i].y;
+			bookmarkTransform.localPosition += Vector3.right * _bookmarkPositions[i].x + Vector3.up * _bookmarkPositions[i].y;
 			bookmarkObject.GetComponent<Image>().color = _bookmarkColors[i];
 
 			//bmI[i] = i;
@@ -111,26 +111,56 @@ public class BookManager : MonoBehaviour
 	}
 	public void ChangePage(int change)
 	{
-		_currentPage = ChangeCurrentPage(_flowerPages.Count, change);
-		ChangePage();
+		switch (_currentBookmark)
+		{
+			case 1:
+				List<Transform> children = _bookmarks[1].GetComponent<AlchemyOrganizer>().GetPages();
+				_currentPage = ChangeCurrentPage(children.Count, change);
+				ChangePage(children);
+				break;
+
+			case 2:
+				_currentPage = ChangeCurrentPage(_lorePages.Count, change);
+				ChangePage(_lorePages);
+				break;
+
+			default:
+				_currentPage = ChangeCurrentPage(_flowerPages.Count, change);
+				ChangePage(_flowerPages);
+				break;
+		}
 	}
-	void ChangePage()
+	void ChangePage(List<Transform> transforms)
 	{
-		Debug.Log("Current page is: " + _currentPage.ToString());
-		for (int i = 0; i < _flowerPages.Count; i++)
+		for (int i = 0; i < transforms.Count; i++)
 		{
 			if (i == _currentPage || i == _currentPage + 1)
 			{
 				Debug.Log("Set page true");
-				_flowerPages[i].gameObject.SetActive(true);
+				transforms[i].gameObject.SetActive(true);
 			}
 			else
 			{
 				Debug.Log("Set page false");
-				_flowerPages[i].gameObject.SetActive(false);
+				transforms[i].gameObject.SetActive(false);
 			}
 		}
-
+	}
+	void ChangePage(List<PageLoader> pages)
+	{
+		for (int i = 0; i < pages.Count; i++)
+		{
+			if (i == _currentPage || i == _currentPage + 1)
+			{
+				Debug.Log("Set page true");
+				pages[i].gameObject.SetActive(true);
+			}
+			else
+			{
+				Debug.Log("Set page false");
+				pages[i].gameObject.SetActive(false);
+			}
+		}
 	}
 	int ChangeCurrentPage(int pageCount, int change)
 	{
@@ -154,6 +184,7 @@ public class BookManager : MonoBehaviour
 		Debug.Log("Current bookmark changed from " + _currentBookmark + " to " + index);
 		_bookmarks[_currentBookmark].SetActive(false);
 		_currentBookmark = index;
+		_currentPage = 0;
 		_bookmarks[_currentBookmark].SetActive(true);
 	}
 }
