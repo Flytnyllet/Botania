@@ -106,7 +106,7 @@
 	</object>
 	<object class="EventMixerMaster" id="{9405d7e9-f6cf-47bc-99a1-64e0920d5f4a}">
 		<property name="volume">
-			<value>-11.5</value>
+			<value>-4</value>
 		</property>
 		<relationship name="modulators">
 			<destination>{c6827af8-edde-47c3-8dde-1c1c1b1c3782}</destination>
@@ -248,7 +248,7 @@
 	</object>
 	<object class="EventMixerGroup" id="{10ce8d57-6bf6-4250-b29b-837d73d0b1a4}">
 		<property name="volume">
-			<value>-80</value>
+			<value>7</value>
 		</property>
 		<property name="name">
 			<value>Audio 2</value>
@@ -444,10 +444,10 @@
 			<value>1</value>
 		</property>
 		<property name="soundSize">
-			<value>8.5</value>
+			<value>7</value>
 		</property>
 		<property name="minimumExtent">
-			<value>266</value>
+			<value>298</value>
 		</property>
 	</object>
 	<object class="AutomationPoint" id="{47c48191-78a4-4c05-827d-0230fe92b101}">
@@ -520,14 +520,17 @@
 		<property name="lowGain">
 			<value>-36</value>
 		</property>
+		<property name="midGain">
+			<value>-0.5</value>
+		</property>
 		<property name="highGain">
-			<value>-78</value>
+			<value>-80</value>
 		</property>
 		<property name="lowCrossover">
-			<value>2700</value>
+			<value>2400</value>
 		</property>
 		<property name="highCrossover">
-			<value>7500</value>
+			<value>3200</value>
 		</property>
 		<property name="crossoverSlope">
 			<value>0</value>
@@ -545,10 +548,10 @@
 			<value>-80</value>
 		</property>
 		<property name="lowCrossover">
-			<value>160</value>
+			<value>280</value>
 		</property>
 		<property name="highCrossover">
-			<value>480</value>
+			<value>680</value>
 		</property>
 	</object>
 	<object class="MixerBusFader" id="{e6cf2fd0-9e53-4f5d-ae5b-39f7d1bc0475}" />
@@ -568,7 +571,7 @@
 			<value>0.93000000000000005</value>
 		</property>
 		<property name="value">
-			<value>5</value>
+			<value>2</value>
 		</property>
 	</object>
 </objects>
