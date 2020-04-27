@@ -40,7 +40,7 @@
 			void vert(inout appdata_full v) {
 				float3 worldPos = mul(unity_ObjectToWorld, float4(v.vertex.xyz, 1)).xyz;
 				float height = lerp(0,1, v.vertex.y);
-				float sinW = sin((worldPos.x + worldPos.z + worldPos.y) + _Time.y*_Speed);
+				float sinW = sin((worldPos.x + worldPos.z) + _Time.y*_Speed);
 
 				v.vertex.x += height * sinW*_Strenght;
 			}

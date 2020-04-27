@@ -45,10 +45,16 @@ public static class CharacterState
     }
     public static void AddAbilityFlag(string s, float time)
     {
+        //Debug.Log(s + " added");
         ABILITY_FLAG flag = GetFlagFromString(s);
         _abilityFlags.Add(flag);
-        ActionDelayer.RunAfterDelay(() => { _abilityFlags.Remove(flag); }, time);
+        ActionDelayer.RunAfterDelay(() =>
+        {
+            //Debug.Log(s + " added");
+            _abilityFlags.Remove(flag);
+        }, time);
     }
+
 
     public static bool IsAbilityFlagActive(ABILITY_FLAG flag)
     {
@@ -75,7 +81,7 @@ public static class CharacterState
     //        _controlState = endState;
     //    });
     //}
-    static ABILITY_FLAG GetFlagFromString(string s)
+    public static ABILITY_FLAG GetFlagFromString(string s)
     {
         switch (s)
         {
