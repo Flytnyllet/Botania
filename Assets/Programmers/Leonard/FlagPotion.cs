@@ -14,7 +14,7 @@ public class FlagPotion : Potion_Template
 	}
 	public override bool PotionEffectStart(FPSMovement p)
 	{
-		p._flags.AddFlag(effect, duration);
+		CharacterState.AddAbilityFlag(effect, duration);
 		return true;
 	}
 

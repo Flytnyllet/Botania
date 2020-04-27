@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -6,7 +7,7 @@ using UnityEngine;
 //This is supposed to act as a place to store character variables which
 // can be edidted by other objects for the sake of avoiding dependendies.
 public enum CHARACTER_CONTROL_STATE { PLAYERCONTROLLED = 0, CUTSCENE, MENU, MENU_NO_MOVEMENT }
-public enum ABILITY_FLAG { INVISSIBLE }
+public enum ABILITY_FLAG { NULL, INVISSIBLE, SUPERHEARING }
 public static class CharacterState
 {
     static CursorUsabilityControll _cursorControll = new CursorUsabilityControll();
@@ -37,13 +38,19 @@ public static class CharacterState
             return false;
         }
     }
-    public static void AddAbilityFlat(ABILITY_FLAG flag, float time)
+    public static void AddAbilityFlag(ABILITY_FLAG flag, float time)
     {
         _abilityFlags.Add(flag);
-        ActionDelayer.RunAfterDelay(() => { }, time);
+        ActionDelayer.RunAfterDelay(() => { _abilityFlags.Remove(flag); }, time);
+    }
+    public static void AddAbilityFlag(string s, float time)
+    {
+        ABILITY_FLAG flag = GetFlagFromString(s);
+        _abilityFlags.Add(flag);
+        ActionDelayer.RunAfterDelay(() => { _abilityFlags.Remove(flag); }, time);
     }
 
-    public static bool IsFlagActive(ABILITY_FLAG flag)
+    public static bool IsAbilityFlagActive(ABILITY_FLAG flag)
     {
         return (_abilityFlags.Contains(flag));
     }
@@ -68,4 +75,16 @@ public static class CharacterState
     //        _controlState = endState;
     //    });
     //}
+    static ABILITY_FLAG GetFlagFromString(string s)
+    {
+        switch (s)
+        {
+            case "INVISSIBLE":
+                return ABILITY_FLAG.INVISSIBLE;
+            case "SUPERHEARING":
+                return ABILITY_FLAG.SUPERHEARING;
+            default:
+                return ABILITY_FLAG.NULL;
+        }
+    }
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public enum CharacterStatType
 {
-    Speed, Jump, Gravity
+    Speed, Jump, Gravity, Invisibility, Hearing
 }
 
 public class SpeedPotion : Potion_Template
@@ -56,6 +56,15 @@ public class SpeedPotion : Potion_Template
                     return true;
                 }
                 break;
+            case CharacterStatType.Invisibility:
+                //Denna har ingen funktion just nu för att blockera att man tar flera potions, men det är ok for now
+                CharacterState.AddAbilityFlag(ABILITY_FLAG.INVISSIBLE, 30);
+                break;
+
+            case CharacterStatType.Hearing:
+                CharacterState.AddAbilityFlag(ABILITY_FLAG.SUPERHEARING, 30);
+                break;
+
 
             default:
                 if (!(p._speed.GetStatModifiers().Exists(x => x.Source == this)))
