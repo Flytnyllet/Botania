@@ -18,8 +18,7 @@
 
 
 		CGPROGRAM
-		#pragma surface surf Lambert noforwardadd vertex:vert addshadow
-			//#pragma shader_feature _METALLICGLOSSMAP
+			#pragma surface surf Lambert noforwardadd vertex:vert addshadow
 			#pragma target 3.0
 
 			sampler2D _MainTex;
@@ -32,7 +31,6 @@
 			half _Speed;
 			half _Strenght;
 
-
 			struct Input {
 				float2 uv_MainTex;
 				float4 screenPos;
@@ -44,13 +42,10 @@
 				float height = lerp(0,1, v.vertex.y);
 				float sinW = sin((worldPos.x + worldPos.z + worldPos.y) + _Time.y*_Speed);
 
-				//v.vertex.x += cos * v.vertex.x*0.03f;
 				v.vertex.x += height * sinW*_Strenght;
-				//v.vertex.y += height*(cosW)*_Strenght;
 			}
 
 			void surf(Input IN, inout SurfaceOutput o) {
-				//o.Alpha = 1.0;
 				float alpha = tex2D(_Alpha, IN.uv_MainTex).r;
 				float2 pos = IN.screenPos.xy / IN.screenPos.w;
 				pos *= _ScreenParams.xy; // pixel position
@@ -65,14 +60,12 @@
 				fixed4 c = tex2D(_MainTex, IN.uv_MainTex);
 				o.Albedo = c.rgb;
 				o.Emission = tex2D(_EmissionMap, IN.uv_MainTex);
-				//o.Metallic = _Metallic;
-				//o.Smoothness = tex2D(_Rough, IN.uv_MainTex).x;
 
 				if (IN.facing < 0.5)
 					o.Normal *= -1.0;
 
 			}
 			ENDCG
-					}
-					Fallback "Differed"
+		}
+			Fallback "Differed"
 }

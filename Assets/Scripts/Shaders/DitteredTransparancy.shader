@@ -29,9 +29,7 @@
 			float2 uv_MainTex;
 			float4 screenPos;
 			fixed facing : VFACE;
-		};
-
-
+		}; 
 		void surf(Input IN, inout SurfaceOutputStandard  o) {
 			fixed4 c = tex2D(_MainTex, IN.uv_MainTex);
 			o.Albedo = c.rgb;
