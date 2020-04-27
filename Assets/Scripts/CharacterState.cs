@@ -6,14 +6,13 @@ using UnityEngine;
 //This is supposed to act as a place to store character variables which
 // can be edidted by other objects for the sake of avoiding dependendies.
 public enum CHARACTER_CONTROL_STATE { PLAYERCONTROLLED = 0, CUTSCENE, MENU, MENU_NO_MOVEMENT }
+public enum ABILITY_FLAG { INVISSIBLE }
 public static class CharacterState
 {
     static CursorUsabilityControll _cursorControll = new CursorUsabilityControll();
     static CHARACTER_CONTROL_STATE _controlState = 0;
-    public static CHARACTER_CONTROL_STATE Control_State
-    {
-        get => _controlState;
-    }
+    public static CHARACTER_CONTROL_STATE Control_State { get => _controlState; }
+    static List<ABILITY_FLAG> _abilityFlags = new List<ABILITY_FLAG>();
 
     //Förenkla läslighet i tillkopplad kod
     public static bool MayMove
@@ -38,6 +37,12 @@ public static class CharacterState
             return false;
         }
     }
+    public static void AddAbilityFlat(ABILITY_FLAG flag, float time)
+    {
+        _abilityFlags.Add(flag);
+        ActionDelayer.RunAfterDelay(() => { }, time);
+    }
+
 
     public static void SetControlState(CHARACTER_CONTROL_STATE state)
     {

@@ -10,8 +10,6 @@ using UnityEngine.Rendering.PostProcessing;
 //Can be activated by calling "StartCameraEffect" in the eventmanager
 public class CameraEffect : MonoBehaviour
 {
-    public static string CAMERA_EFFECT_EVENT_NAME = "StartCameraEffect";
-    public static string CAMERA_SPEED_DISTORT = "SpeedDistort";
 
     Material _material = null;
     PostProcessVolume _ppVolume;
@@ -46,13 +44,13 @@ public class CameraEffect : MonoBehaviour
     //Some events for activating effects
     private void OnEnable()
     {
-        EventManager.Subscribe(CAMERA_EFFECT_EVENT_NAME, ActivateEffect);
-        EventManager.Subscribe(CAMERA_SPEED_DISTORT, SpeedDistortion);
+        EventManager.Subscribe(EventNameLibrary.CAMERA_EFFECT_EVENT_NAME, ActivateEffect);
+        EventManager.Subscribe(EventNameLibrary.SPEED_INCREASE, SpeedDistortion);
     }
     private void OnDisable()
     {
-        EventManager.UnSubscribe(CAMERA_EFFECT_EVENT_NAME, ActivateEffect);
-        EventManager.UnSubscribe(CAMERA_SPEED_DISTORT, SpeedDistortion);
+        EventManager.UnSubscribe(EventNameLibrary.CAMERA_EFFECT_EVENT_NAME, ActivateEffect);
+        EventManager.UnSubscribe(EventNameLibrary.SPEED_INCREASE, SpeedDistortion);
     }
 
 

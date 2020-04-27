@@ -11,20 +11,14 @@ public class LoggWindow : MonoBehaviour
 
     private void OnEnable()
     {
-
+        EventManager.Subscribe(LOGG_WINDOW_EVENT, AddWindowElement);
     }
     private void OnDisable()
     {
+        EventManager.UnSubscribe(LOGG_WINDOW_EVENT, AddWindowElement);
+    }
+    public void AddWindowElement(EventParameter param)
+    {
 
-    }
-    public void AddWindowElement(string s)
-    {
-        GameObject gObject = Instantiate(_textObject.gameObject, this.transform);
-        gObject.GetComponent<Text>().text = s;
-    }
-    public void AddWindowElement(Sprite s)
-    {
-        GameObject gObject = Instantiate(_textObject.gameObject, this.transform);
-        gObject.GetComponent<Image>().sprite = s;
     }
 }
