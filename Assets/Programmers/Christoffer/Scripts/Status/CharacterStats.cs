@@ -20,13 +20,14 @@ public class CharacterStats
     {
         get
         {
-            if (isModified || BaseValue != lastBaseValue)
-            {
-                lastBaseValue = BaseValue;
-                _value = CalculateFinalValue();
-                isModified = false;
-            }
-            return _value;
+            return CalculateFinalValue();
+            //if (isModified || BaseValue != lastBaseValue)
+            //{
+            //    lastBaseValue = BaseValue;
+            //    _value = CalculateFinalValue();
+            //    isModified = false;
+            //}
+            //return _value;
         }
     }
 
@@ -48,31 +49,34 @@ public class CharacterStats
         BaseValue = baseValue;
     }
 
-    public virtual void AddModifier(StatModifier mod)
-    {
-        isModified = true;
-        statModifiers.Add(mod);
-        statModifiers.Sort(CompareOrder);
-    }
+    //public virtual void AddModifier(StatModifier mod)
+    //{
+    //    isModified = true;
+    //    statModifiers.Add(mod);
+    //    statModifiers.Sort(CompareOrder);
+    //}
     public virtual void AddModifier(StatModifier mod, float time)
     {
-        Debug.Log("Added stat effect, increasing the stat type " + mod.Type + " by " + mod.Value);
+        float baseVal = BaseValue;
+        Debug.Log("Added stat effect, increasing the stat type " + mod.Type + " by " + mod.Value + $" for {time} seconds");
         isModified = true;
         statModifiers.Add(mod);
         statModifiers.Sort(CompareOrder);
-        Task.Run(async () =>
+        Task.Delay(TimeSpan.FromSeconds(time)).ContinueWith(previous =>
+        {
+            try
             {
-                try
-                {
-                    await Task.Delay(System.TimeSpan.FromSeconds(time));
-                    RemoveModifier(mod);
-                    Debug.Log("Removed stat effect on the stat type " + mod.Type);
-                }
-                catch (System.Exception e)
-                {
-                    Debug.LogError(e);
-                }
-            });
+                //RemoveModifier(mod); //Jag har fuckat lite saker här, sorry /Jens
+                statModifiers.Remove(mod);
+                isModified = false;
+                Debug.Log(statModifiers.Count);
+                Debug.Log("Removed stat effect on the stat type " + mod.Type);
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogError(e);
+            }
+        }, TaskScheduler.FromCurrentSynchronizationContext());
     }
 
 
@@ -85,7 +89,7 @@ public class CharacterStats
     {
         if (statModifiers.Remove(mod))
         {
-            isModified = true;
+            isModified = false;
             return true;
         }
         return false;
@@ -117,7 +121,7 @@ public class CharacterStats
 
     protected virtual float CalculateFinalValue()
     {
-        float finalValue = BaseValue;
+        float finalValue = 0;
         float totalPercentAdd = 0;
 
         for (int i = 0; i < statModifiers.Count; i++)
@@ -146,6 +150,6 @@ public class CharacterStats
             }
         }
 
-        return (float)Math.Round(finalValue, 4);
+        return (float)Math.Round(finalValue, 4) + BaseValue;
     }
 }

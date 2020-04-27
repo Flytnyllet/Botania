@@ -91,7 +91,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 256535b050faf8045a713b784a4c9fb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _blom_07_potion: 0
 --- !u!135 &3855445887946072140
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -116,6 +115,7 @@ GameObject:
   - component: {fileID: 7013390908173991927}
   - component: {fileID: 2022001197600540097}
   - component: {fileID: 5706938185447045432}
+  - component: {fileID: 8863375795855992674}
   m_Layer: 0
   m_Name: Flower_Calm
   m_TagString: Untagged
@@ -184,3 +184,18 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!114 &8863375795855992674
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6273452741414931940}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee66933cb94b3af499283834dca2703c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _flowerData: {fileID: 11400000, guid: 40d1c592d35f93f4bb580293262564fa, type: 2}
+  _pickupAlpha: {fileID: 0}
+  _gameobjectOverload: {fileID: 0}

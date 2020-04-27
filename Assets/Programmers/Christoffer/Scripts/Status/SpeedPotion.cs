@@ -52,7 +52,7 @@ public class SpeedPotion : Potion_Template
                 {
                     potionEffect = new StatModifier(flat, StatType.Flat, this);
                     p._gravity.AddModifier(potionEffect, duration);
-                    p._gravity.AddModifier(new StatModifier(factor, StatType.PercentMult, this), duration);
+                   // p._gravity.AddModifier(new StatModifier(factor, StatType.PercentMult, this), duration);
                     return true;
                 }
                 break;

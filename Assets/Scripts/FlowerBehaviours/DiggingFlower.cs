@@ -47,7 +47,7 @@ public class DiggingFlower : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Player" /*&& PlayerNotInvissible */)
+        if (other.tag == "Player" && !CharacterState.IsAbilityFlagActive(ABILITY_FLAG.INVISSIBLE))
         {
             _playerInArea = true; //I hate this
 
@@ -60,6 +60,10 @@ public class DiggingFlower : MonoBehaviour
                 StartCoroutine(CheckIfAlone());
                 _flowerState = FlowerState.Digging;
             }
+        }
+        else if (other.tag == "Player" && CharacterState.IsAbilityFlagActive(ABILITY_FLAG.INVISSIBLE))
+        {
+            MakeInteractable();
         }
     }
 
@@ -77,7 +81,7 @@ public class DiggingFlower : MonoBehaviour
         while (time < _hideTime)
         {
             time += Time.deltaTime;
-            if (_playerInArea) time = 0.0f;
+            if (_playerInArea && !CharacterState.IsAbilityFlagActive(ABILITY_FLAG.INVISSIBLE)) time = 0.0f;
             yield return null;
         }
         _animator.Play("Take002");
