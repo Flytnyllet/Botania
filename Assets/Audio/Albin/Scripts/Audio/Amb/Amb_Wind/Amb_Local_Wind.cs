@@ -11,6 +11,7 @@ public class Amb_Local_Wind : MonoBehaviour
     private EventDescription event_Description;
     private PLAYBACK_STATE _event_State;
     private bool _is3D;
+    private bool _isVirtual;
 
     [SerializeField]
     private Amb_Data amb_Data = default;
@@ -60,8 +61,9 @@ public class Amb_Local_Wind : MonoBehaviour
     private void FixedUpdate()
     {
         event_Instance.getPlaybackState(out _event_State);
+        event_Instance.isVirtual(out _isVirtual);
 
-        if (_event_State != PLAYBACK_STATE.STOPPED)
+        if (!_isVirtual)
             return;
         else
         {

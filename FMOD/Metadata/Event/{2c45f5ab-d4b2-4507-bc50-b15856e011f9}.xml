@@ -322,8 +322,11 @@
 		<property name="highGain">
 			<value>-24.5</value>
 		</property>
+		<property name="lowCrossover">
+			<value>220</value>
+		</property>
 		<property name="highCrossover">
-			<value>2600</value>
+			<value>720</value>
 		</property>
 		<relationship name="automators">
 			<destination>{25d05d32-a782-4f66-8f25-919bd415dd24}</destination>
@@ -566,7 +569,7 @@
 			<value>0</value>
 		</property>
 		<property name="value">
-			<value>-28</value>
+			<value>-80</value>
 		</property>
 	</object>
 	<object class="AutomationPoint" id="{27b4e781-0e43-4032-a32d-0c0b2b32b75a}">
@@ -574,7 +577,7 @@
 			<value>0.19</value>
 		</property>
 		<property name="value">
-			<value>-30</value>
+			<value>-54</value>
 		</property>
 	</object>
 	<object class="AutomationPoint" id="{73907308-dbb4-4ac1-bdcc-2864dd815b83}">
@@ -606,7 +609,7 @@
 			<value>0</value>
 		</property>
 		<property name="value">
-			<value>-22</value>
+			<value>-5</value>
 		</property>
 		<property name="curveShape">
 			<value>0.192306399</value>

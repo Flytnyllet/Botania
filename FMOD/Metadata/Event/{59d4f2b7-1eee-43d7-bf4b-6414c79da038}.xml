@@ -53,12 +53,12 @@
 			<destination>{7567d965-566a-4be2-a4b1-ac66520a6caa}</destination>
 		</relationship>
 		<relationship name="output">
-			<destination>{188885a1-6692-44d3-89fa-7ea6a74a4f08}</destination>
+			<destination>{58f1f3b5-da36-4450-ad68-b3bedd091f5f}</destination>
 		</relationship>
 	</object>
 	<object class="EventAutomatableProperties" id="{b210f965-1773-427e-96c4-838c9584ebab}">
 		<property name="maxVoices">
-			<value>4</value>
+			<value>3</value>
 		</property>
 		<property name="voiceStealing">
 			<value>4</value>
@@ -83,7 +83,7 @@
 	</object>
 	<object class="EventMixerMaster" id="{7920c5e9-b42e-443b-b8d6-4c7e267aeb3f}">
 		<property name="volume">
-			<value>-11</value>
+			<value>-6.5</value>
 		</property>
 		<relationship name="effectChain">
 			<destination>{356f603f-5638-4c6a-9fb1-6cec1cb178ca}</destination>
@@ -106,7 +106,7 @@
 			<value>true</value>
 		</property>
 		<property name="triggerProbability">
-			<value>20</value>
+			<value>15.5</value>
 		</property>
 		<property name="isAsync">
 			<value>true</value>
@@ -231,7 +231,7 @@
 			<value>1.80000007</value>
 		</property>
 		<property name="maximumDistance">
-			<value>15</value>
+			<value>30</value>
 		</property>
 		<property name="extentMode">
 			<value>1</value>
@@ -244,8 +244,17 @@
 		</property>
 	</object>
 	<object class="ThreeEQEffect" id="{56e58d06-6423-4d7e-ad74-4c643cddcddb}">
+		<property name="lowGain">
+			<value>-56</value>
+		</property>
+		<property name="midGain">
+			<value>-6.5</value>
+		</property>
 		<property name="highGain">
-			<value>-10</value>
+			<value>-5</value>
+		</property>
+		<property name="highCrossover">
+			<value>2100</value>
 		</property>
 	</object>
 	<object class="MixerBusFader" id="{559e381a-6da7-450f-bd7f-2b830f8c1d95}" />
