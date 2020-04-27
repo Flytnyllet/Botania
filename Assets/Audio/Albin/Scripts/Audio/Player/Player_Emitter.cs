@@ -54,20 +54,36 @@ public class Player_Emitter : MonoBehaviour
         event_Book_Close.release();
     }
 
-    //private void Start()
-    //{
-    //    StartCoroutine(TestSound());
-    //}
+    private void Start()
+    {
+        StartCoroutine(TestSound());
+    }
 
-    //private IEnumerator TestSound()
-    //{
-    //    yield return new WaitForSeconds(1);
-    //    Init_Book_Open();
-    //    yield return new WaitForSeconds(2);
-    //    Init_Book_Page();
-    //    yield return new WaitForSeconds(1);
-    //    Init_Book_Page();
-    //    yield return new WaitForSeconds(2);
-    //    Init_Book_Close();
-    //}
+    private IEnumerator TestSound()
+    {
+        yield return new WaitForSeconds(1);
+        Init_Book_Open();
+        yield return new WaitForSeconds(2);
+        Init_Book_Page();
+        yield return new WaitForSeconds(1);
+        Init_Book_Page();
+        yield return new WaitForSeconds(2);
+        Init_Book_Close();
+
+        yield return new WaitForSeconds(4);
+        Init_Footsteps(0);
+        yield return new WaitForSeconds(0.8f);
+        Init_Footsteps(0);
+        yield return new WaitForSeconds(0.8f);
+        Init_Footsteps(0);
+        yield return new WaitForSeconds(0.8f);
+        Init_Footsteps(0);
+        yield return new WaitForSeconds(0.8f);
+        Init_Footsteps(0);
+        yield return new WaitForSeconds(0.8f);
+        Init_Footsteps(0);
+        yield return new WaitForSeconds(0.8f);
+        Init_Footsteps(0);
+        yield return new WaitForSeconds(0.8f);
+    }
 }

@@ -53,7 +53,7 @@
 			<destination>{a213c494-7537-4979-8ee8-58beaaf3c480}</destination>
 		</relationship>
 		<relationship name="output">
-			<destination>{188885a1-6692-44d3-89fa-7ea6a74a4f08}</destination>
+			<destination>{58f1f3b5-da36-4450-ad68-b3bedd091f5f}</destination>
 		</relationship>
 	</object>
 	<object class="EventAutomatableProperties" id="{c49edae5-d4f4-45d1-b484-902bd20faf5c}">
@@ -106,7 +106,7 @@
 			<value>true</value>
 		</property>
 		<property name="triggerProbability">
-			<value>16.5</value>
+			<value>24.5</value>
 		</property>
 		<property name="isAsync">
 			<value>true</value>
@@ -205,8 +205,11 @@
 		</property>
 	</object>
 	<object class="ThreeEQEffect" id="{0a099446-b4b6-42af-a657-a7240c1542b5}">
+		<property name="highGain">
+			<value>-2</value>
+		</property>
 		<property name="highCrossover">
-			<value>2600</value>
+			<value>4400</value>
 		</property>
 		<property name="crossoverSlope">
 			<value>2</value>
