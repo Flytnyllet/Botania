@@ -46,7 +46,6 @@ public class DiggingFlower : MonoBehaviour
 
             if (_flowerState == FlowerState.Idle)
             {
-                Debug.Log("Dig down");
                 _animator.Play("Take001"); //Rör sig lite, kallar på animatorn, och gör sig liten.
                 StartCoroutine(CheckIfAlone());
                 _flowerState = FlowerState.Digging;
