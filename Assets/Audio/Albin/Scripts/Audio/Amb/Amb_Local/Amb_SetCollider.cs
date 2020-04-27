@@ -10,6 +10,7 @@ public class Amb_SetCollider : MonoBehaviour
     private EventDescription event_Description;
     private float _maxDistance;
     private bool _is3D;
+    private bool _isVirtual;
     private bool _hasPlayed = default;
 
     private int _parameterCount;
@@ -155,6 +156,8 @@ public class Amb_SetCollider : MonoBehaviour
             return;
 
         event_Instance.getPlaybackState(out _event_State);
+        event_Instance.isVirtual(out _isVirtual);
+
         CheckPlaybackState();
     }
 
