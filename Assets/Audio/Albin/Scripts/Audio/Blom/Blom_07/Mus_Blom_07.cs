@@ -20,8 +20,8 @@ public class Mus_Blom_07 : MonoBehaviour
     private double _d_followValue;
     private float _r_followValue;
     private bool isFollow = default;
-    [SerializeField]
-    private bool _blom_07_potion = default;
+    //[SerializeField]
+    //private bool _blom_07_potion = default;
 
     private Quaternion _targetRotation;
     private Quaternion _relativeRotation;
@@ -46,7 +46,7 @@ public class Mus_Blom_07 : MonoBehaviour
     {
         _followCollider.radius = blom_07._maxDistance * 0.9f;
         isFollow = false;
-        _blom_07_potion = false;
+        //_blom_07_potion = false;
     }
 
     private void Update()
@@ -56,7 +56,7 @@ public class Mus_Blom_07 : MonoBehaviour
         _emitterDistance = Vector3.Distance(blom_07.transform.position, _player.transform.position);
         _currentEmitterPosition = new Vector3(blom_07.transform.position.x, blom_07.transform.position.y, blom_07.transform.position.z);
 
-        switch (_blom_07_potion)
+        switch (CharacterState.IsAbilityFlagActive(ABILITY_FLAG.SUPERHEARING))
         {
             case false:
                 if (!isFollow)
@@ -129,7 +129,7 @@ public class Mus_Blom_07 : MonoBehaviour
         {
             blom_07.Set_Parameter(blom_07._blom07MovParameterId, 0);
 
-            if (_blom_07_potion && isFollow)
+            if (CharacterState.IsAbilityFlagActive(ABILITY_FLAG.SUPERHEARING) && isFollow)
             {
                 _calmTime = _calmTime + Time.fixedDeltaTime;
                 blom_07.Set_Parameter(blom_07._blom07CalmParameterId, Mathf.Floor(_calmTime));

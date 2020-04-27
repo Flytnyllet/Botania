@@ -56,6 +56,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7161458038414420727}
   - component: {fileID: 268865268100072478}
+  - component: {fileID: 3855445887946072140}
   m_Layer: 0
   m_Name: Blom_07
   m_TagString: Untagged
@@ -91,7 +92,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _blom_07_potion: 0
-  _playerTransform: {fileID: 0}
+--- !u!135 &3855445887946072140
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3230711855046564127}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &6273452741414931940
 GameObject:
   m_ObjectHideFlags: 0
