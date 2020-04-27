@@ -23,7 +23,7 @@ public class Spawnable : UpdatableData
     [SerializeField, Range(0, 1), Tooltip("How much random spawn spread there should be")] float _randomSpread = 0.5f;
     [SerializeField, Range(0, 4), Tooltip("How much should the spawning avert from the grid it is based on? (high values might cause clipping!!!)")] float _offsetAmount = 0.75f;
     [SerializeField, Tooltip("At what height should this object spawn relative to it's origin?")] float _height = 0.5f;
-
+    [SerializeField, Range(0, 10), Tooltip("How much should the objects differ in scale?")] float _scale = 0.0f;
 
     [Header("Size Settings")]
 
@@ -71,6 +71,7 @@ public class Spawnable : UpdatableData
     public float RandomSpread                         { get { return _randomSpread; }               private set { _randomSpread = value; } }
     public float OffsetAmount                         { get { return _offsetAmount; }               private set { _offsetAmount = value; } }
     public float Height                               { get { return _height; }                     private set { _height = value; } }
+    public float Scale                                { get { return _scale; }                      private set { _scale = value; } }
 
     public int Size                                   { get { return _size; }                       private set { _size = value; } }
     public bool OthersCanSpawnInside                  { get { return _othersCanSpawnInside; }       private set { _othersCanSpawnInside = value; } }
@@ -105,6 +106,7 @@ public class Spawnable : UpdatableData
         this._randomSpread = spawnable._randomSpread;
         this._offsetAmount = spawnable._offsetAmount;
         this._height = spawnable._height;
+        this._scale = spawnable._scale;
         this._size = spawnable._size;
         this._othersCanSpawnInside = spawnable._othersCanSpawnInside;
         this._spawnDifferencial = spawnable._spawnDifferencial;

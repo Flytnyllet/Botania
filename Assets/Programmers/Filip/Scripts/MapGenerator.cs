@@ -5,6 +5,13 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using System.Linq;
 
+public enum MapMarkers
+{
+    X,
+    FLOWER,
+    SWOOP
+}
+
 public class MapGenerator : MonoBehaviour, IDragHandler, IScrollHandler, IPointerDownHandler
 {
     static MapGenerator _singletonMapGenerator;
@@ -221,7 +228,7 @@ public class MapGenerator : MonoBehaviour, IDragHandler, IScrollHandler, IPointe
                 if (markerSaves[i].IsWaypoint)
                     AddWaypoint(markerSaves[i].LocalPosition, markerSaves[i].Name, true, markerSaves[i].Index);
                 else
-                    AddWorldMarkerLocal(GetSpriteByIndex(markerSaves[i].Index), markerSaves[i].LocalPosition, markerSaves[i].Name);
+                    AddWorldMarkerLocal((MapMarkers)markerSaves[i].Index, markerSaves[i].LocalPosition, markerSaves[i].Name);
             }
         }
     }
@@ -408,14 +415,14 @@ public class MapGenerator : MonoBehaviour, IDragHandler, IScrollHandler, IPointe
         _spawnedWaypoints.Add(newWaypoint.transform);
     }
 
-    public static void AddWorldMarkerGlobal(Sprite sprite, Vector3 worldPosition, string name)
+    public static void AddWorldMarkerGlobal(MapMarkers mapMarkerType, Vector3 worldPosition, string name)
     {
         Vector3 markerPosition = new Vector3(worldPosition.x / _meshSettings.MeshWorldSize * _chunkSize, worldPosition.z / _meshSettings.MeshWorldSize * _chunkSize, 0.0f);
 
-        AddWorldMarkerLocal(sprite, markerPosition, name);
+        AddWorldMarkerLocal(mapMarkerType, markerPosition, name);
     }
 
-    private static void AddWorldMarkerLocal(Sprite sprite, Vector3 localPosition, string name)
+    private static void AddWorldMarkerLocal(MapMarkers mapMarkerType, Vector3 localPosition, string name)
     {
         //This marker is already loaded in from memory
         if (_worldMarkers.ContainsKey(localPosition))
@@ -425,11 +432,11 @@ public class MapGenerator : MonoBehaviour, IDragHandler, IScrollHandler, IPointe
         float scale = 1 / _pivotSpawnContainer.localScale.x * _markerSize;
         Vector3 markerScale = new Vector3(scale, scale, scale);
 
-        GameObject newMarker = SpawnMarker(sprite, localPosition, markerScale, _markerSize, name);
+        GameObject newMarker = SpawnMarker(mapMarkerType, localPosition, markerScale, _markerSize, name);
         _spawnedWorldMarkers.Add(newMarker.transform);
     }
 
-    private static GameObject SpawnMarker(Sprite sprite, Vector3 position, Vector3 scale, float size, string name)
+    private static GameObject SpawnMarker(MapMarkers mapMarkerType, Vector3 position, Vector3 scale, float size, string name)
     {
         GameObject newMarker = Instantiate(_markerPrefab, Vector3.zero, Quaternion.identity, _markersContainer);
         newMarker.name = name;
@@ -437,13 +444,14 @@ public class MapGenerator : MonoBehaviour, IDragHandler, IScrollHandler, IPointe
         newMarker.transform.localPosition = position;
         newMarker.transform.localScale = scale;
 
+        newMarker.GetComponent<MarkerAnimation>().Setup((int)mapMarkerType);
+
         Image image = newMarker.GetComponentInChildren<Image>();
-        image.sprite = sprite;
 
         image.rectTransform.sizeDelta = new Vector2(size, size);
         image.raycastTarget = false;
 
-        _worldMarkers.Add(position, new WorldMarker(position, false, name, GetIndexBySprite(sprite)));
+        _worldMarkers.Add(position, new WorldMarker(position, false, name, (int)mapMarkerType));
 
         return newMarker;
     }

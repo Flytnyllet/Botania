@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class ObjectSetMapMarker : MonoBehaviour
 {
-    [SerializeField] Sprite _sprite;
+    [SerializeField] MapMarkers _mapMarker;
 
     private void Start()
     {
-        MapGenerator.AddWorldMarkerGlobal(_sprite, transform.position, _sprite.name);
+        MapGenerator.AddWorldMarkerGlobal(_mapMarker, transform.position, _mapMarker.ToString());
     }
 }

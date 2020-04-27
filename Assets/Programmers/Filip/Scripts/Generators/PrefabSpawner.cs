@@ -107,6 +107,9 @@ public class PrefabSpawner
 
                                 OccupyWithObject(x, y, spawnables[i].Size, meshSettings.ChunkSize, ref localOccupiedGrid);
 
+                                float scale = spawnables[i].Scale * spawnables[i].OffsetNoise[x, y] + 1;
+                                Vector3 newScale = new Vector3(scale, scale, scale);
+
                                 //Current local positions in x and y in chunk, used only to spawn from
                                 float xPos = x + STANDARD_GRID_OFFSET + (STANDARD_GRID_OFFSET * spawnables[i].Size) - meshSettings.ChunkSize / 2 - 1; //Due to the border around the mesh + STANDARD_GRID_OFFSET corrects it to the right grid position
                                 float zPos = y + STANDARD_GRID_OFFSET + (STANDARD_GRID_OFFSET * spawnables[i].Size) - meshSettings.ChunkSize / 2 - 1; //Due to the border around the mesh + STANDARD_GRID_OFFSET corrects it to the right grid position
@@ -125,7 +128,8 @@ public class PrefabSpawner
                                 GameObject spawnObject = spawnables[i].GetPrefab(x, y);
                                 float localRotationAmount = spawnables[i].OffsetNoise[x, y] * DEGREES_360 * spawnables[i].RotationAmount;
 
-                                spawnInfo.Add(new SpawnInfo(spawnObject, detailType, objectPosition, normal, tiltAmount, localRotationAmount, chunkCoord, itemIndex, spawnables[i]. Size != 0, Vector3.one, partialSpawn));
+
+                                spawnInfo.Add(new SpawnInfo(spawnObject, detailType, objectPosition, normal, tiltAmount, localRotationAmount, chunkCoord, itemIndex, spawnables[i]. Size != 0, newScale, partialSpawn));
                             }
                         }
                     }            
