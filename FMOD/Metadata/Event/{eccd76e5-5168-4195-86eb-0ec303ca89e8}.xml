@@ -157,7 +157,7 @@
 			<value>true</value>
 		</property>
 		<property name="triggerProbability">
-			<value>40</value>
+			<value>34</value>
 		</property>
 		<property name="isAsync">
 			<value>true</value>
@@ -187,7 +187,7 @@
 			<value>true</value>
 		</property>
 		<property name="triggerProbability">
-			<value>28</value>
+			<value>34</value>
 		</property>
 		<property name="isAsync">
 			<value>true</value>
@@ -214,7 +214,7 @@
 			<value>true</value>
 		</property>
 		<property name="triggerProbability">
-			<value>32.5</value>
+			<value>34</value>
 		</property>
 		<property name="isAsync">
 			<value>true</value>
@@ -240,7 +240,7 @@
 			<value>true</value>
 		</property>
 		<property name="triggerProbability">
-			<value>61.5</value>
+			<value>34</value>
 		</property>
 		<property name="start">
 			<value>14</value>
@@ -257,7 +257,7 @@
 			<value>true</value>
 		</property>
 		<property name="triggerProbability">
-			<value>81</value>
+			<value>34</value>
 		</property>
 		<property name="isAsync">
 			<value>true</value>
@@ -280,7 +280,7 @@
 			<value>true</value>
 		</property>
 		<property name="triggerProbability">
-			<value>85</value>
+			<value>34</value>
 		</property>
 		<property name="start">
 			<value>23.5</value>
@@ -297,7 +297,7 @@
 			<value>true</value>
 		</property>
 		<property name="triggerProbability">
-			<value>68</value>
+			<value>34</value>
 		</property>
 		<property name="isAsync">
 			<value>true</value>
@@ -385,7 +385,7 @@
 	</object>
 	<object class="NamedMarker" id="{2d78b3e6-256e-427b-a786-aef64c152f6f}">
 		<property name="position">
-			<value>12.090106732348112</value>
+			<value>12.5</value>
 		</property>
 		<property name="name">
 			<value>rnd_start B</value>
@@ -659,7 +659,7 @@
 	<object class="MixerBusFader" id="{87ff4289-95b9-4c6e-9464-72f886892d8b}" />
 	<object class="SpatialiserEffect" id="{9830f676-2ce7-460f-bffd-f0104dd5ded7}">
 		<property name="maximumDistance">
-			<value>25</value>
+			<value>35</value>
 		</property>
 		<property name="extentMode">
 			<value>1</value>
@@ -681,11 +681,17 @@
 		</relationship>
 	</object>
 	<object class="ThreeEQEffect" id="{43e6bdda-0d83-45e6-b99c-7255e4f15960}">
+		<property name="lowGain">
+			<value>6</value>
+		</property>
 		<property name="highGain">
-			<value>-5.5</value>
+			<value>-2</value>
+		</property>
+		<property name="lowCrossover">
+			<value>620</value>
 		</property>
 		<property name="highCrossover">
-			<value>5200</value>
+			<value>2800</value>
 		</property>
 		<property name="crossoverSlope">
 			<value>2</value>

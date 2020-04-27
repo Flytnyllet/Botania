@@ -15,9 +15,11 @@ public class Player_Emitter : MonoBehaviour
 
     [SerializeField]
     private Player_Data player_Data;
+    private FPSMovement _movement;
 
     private void Awake()
     {
+        _movement = GetComponentInParent<FPSMovement>();
         event_P_Mov_Footsteps = RuntimeManager.CreateInstance(player_Data.p_mov_rnd_footsteps);
             EventDescription groundMaterialEventDescription;
             event_P_Mov_Footsteps.getDescription(out groundMaterialEventDescription);
@@ -52,38 +54,5 @@ public class Player_Emitter : MonoBehaviour
         event_Book_Open.release();
         event_Book_Page.release();
         event_Book_Close.release();
-    }
-
-    private void Start()
-    {
-        StartCoroutine(TestSound());
-    }
-
-    private IEnumerator TestSound()
-    {
-        yield return new WaitForSeconds(1);
-        Init_Book_Open();
-        yield return new WaitForSeconds(2);
-        Init_Book_Page();
-        yield return new WaitForSeconds(1);
-        Init_Book_Page();
-        yield return new WaitForSeconds(2);
-        Init_Book_Close();
-
-        yield return new WaitForSeconds(4);
-        Init_Footsteps(0);
-        yield return new WaitForSeconds(0.8f);
-        Init_Footsteps(0);
-        yield return new WaitForSeconds(0.8f);
-        Init_Footsteps(0);
-        yield return new WaitForSeconds(0.8f);
-        Init_Footsteps(0);
-        yield return new WaitForSeconds(0.8f);
-        Init_Footsteps(0);
-        yield return new WaitForSeconds(0.8f);
-        Init_Footsteps(0);
-        yield return new WaitForSeconds(0.8f);
-        Init_Footsteps(0);
-        yield return new WaitForSeconds(0.8f);
     }
 }

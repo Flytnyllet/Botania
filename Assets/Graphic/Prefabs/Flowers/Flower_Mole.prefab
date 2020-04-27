@@ -116,6 +116,8 @@ MonoBehaviour:
   _pickupScript: {fileID: 1647124272}
   _animator: {fileID: 6862455786539061685}
   _hideTime: 3
+  event_Digging: event:/blom/blom___common_01_mole_digging
+  event_Emerging: event:/blom/blom___common_01_mole_emerging
 --- !u!114 &1647124271
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -128,6 +130,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70c2b09e2695b494b8572a2ea101535c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _spawnPartially: 0
 --- !u!114 &1647124272
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -172,7 +175,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 6108613376685085768}
   m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -3.049429e-17, y: 1.36298975e-17, z: 2.5261982e-17}
 --- !u!1 &1322096251713775098
 GameObject:
   m_ObjectHideFlags: 0
@@ -202,7 +205,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 6108613376685085768}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 4.2166816e-17, y: 7.462002e-18, z: -2.9683327e-18}
 --- !u!1 &1531555330404642446
 GameObject:
   m_ObjectHideFlags: 0
@@ -232,7 +235,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 6108613376685085768}
   m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -3.9090382e-17, y: -5.2299892e-18, z: -2.0286633e-17}
 --- !u!1 &2589202229695284679
 GameObject:
   m_ObjectHideFlags: 0
@@ -262,7 +265,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 6108613376685085768}
   m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 7.806752e-19, y: 8.993568e-18, z: -4.2899383e-17}
 --- !u!1 &4479559681333051961
 GameObject:
   m_ObjectHideFlags: 0
@@ -414,4 +417,4 @@ Transform:
   m_Children: []
   m_Father: {fileID: 6108613376685085768}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 1.9830527e-17, y: 7.886927e-19, z: 3.7168166e-17}
