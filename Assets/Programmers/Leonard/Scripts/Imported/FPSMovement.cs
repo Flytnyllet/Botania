@@ -216,7 +216,7 @@ public class FPSMovement : MonoBehaviour
 		bool onHit = Physics.Raycast(rayStart, rayDirection, out hit, rayDistance, layerMask);
 		if (onHit)
 		{
-			Debug.Log("Bee");
+			//Debug.Log("Bee");
 			return true;
 		}
 
