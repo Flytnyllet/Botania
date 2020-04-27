@@ -277,7 +277,7 @@ public class SpawnInfo
 
         _spawnedTransform = newObject.transform;
 
-        PrefabSaveData saveDataScript = newObject.GetComponent<PrefabSaveData>();
+        PrefabSaveData saveDataScript = newObject.GetComponentInChildren<PrefabSaveData>();
 
         //Enter this loop only for object dealing with saving
         if (saveDataScript != null)

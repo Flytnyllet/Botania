@@ -31,6 +31,13 @@ public class TerrainGenerator : MonoBehaviour
     Dictionary<Vector2, TerrainChunk> _terrainChunkDictionary = new Dictionary<Vector2, TerrainChunk>();
     List<TerrainChunk> _visibleTerrainChunks = new List<TerrainChunk>();
 
+    Timer _spawnTimer;
+
+    private void Awake()
+    {
+        _spawnTimer = new Timer(0.25f);
+    }
+
     private void Start()
     {
         _viewer = Player.GetPlayerTransform();
@@ -48,15 +55,10 @@ public class TerrainGenerator : MonoBehaviour
 
     private void Update()
     {
+        _spawnTimer.Time += Time.deltaTime;
         _viewerPosition = new Vector2(_viewer.position.x, _viewer.position.z);
 
-        //This is stupid and should not be needed but here it is, kms
-        //Without this idiotic little poop the player clips through the world when in origin
-        //Why? Who knows...
-        if (_viewerPosition == Vector2.zero)
-            _viewerPosition += Vector2.right * 0.01f;
-
-        if (_viewerPosition != _viewerPositionOld)
+        if (_viewerPosition != _viewerPositionOld || !_spawnTimer.Expired())
         {
             for (int i = 0; i < _visibleTerrainChunks.Count; i++)
             {
