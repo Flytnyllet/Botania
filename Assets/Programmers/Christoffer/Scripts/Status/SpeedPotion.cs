@@ -13,6 +13,7 @@ public class SpeedPotion : Potion_Template
 	float factor;
 	float duration;
 	CharacterStatType type;
+	StatModifier potionEffect;
 
 	public SpeedPotion(float factor, float duration)
 	{
@@ -33,24 +34,40 @@ public class SpeedPotion : Potion_Template
 		this.type = type;
 	}
 
-	public override void PotionEffectStart(FPSMovement p)
+	public override bool PotionEffectStart(FPSMovement p)
 	{
 		switch (type)
 		{
 			case CharacterStatType.Jump:
-				p._jumpForce.AddModifier(new StatModifier(flat, StatType.Flat, this), duration);
-				p._jumpForce.AddModifier(new StatModifier(factor, StatType.PercentMult, this), duration);
+				if (!p._jumpForce.GetStatModifiers().Exists(x => x.Source == this))
+				{
+					potionEffect = new StatModifier(flat, StatType.Flat, this);
+					p._jumpForce.AddModifier(potionEffect, duration);
+					p._jumpForce.AddModifier(new StatModifier(factor, StatType.PercentMult, this), duration);
+					return true;
+				}
 				break;
 			case CharacterStatType.Gravity:
-				p._gravity.AddModifier(new StatModifier(flat, StatType.Flat, this), duration);
-				p._gravity.AddModifier(new StatModifier(factor, StatType.PercentMult, this), duration);
+				if (!p._gravity.GetStatModifiers().Exists(x => x.Source == this))
+				{
+					potionEffect = new StatModifier(flat, StatType.Flat, this);
+					p._gravity.AddModifier(potionEffect, duration);
+					p._gravity.AddModifier(new StatModifier(factor, StatType.PercentMult, this), duration);
+					return true;
+				}
 				break;
 
 			default:
-				p._speed.AddModifier(new StatModifier(flat, StatType.Flat, this), duration);
-				p._speed.AddModifier(new StatModifier(factor, StatType.PercentMult, this), duration);
+				if (!(p._speed.GetStatModifiers().Exists(x => x.Source == this)))
+				{
+					potionEffect = new StatModifier(flat, StatType.Flat, this);
+					p._speed.AddModifier(potionEffect, duration);
+					p._speed.AddModifier(new StatModifier(factor, StatType.PercentMult, this), duration);
+					return true;
+				}
 				break;
 		}
+		return false;
 	}
 
 	public override void PotionEffectEnd(FPSMovement p)

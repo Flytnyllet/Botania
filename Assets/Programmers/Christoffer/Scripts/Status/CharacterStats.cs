@@ -65,6 +65,10 @@ public class CharacterStats
     }
 
 
+	public List<StatModifier> GetStatModifiers()
+	{
+		return statModifiers;
+	}
 
     public virtual bool RemoveModifier(StatModifier mod)
     {

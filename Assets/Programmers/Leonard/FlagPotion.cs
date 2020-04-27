@@ -12,9 +12,10 @@ public class FlagPotion : Potion_Template
 		this.effect = effect;
 		this.duration = duration;
 	}
-	public override void PotionEffectStart(FPSMovement p)
+	public override bool PotionEffectStart(FPSMovement p)
 	{
 		p._flags.AddFlag(effect, duration);
+		return true;
 	}
 
 	public override void PotionEffectEnd(FPSMovement p)
