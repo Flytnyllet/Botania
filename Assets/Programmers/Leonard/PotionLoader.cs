@@ -38,12 +38,6 @@ public class PotionLoader : MonoBehaviour
 		switch (_potionType)
 		{
 			case PotionType.Speed:
-				//intparam = targetDistortion,  floatParam = distort time to lerp
-				EventParameter param = new EventParameter() { intParam = -40, floatParam = 2 };
-				EventManager.TriggerEvent(CameraEffect.CAMERA_SPEED_DISTORT, param);
-				param.intParam = 0;
-				ActionDelayer.RunAfterDelay(() => { EventManager.TriggerEvent(CameraEffect.CAMERA_SPEED_DISTORT, param); }, _potionDuration);
-
 				return new SpeedPotion(_potionFactor, _potionFlat, _potionDuration);
 
 			case PotionType.Flag:

@@ -63,7 +63,7 @@ public class SpeedPotion : Potion_Template
                     potionEffect = new StatModifier(flat, StatType.Flat, this);
                     p._speed.AddModifier(potionEffect, duration);
                     p._speed.AddModifier(new StatModifier(factor, StatType.PercentMult, this), duration);
-                    EventParameter param = new EventParameter() { intParam = 50, floatParam = 1 };
+                    EventParameter param = new EventParameter() { intParam = -50, floatParam = 1 };
                     EventManager.TriggerEvent(EventNameLibrary.SPEED_INCREASE, param);
                     param.intParam = 0;
                     ActionDelayer.RunAfterDelay(() =>

@@ -43,6 +43,10 @@ public static class CharacterState
         ActionDelayer.RunAfterDelay(() => { }, time);
     }
 
+    public static bool IsFlagActive(ABILITY_FLAG flag)
+    {
+        return (_abilityFlags.Contains(flag));
+    }
 
     public static void SetControlState(CHARACTER_CONTROL_STATE state)
     {
