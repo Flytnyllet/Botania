@@ -16,67 +16,118 @@ public class ThreadedDataRequester : MonoBehaviour
 
     }
 
-    Queue<ThreadInfo> _dataQueue = new Queue<ThreadInfo>();
+    static ConcurrentQueue<Action> _callbacks = new ConcurrentQueue<Action>();
+    static ConcurrentQueue<Action> _restrictedCallbacks = new ConcurrentQueue<Action>();
+    //Queue<ThreadInfo> _dataQueue = new Queue<ThreadInfo>();
 
+    // // Har kommenterat ut för tillfället, då jag letar efter ett problem
+    // // med att klienter drar 9GB ram för mig, vet inte om det är här än.
 
-    public static void RequestData(Func<object> generateData, Action<object> callback)
+    //public static void RequestData(Func<object> generateData, Action<object> callback)
+    //{
+    //    ThreadStart threadStart = delegate { instance.DataThread(generateData, callback); };
+
+    //    new Thread(threadStart).Start();
+    //}
+
+    //void DataThread(Func<object> generateData, Action<object> callback)
+    //{
+    //    object data = generateData();
+
+    //    //If heightMaphreadqueue is being accessed by another thread, WAIT! :D 
+    //    lock (_dataQueue)
+    //    {
+    //        _dataQueue.Enqueue(new ThreadInfo(callback, data));
+    //    }
+    //}
+
+    public static void AddToCallbackQueue(Action callback)
     {
-        ThreadStart threadStart = delegate { instance.DataThread(generateData, callback); };
-
-        new Thread(threadStart).Start();
-    }
-
-    void DataThread(Func<object> generateData, Action<object> callback)
-    {
-        object data = generateData();
-
-        //If heightMaphreadqueue is being accessed by another thread, WAIT! :D 
-        lock (_dataQueue)
+        try
         {
-            _dataQueue.Enqueue(new ThreadInfo(callback, data));
+            _callbacks.Enqueue(callback);
+        }
+        catch (Exception e)
+        {
+            Debug.LogError(e);
+        }
+    }
+    public static void AddToRestrictedCallbackQueue(Action callback)
+    {
+        try
+        {
+            _restrictedCallbacks.Enqueue(callback);
+        }
+        catch (Exception e)
+        {
+            Debug.LogError(e);
         }
     }
 
     private void Update()
     {
-        if (_dataQueue.Count > 0)
+        //if (_dataQueue.Count > 0)
+        //{
+        //    for (int i = 0; i < _dataQueue.Count; i++)
+        //    {
+        //        ThreadInfo threadInfo = _dataQueue.Dequeue();
+        //        threadInfo.callback(threadInfo.parameter);
+        //    }
+        //}
+        while (_callbacks.TryDequeue(out var callback))
         {
-            for (int i = 0; i < _dataQueue.Count; i++)
+            try
             {
-                ThreadInfo threadInfo = _dataQueue.Dequeue();
-                threadInfo.callback(threadInfo.parameter);
+                callback();
             }
+            catch (Exception e)
+            {
+                Debug.LogError(e);
+            }
+        }
+        int i = 10;
+        while (_restrictedCallbacks.TryDequeue(out var callback) && i > 0)
+        {
+            try
+            {
+                callback();
+            }
+            catch (Exception e)
+            {
+                Debug.LogError(e);
+            }
+            i--;
         }
     }
 
-
-    //static ConcurrentQueue<Action> callbacks = new ConcurrentQueue<Action>();
-
-    //public static void RequestData(Func<object> dataGenerator, Action<object> callback)
+    //IEnumerator Callback(Action<object> callback, object parameter, int waitAmount)
     //{
-    //    Task.Run(() =>
-    //    {
-    //        try
-    //        {
-    //            var data = dataGenerator();
-
-    //            callbacks.Enqueue(() => callback(data));
-
-    //        }
-    //        catch (Exception e)
-    //        {
-    //            Debug.LogError(e);
-    //        }
-    //    });
+    //    float waitTime = UnityEngine.Random.Range(0, 1);
+    //    yield return new WaitForSecondsRealtime(waitTime);
+    //    callback(parameter);
     //}
 
-    //private void Update()
-    //{
-    //    while (callbacks.TryDequeue(out var callback))
-    //    {
-    //        callback();
-    //    }
-    //} //Just testing some performance differences //Jens
+
+
+    public static void RequestData(Func<object> dataGenerator, Action<object> callback)
+    {
+        Task.Run(() =>
+        {
+            try
+            {
+                var data = dataGenerator();
+
+                _callbacks.Enqueue(() => callback(data));
+
+            }
+            catch (Exception e)
+            {
+                Debug.LogError(e);
+            }
+        });
+    }
+
+
 
 
     struct ThreadInfo

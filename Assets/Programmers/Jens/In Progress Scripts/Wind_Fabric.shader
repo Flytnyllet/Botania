@@ -4,7 +4,11 @@
 		_MainTex("Texture", 2D) = "white" {}
 		_EmissionMap("Emission Map", 2D) = "black" {}
 		_PhysicsMap("Physics Map", 2D) = "white" {}
+		_Alpha("Alpha Map", 2D) = "white" {}
+		_noiseTex("Noise", 2D) = "white" {}
+		_WindSize("Wind Size", float) = 1.0
 		_Speed("Speed", float) = 1.0
+		_Strenght("Stremght", float) = 0.5
 	}
 		SubShader{
 		  Tags { "RenderType" = "Opaque" }
@@ -14,7 +18,7 @@
 		  #pragma target 3.0
 
 		struct Input {
-			  float2 uv_MainTex; 
+			  float2 uv_MainTex;
 			  float4 screenPos;
 		  };
 
@@ -29,8 +33,12 @@
 		sampler2D _MainTex;
 		sampler2D _EmissionMap;
 		sampler2D _PhysicsMap;
+		sampler2D _Alpha;
+		sampler2D _noiseTex;
 		float4 _Color;
 		half _Speed;
+		half _WindSize;
+		half _Strenght;
 
 
 
@@ -56,19 +64,23 @@
 		  float3 worldPos = mul(unity_ObjectToWorld, float4(v.vertex.xyz, 1)).xyz;
 
 		  float tex = tex2Dlod(_PhysicsMap, float4(v.texcoord.xy, 0, 0)).r;
-		  
-		  float largeWave = sin(worldPos.x + worldPos.z + worldPos.y + _Time.y*_Speed);
-		  float smallWave = sin(worldPos.x + worldPos.z + worldPos.y + _Time.y*_Speed*0.25);
+		  float sinW, cosW;
+		  sincos(worldPos.x + worldPos.z + worldPos.y + _Time.y*_Speed, sinW, cosW);
+		  float noise = tex2Dlod(_noiseTex, float4(sinW,0, 0, 0)).r;
+
+		  float largeWaveSin = sin(worldPos.x + worldPos.z + worldPos.y + _Time.y*_WindSize);
+		  float smallWaveSin = sin(worldPos.x + worldPos.z + worldPos.y + _Time.y*_WindSize*noise);
 
 		  //v.vertex.x += cos * v.vertex.x*0.03f;
-		  v.vertex.y += tex * (largeWave+smallWave)*0.1f;
+		  v.vertex.x += tex * (sinW )*_Strenght;
+		  v.vertex.y += tex * (cosW)*_Strenght;
 	  }
 
 
 	  void surf(Input IN, inout SurfaceOutput o) {
 		  fixed4 c = tex2D(_MainTex, IN.uv_MainTex)*_Color;
 		  o.Albedo = c.rgb;
-		  o.Alpha = c.a; 
+		  o.Alpha = tex2D(_Alpha, IN.uv_MainTex)*_Color;
 		  float2 pos = IN.screenPos.xy / IN.screenPos.w;
 		  pos *= _ScreenParams.xy; // pixel position
 		  float4x4 thresholdMatrix =

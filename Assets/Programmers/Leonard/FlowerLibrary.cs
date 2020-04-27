@@ -2,9 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
-
-
 public static class FlowerLibrary
 {
     [System.Serializable]
@@ -80,12 +77,12 @@ public static class FlowerLibrary
 		*/
     }
 
-    public static void AddFlower(string flower, int amount)
+    static void AddFlower(string flower, int amount)
     {
         _flowerTypes.Add(flower, new FlowerData(amount));
     }
 
-    public static void AddPotion(string potion, int amount)
+    static void AddPotion(string potion, int amount)
     {
         _potionTypes.Add(potion, amount);
     }
@@ -147,7 +144,7 @@ public static class FlowerLibrary
             _flowerTypes[flowerName].Discovered += amount;
 
         }
-        else AddFlower(flowerName, 1);
+        else AddFlower(flowerName, amount);
 
         //Debug.Log($"{flowerName} amount = {_flowerTypes[flowerName].Amount}");
 

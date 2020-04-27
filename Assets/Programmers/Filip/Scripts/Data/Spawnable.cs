@@ -23,11 +23,12 @@ public class Spawnable : UpdatableData
     [SerializeField, Range(0, 1), Tooltip("How much random spawn spread there should be")] float _randomSpread = 0.5f;
     [SerializeField, Range(0, 4), Tooltip("How much should the spawning avert from the grid it is based on? (high values might cause clipping!!!)")] float _offsetAmount = 0.75f;
     [SerializeField, Tooltip("At what height should this object spawn relative to it's origin?")] float _height = 0.5f;
-
+    [SerializeField, Range(0, 10), Tooltip("How much should the objects differ in scale?")] float _scale = 0.0f;
 
     [Header("Size Settings")]
 
-    [SerializeField, Range(0, 30), Tooltip("How many squares does this object occupy? (ZERO will be treated as the object can spawn inside other objects (such as grass))")] int _size;
+    [SerializeField, Range(1, 30), Tooltip("How many squares does this object occupy?")] int _size;
+    [SerializeField, Tooltip("Do not have this enabled for pickups!!! It will crash!")] bool _othersCanSpawnInside = false;
     [SerializeField, Range(0, 15), Tooltip("How high can the difference between highest and lowest point in spawn area be for it to spawn?")] float _spawnDifferencial;
 
 
@@ -70,8 +71,10 @@ public class Spawnable : UpdatableData
     public float RandomSpread                         { get { return _randomSpread; }               private set { _randomSpread = value; } }
     public float OffsetAmount                         { get { return _offsetAmount; }               private set { _offsetAmount = value; } }
     public float Height                               { get { return _height; }                     private set { _height = value; } }
+    public float Scale                                { get { return _scale; }                      private set { _scale = value; } }
 
     public int Size                                   { get { return _size; }                       private set { _size = value; } }
+    public bool OthersCanSpawnInside                  { get { return _othersCanSpawnInside; }       private set { _othersCanSpawnInside = value; } }
     public float SpawnDifferencial                    { get { return _spawnDifferencial; }          private set { _spawnDifferencial = value; } }
 
     public float SoftMinAmount                        { get { return _softMinAmount; }              private set { _softMinAmount = value; } }
@@ -103,7 +106,9 @@ public class Spawnable : UpdatableData
         this._randomSpread = spawnable._randomSpread;
         this._offsetAmount = spawnable._offsetAmount;
         this._height = spawnable._height;
+        this._scale = spawnable._scale;
         this._size = spawnable._size;
+        this._othersCanSpawnInside = spawnable._othersCanSpawnInside;
         this._spawnDifferencial = spawnable._spawnDifferencial;
         this._softMinAmount = spawnable._softMinAmount;
         this._hardMinHeight = spawnable._hardMinHeight;

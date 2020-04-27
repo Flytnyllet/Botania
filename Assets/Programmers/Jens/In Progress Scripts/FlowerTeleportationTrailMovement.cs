@@ -11,9 +11,16 @@ public class FlowerTeleportationTrailMovement : MonoBehaviour
     //Unity är retards och tvingar en göra en fet array för att använda deras fuckade TrailRenderer.GetPositions()
     Vector3[] _trailPositions = new Vector3[100];
 
+    public void StartMovement(Transform target)
+    {
+        StartCoroutine(followTarget(target));
+    }
+
     public IEnumerator followTarget(Transform target)
     {
-        while (Vector3.Distance(this.transform.position, target.position) > 0.4)
+        CharacterController controller = GetComponent<CharacterController>();
+        float halfHeight = controller.bounds.size.y / 2;
+        while (Vector3.Distance(this.transform.position, target.position) >halfHeight+0.2f)
         {
             Vector3 direction = (target.position - this.transform.position).normalized;
             _controller.Move(_speed * direction * Time.deltaTime);

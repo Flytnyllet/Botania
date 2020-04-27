@@ -4,27 +4,37 @@ using UnityEngine;
 
 public class FPSMovement : MonoBehaviour
 {
-	// FAKE SINGLETON
-	public static FPSMovement playerMovement;
+    // FAKE SINGLETON
+    public static FPSMovement playerMovement;
 
+    // Tag Handling (Replace with LayerMasks)
     const string DUCK_BUTTON = "Duck";
     [SerializeField] string GROUND_TAG = "null";
+    [SerializeField] string WATER_TAG = "null";
 
     [Header("Movement")]
     CharacterController charCon;
     public CharacterStats _speed;
     public CharacterStats _jumpForce;
     public CharacterStats _gravity;
+    public CharacterFlags _flags;
     public Vector3 _velocity;
     [SerializeField] float _crawlSpeedFactor = 0.5f;
     [SerializeField] float _duckDistance = 0.4f;
     [SerializeField] float _slidingSpeedFactor = 0.5f;
     //Vector3 _slopeDirection;
-    [SerializeField] float _groundRayDistance = 3f;
+    [SerializeField] float _groundRayExtraDist = 3f;
+    [SerializeField] float _allowedJumpDistance = 0.2f;
+    float _groundRayDistance;
     [SerializeField] float _minSlidingAngle = 25f;
     [SerializeField] float _slopeWalkCorrection = 2f;
     [SerializeField] float _strafingSpeed = 5f;
+    [SerializeField] float _jumpTimeout = 0.3f;
+    [SerializeField] LayerMask layerMask;
+    float _lastJump = 0;
+    Vector3 _cameraStartPosition;
     bool _inAir = false;
+    bool _isDucking = false;
 
     [Header("Bobbing")]
     [SerializeField] float _bobbingAmount = 0.05f;
@@ -33,27 +43,27 @@ public class FPSMovement : MonoBehaviour
     float _defPosY;
 
     Transform _playerCam;
+    //public LayerMask layerMask;
 
-    public LayerMask layerMask;
+    // !OBS Weird bug causing script to disable itself when awake is used.
+    void Awake()
+    {
+        playerMovement = this;
+    }
 
-	// !OBS Weird bug causing script to disable itself when awake is used.
-	void Awake()
-	{
-		playerMovement = this;
-	}
-
-	void Start()
+    void Start()
     {
         charCon = GetComponent<CharacterController>();
         _playerCam = transform.Find("PlayerCam");
+        _cameraStartPosition = _playerCam.localPosition;
+        _defPosY = _cameraStartPosition.y;
         CharacterState.SetControlState(CHARACTER_CONTROL_STATE.PLAYERCONTROLLED);
-        _defPosY = _playerCam.localPosition.y;
     }
 
     void Update()
     {
-        //if (CharacterState.Control_State == CHARACTER_CONTROL_STATE.PLAYERCONTROLLED)
-        //{
+        if (CharacterState.Control_State == CHARACTER_CONTROL_STATE.PLAYERCONTROLLED || CharacterState.Control_State == CHARACTER_CONTROL_STATE.MENU)
+        {
             // == Variables ==
             //Input
             float x = Input.GetAxis("Horizontal");
@@ -101,7 +111,7 @@ public class FPSMovement : MonoBehaviour
             if (Input.GetButtonDown(DUCK_BUTTON))
                 Ducking(-_duckDistance);
             else if (Input.GetButtonUp(DUCK_BUTTON))
-                Ducking(_duckDistance);
+                Ducking(0);
 
             //Gravity
             charCon.Move(_velocity * Time.deltaTime);
@@ -114,7 +124,7 @@ public class FPSMovement : MonoBehaviour
             //bool groundRay = Physics.Raycast(transform.position, Vector3.down * 2, 2f);
             /*if (_velocity.y > 0)
                 groundRay = false; */
-        //}
+        }
     }
 
     void Strafing(float horizontal, float vertical)
@@ -146,8 +156,8 @@ public class FPSMovement : MonoBehaviour
     void Ducking(float duckDirection)
     {
         Vector3 ducking = new Vector3(0, duckDirection, 0);
-        _playerCam.localPosition += ducking;
-        _defPosY += duckDirection;
+        _playerCam.localPosition = _cameraStartPosition + ducking;
+        _defPosY = _cameraStartPosition.y + duckDirection;
     }
 
     void Sliding(float z, Vector3 slopeDirection)

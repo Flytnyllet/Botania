@@ -10,6 +10,7 @@ public class TerrainChunk
 
     GameObject _meshObject;
     Vector2 _sampleCenter;
+    public Vector2 SampleCenter { get => _sampleCenter; }
     Vector2 _chunkCoord;
     Bounds _bounds;
 
@@ -29,12 +30,13 @@ public class TerrainChunk
 
     HeightMapSettings _heightMapSettings;
     MeshSettings _meshSettings;
+    public MeshSettings MeshSettings { get => _meshSettings; }
     Transform _viewer;
 
     SpawnInfoRequester _spawnInfoRequester;
     Biome _biome;
 
-    public TerrainChunk(Vector2 coord, HeightMapSettings heightMapSettings, MeshSettings meshSettings, LODInfo[] detailLevels, int colliderLODIndex, Transform parent, Transform viewer, Material material, Biome biome)
+    public TerrainChunk(Vector2 coord, HeightMapSettings heightMapSettings, MeshSettings meshSettings, LODInfo[] detailLevels, int colliderLODIndex, Transform parent, Transform viewer, Material material, Biome biome, GroundMaterialGenerator materialGenerator)
     {
         this._biome = biome;
         this.Coord = coord;
@@ -45,7 +47,7 @@ public class TerrainChunk
         this._viewer = viewer;
         this._chunkCoord = coord;
 
-        _spawnInfoRequester = new SpawnInfoRequester();
+        _spawnInfoRequester = new SpawnInfoRequester(_biome);
 
         _sampleCenter = coord * meshSettings.MeshWorldSize / meshSettings.MeshScale;
         Vector2 position = coord * meshSettings.MeshWorldSize;
@@ -55,7 +57,7 @@ public class TerrainChunk
         _meshRenderer = _meshObject.AddComponent<MeshRenderer>();
         _meshFilter = _meshObject.AddComponent<MeshFilter>();
         _meshCollider = _meshObject.AddComponent<MeshCollider>();
-        _meshRenderer.material = material;
+        _meshRenderer.material = materialGenerator.MakeMaterial(MeshSettings.ChunkSize, _sampleCenter, _meshRenderer);
 
         _meshObject.transform.position = new Vector3(position.x, 0, position.y);
         _meshObject.transform.parent = parent;
@@ -135,9 +137,9 @@ public class TerrainChunk
                             _spawnInfoRequester.SpawnSpawnInfo(_lodMeshes[lodIndex].MeshData, _meshSettings.ChunkSize, lodIndex, _meshFilter.transform);
                         }
                         else if (!_spawnInfoRequester.HasRequestedSpawnInfo) //Request spawninfo!
-                            _spawnInfoRequester.RequestSpawnInfo(lodIndex, _detailLevels[lodIndex].levelOfDetail, _biome, _heightMap, _lodMeshes[lodIndex].MeshData, _meshSettings, new Vector2(_sampleCenter.x, -_sampleCenter.y), _chunkCoord, _meshFilter.transform);
-                    }     
-                } 
+                            _spawnInfoRequester.RequestSpawnInfo(lodIndex, _detailLevels[lodIndex].levelOfDetail, _heightMap, _lodMeshes[lodIndex].MeshData, _meshSettings, new Vector2(_sampleCenter.x, -_sampleCenter.y), _chunkCoord, _meshFilter.transform);
+                    }
+                }
 
             }
 
@@ -219,6 +221,8 @@ class LODMesh
 
 class SpawnInfoRequester
 {
+    Biome _thisBiome;
+
     bool[] _isSet = new bool[3];
     bool[] _hasSpawnInfo = new bool[3];
     int _currentSpawningLodIndex = -1;
@@ -237,6 +241,11 @@ class SpawnInfoRequester
     public bool HasSpawnInfo(int index) { return _hasSpawnInfo[index]; }
 
     bool _areNormalSet = false;
+
+    public SpawnInfoRequester(Biome biome)
+    {
+        this._thisBiome = new Biome(biome);
+    }
 
     public void Set(int index)
     {
@@ -271,14 +280,13 @@ class SpawnInfoRequester
         _updateCallback();
     }
 
-    public void RequestSpawnInfo(int detailType, int levelOfDetail, Biome biome, HeightMap heightMap, MeshData meshData, MeshSettings meshSettings, Vector2 sampleCenter, Vector2 chunkCoord, Transform container)
+    public void RequestSpawnInfo(int detailType, int levelOfDetail, HeightMap heightMap, MeshData meshData, MeshSettings meshSettings, Vector2 sampleCenter, Vector2 chunkCoord, Transform container)
     {
-        OnFirstSpawn(detailType, levelOfDetail, biome, heightMap, meshData, meshSettings, sampleCenter, chunkCoord, container);
+        OnFirstSpawn(detailType, levelOfDetail, heightMap, meshData, meshSettings, sampleCenter, chunkCoord, container);
 
-        biome = new Biome(biome);
         HasRequestedSpawnInfo = true;
         _currentSpawningLodIndex = detailType;
-        ThreadedDataRequester.RequestData(() => prefabSpawner.SpawnOnChunk(detailType, levelOfDetail, biome, heightMap, meshData, meshSettings, sampleCenter, chunkCoord), OnSpawnInfoReceived);
+        ThreadedDataRequester.RequestData(() => prefabSpawner.SpawnOnChunk(detailType, levelOfDetail, _thisBiome, heightMap, meshData, meshSettings, sampleCenter, chunkCoord), OnSpawnInfoReceived);
     }
 
     public void SpawnSpawnInfo(MeshData meshData, int chunkSize, int lodIndex, Transform container)
@@ -297,31 +305,30 @@ class SpawnInfoRequester
     }
 
     //Called only when loading in high LOD first, (spawn or teleport -> NOT THREADED!)
-    void OnFirstSpawn(int detailType, int levelOfDetail, Biome biome, HeightMap heightMap, MeshData meshData, MeshSettings meshSettings, Vector2 sampleCenter, Vector2 chunkCoord, Transform container)
+    void OnFirstSpawn(int detailType, int levelOfDetail, HeightMap heightMap, MeshData meshData, MeshSettings meshSettings, Vector2 sampleCenter, Vector2 chunkCoord, Transform container)
     {
         if (detailType == 2 || IsSet(1) || (IsSet(0)))
             return;
         else if (!IsSet(2) && detailType == 1)
         {
-            SpawnFromMainThread(2, levelOfDetail, biome, heightMap, meshData, meshSettings, sampleCenter, chunkCoord, container);
+            SpawnFromMainThread(2, levelOfDetail, heightMap, meshData, meshSettings, sampleCenter, chunkCoord, container);
         }
         else if (!IsSet(2) && !IsSet(1) && detailType == 0)
         {
-            SpawnFromMainThread(2, levelOfDetail, biome, heightMap, meshData, meshSettings, sampleCenter, chunkCoord, container);
-            SpawnFromMainThread(1, levelOfDetail, biome, heightMap, meshData, meshSettings, sampleCenter, chunkCoord, container);
+            SpawnFromMainThread(2, levelOfDetail, heightMap, meshData, meshSettings, sampleCenter, chunkCoord, container);
+            SpawnFromMainThread(1, levelOfDetail, heightMap, meshData, meshSettings, sampleCenter, chunkCoord, container);
         }
         else if (!IsSet(1) && IsSet(2) && detailType == 0)
         {
-            SpawnFromMainThread(1, levelOfDetail, biome, heightMap, meshData, meshSettings, sampleCenter, chunkCoord, container);
-        }  
+            SpawnFromMainThread(1, levelOfDetail, heightMap, meshData, meshSettings, sampleCenter, chunkCoord, container);
+        }
     }
 
-    void SpawnFromMainThread(int detailType, int levelOfDetail, Biome biome, HeightMap heightMap, MeshData meshData, MeshSettings meshSettings, Vector2 sampleCenter, Vector2 chunkCoord, Transform container)
+    void SpawnFromMainThread(int detailType, int levelOfDetail, HeightMap heightMap, MeshData meshData, MeshSettings meshSettings, Vector2 sampleCenter, Vector2 chunkCoord, Transform container)
     {
-        biome = new Biome(biome);
         Set(detailType);
         _hasSpawnInfo[detailType] = true;
-        _spawnInfo[detailType] = prefabSpawner.SpawnOnChunk(detailType, levelOfDetail, biome, heightMap, meshData, meshSettings, sampleCenter, chunkCoord);
+        _spawnInfo[detailType] = prefabSpawner.SpawnOnChunk(detailType, levelOfDetail, _thisBiome, heightMap, meshData, meshSettings, sampleCenter, chunkCoord);
         SpawnSpawnInfo(meshData, meshSettings.ChunkSize, detailType, container);
     }
 }

@@ -19,8 +19,7 @@ public class LevitationMovement : MonoBehaviour
     private void Awake()
     {
         MeshRenderer renderer = GetComponent<MeshRenderer>();
-        Material material = new Material(_shader);
-        renderer.material = material;
+        renderer.material = new Material(_shader);
         //float f = Random.Range(0.0f, 6.28f);
         renderer.material.SetFloat("_Random", Random.Range(0.0f, 6.28f));
 
