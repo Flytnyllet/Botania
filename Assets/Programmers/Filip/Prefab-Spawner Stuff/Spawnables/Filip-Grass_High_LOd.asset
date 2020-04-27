@@ -10,18 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a2ef82269fb17cf43a9f1163b1dfd939, type: 3}
-  m_Name: Filip-Grass
+  m_Name: Filip-Grass_High_LOd
   m_EditorClassIdentifier: 
   _autoUpdate: 1
   _noiseMergeType: 0
   _noiseSettingsData: {fileID: 11400000, guid: 1a3c314bb7fe7604dba499589c7f0141, type: 2}
   _rotationAmount: 1
   _noiseStartPoint: 0
-  _thickness: 0.48
-  _uniformSpreadAmount: 2
-  _randomSpread: 0.497
+  _thickness: 0.64
+  _uniformSpreadAmount: 5
+  _randomSpread: 0.261
   _offsetAmount: 0.82
-  _height: 0.5
+  _height: 0.05
+  _scale: 1
+  _scaleRandom: 2
   _size: 1
   _othersCanSpawnInside: 0
   _spawnDifferencial: 15
@@ -36,10 +38,10 @@ MonoBehaviour:
   _softMaxSlope: 0
   _hardMaxSlope: 0
   _prefabs:
-  - _prefab: {fileID: 2603378349626533706, guid: 1c4dd17615c6e49408aadc38206e11d3,
+  - _prefab: {fileID: 2653895680858395483, guid: ce751572bad27de479a95b09bd4003e5,
       type: 3}
-    _probability: 4
-  - _prefab: {fileID: 2603378349626533706, guid: be851259ed6872046a2f024f5ab7d8ef,
+    _probability: 2
+  - _prefab: {fileID: 2279819679705393310, guid: a02746cfa47f78a40a47aac7da1e18fe,
       type: 3}
-    _probability: 1
+    _probability: 3
   _subSpawners: []
