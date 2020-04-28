@@ -65,7 +65,7 @@
 			blendAxes /= blendAxes.x + blendAxes.y + blendAxes.z;
 
 			//float noiseStrenght = tex2D(_NoiseTextures, IN.uv_MainTex).x*baseTextureStrenght[0];
-			float noiseStrenght = smoothstep(0.01 ,0.05 , tex2D(_NoiseTextures, IN.uv_MainTex).x);
+			float noiseStrenght = smoothstep(0.8 ,0.9, tex2D(_NoiseTextures, IN.uv_MainTex).x);
 			//int2 pixelCoord = IN.uv_MainTex*_NoiseSize;
 			//float noiseStrenght = smoothstep(0.01 ,0.05 , _NoiseArray[pixelCoord.x, pixelCoord.y].x);
 			//float3 altCol = tex2D(_AltTex, IN.uv_MainTex);

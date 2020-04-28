@@ -23,6 +23,21 @@ public class BookManager : MonoBehaviour
     //[SerializeField] GameObject _prevPage;
     //[SerializeField] GameObject _nextPage;
 
+    private void OnEnable()
+    {
+        EventManager.Subscribe(EventNameLibrary.DRINK_POTION, CloseBook);
+    }
+    private void OnDisable()
+    {
+        EventManager.UnSubscribe(EventNameLibrary.DRINK_POTION, CloseBook);
+    }
+    void CloseBook(EventParameter param)
+    {
+        _book.SetActive(false);
+        EventManager.TriggerEvent(EventNameLibrary.CLOSE_BOOK, new EventParameter());
+        CharacterState.SetControlState(CHARACTER_CONTROL_STATE.PLAYERCONTROLLED);
+    }
+
     void Awake()
     {
         SetupExtraBookmarks();
@@ -45,17 +60,16 @@ public class BookManager : MonoBehaviour
         if (Input.GetButtonDown(INPUT_INVENTORY))
         {
             Debug.Log("Inventory button");
-            _book.SetActive(!_book.activeSelf);
-            if (_book.activeSelf)
+            if (!_book.activeSelf)
             {
+                _book.SetActive(true);
                 EventManager.TriggerEvent(EventNameLibrary.OPEN_BOOK, new EventParameter());
                 CharacterState.SetControlState(CHARACTER_CONTROL_STATE.MENU);
                 ToBookmark(0);
             }
             else
             {
-                EventManager.TriggerEvent(EventNameLibrary.CLOSE_BOOK, new EventParameter());
-                CharacterState.SetControlState(CHARACTER_CONTROL_STATE.PLAYERCONTROLLED);
+                CloseBook(new EventParameter()); //ignore the eventparameter
             }
         }
     }

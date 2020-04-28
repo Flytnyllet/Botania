@@ -21,6 +21,7 @@ public class GroundMaterialGenerator : ScriptableObject
     {
         Material _material = new Material(_shader);
         Texture2D noiseTex = new Texture2D(size, size, TextureFormat.R8, false);
+        noiseTex.wrapMode = TextureWrapMode.Repeat;
         var colour = noiseTex.GetRawTextureData();
         Color[] colorMap = new Color[1];
         Task.Run(() =>

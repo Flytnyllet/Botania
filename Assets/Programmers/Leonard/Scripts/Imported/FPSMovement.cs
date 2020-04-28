@@ -92,10 +92,8 @@ public class FPSMovement : MonoBehaviour
             //Ground Detection
             float terrainAngle;
             RaycastHit groundDetection;
-            Debug.Log(charCon.bounds.size.y);
-            Debug.Log(_groundRayExtraDist);
             bool grounded = GroundRay(transform.position, Vector3.down, charCon.bounds.size.y / 2 + _groundRayExtraDist, out groundDetection);
-            Debug.Log(groundDetection);
+            
 
             // == Functions ==
             if (charCon.isGrounded)
@@ -223,7 +221,6 @@ public class FPSMovement : MonoBehaviour
     {
         _timeSinceLastStep += Time.deltaTime;
         _travelledDist += (transform.position - _prevPos).magnitude;
-        Debug.Log(_travelledDist);
 
         if (Mathf.Abs(x) > 0.1f || Mathf.Abs(z) > 0.1f)
         {
