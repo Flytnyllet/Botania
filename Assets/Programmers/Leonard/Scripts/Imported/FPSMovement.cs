@@ -7,8 +7,8 @@ public class FPSMovement : MonoBehaviour
 	// FAKE SINGLETON
 	public static FPSMovement playerMovement;
 
-	// Tag Handling (Replace with LayerMasks)
-	const string DUCK_BUTTON = "Duck";
+    // Tag Handling (Replace with LayerMasks)
+    const string DUCK_BUTTON = "Duck";
 	[SerializeField] string GROUND_TAG = "null";
 	[SerializeField] string WATER_TAG = "null";
 
@@ -39,28 +39,44 @@ public class FPSMovement : MonoBehaviour
 	[Header("Bobbing")]
 	[SerializeField] float _bobbingAmount = 0.05f;
 	[SerializeField] float _bobbingSpeed = 1f;
-	float _bobTimer = 0;
+    float _bobTimer = 0;
 	float _defPosY;
 
 	Transform _playerCam;
-	//public LayerMask layerMask;
+    //public LayerMask layerMask;
 
-	// !OBS Weird bug causing script to disable itself when awake is used.
-	void Awake()
+    Player_Emitter emitPlayerSound;
+    Vector3 _prevPos;
+    float _randWalk;
+    float _timeSinceLastStep;
+    float _travelledDist;
+    [SerializeField ] private float _travelDist;
+
+    // !OBS Weird bug causing script to disable itself when awake is used.
+    void Awake()
 	{
 		playerMovement = this;
 	}
 
 	void Start()
 	{
-		charCon = GetComponent<CharacterController>();
-		_playerCam = transform.Find("PlayerCam");
+        _prevPos = transform.position;
+        _randWalk = Random.Range(0f, 0.4f);
+        emitPlayerSound = GetComponent<Player_Emitter>();
+
+        charCon = GetComponent<CharacterController>();
+        _playerCam = transform.Find("PlayerCam");
 		_cameraStartPosition = _playerCam.localPosition;
 		_defPosY = _cameraStartPosition.y;
 		CharacterState.SetControlState(CHARACTER_CONTROL_STATE.PLAYERCONTROLLED);
 	}
 
-	void Update()
+    void FixedUpdate()
+    {
+        
+    }
+
+    void Update()
 	{
 		if (CharacterState.Control_State == CHARACTER_CONTROL_STATE.PLAYERCONTROLLED || CharacterState.Control_State == CHARACTER_CONTROL_STATE.MENU)
 		{
@@ -73,7 +89,10 @@ public class FPSMovement : MonoBehaviour
 			//Ground Detection
 			float terrainAngle;
 			RaycastHit groundDetection;
+            Debug.Log(charCon.bounds.size.y);
+            Debug.Log(_groundRayExtraDist);
 			bool grounded = GroundRay(transform.position, Vector3.down, charCon.bounds.size.y / 2 + _groundRayExtraDist, out groundDetection);
+            Debug.Log(groundDetection);
 
 			// == Functions ==
 			//_inAir = !charCon.isGrounded;
@@ -152,7 +171,7 @@ public class FPSMovement : MonoBehaviour
 		Vector3 move =
 			_playerCam.right.normalized * horizontal +
 			lookDir.normalized * vertical;
-		charCon.Move(move * _speed.Value * Time.deltaTime);
+		charCon.Move(move.normalized * _speed.Value * Time.deltaTime);
 
 		//Post move distance to ground check
 		if (ground.distance <= _slopeWalkCorrection && !_inAir)
@@ -182,7 +201,7 @@ public class FPSMovement : MonoBehaviour
 
 	void Teleport()
 	{
-
+        
 	}
 
 	void Launch(Vector3 launchVector)
@@ -193,10 +212,15 @@ public class FPSMovement : MonoBehaviour
 	//Head Bobbing !Stolen from the internet
 	void HeadBob(float x, float z)
 	{
-		if (Mathf.Abs(x) > 0.1f || Mathf.Abs(z) > 0.1f)
+        _timeSinceLastStep += Time.deltaTime;
+        _travelledDist += (transform.position - _prevPos).magnitude;
+        Debug.Log(_travelledDist);
+
+        if (Mathf.Abs(x) > 0.1f || Mathf.Abs(z) > 0.1f)
 		{
-			//Player is moving
-			_bobTimer += Time.deltaTime * _bobbingSpeed;
+            //Player is moving
+            FootstepsSound();
+            _bobTimer += Time.deltaTime * _bobbingSpeed;
 			_playerCam.localPosition = new Vector3(_playerCam.localPosition.x,
 				_defPosY + Mathf.Sin(_bobTimer) * _bobbingAmount, _playerCam.localPosition.z);
 		}
@@ -233,4 +257,13 @@ public class FPSMovement : MonoBehaviour
         }
         return false;*/
 	}
+
+    void FootstepsSound()
+    {
+        if (!_inAir && _travelledDist >= _travelDist + _randWalk) {
+            emitPlayerSound.Init_Footsteps(0);
+            _travelledDist = 0f;
+        }
+        _prevPos = transform.position;
+    }
 }
