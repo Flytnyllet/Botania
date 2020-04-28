@@ -10,19 +10,24 @@ public class CharacterStats
 {
     [SerializeField]
     private float _baseValue;
-    public float BaseValue 
-        { get { return _baseValue; }
+    public float BaseValue
+    {
+        get { return _baseValue; }
         set { _baseValue = Value; }
     }
 
-    public virtual float Value {
-        get {
-            if (isModified ||BaseValue != lastBaseValue) {
-                lastBaseValue = BaseValue;
-                _value = CalculateFinalValue();
-                isModified = false;
-            }
-            return _value;
+    public virtual float Value
+    {
+        get
+        {
+            return CalculateFinalValue();
+            //if (isModified || BaseValue != lastBaseValue)
+            //{
+            //    lastBaseValue = BaseValue;
+            //    _value = CalculateFinalValue();
+            //    isModified = false;
+            //}
+            //return _value;
         }
     }
 
@@ -44,36 +49,47 @@ public class CharacterStats
         BaseValue = baseValue;
     }
 
-    public virtual void AddModifier(StatModifier mod)
-    {
-        isModified = true;
-        statModifiers.Add(mod);
-        statModifiers.Sort(CompareOrder);
-    }
+    //public virtual void AddModifier(StatModifier mod)
+    //{
+    //    isModified = true;
+    //    statModifiers.Add(mod);
+    //    statModifiers.Sort(CompareOrder);
+    //}
     public virtual void AddModifier(StatModifier mod, float time)
     {
-		Debug.Log("Added stat effect, increasing the stat type " + mod.Type + " by " + mod.Value);
+        float baseVal = BaseValue;
+        Debug.Log("Added stat effect, increasing the stat type " + mod.Type + " by " + mod.Value + $" for {time} seconds");
         isModified = true;
         statModifiers.Add(mod);
         statModifiers.Sort(CompareOrder);
-        Task.Run(async () =>
+        Task.Delay(TimeSpan.FromSeconds(time)).ContinueWith(previous =>
+        {
+            try
             {
-                await Task.Delay(System.TimeSpan.FromSeconds(time));
-                RemoveModifier(mod);
-				Debug.Log("Removed stat effect on the stat type " + mod.Type);
-			});
+                //RemoveModifier(mod); //Jag har fuckat lite saker här, sorry /Jens
+                statModifiers.Remove(mod);
+                isModified = false;
+                Debug.Log(statModifiers.Count);
+                Debug.Log("Removed stat effect on the stat type " + mod.Type);
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogError(e);
+            }
+        }, TaskScheduler.FromCurrentSynchronizationContext());
     }
 
 
-	public List<StatModifier> GetStatModifiers()
-	{
-		return statModifiers;
-	}
+    public List<StatModifier> GetStatModifiers()
+    {
+        return statModifiers;
+    }
 
     public virtual bool RemoveModifier(StatModifier mod)
     {
-        if (statModifiers.Remove(mod)) {
-            isModified = true;
+        if (statModifiers.Remove(mod))
+        {
+            isModified = false;
             return true;
         }
         return false;
@@ -83,8 +99,10 @@ public class CharacterStats
     {
         bool allRemoved = false;
 
-        for (int i = statModifiers.Count - 1; i >= 0; i--) {
-            if (statModifiers[i].Source == source) {
+        for (int i = statModifiers.Count - 1; i >= 0; i--)
+        {
+            if (statModifiers[i].Source == source)
+            {
                 isModified = true;
                 statModifiers.RemoveAt(i);
             }
@@ -103,30 +121,35 @@ public class CharacterStats
 
     protected virtual float CalculateFinalValue()
     {
-        float finalValue = BaseValue;
+        float finalValue = 0;
         float totalPercentAdd = 0;
 
-        for (int i = 0; i < statModifiers.Count; i++) {
+        for (int i = 0; i < statModifiers.Count; i++)
+        {
             StatModifier mod = statModifiers[i];
 
-            if (mod.Type == StatType.Flat) {
+            if (mod.Type == StatType.Flat)
+            {
                 finalValue += statModifiers[i].Value;
             }
-            else if (mod.Type == StatType.PercentageAdd) {
+            else if (mod.Type == StatType.PercentageAdd)
+            {
                 //Not applied to final, add as variable
                 totalPercentAdd += mod.Value;
 
                 //iterate list and add all mods of same type until another type i encountered || end of list
-                if (i + 1 >= statModifiers.Count || statModifiers[i + 1].Type != StatType.PercentageAdd) {
+                if (i + 1 >= statModifiers.Count || statModifiers[i + 1].Type != StatType.PercentageAdd)
+                {
                     finalValue *= 1 + totalPercentAdd;
                     totalPercentAdd = 0;
                 }
             }
-            else if (mod.Type == StatType.PercentMult) {
+            else if (mod.Type == StatType.PercentMult)
+            {
                 finalValue *= 1 + mod.Value;
             }
         }
 
-        return (float)Math.Round(finalValue, 4);
+        return (float)Math.Round(finalValue, 4) + BaseValue;
     }
 }

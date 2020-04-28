@@ -10,7 +10,7 @@ public class PickupFlower : InteractableSaving, IInteractable
         get { return _enabled; }
         set { _enabled = value; }
     }
-    [SerializeField] string _flowerName;
+    [SerializeField] ItemDataContainer _flowerData;
     [SerializeField] Texture2D _pickupAlpha;
 
     [Tooltip("Används i fall ett annat objekt än det lokala skall tas bort vid upplockning")]
@@ -23,7 +23,7 @@ public class PickupFlower : InteractableSaving, IInteractable
             //Pickup save system
             PickUp();
 
-            string debugFlowerNames = "Trying to pick up a " + _flowerName
+            string debugFlowerNames = "Trying to pick up a " + _flowerData.name
                 + ". Accepted flower types are: [";
             string[] flowerTypes = FlowerLibrary.GetAllFlowerNames();
             foreach (string flower in flowerTypes)
@@ -34,7 +34,7 @@ public class PickupFlower : InteractableSaving, IInteractable
 
             //Debug.Log(debugFlowerNames);
 
-            FlowerLibrary.IncrementFlower(_flowerName, 1);
+            FlowerLibrary.IncrementFlower(_flowerData.name, 1);
 
             if (_gameobjectOverload == null)
             {

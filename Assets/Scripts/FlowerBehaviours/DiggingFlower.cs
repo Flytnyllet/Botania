@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using FMODUnity;
+using FMOD.Studio;
 
 public class DiggingFlower : MonoBehaviour
 {
@@ -14,6 +16,11 @@ public class DiggingFlower : MonoBehaviour
     CapsuleCollider _capsuleCollider;
     SphereCollider _sphereCol;
     [SerializeField] float _hideTime = 3.0f;
+
+    [EventRef]
+    public string event_Digging;
+    [EventRef]
+    public string event_Emerging;
 
     private void Awake()
     {
@@ -40,17 +47,23 @@ public class DiggingFlower : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Player" /*&& PlayerNotInvissible */)
+        if (other.tag == "Player" && !CharacterState.IsAbilityFlagActive(ABILITY_FLAG.INVISSIBLE))
         {
             _playerInArea = true; //I hate this
 
             if (_flowerState == FlowerState.Idle)
             {
-                Debug.Log("Dig down");
                 _animator.Play("Take001"); //Rör sig lite, kallar på animatorn, och gör sig liten.
+
+                RuntimeManager.PlayOneShotAttached(event_Digging, gameObject);
+
                 StartCoroutine(CheckIfAlone());
                 _flowerState = FlowerState.Digging;
             }
+        }
+        else if (other.tag == "Player" && CharacterState.IsAbilityFlagActive(ABILITY_FLAG.INVISSIBLE))
+        {
+            MakeInteractable();
         }
     }
 
@@ -68,10 +81,13 @@ public class DiggingFlower : MonoBehaviour
         while (time < _hideTime)
         {
             time += Time.deltaTime;
-            if (_playerInArea) time = 0.0f;
+            if (_playerInArea && !CharacterState.IsAbilityFlagActive(ABILITY_FLAG.INVISSIBLE)) time = 0.0f;
             yield return null;
         }
         _animator.Play("Take002");
+
+        RuntimeManager.PlayOneShotAttached(event_Emerging, gameObject);
+
         //Detta innebär att blomman är i "Idle" när den gräver upp, vilket kan skapa problem i framtiden.
         _flowerState = FlowerState.Idle;
     }

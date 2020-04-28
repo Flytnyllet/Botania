@@ -53,7 +53,7 @@
 			<destination>{cf818f8e-752e-4a47-baed-6abf0f6251f4}</destination>
 		</relationship>
 		<relationship name="output">
-			<destination>{188885a1-6692-44d3-89fa-7ea6a74a4f08}</destination>
+			<destination>{58f1f3b5-da36-4450-ad68-b3bedd091f5f}</destination>
 		</relationship>
 	</object>
 	<object class="EventAutomatableProperties" id="{54ce9d9d-3e3d-4c8d-9e5c-8d37e48acbe7}">
@@ -106,7 +106,7 @@
 			<value>true</value>
 		</property>
 		<property name="triggerProbability">
-			<value>19.5</value>
+			<value>23.5</value>
 		</property>
 		<property name="isAsync">
 			<value>true</value>
@@ -117,9 +117,17 @@
 		<property name="length">
 			<value>3.4388752052545177</value>
 		</property>
+		<property name="startOffset">
+			<value>33.5</value>
+		</property>
 		<property name="voiceStealing">
 			<value>3</value>
 		</property>
+		<relationship name="modulators">
+			<destination>{799ed3b2-9229-406c-a0b3-0f70564707eb}</destination>
+			<destination>{f1448cbd-1ec7-402e-9440-992689c48278}</destination>
+			<destination>{d2327f56-60cb-4f08-b1f1-b84fc6c4ba14}</destination>
+		</relationship>
 		<relationship name="sounds">
 			<destination>{05482dbe-0572-4a77-821c-02a0e3f327b7}</destination>
 		</relationship>
@@ -177,6 +185,39 @@
 	</object>
 	<object class="MixerBusPanner" id="{96a1166f-09dd-4b1f-8941-800d7d4a1a68}" />
 	<object class="MixerBusFader" id="{0fad088b-3b22-4335-b26b-7d113090f85b}" />
+	<object class="RandomizerModulator" id="{799ed3b2-9229-406c-a0b3-0f70564707eb}">
+		<property name="nameOfPropertyBeingModulated">
+			<value>pitch</value>
+		</property>
+		<property name="amount">
+			<value>13</value>
+		</property>
+	</object>
+	<object class="RandomizerModulator" id="{f1448cbd-1ec7-402e-9440-992689c48278}">
+		<property name="nameOfPropertyBeingModulated">
+			<value>startOffset</value>
+		</property>
+		<property name="amount">
+			<value>53</value>
+		</property>
+	</object>
+	<object class="ADSRModulator" id="{d2327f56-60cb-4f08-b1f1-b84fc6c4ba14}">
+		<property name="nameOfPropertyBeingModulated">
+			<value>volume</value>
+		</property>
+		<property name="initialValue">
+			<value>-80</value>
+		</property>
+		<property name="attackTime">
+			<value>620</value>
+		</property>
+		<property name="releaseTime">
+			<value>820</value>
+		</property>
+		<property name="finalValue">
+			<value>-80</value>
+		</property>
+	</object>
 	<object class="SingleSound" id="{05482dbe-0572-4a77-821c-02a0e3f327b7}">
 		<relationship name="audioFile">
 			<destination>{3ecf4ba0-5286-4b0e-ad1d-5220d6c34889}</destination>
@@ -191,17 +232,14 @@
 	<object class="MixerBusPanner" id="{2f6cc4ec-2717-4fd8-8f82-a48375a09b15}" />
 	<object class="MixerBusFader" id="{33e5c8d3-9766-4b0d-9346-c38f9f12f56e}" />
 	<object class="SpatialiserEffect" id="{520c5e72-8c44-4a7b-9a58-724a0344b284}">
-		<property name="maximumDistance">
-			<value>25</value>
-		</property>
 		<property name="extentMode">
 			<value>1</value>
 		</property>
 		<property name="soundSize">
-			<value>4.5999999</value>
+			<value>16.5</value>
 		</property>
 		<property name="minimumExtent">
-			<value>122</value>
+			<value>280</value>
 		</property>
 	</object>
 	<object class="ThreeEQEffect" id="{b3fe8a6b-614a-49d0-a761-719a1e947671}">

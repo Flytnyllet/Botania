@@ -107,7 +107,7 @@ public class PrefabSpawner
 
                                 OccupyWithObject(x, y, spawnables[i].Size, meshSettings.ChunkSize, ref localOccupiedGrid);
 
-                                float scale = spawnables[i].Scale * spawnables[i].OffsetNoise[x, y] + 1;
+                                float scale = spawnables[i].ScaleRandom * spawnables[i].OffsetNoise[x, y] + spawnables[i].Scale;
                                 Vector3 newScale = new Vector3(scale, scale, scale);
 
                                 //Current local positions in x and y in chunk, used only to spawn from
@@ -277,7 +277,7 @@ public class SpawnInfo
 
         _spawnedTransform = newObject.transform;
 
-        PrefabSaveData saveDataScript = newObject.GetComponent<PrefabSaveData>();
+        PrefabSaveData saveDataScript = newObject.GetComponentInChildren<PrefabSaveData>();
 
         //Enter this loop only for object dealing with saving
         if (saveDataScript != null)

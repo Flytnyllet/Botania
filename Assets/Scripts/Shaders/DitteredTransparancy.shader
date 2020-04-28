@@ -4,7 +4,8 @@
 		_MainTex("Base (RGB)", 2D) = "white" {}
 		_Alpha("Alpha", 2D) = "white" {}
 		_EmissionMap("Emission Map", 2D) = "black" {}
-			//_Alpha("Alpha", 2D) = "white" {}
+		_SpecularMap("Metallic", 2D) = "white" {}
+		_RoughMap("Roghness", 2D) = "white" {}
 	}
 		SubShader{
 			Tags { "Queue" = "AlphaTest" "IgnoreProjector" = "True" "RenderType" = "TransparentCutout" }
@@ -13,7 +14,7 @@
 
 
 		CGPROGRAM
-		#pragma surface surf Lambert noforwardadd addshadow
+		#pragma surface surf Standard noforwardadd addshadow
 		#pragma shader_feature _EMISSION
 		#pragma shader_feature _METALLICGLOSSMAP
 		#pragma target 3.0
@@ -21,15 +22,15 @@
 		sampler2D _MainTex;
 		sampler2D _EmissionMap;
 		sampler2D _Alpha;
+		sampler2D _SpecularMap;
+		sampler2D _RoughMap;
 
 		struct Input {
 			float2 uv_MainTex;
 			float4 screenPos;
 			fixed facing : VFACE;
-		};
-
-
-		void surf(Input IN, inout SurfaceOutput o) {
+		}; 
+		void surf(Input IN, inout SurfaceOutputStandard  o) {
 			fixed4 c = tex2D(_MainTex, IN.uv_MainTex);
 			o.Albedo = c.rgb;
 			o.Alpha = tex2D(_Alpha, IN.uv_MainTex);
@@ -44,7 +45,7 @@
 			};
 			clip(o.Alpha - thresholdMatrix[fmod(pos.x, 4)][pos.y % 4]);
 			o.Emission = tex2D(_EmissionMap, IN.uv_MainTex);
-
+			o.Metallic = tex2D(_SpecularMap, IN.uv_MainTex).r*tex2D(_RoughMap, IN.uv_MainTex).r;
 
 			if (IN.facing < 0.5)
 				o.Normal *= -1.0;

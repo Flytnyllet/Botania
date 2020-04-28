@@ -100,15 +100,15 @@ public class FPSMovement : MonoBehaviour
 					Launch(jump);
 					_inAir = true;
 				}
-				else if (Input.GetButton(DUCK_BUTTON) && terrainAngle > 10f)
-				{
-					Debug.Log("SLIDING!");
-					Sliding(x, slopeDirection);
-				}
-				else
-				{
+				//else if (Input.GetButton(DUCK_BUTTON) && terrainAngle > 10f)
+				//{
+				//	Debug.Log("SLIDING!");
+				//	Sliding(x, slopeDirection);
+				//}
+				//else
+				//{
 					Walking(x, y, groundDetection);
-				}
+				//}
 			}
 			else
 			{
@@ -216,7 +216,7 @@ public class FPSMovement : MonoBehaviour
 		bool onHit = Physics.Raycast(rayStart, rayDirection, out hit, rayDistance, layerMask);
 		if (onHit)
 		{
-			Debug.Log("Bee");
+			//Debug.Log("Bee");
 			return true;
 		}
 

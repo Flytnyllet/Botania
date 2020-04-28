@@ -9,11 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 923464745349444381}
-  - component: {fileID: 2569749585686054145}
-  - component: {fileID: 978720616986878146}
-  - component: {fileID: 866300502916853325}
-  - component: {fileID: 6474231958217973422}
-  - component: {fileID: 6776218642726785278}
   m_Layer: 0
   m_Name: Flower_Soul_02
   m_TagString: Untagged
@@ -28,28 +23,64 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 317380404115697696}
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: -1.165}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 3651688013297320173}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &2569749585686054145
+--- !u!1 &6654835384147897498
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3651688013297320173}
+  - component: {fileID: 449399115466677116}
+  - component: {fileID: 1587481710833963249}
+  - component: {fileID: 7484685867314715224}
+  - component: {fileID: 2337529865504438368}
+  - component: {fileID: 3863421346463158543}
+  m_Layer: 0
+  m_Name: Flower_Soul_02
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3651688013297320173
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6654835384147897498}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 923464745349444381}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!33 &449399115466677116
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 317380404115697696}
+  m_GameObject: {fileID: 6654835384147897498}
   m_Mesh: {fileID: -6728789729885244001, guid: 819ea3baf6bcee54fb4333d18170bdc8, type: 3}
---- !u!23 &978720616986878146
+--- !u!23 &1587481710833963249
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 317380404115697696}
+  m_GameObject: {fileID: 6654835384147897498}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -81,41 +112,41 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!135 &866300502916853325
+--- !u!135 &7484685867314715224
 SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 317380404115697696}
+  m_GameObject: {fileID: 6654835384147897498}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.45
   m_Center: {x: 0, y: 0, z: 0.0012127459}
---- !u!114 &6474231958217973422
+--- !u!114 &2337529865504438368
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 317380404115697696}
+  m_GameObject: {fileID: 6654835384147897498}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ee66933cb94b3af499283834dca2703c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _flowerName: Soul
+  _flowerData: {fileID: 11400000, guid: 075c751935a57444da120c82ef4a2b8f, type: 2}
   _pickupAlpha: {fileID: 2800000, guid: 4a67e82cb99b84847b0006f11d0709cf, type: 3}
   _gameobjectOverload: {fileID: 0}
---- !u!114 &6776218642726785278
+--- !u!114 &3863421346463158543
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 317380404115697696}
+  m_GameObject: {fileID: 6654835384147897498}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 70c2b09e2695b494b8572a2ea101535c, type: 3}

@@ -28,6 +28,8 @@ public class FlowerTeleportation : MonoBehaviour
 
     void ReleaseTrailObject(Vector3 pos)
     {
+        _particles.gameObject.SetActive(true);
+        _particles.Emit(20);
         bool trailActive = _trailObject.gameObject.activeSelf;
         _trailObject.gameObject.SetActive(true);
         _trailObject.transform.parent = null;
@@ -53,8 +55,6 @@ public class FlowerTeleportation : MonoBehaviour
     {
         if (other.tag == "Player")
         {
-            _particles.gameObject.SetActive(true);
-            _particles.Emit(20);
             RaycastHit hit;
             int i;
             for (i = 0; i < 100; i++)
@@ -67,21 +67,24 @@ public class FlowerTeleportation : MonoBehaviour
                 // Does the ray intersect any objects excluding the player layer
                 if (Physics.Raycast(position + groundOffset, Vector3.down, out hit, _heighCheck, _layerMask))
                 {
+
                     Vector3 hitPos = hit.point;
-                    if (!Physics.CheckCapsule(hitPos + groundOffset, hitPos + _objectHeight * 1.1f, _capCollider.bounds.size.x))
+                    if (!Physics.CheckCapsule(hitPos + groundOffset, hitPos + _objectHeight * 1.1f, _capCollider.bounds.size.x, 0, QueryTriggerInteraction.Ignore))
                     {
                         ReleaseTrailObject(hitPos);
                         break;
                     }
+                    Debug.DrawRay(hitPos, hitPos + _objectHeight, Color.green, 5);
                 }
                 if (Physics.Raycast(position + groundOffset, Vector3.up, out hit, _heighCheck, _layerMask))
                 {
                     Vector3 hitPos = hit.point;
-                    if (!Physics.CheckCapsule(hitPos + groundOffset, hitPos + _objectHeight * 1.1f, this.transform.localScale.y))
+                    if (!Physics.CheckCapsule(hitPos + groundOffset, hitPos + _objectHeight * 1.1f, this.transform.localScale.y, 0, QueryTriggerInteraction.Ignore))
                     {
                         ReleaseTrailObject(hitPos);
                         break;
                     }
+                    Debug.DrawRay(hitPos, hitPos + _objectHeight, Color.green, 5);
                 }
                 Debug.DrawRay(position, Vector3.down * _heighCheck, Color.red, 5);
                 Debug.DrawRay(position, Vector3.up * _heighCheck, Color.red, 5);
