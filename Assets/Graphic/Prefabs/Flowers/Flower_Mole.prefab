@@ -82,7 +82,7 @@ CapsuleCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 571127247201521372}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   m_Radius: 0.09
   m_Height: 0.43
@@ -143,6 +143,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee66933cb94b3af499283834dca2703c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _dissableTriggerafterPickup: 0
   _flowerData: {fileID: 11400000, guid: 349a7f5bbd58f424ba0e1826c4687995, type: 2}
   _pickupAlpha: {fileID: 0}
   _gameobjectOverload: {fileID: 0}

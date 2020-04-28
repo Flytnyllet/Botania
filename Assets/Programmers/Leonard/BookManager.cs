@@ -6,6 +6,8 @@ using UnityEngine.UI;
 public class BookManager : MonoBehaviour
 {
     const string INPUT_INVENTORY = "Inventory";
+    [SerializeField] Sprite[] _BookSprites;
+
     [SerializeField] List<GameObject> _bookmarks = new List<GameObject>();
     [SerializeField] List<PageLoader> _flowerPages = new List<PageLoader>();
     [SerializeField] List<PageLoader> _lorePages = new List<PageLoader>();
@@ -48,6 +50,7 @@ public class BookManager : MonoBehaviour
             {
                 EventManager.TriggerEvent(EventNameLibrary.OPEN_BOOK, new EventParameter());
                 CharacterState.SetControlState(CHARACTER_CONTROL_STATE.MENU);
+                ToBookmark(0);
             }
             else
             {
@@ -188,6 +191,7 @@ public class BookManager : MonoBehaviour
         _currentBookmark = index;
         _currentPage = 0;
         _bookmarks[_currentBookmark].SetActive(true);
+        _book.GetComponent<Image>().sprite = _BookSprites[index];
     }
     public void FlipPage()
     {

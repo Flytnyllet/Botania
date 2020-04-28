@@ -40,7 +40,7 @@ public class FlowerTeleportation : MonoBehaviour
         _trailObject.gameObject.SetActive(true);
         _trailObject.transform.parent = null;
 
-        pos -= _objectAltitudeOffset;
+        pos.y -= 0.4f;
         _jumps++;
         transform.position = pos + _objectHeight * 0.5f;
 
