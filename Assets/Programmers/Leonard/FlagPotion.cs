@@ -34,6 +34,11 @@ public class FlagPotion : Potion_Template
                 break;
 
             case ABILITY_FLAG.SUPERHEARING:
+                EventParameter param = new EventParameter() { intParam = 2, floatParam = 0.75f, floatParam2 = 1.0f };
+                EventManager.TriggerEvent(EventNameLibrary.SUPER_HEARING, param);
+                param.floatParam = 0.05f;
+                param.floatParam2 = 0.2f;
+                ActionDelayer.RunAfterDelay(() => { EventManager.TriggerEvent(EventNameLibrary.SUPER_HEARING, param); }, duration);
                 break;
 
             default:

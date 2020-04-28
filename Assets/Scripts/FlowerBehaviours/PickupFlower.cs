@@ -5,6 +5,7 @@ using UnityEngine;
 public class PickupFlower : InteractableSaving, IInteractable
 {
     bool _enabled = true;
+    [SerializeField] bool _dissableTriggerafterPickup = false;
     public bool SetEnabled //kommer byta namn
     {
         get { return _enabled; }
@@ -54,6 +55,7 @@ public class PickupFlower : InteractableSaving, IInteractable
                 }
                 else { Destroy(this.gameObject); }
             }
+            if (_dissableTriggerafterPickup) GetComponent<Collider>().enabled = false;
             return true; //Doesn't really have a purpose for this
         }
         return false;

@@ -46,11 +46,13 @@ public class CameraEffect : MonoBehaviour
     {
         EventManager.Subscribe(EventNameLibrary.CAMERA_EFFECT_EVENT_NAME, ActivateEffect);
         EventManager.Subscribe(EventNameLibrary.SPEED_INCREASE, SpeedDistortion);
+        EventManager.Subscribe(EventNameLibrary.SUPER_HEARING, HearingEffect);
     }
     private void OnDisable()
     {
         EventManager.UnSubscribe(EventNameLibrary.CAMERA_EFFECT_EVENT_NAME, ActivateEffect);
         EventManager.UnSubscribe(EventNameLibrary.SPEED_INCREASE, SpeedDistortion);
+        EventManager.UnSubscribe(EventNameLibrary.SUPER_HEARING, HearingEffect);
     }
 
 
@@ -90,6 +92,33 @@ public class CameraEffect : MonoBehaviour
 
 
 
+
+    void HearingEffect(EventParameter param)
+    {
+        StartCoroutine(HearingEffectRoutine((float)param.intParam, param.floatParam, param.floatParam2));
+    }
+    IEnumerator HearingEffectRoutine(float duration, float noiseStrenght, float vigneteStrenght)
+    {
+        Grain grainLayer;
+        Vignette vignetteLayer;
+        if (_ppVolume.profile.TryGetSettings(out grainLayer))
+        {
+            if (_ppVolume.profile.TryGetSettings(out vignetteLayer))
+            {
+                float startVignetteValue = vignetteLayer.smoothness.value;
+                float startGrainValue = grainLayer.intensity.value;
+                float time = 0;
+                while (time < duration)
+                {
+                    time += Time.deltaTime;
+                    vignetteLayer.smoothness.value = Mathf.Lerp(startVignetteValue, vigneteStrenght, time / duration);
+                    grainLayer.intensity.value = Mathf.Lerp(startGrainValue, noiseStrenght, time / duration);
+                    yield return null;
+                }
+            }
+        }
+    }
+
     /// <summary>
     /// intparam = targetDistortion,  floatParam = distort time to lerp
     /// </summary>
@@ -98,17 +127,15 @@ public class CameraEffect : MonoBehaviour
     {
         StartCoroutine(SpeedDistort((float)param.intParam, param.floatParam));
     }
-
-
-    IEnumerator SpeedDistort(float targetDistort, float time)
+    IEnumerator SpeedDistort(float targetDistort, float duration)
     {
         LensDistortion distortionLayer;
         if (_ppVolume.profile.TryGetSettings(out distortionLayer))
         {
-            float distort = (targetDistort - distortionLayer.intensity.value) / time;
-            time += Time.time;
+            float distort = (targetDistort - distortionLayer.intensity.value) / duration;
+            duration += Time.time;
             Debug.Log(distort);
-            while (Time.time < time)
+            while (Time.time < duration)
             {
                 distortionLayer.intensity.value += Time.deltaTime * distort;
                 yield return null;
