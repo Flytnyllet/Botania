@@ -28,7 +28,7 @@ public class FPSMovement : MonoBehaviour
 	float _groundRayDistance;
 	[SerializeField] float _minSlidingAngle = 25f;
 	[SerializeField] float _slopeWalkCorrection = 2f;
-	[SerializeField] float _strafingSpeed = 5f;
+	[SerializeField] float _strafingSpeedFactor = 0.8f;
 	[SerializeField] float _jumpTimeout = 0.3f;
 	[SerializeField] LayerMask layerMask;
 	float _lastJump = 0;
@@ -142,7 +142,7 @@ public class FPSMovement : MonoBehaviour
 		Vector3 move =
 			_playerCam.right.normalized * horizontal +
 			lookDir.normalized * vertical;
-		charCon.Move(move * _strafingSpeed * Time.deltaTime);
+		charCon.Move(move * _speed.Value *_strafingSpeedFactor * Time.deltaTime);
 	}
 
 	void Walking(float horizontal, float vertical, RaycastHit ground)
