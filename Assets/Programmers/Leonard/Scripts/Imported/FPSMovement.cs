@@ -7,10 +7,11 @@ public class FPSMovement : MonoBehaviour
 	// FAKE SINGLETON
 	public static FPSMovement playerMovement;
 
-    // Tag Handling (Replace with LayerMasks)
-    const string DUCK_BUTTON = "Duck";
-	[SerializeField] string GROUND_TAG = "null";
-	[SerializeField] string WATER_TAG = "null";
+	// Tag Handling (Replace with LayerMasks)
+	const string DUCK_BUTTON = "Duck";
+	const string SPRINT_BUTTON = "Sprint";
+	//[SerializeField] string GROUND_TAG = "null";
+	//[SerializeField] string WATER_TAG = "null";
 
 	[Header("Movement")]
 	CharacterController charCon;
@@ -29,6 +30,7 @@ public class FPSMovement : MonoBehaviour
 	[SerializeField] float _minSlidingAngle = 25f;
 	[SerializeField] float _slopeWalkCorrection = 2f;
 	[SerializeField] float _strafingSpeedFactor = 0.8f;
+	[SerializeField] float _sprintSpeedFactor = 2f;
 	[SerializeField] float _jumpTimeout = 0.3f;
 	[SerializeField] LayerMask layerMask;
 	float _lastJump = 0;
@@ -85,6 +87,7 @@ public class FPSMovement : MonoBehaviour
 			float x = Input.GetAxis("Horizontal");
 			float y = Input.GetAxis("Vertical");
 			Vector3 jump = new Vector3(0, 1f * _jumpForce.Value, 0);
+			float moveModifier = 1.0f;
 
 			//Ground Detection
 			float terrainAngle;
@@ -95,15 +98,10 @@ public class FPSMovement : MonoBehaviour
             Debug.Log(groundDetection);
 
 			// == Functions ==
-			//_inAir = !charCon.isGrounded;
 			if(charCon.isGrounded)
 			{
 				_inAir = false;
 			}
-			/*if (groundDetection.distance <= charCon.bounds.size.y / 2 + _allowedJumpDistance)
-			{
-				_inAir = false;
-			}*/
 
 			// Everything that can be done while grounded
 			if (grounded)
@@ -111,34 +109,46 @@ public class FPSMovement : MonoBehaviour
 				terrainAngle = Vector3.Angle(Vector3.up, groundDetection.normal);
 				Vector3 slopeDirection = groundDetection.normal;
 
+				if(Input.GetButton("Sprint"))
+				{
+					moveModifier *= _sprintSpeedFactor;
+					Walking(x, y, groundDetection, moveModifier);
+				}
 				// Jump, otherwise Slide, otherwise Walk
-				if (Input.GetButtonDown("Jump") && groundDetection.distance <= charCon.bounds.size.y / 2 + _allowedJumpDistance  && !_inAir)
+				else if (Input.GetButtonDown("Jump") && groundDetection.distance <= charCon.bounds.size.y / 2 + _allowedJumpDistance && !_inAir)
 				{
 					Debug.Log("JUMP!");
 					_velocity.y = 0;
 					Launch(jump);
 					_inAir = true;
 				}
-                //else if (Input.GetButton(DUCK_BUTTON) && terrainAngle > 10f)
-                //{
-                //	Debug.Log("SLIDING!");
-                //	Sliding(x, slopeDirection);
-                //}
-                else
-                {
-                    Walking(x, y, groundDetection);
+				//else if (Input.GetButton(DUCK_BUTTON) && terrainAngle > 10f)
+				//{
+				//	Debug.Log("SLIDING!");
+				//	Sliding(x, slopeDirection);
+				//}
+				else
+				{
+					if (Input.GetButtonDown(DUCK_BUTTON))
+					{
+						Ducking(-_duckDistance);
+					}
+					else if (Input.GetButton(DUCK_BUTTON))
+					{
+						moveModifier *= _crawlSpeedFactor;
+					}
+					else if (Input.GetButtonUp(DUCK_BUTTON))
+					{
+						Ducking(0);
+					}
+
+					Walking(x, y, groundDetection, moveModifier);
 				}
 			}
 			else
 			{
 				Strafing(x, y);
 			}
-
-			//Ducking
-			if (Input.GetButtonDown(DUCK_BUTTON))
-				Ducking(-_duckDistance);
-			else if (Input.GetButtonUp(DUCK_BUTTON))
-				Ducking(0);
 
 			//Gravity
 			charCon.Move(_velocity * Time.deltaTime);
@@ -148,9 +158,6 @@ public class FPSMovement : MonoBehaviour
 			// Bobbing
 			HeadBob(x * _speed.Value, y * _speed.Value);
 
-			//bool groundRay = Physics.Raycast(transform.position, Vector3.down * 2, 2f);
-			/*if (_velocity.y > 0)
-                groundRay = false; */
 		}
 	}
 
@@ -164,14 +171,16 @@ public class FPSMovement : MonoBehaviour
 		charCon.Move(move * _speed.Value *_strafingSpeedFactor * Time.deltaTime);
 	}
 
-	void Walking(float horizontal, float vertical, RaycastHit ground)
+	void Walking(float horizontal, float vertical, RaycastHit ground, float modifier)
 	{
+		Vector2 velocity = new Vector2(horizontal, vertical).normalized;
+
 		Vector3 lookDir = _playerCam.forward;
 		lookDir.y = 0;
 		Vector3 move =
-			_playerCam.right.normalized * horizontal +
-			lookDir.normalized * vertical;
-		charCon.Move(move.normalized * _speed.Value * Time.deltaTime);
+			_playerCam.right.normalized * velocity.x +
+			lookDir.normalized * velocity.y;
+		charCon.Move(move * _speed.Value * modifier * Time.deltaTime);
 
 		//Post move distance to ground check
 		if (ground.distance <= _slopeWalkCorrection && !_inAir)
