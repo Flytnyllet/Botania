@@ -4884,10 +4884,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75513cb0b78d4bd419d8a10912e35605, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GROUND_TAG: null
-  WATER_TAG: Water
   _speed:
-    _baseValue: 3
+    _baseValue: 5
   _jumpForce:
     _baseValue: 6
   _gravity:
@@ -4901,13 +4899,14 @@ MonoBehaviour:
   _minSlidingAngle: 35
   _slopeWalkCorrection: 2
   _strafingSpeedFactor: 0.8
+  _sprintSpeedFactor: 2
   _jumpTimeout: 0.5
   layerMask:
     serializedVersion: 2
     m_Bits: 55
   _bobbingAmount: 0.05
   _bobbingSpeed: 1
-  _travelDist: 0
+  _travelDist: 1
 --- !u!114 &104122664
 MonoBehaviour:
   m_ObjectHideFlags: 0
