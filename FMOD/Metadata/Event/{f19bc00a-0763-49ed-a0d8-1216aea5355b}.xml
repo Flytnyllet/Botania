@@ -62,7 +62,7 @@
 	</object>
 	<object class="EventAutomatableProperties" id="{fa168330-e721-41c5-8390-6e5c8a1e048b}">
 		<property name="maxVoices">
-			<value>3</value>
+			<value>5</value>
 		</property>
 		<property name="voiceStealing">
 			<value>4</value>
@@ -94,7 +94,7 @@
 			<destination>{11dd7aa2-dd2f-4a02-920d-8457a3775884}</destination>
 		</relationship>
 		<relationship name="markers">
-			<destination>{1657ea28-d581-44c0-b5e1-3e3977d2d2e7}</destination>
+			<destination>{01fec4be-d422-41fb-bb7d-71b497e7ac64}</destination>
 		</relationship>
 	</object>
 	<object class="ParameterProxy" id="{7f20920c-a463-4b8c-babc-a696c8dd4769}">
@@ -104,7 +104,7 @@
 	</object>
 	<object class="EventMixerMaster" id="{9405d7e9-f6cf-47bc-99a1-64e0920d5f4a}">
 		<property name="volume">
-			<value>-4</value>
+			<value>-2.5</value>
 		</property>
 		<relationship name="modulators">
 			<destination>{c6827af8-edde-47c3-8dde-1c1c1b1c3782}</destination>
@@ -138,7 +138,7 @@
 			<value>true</value>
 		</property>
 		<property name="length">
-			<value>18.5</value>
+			<value>7.5</value>
 		</property>
 		<property name="startOffset">
 			<value>28.5</value>
@@ -188,13 +188,13 @@
 			<value>true</value>
 		</property>
 		<property name="length">
-			<value>19</value>
+			<value>7.5</value>
 		</property>
 		<property name="startOffset">
 			<value>50</value>
 		</property>
 		<property name="volume">
-			<value>-10</value>
+			<value>-12</value>
 		</property>
 		<property name="looping">
 			<value>true</value>
@@ -211,7 +211,7 @@
 	</object>
 	<object class="EventMixerGroup" id="{10ce8d57-6bf6-4250-b29b-837d73d0b1a4}">
 		<property name="volume">
-			<value>-9</value>
+			<value>-12</value>
 		</property>
 		<property name="name">
 			<value>Audio 2</value>
@@ -226,12 +226,9 @@
 			<destination>{9405d7e9-f6cf-47bc-99a1-64e0920d5f4a}</destination>
 		</relationship>
 	</object>
-	<object class="LoopRegion" id="{1657ea28-d581-44c0-b5e1-3e3977d2d2e7}">
+	<object class="SustainPoint" id="{01fec4be-d422-41fb-bb7d-71b497e7ac64}">
 		<property name="position">
 			<value>0</value>
-		</property>
-		<property name="length">
-			<value>18.5</value>
 		</property>
 		<relationship name="timeline">
 			<destination>{8d63fa3d-a22f-427f-98c1-16e48294a526}</destination>
@@ -421,16 +418,16 @@
 			<value>-56</value>
 		</property>
 		<property name="midGain">
-			<value>-2</value>
+			<value>-5</value>
 		</property>
 		<property name="highGain">
 			<value>-80</value>
 		</property>
 		<property name="lowCrossover">
-			<value>1650</value>
+			<value>740</value>
 		</property>
 		<property name="highCrossover">
-			<value>1200</value>
+			<value>1550</value>
 		</property>
 		<property name="crossoverSlope">
 			<value>0</value>
@@ -442,17 +439,11 @@
 		<property name="lowGain">
 			<value>-80</value>
 		</property>
-		<property name="midGain">
-			<value>-6</value>
-		</property>
-		<property name="highGain">
-			<value>-3.5</value>
-		</property>
 		<property name="lowCrossover">
-			<value>900</value>
+			<value>1550</value>
 		</property>
 		<property name="highCrossover">
-			<value>1900</value>
+			<value>7000</value>
 		</property>
 		<property name="crossoverSlope">
 			<value>0</value>
@@ -464,7 +455,7 @@
 			<value>0</value>
 		</property>
 		<property name="value">
-			<value>-1</value>
+			<value>-80</value>
 		</property>
 		<property name="curveShape">
 			<value>-0.216096088</value>
@@ -475,7 +466,7 @@
 			<value>0.93000000000000005</value>
 		</property>
 		<property name="value">
-			<value>1</value>
+			<value>-66.6666641</value>
 		</property>
 	</object>
 </objects>

@@ -63,7 +63,7 @@ public class FPSMovement : MonoBehaviour
     void Start()
     {
         _prevPos = transform.position;
-        _randWalk = Random.Range(0f, 0.4f);
+        _randWalk = Random.Range(0.8f, 1.2f);
         emitPlayerSound = GetComponent<Player_Emitter>();
 
         charCon = GetComponent<CharacterController>();
