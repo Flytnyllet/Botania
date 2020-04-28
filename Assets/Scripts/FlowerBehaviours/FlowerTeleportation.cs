@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class FlowerTeleportation : MonoBehaviour
 {
+    [FMODUnity.EventRef]
+    public string event_Teleportation;
+
     [SerializeField] LayerMask _layerMask;
     [SerializeField] PickupFlower _pickupScript;
     [SerializeField] float _teleportationRange;
@@ -28,6 +31,7 @@ public class FlowerTeleportation : MonoBehaviour
 
     void ReleaseTrailObject(Vector3 pos)
     {
+        FMODUnity.RuntimeManager.PlayOneShotAttached(event_Teleportation, gameObject);
         _particles.gameObject.SetActive(true);
         _particles.Emit(20);
         bool trailActive = _trailObject.gameObject.activeSelf;
