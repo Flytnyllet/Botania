@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.00.00">
 	<object class="Event" id="{59d4f2b7-1eee-43d7-bf4b-6414c79da038}">
 		<property name="name">
-			<value>amb___001_forest___tree_rnd_woodsnap</value>
+			<value>amb___001_forest___tree_rnd_woodsnap1</value>
 		</property>
 		<property name="outputFormat">
 			<value>2</value>
@@ -106,13 +106,13 @@
 			<value>true</value>
 		</property>
 		<property name="triggerProbability">
-			<value>14.5</value>
+			<value>20</value>
 		</property>
 		<property name="isAsync">
 			<value>true</value>
 		</property>
 		<property name="start">
-			<value>0.076431216011838124</value>
+			<value>0.34375</value>
 		</property>
 		<property name="length">
 			<value>0.93644355885057839</value>
@@ -128,10 +128,6 @@
 			<destination>{329c05e3-f128-4598-bd5b-b686f7c10526}</destination>
 			<destination>{94bc30f7-2a21-4d0a-9060-b0593d10fd22}</destination>
 			<destination>{c8029eee-5035-4ce2-8cff-0f9c7c28c2d9}</destination>
-			<destination>{e7aefab7-a709-496d-a4fa-eab597129210}</destination>
-			<destination>{60583fc1-6376-4892-8db0-46102b4e7a10}</destination>
-			<destination>{00deaace-d7b0-4155-87a1-32300ee33c9d}</destination>
-			<destination>{834dfbee-efd0-4970-a365-1df4d74d3fbb}</destination>
 		</relationship>
 	</object>
 	<object class="EventMixerGroup" id="{fe6ee776-a463-429f-9cb4-279e9fa7480a}">
@@ -153,7 +149,7 @@
 			<value>0</value>
 		</property>
 		<property name="length">
-			<value>1.2458973928223716</value>
+			<value>2.625</value>
 		</property>
 		<relationship name="timeline">
 			<destination>{4512ebf5-876e-475d-9e2a-d3ab2a63d0fa}</destination>
@@ -198,26 +194,6 @@
 			<destination>{9f80f064-6e53-446c-ad55-5f5ad70d812a}</destination>
 		</relationship>
 	</object>
-	<object class="SingleSound" id="{e7aefab7-a709-496d-a4fa-eab597129210}">
-		<relationship name="audioFile">
-			<destination>{31a7b456-faf3-4cc9-8b80-fdcba691d9a4}</destination>
-		</relationship>
-	</object>
-	<object class="SingleSound" id="{60583fc1-6376-4892-8db0-46102b4e7a10}">
-		<relationship name="audioFile">
-			<destination>{84e81a63-82be-4842-a5c8-052e36b4059e}</destination>
-		</relationship>
-	</object>
-	<object class="SingleSound" id="{00deaace-d7b0-4155-87a1-32300ee33c9d}">
-		<relationship name="audioFile">
-			<destination>{b44539ca-1a4b-41d7-ab58-1d8f32603c4d}</destination>
-		</relationship>
-	</object>
-	<object class="SingleSound" id="{834dfbee-efd0-4970-a365-1df4d74d3fbb}">
-		<relationship name="audioFile">
-			<destination>{300fff60-751d-46d9-a5e4-08445bb2bdec}</destination>
-		</relationship>
-	</object>
 	<object class="MixerBusEffectChain" id="{b14db53f-e2fd-4742-b721-0b402ffe6353}">
 		<relationship name="effects">
 			<destination>{56e58d06-6423-4d7e-ad74-4c643cddcddb}</destination>
@@ -231,16 +207,16 @@
 			<value>1.80000007</value>
 		</property>
 		<property name="maximumDistance">
-			<value>8.60000038</value>
+			<value>12</value>
 		</property>
 		<property name="extentMode">
 			<value>1</value>
 		</property>
 		<property name="soundSize">
-			<value>14</value>
+			<value>4.80000019</value>
 		</property>
 		<property name="minimumExtent">
-			<value>116</value>
+			<value>124</value>
 		</property>
 	</object>
 	<object class="ThreeEQEffect" id="{56e58d06-6423-4d7e-ad74-4c643cddcddb}">

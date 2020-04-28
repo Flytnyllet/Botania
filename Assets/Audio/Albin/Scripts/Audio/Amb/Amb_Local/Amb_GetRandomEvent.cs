@@ -25,14 +25,17 @@ public class Amb_GetRandomEvent : MonoBehaviour
                     amb_Data.bird_rnd_birdsong2,
                     amb_Data.bird_rnd_birdsong3,
                     amb_Data.bird_rnd_birdsong4,
-                    amb_Data.tree_rnd_woodcreak,
-                    amb_Data.tree_rnd_woodsnap
+                    amb_Data.tree_rnd_woodcreak1,
+                    amb_Data.tree_rnd_woodcreak2,
+                    amb_Data.tree_rnd_woodsnap1,
+                    amb_Data.tree_rnd_woodsnap2,
+                    amb_Data.insects_rnd_crickets2
                 };
                 break;
             case "Amb_Grassland":
                 amb_LocalData = new string[]
                 {
-                    amb_Data.insects_rnd_crickets
+                    amb_Data.insects_rnd_crickets1
                 };
                 break;
         }

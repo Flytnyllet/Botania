@@ -65,7 +65,7 @@
 	</object>
 	<object class="EventAutomatableProperties" id="{05f10aed-b525-4214-94d5-2d41cbf5e618}">
 		<property name="maxVoices">
-			<value>2</value>
+			<value>1</value>
 		</property>
 		<property name="voiceStealing">
 			<value>4</value>
@@ -126,7 +126,7 @@
 	</object>
 	<object class="EventMixerMaster" id="{13e7171a-0092-4bac-b0e7-0c2c696f898b}">
 		<property name="volume">
-			<value>-6</value>
+			<value>-10</value>
 		</property>
 		<relationship name="modulators">
 			<destination>{2291ac39-d270-477c-858b-873b2c474f45}</destination>
@@ -157,7 +157,7 @@
 			<value>true</value>
 		</property>
 		<property name="triggerProbability">
-			<value>44</value>
+			<value>16.5</value>
 		</property>
 		<property name="isAsync">
 			<value>true</value>
@@ -180,7 +180,7 @@
 			<value>true</value>
 		</property>
 		<property name="triggerProbability">
-			<value>44</value>
+			<value>15</value>
 		</property>
 		<property name="isAsync">
 			<value>true</value>
@@ -208,7 +208,7 @@
 			<value>true</value>
 		</property>
 		<property name="triggerProbability">
-			<value>44</value>
+			<value>13</value>
 		</property>
 		<property name="isAsync">
 			<value>true</value>
@@ -236,7 +236,7 @@
 			<value>true</value>
 		</property>
 		<property name="triggerProbability">
-			<value>44</value>
+			<value>12.5</value>
 		</property>
 		<property name="isAsync">
 			<value>true</value>
@@ -263,7 +263,7 @@
 			<value>true</value>
 		</property>
 		<property name="triggerProbability">
-			<value>44</value>
+			<value>10.5</value>
 		</property>
 		<property name="isAsync">
 			<value>true</value>
@@ -293,7 +293,7 @@
 			<value>true</value>
 		</property>
 		<property name="triggerProbability">
-			<value>44</value>
+			<value>18.5</value>
 		</property>
 		<property name="isAsync">
 			<value>true</value>
@@ -319,7 +319,7 @@
 			<value>true</value>
 		</property>
 		<property name="triggerProbability">
-			<value>44</value>
+			<value>12</value>
 		</property>
 		<property name="isAsync">
 			<value>true</value>
@@ -704,6 +704,7 @@
 	<object class="MixerBusEffectChain" id="{bf0e989f-eff5-48bd-9bf5-070b72c2caf5}">
 		<relationship name="effects">
 			<destination>{81b5783a-7e82-4320-950d-16158732ba5d}</destination>
+			<destination>{46b93f31-48db-41b9-a412-3776bdab6d5e}</destination>
 			<destination>{e923b7c1-3827-4b42-b932-1ac216c59e89}</destination>
 		</relationship>
 	</object>
@@ -745,6 +746,35 @@
 		</property>
 		<property name="crossoverSlope">
 			<value>2</value>
+		</property>
+	</object>
+	<object class="SFXReverbEffect" id="{46b93f31-48db-41b9-a412-3776bdab6d5e}">
+		<property name="decayTime">
+			<value>950</value>
+		</property>
+		<property name="earlyDelay">
+			<value>162</value>
+		</property>
+		<property name="lateDelay">
+			<value>88</value>
+		</property>
+		<property name="HFDecayRatio">
+			<value>54</value>
+		</property>
+		<property name="diffusion">
+			<value>79</value>
+		</property>
+		<property name="highCut">
+			<value>2800</value>
+		</property>
+		<property name="earlyLateMix">
+			<value>26</value>
+		</property>
+		<property name="wetLevel">
+			<value>-24</value>
+		</property>
+		<property name="dryLevel">
+			<value>-14.5</value>
 		</property>
 	</object>
 	<object class="MixerBusFader" id="{e923b7c1-3827-4b42-b932-1ac216c59e89}" />
