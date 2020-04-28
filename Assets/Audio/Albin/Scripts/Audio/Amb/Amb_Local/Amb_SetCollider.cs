@@ -55,7 +55,7 @@ public class Amb_SetCollider : MonoBehaviour
         if (!_hasPlayed)
             Set_Collider();
         event_Instance.getPlaybackState(out _event_State);
-        CheckPlaybackState();
+        //CheckPlaybackState();
 
         event_Description.getParameterDescriptionCount(out int _parameterCount);
         if (_parameterCount > 0)
@@ -89,35 +89,35 @@ public class Amb_SetCollider : MonoBehaviour
         event_Collider.radius = _maxDistance;
     }
 
-    private void CheckPlaybackState()
-    {
-        switch (_event_State)
-        {
-            case PLAYBACK_STATE.PLAYING:
-                _state = 0;
-                break;
-            case PLAYBACK_STATE.SUSTAINING:
-                _state = 1;
-                break;
-            case PLAYBACK_STATE.STOPPED:
-                _state = 2;
-                break;
-            case PLAYBACK_STATE.STARTING:
-                _state = 3;
-                break;
-            case PLAYBACK_STATE.STOPPING:
-                _state = 4;
-                break;
-        }
-        if (debug)
-        {
-            if (_state != _lastState)
-            {
-                Debug.Log("event_Instance on object: " + transform.parent.gameObject.name + " is in state: " + _event_State);
-                _lastState = _state;
-            }
-        }
-    }
+    //private void CheckPlaybackState()
+    //{
+    //    switch (_event_State)
+    //    {
+    //        case PLAYBACK_STATE.PLAYING:
+    //            _state = 0;
+    //            break;
+    //        case PLAYBACK_STATE.SUSTAINING:
+    //            _state = 1;
+    //            break;
+    //        case PLAYBACK_STATE.STOPPED:
+    //            _state = 2;
+    //            break;
+    //        case PLAYBACK_STATE.STARTING:
+    //            _state = 3;
+    //            break;
+    //        case PLAYBACK_STATE.STOPPING:
+    //            _state = 4;
+    //            break;
+    //    }
+    //    if (debug)
+    //    {
+    //        if (_state != _lastState)
+    //        {
+    //            Debug.Log("event_Instance on object: " + transform.parent.gameObject.name + " is in state: " + _event_State);
+    //            _lastState = _state;
+    //        }
+    //    }
+    //}
 
     private void OnDrawGizmos()
     {
@@ -150,25 +150,34 @@ public class Amb_SetCollider : MonoBehaviour
             amb_ShyBehaviour.gameObject.SetActive(true);
     }
 
-    private void OnTriggerStay(Collider other)
-    {
-        if (other.gameObject.tag != "Player")
-            return;
+    //private void OnTriggerStay(Collider other)
+    //{
+    //    if (other.gameObject.tag != "Player")
+    //        return;
 
-        event_Instance.getPlaybackState(out _event_State);
-        event_Instance.isVirtual(out _isVirtual);
-
-        CheckPlaybackState();
-    }
+    //    event_Instance.getPlaybackState(out _event_State);
+    //    event_Instance.isVirtual(out _isVirtual);
+    //    CheckPlaybackState();
+    //}
 
     private void OnTriggerExit(Collider other)
     {
         if (other.gameObject.tag != "Player")
             return;
 
+        Stop_Event();
+    }
+
+    public void Set_Parameter(PARAMETER_ID id, float value)
+    {
+        event_Instance.setParameterByID(id, value);
+    }
+
+    private void Stop_Event()
+    {
         event_Instance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
-        event_Instance.getPlaybackState(out _event_State);
-        CheckPlaybackState();
+        //event_Instance.getPlaybackState(out _event_State);
+        //CheckPlaybackState();
         event_Instance.clearHandle();
         _hasPlayed = true;
 
@@ -178,20 +187,15 @@ public class Amb_SetCollider : MonoBehaviour
             amb_ShyBehaviour.gameObject.SetActive(false);
     }
 
-    public void Set_Parameter(PARAMETER_ID id, float value)
-    {
-        event_Instance.setParameterByID(id, value);
-    }
+    //public void Stop_Collider()
+    //{
+    //    event_Instance.getPlaybackState(out _event_State);
 
-    public void Stop_Collider()
-    {
-        event_Instance.getPlaybackState(out _event_State);
-
-        if (_event_State != PLAYBACK_STATE.STOPPED)
-            return;
-        else
-        {
-            event_Collider.gameObject.SetActive(false);
-        }
-    }
+    //    if (_event_State != PLAYBACK_STATE.STOPPED)
+    //        return;
+    //    else
+    //    {
+    //        event_Collider.gameObject.SetActive(false);
+    //    }
+    //}
 }
