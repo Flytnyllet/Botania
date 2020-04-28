@@ -113,7 +113,7 @@ public static class Noise
 
                 if (x / detailLevel < mapWidth / detailLevel && y / detailLevel < mapHeight / detailLevel)
                 {
-                    noiseMap[x / detailLevel, y / detailLevel] = noiseHeight + settings.AddValue;
+                    noiseMap[x / detailLevel, y / detailLevel] = noiseHeight + settings.AddValue * (settings.Invert ? -1 : 1);
                     noiseMap[x / detailLevel, y / detailLevel] *= settings.Strength;
                 }
             }
@@ -130,6 +130,7 @@ public static class Noise
                 else
                 {
                     float normalizedHeight = (noiseMap[x, y] + 1) / (maxPossibleHeight / GLOBAL_MODE_ESTIMATE_MULTIPLIER);
+                    normalizedHeight *= settings.Invert ? -1 : 1;
                     noiseMap[x, y] = Mathf.Clamp(normalizedHeight, 0, int.MaxValue);
                 }
             }
@@ -244,6 +245,7 @@ public static class Noise
 public class NoiseSettings
 {
     [SerializeField, Tooltip("Enable this if you want just white!")] bool _allWhite = false;
+    [SerializeField] bool _invert = false;
     [SerializeField, Range(0, 5), Tooltip("Add this to every point in the noise to make it more white")] float _addValue = 0;
     [SerializeField, Range(0, 15), Tooltip("How strong should this noise have as an effect?")] float _strength = 1.0f;
 
@@ -260,6 +262,7 @@ public class NoiseSettings
     [SerializeField, Tooltip("Keep on GLOBAL! LOCAL is only used for testing purposes!")] Noise.NormalizeMode _normalizeMode = Noise.NormalizeMode.GLOBAL;
 
     public bool AllWhite                     { get { return _allWhite; }      private set { _allWhite = value; } }
+    public bool Invert                       { get { return _invert; }        private set { _invert = value; } }
     public float AddValue                    { get { return _addValue; }      private set { _addValue = value; } }
     public float Strength                    { get { return _strength; }      private set { _strength = value; } }
 

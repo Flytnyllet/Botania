@@ -9,8 +9,9 @@ public class FPSMovement : MonoBehaviour
 
 	// Tag Handling (Replace with LayerMasks)
 	const string DUCK_BUTTON = "Duck";
-	[SerializeField] string GROUND_TAG = "null";
-	[SerializeField] string WATER_TAG = "null";
+	const string SPRINT_BUTTON = "Sprint";
+	//[SerializeField] string GROUND_TAG = "null";
+	//[SerializeField] string WATER_TAG = "null";
 
 	[Header("Movement")]
 	CharacterController charCon;
@@ -28,7 +29,8 @@ public class FPSMovement : MonoBehaviour
 	float _groundRayDistance;
 	[SerializeField] float _minSlidingAngle = 25f;
 	[SerializeField] float _slopeWalkCorrection = 2f;
-	[SerializeField] float _strafingSpeed = 5f;
+	[SerializeField] float _strafingSpeedFactor = 0.8f;
+	[SerializeField] float _sprintSpeedFactor = 2f;
 	[SerializeField] float _jumpTimeout = 0.3f;
 	[SerializeField] LayerMask layerMask;
 	float _lastJump = 0;
@@ -39,28 +41,44 @@ public class FPSMovement : MonoBehaviour
 	[Header("Bobbing")]
 	[SerializeField] float _bobbingAmount = 0.05f;
 	[SerializeField] float _bobbingSpeed = 1f;
-	float _bobTimer = 0;
+    float _bobTimer = 0;
 	float _defPosY;
 
 	Transform _playerCam;
-	//public LayerMask layerMask;
+    //public LayerMask layerMask;
 
-	// !OBS Weird bug causing script to disable itself when awake is used.
-	void Awake()
+    Player_Emitter emitPlayerSound;
+    Vector3 _prevPos;
+    float _randWalk;
+    float _timeSinceLastStep;
+    float _travelledDist;
+    [SerializeField ] private float _travelDist;
+
+    // !OBS Weird bug causing script to disable itself when awake is used.
+    void Awake()
 	{
 		playerMovement = this;
 	}
 
 	void Start()
 	{
-		charCon = GetComponent<CharacterController>();
-		_playerCam = transform.Find("PlayerCam");
+        _prevPos = transform.position;
+        _randWalk = Random.Range(0f, 0.4f);
+        emitPlayerSound = GetComponent<Player_Emitter>();
+
+        charCon = GetComponent<CharacterController>();
+        _playerCam = transform.Find("PlayerCam");
 		_cameraStartPosition = _playerCam.localPosition;
 		_defPosY = _cameraStartPosition.y;
 		CharacterState.SetControlState(CHARACTER_CONTROL_STATE.PLAYERCONTROLLED);
 	}
 
-	void Update()
+    void FixedUpdate()
+    {
+        
+    }
+
+    void Update()
 	{
 		if (CharacterState.Control_State == CHARACTER_CONTROL_STATE.PLAYERCONTROLLED || CharacterState.Control_State == CHARACTER_CONTROL_STATE.MENU)
 		{
@@ -69,22 +87,21 @@ public class FPSMovement : MonoBehaviour
 			float x = Input.GetAxis("Horizontal");
 			float y = Input.GetAxis("Vertical");
 			Vector3 jump = new Vector3(0, 1f * _jumpForce.Value, 0);
+			float moveModifier = 1.0f;
 
 			//Ground Detection
 			float terrainAngle;
 			RaycastHit groundDetection;
+            Debug.Log(charCon.bounds.size.y);
+            Debug.Log(_groundRayExtraDist);
 			bool grounded = GroundRay(transform.position, Vector3.down, charCon.bounds.size.y / 2 + _groundRayExtraDist, out groundDetection);
+            Debug.Log(groundDetection);
 
 			// == Functions ==
-			//_inAir = !charCon.isGrounded;
 			if(charCon.isGrounded)
 			{
 				_inAir = false;
 			}
-			/*if (groundDetection.distance <= charCon.bounds.size.y / 2 + _allowedJumpDistance)
-			{
-				_inAir = false;
-			}*/
 
 			// Everything that can be done while grounded
 			if (grounded)
@@ -92,8 +109,13 @@ public class FPSMovement : MonoBehaviour
 				terrainAngle = Vector3.Angle(Vector3.up, groundDetection.normal);
 				Vector3 slopeDirection = groundDetection.normal;
 
+				if(Input.GetButton(SPRINT_BUTTON))
+				{
+					moveModifier *= _sprintSpeedFactor;
+					//Walking(x, y, groundDetection, moveModifier);
+				}
 				// Jump, otherwise Slide, otherwise Walk
-				if (Input.GetButtonDown("Jump") && groundDetection.distance <= charCon.bounds.size.y / 2 + _allowedJumpDistance) // && !_inAir)
+				if (Input.GetButtonDown("Jump") && groundDetection.distance <= charCon.bounds.size.y / 2 + _allowedJumpDistance && !_inAir)
 				{
 					Debug.Log("JUMP!");
 					_velocity.y = 0;
@@ -105,21 +127,28 @@ public class FPSMovement : MonoBehaviour
 				//	Debug.Log("SLIDING!");
 				//	Sliding(x, slopeDirection);
 				//}
-				//else
-				//{
-					Walking(x, y, groundDetection);
-				//}
+				else
+				{
+					if (Input.GetButtonDown(DUCK_BUTTON))
+					{
+						Ducking(-_duckDistance);
+					}
+					else if (Input.GetButton(DUCK_BUTTON))
+					{
+						moveModifier *= _crawlSpeedFactor;
+					}
+					else if (Input.GetButtonUp(DUCK_BUTTON))
+					{
+						Ducking(0);
+					}
+
+					Walking(x, y, groundDetection, moveModifier);
+				}
 			}
 			else
 			{
 				Strafing(x, y);
 			}
-
-			//Ducking
-			if (Input.GetButtonDown(DUCK_BUTTON))
-				Ducking(-_duckDistance);
-			else if (Input.GetButtonUp(DUCK_BUTTON))
-				Ducking(0);
 
 			//Gravity
 			charCon.Move(_velocity * Time.deltaTime);
@@ -129,9 +158,6 @@ public class FPSMovement : MonoBehaviour
 			// Bobbing
 			HeadBob(x * _speed.Value, y * _speed.Value);
 
-			//bool groundRay = Physics.Raycast(transform.position, Vector3.down * 2, 2f);
-			/*if (_velocity.y > 0)
-                groundRay = false; */
 		}
 	}
 
@@ -142,17 +168,19 @@ public class FPSMovement : MonoBehaviour
 		Vector3 move =
 			_playerCam.right.normalized * horizontal +
 			lookDir.normalized * vertical;
-		charCon.Move(move * _strafingSpeed * Time.deltaTime);
+		charCon.Move(move * _speed.Value *_strafingSpeedFactor * Time.deltaTime);
 	}
 
-	void Walking(float horizontal, float vertical, RaycastHit ground)
+	void Walking(float horizontal, float vertical, RaycastHit ground, float modifier)
 	{
+		Vector2 velocity = new Vector2(horizontal, vertical).normalized;
+
 		Vector3 lookDir = _playerCam.forward;
 		lookDir.y = 0;
 		Vector3 move =
-			_playerCam.right.normalized * horizontal +
-			lookDir.normalized * vertical;
-		charCon.Move(move * _speed.Value * Time.deltaTime);
+			_playerCam.right.normalized * velocity.x +
+			lookDir.normalized * velocity.y;
+		charCon.Move(move * _speed.Value * modifier * Time.deltaTime);
 
 		//Post move distance to ground check
 		if (ground.distance <= _slopeWalkCorrection && !_inAir)
@@ -182,7 +210,7 @@ public class FPSMovement : MonoBehaviour
 
 	void Teleport()
 	{
-
+        
 	}
 
 	void Launch(Vector3 launchVector)
@@ -193,10 +221,15 @@ public class FPSMovement : MonoBehaviour
 	//Head Bobbing !Stolen from the internet
 	void HeadBob(float x, float z)
 	{
-		if (Mathf.Abs(x) > 0.1f || Mathf.Abs(z) > 0.1f)
+        _timeSinceLastStep += Time.deltaTime;
+        _travelledDist += (transform.position - _prevPos).magnitude;
+        Debug.Log(_travelledDist);
+
+        if (Mathf.Abs(x) > 0.1f || Mathf.Abs(z) > 0.1f)
 		{
-			//Player is moving
-			_bobTimer += Time.deltaTime * _bobbingSpeed;
+            //Player is moving
+            FootstepsSound();
+            _bobTimer += Time.deltaTime * _bobbingSpeed;
 			_playerCam.localPosition = new Vector3(_playerCam.localPosition.x,
 				_defPosY + Mathf.Sin(_bobTimer) * _bobbingAmount, _playerCam.localPosition.z);
 		}
@@ -233,4 +266,13 @@ public class FPSMovement : MonoBehaviour
         }
         return false;*/
 	}
+
+    void FootstepsSound()
+    {
+        if (!_inAir && _travelledDist >= _travelDist + _randWalk) {
+            emitPlayerSound.Init_Footsteps(0);
+            _travelledDist = 0f;
+        }
+        _prevPos = transform.position;
+    }
 }

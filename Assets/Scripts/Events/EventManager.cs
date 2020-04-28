@@ -11,6 +11,7 @@ public class EventParameter //Add more Event Parameter Variables here if needed
     public string stringParam;
     public int intParam;
     public float floatParam;
+    public float floatParam2;
     public bool boolParam;
     public Color colourParam = Color.white;
     public Vector2 posParam;
