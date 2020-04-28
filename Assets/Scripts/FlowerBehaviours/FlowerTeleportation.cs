@@ -18,6 +18,7 @@ public class FlowerTeleportation : MonoBehaviour
 
     Vector3 groundOffset = new Vector3(0, 0.05f, 0);
     Vector3 _objectHeight;
+    Vector3 _objectAltitudeOffset;
     CapsuleCollider _capCollider;
     SphereCollider _sphereCollider;
     private void Awake()
@@ -26,6 +27,7 @@ public class FlowerTeleportation : MonoBehaviour
         _capCollider = GetComponent<CapsuleCollider>();
         _sphereCollider = GetComponent<SphereCollider>();
         _objectHeight = new Vector3(0, _capCollider.bounds.size.y, 0);
+        _objectAltitudeOffset = new Vector3(0, _capCollider.bounds.center.y, 0);
         _capCollider.enabled = false;
     }
 
@@ -38,7 +40,7 @@ public class FlowerTeleportation : MonoBehaviour
         _trailObject.gameObject.SetActive(true);
         _trailObject.transform.parent = null;
 
-        pos.y -= 0.05f;
+        pos -= _objectAltitudeOffset;
         _jumps++;
         transform.position = pos + _objectHeight * 0.5f;
 
@@ -69,7 +71,7 @@ public class FlowerTeleportation : MonoBehaviour
                 position.x += newPos.x;
                 position.z += newPos.y;
                 // Does the ray intersect any objects excluding the player layer
-                bool HIT = Physics.Raycast(position + groundOffset, Vector3.down, out hit, _heighCheck, _layerMask);
+                bool HIT = Physics.Raycast(position + groundOffset, Vector3.down, out hit, _heighCheck, _layerMask, QueryTriggerInteraction.Ignore);
                 if (HIT && hit.transform.tag != "Flower")
                 {
                     Vector3 hitPos = hit.point;
@@ -80,7 +82,7 @@ public class FlowerTeleportation : MonoBehaviour
                     }
                     Debug.DrawRay(hitPos, hitPos + _objectHeight, Color.green, 5);
                 }
-                HIT = Physics.Raycast(position + groundOffset, Vector3.up, out hit, _heighCheck, _layerMask);
+                HIT = Physics.Raycast(position + groundOffset, Vector3.up, out hit, _heighCheck, _layerMask, QueryTriggerInteraction.Ignore);
                 if (HIT && hit.transform.tag != "Flower")
                 {
                     Vector3 hitPos = hit.point;
