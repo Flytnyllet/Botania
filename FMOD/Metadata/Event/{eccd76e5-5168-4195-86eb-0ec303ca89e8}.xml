@@ -157,7 +157,7 @@
 			<value>true</value>
 		</property>
 		<property name="triggerProbability">
-			<value>34</value>
+			<value>20.5</value>
 		</property>
 		<property name="isAsync">
 			<value>true</value>
@@ -187,7 +187,7 @@
 			<value>true</value>
 		</property>
 		<property name="triggerProbability">
-			<value>34</value>
+			<value>18.5</value>
 		</property>
 		<property name="isAsync">
 			<value>true</value>
@@ -214,7 +214,7 @@
 			<value>true</value>
 		</property>
 		<property name="triggerProbability">
-			<value>34</value>
+			<value>20.5</value>
 		</property>
 		<property name="isAsync">
 			<value>true</value>
@@ -240,7 +240,7 @@
 			<value>true</value>
 		</property>
 		<property name="triggerProbability">
-			<value>34</value>
+			<value>20.5</value>
 		</property>
 		<property name="start">
 			<value>14</value>
@@ -257,7 +257,7 @@
 			<value>true</value>
 		</property>
 		<property name="triggerProbability">
-			<value>34</value>
+			<value>17.5</value>
 		</property>
 		<property name="isAsync">
 			<value>true</value>
@@ -280,7 +280,7 @@
 			<value>true</value>
 		</property>
 		<property name="triggerProbability">
-			<value>34</value>
+			<value>20.5</value>
 		</property>
 		<property name="start">
 			<value>23.5</value>
@@ -297,7 +297,7 @@
 			<value>true</value>
 		</property>
 		<property name="triggerProbability">
-			<value>34</value>
+			<value>11</value>
 		</property>
 		<property name="isAsync">
 			<value>true</value>
@@ -584,6 +584,7 @@
 	</object>
 	<object class="MixerBusEffectChain" id="{717a5d9b-db8b-4844-8da2-aec9b1fe8a6b}">
 		<relationship name="effects">
+			<destination>{a8dc9287-d7b3-4b5a-9f35-741749839f59}</destination>
 			<destination>{87ff4289-95b9-4c6e-9464-72f886892d8b}</destination>
 			<destination>{9830f676-2ce7-460f-bffd-f0104dd5ded7}</destination>
 		</relationship>
@@ -656,6 +657,32 @@
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{9d55b813-05d9-44f2-b87c-bb0523e4bb65}" />
+	<object class="SFXReverbEffect" id="{a8dc9287-d7b3-4b5a-9f35-741749839f59}">
+		<property name="earlyDelay">
+			<value>162</value>
+		</property>
+		<property name="lateDelay">
+			<value>88</value>
+		</property>
+		<property name="HFDecayRatio">
+			<value>54</value>
+		</property>
+		<property name="diffusion">
+			<value>79</value>
+		</property>
+		<property name="highCut">
+			<value>440</value>
+		</property>
+		<property name="earlyLateMix">
+			<value>23</value>
+		</property>
+		<property name="wetLevel">
+			<value>-16</value>
+		</property>
+		<property name="dryLevel">
+			<value>-14</value>
+		</property>
+	</object>
 	<object class="MixerBusFader" id="{87ff4289-95b9-4c6e-9464-72f886892d8b}" />
 	<object class="SpatialiserEffect" id="{9830f676-2ce7-460f-bffd-f0104dd5ded7}">
 		<property name="extentMode">

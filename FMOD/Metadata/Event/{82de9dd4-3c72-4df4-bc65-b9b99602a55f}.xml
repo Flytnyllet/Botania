@@ -125,7 +125,7 @@
 	</object>
 	<object class="EventMixerMaster" id="{871dd922-84cf-438b-bfb1-e620a27c138e}">
 		<property name="volume">
-			<value>10</value>
+			<value>-5</value>
 		</property>
 		<relationship name="effectChain">
 			<destination>{a54cf256-4673-4c35-883c-16b22337a7b0}</destination>
@@ -313,17 +313,24 @@
 	</object>
 	<object class="ThreeEQEffect" id="{c17b8965-a0aa-4b17-813d-b53b24514155}">
 		<property name="lowGain">
-			<value>-80</value>
+			<value>-21</value>
+		</property>
+		<property name="midGain">
+			<value>-5.5</value>
 		</property>
 		<property name="highGain">
-			<value>-13.5</value>
+			<value>-10.5</value>
 		</property>
 		<property name="lowCrossover">
-			<value>660</value>
+			<value>950</value>
 		</property>
 		<property name="highCrossover">
-			<value>1050</value>
+			<value>1650</value>
 		</property>
+		<relationship name="modulators">
+			<destination>{24047d63-b989-442b-9a5d-49a94e19b00d}</destination>
+			<destination>{40ebfb83-f18a-4d82-bc21-1d23184e009d}</destination>
+		</relationship>
 	</object>
 	<object class="MixerBusFader" id="{aaa5bd33-9762-43f5-8fd1-cd4e92c80717}" />
 	<object class="SpatialiserEffect" id="{9bf09f18-59d5-4403-bf82-061423220b1f}" />
@@ -438,6 +445,37 @@
 		</property>
 		<property name="amount">
 			<value>10</value>
+		</property>
+	</object>
+	<object class="LFOModulator" id="{24047d63-b989-442b-9a5d-49a94e19b00d}">
+		<property name="nameOfPropertyBeingModulated">
+			<value>midGain</value>
+		</property>
+		<property name="rate">
+			<value>0.0700000077</value>
+		</property>
+		<property name="beats">
+			<value>7.80000019</value>
+		</property>
+		<property name="depth">
+			<value>12</value>
+		</property>
+		<property name="direction">
+			<value>-100</value>
+		</property>
+	</object>
+	<object class="LFOModulator" id="{40ebfb83-f18a-4d82-bc21-1d23184e009d}">
+		<property name="nameOfPropertyBeingModulated">
+			<value>lowGain</value>
+		</property>
+		<property name="rate">
+			<value>0.0400000028</value>
+		</property>
+		<property name="depth">
+			<value>12</value>
+		</property>
+		<property name="direction">
+			<value>-100</value>
 		</property>
 	</object>
 	<object class="AutomationCurve" id="{b0a5ed80-d46d-43ba-8158-6cd75b6a2b64}">

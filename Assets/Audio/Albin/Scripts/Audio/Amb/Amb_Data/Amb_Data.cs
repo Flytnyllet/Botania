@@ -28,16 +28,25 @@ public class Amb_Data : UnityEngine.ScriptableObject
     [Space(10)]
 
     [FMODUnity.EventRef]
-    public string tree_rnd_woodcreak = null;
+    public string tree_rnd_woodcreak1 = null;
 
     [FMODUnity.EventRef]
-    public string tree_rnd_woodsnap = null;
+    public string tree_rnd_woodcreak2 = null;
+
+    [FMODUnity.EventRef]
+    public string tree_rnd_woodsnap1 = null;
+
+    [FMODUnity.EventRef]
+    public string tree_rnd_woodsnap2 = null;
 
     [Space(10)]
 
     [Header("Amb_Grassland")]
 
     [FMODUnity.EventRef]
-    public string insects_rnd_crickets = null;
+    public string insects_rnd_crickets1 = null;
+
+    [FMODUnity.EventRef]
+    public string insects_rnd_crickets2 = null;
 }
 

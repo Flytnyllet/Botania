@@ -60,7 +60,7 @@ public class Amb_Local_Wind : MonoBehaviour
 
     private void FixedUpdate()
     {
-        event_Instance.getPlaybackState(out _event_State);
+        //event_Instance.getPlaybackState(out _event_State);
         event_Instance.isVirtual(out _isVirtual);
 
         if (!_isVirtual)
