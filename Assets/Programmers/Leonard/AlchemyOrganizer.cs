@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -264,6 +265,7 @@ public class AlchemyOrganizer : MonoBehaviour
         }
         else
         {
+			_result = null;
             if (_potionSlot.transform.childCount > 0)
             {
                 Destroy(_potionSlot.transform.GetChild(0).gameObject);
@@ -280,20 +282,45 @@ public class AlchemyOrganizer : MonoBehaviour
         {
             return false;
         }
-        for (int i = 0; i < recipeA.Count && _recipieList[i] != null; i++)
-        {
-            if (recipeA[i] != recipeB[i])
-            {
-                return false;
-            }
-            /*if(recipeB.Contains(recipeA[i]))
+		//List<int> checkedIndex = new List<int>();
+		List<string> recipeANames = recipeA.Select(recipe => recipe.itemName).ToList();
+		List<string> recipeBNames = recipeB.Select(recipe => recipe.itemName).ToList();
+
+		recipeANames.Sort();
+		recipeBNames.Sort();
+
+
+		for (int i = 0; i < recipeA.Count && _recipieList[i] != null; i++)
+		{
+			if(recipeANames[i] != recipeBNames[i])
 			{
-				
-				checkedStrings.Add(recipeA[i]);
-			}*/
-        }
-        return true;
-    }
+				return false;
+			}
+			//if (!recipeB.Exists(x => x == recipeA[i] &&
+			//		//&& !checkedIndex.Contains(i)))
+			//{
+			//	return false;
+			//}
+			//else
+			//{
+			//	checkedIndex.Add(recipeB.IndexOf(recipeA[i]));
+			//}
+		}
+
+		return true;
+		//     for (int i = 0; i < recipeA.Count && _recipieList[i] != null; i++)
+		//     {
+		//         if (recipeA[i] != recipeB[i])
+		//         {
+		//             return false;
+		//         }
+		//         /*if(recipeB.Contains(recipeA[i]))
+		//{
+
+		//	checkedStrings.Add(recipeA[i]);
+		//}*/
+		//     }
+	}
 
     void CreateAllRecipes()
     {
@@ -322,11 +349,13 @@ public class AlchemyOrganizer : MonoBehaviour
     }
     public void CraftPotion()
     {
-        _result.AddPotion();
+		if (_result != null)
+		{
+			_result.AddPotion();
+		}
         ClearAllIngredients();
         UpdateIngredients();
-
-    }
+	}
     public void Debug_AddAllIngredients()
     {
         for (int i = 0; i < _allIngredients.Count; i++)
