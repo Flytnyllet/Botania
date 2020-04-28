@@ -5105,7 +5105,7 @@ MonoBehaviour:
   _heighCheck: 5
   _trailObject: {fileID: 294799310}
   _particles: {fileID: 1143048545}
-  _Maxjumps: 3
+  _Maxjumps: 5
 --- !u!114 &572510021
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5118,7 +5118,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee66933cb94b3af499283834dca2703c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _flowerName: Teleport
+  _flowerData: {fileID: 11400000, guid: 6c8183cf83ef97446865ee2832d3574e, type: 2}
   _pickupAlpha: {fileID: 0}
   _gameobjectOverload: {fileID: 0}
 --- !u!114 &572510028
@@ -5133,3 +5133,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70c2b09e2695b494b8572a2ea101535c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _spawnPartially: 0

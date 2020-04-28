@@ -4,7 +4,7 @@ using UnityEngine;
 
 public enum CharacterStatType
 {
-    Speed, Jump, Gravity, Invisibility, Hearing
+    Speed, Jump, Gravity
 }
 
 public class SpeedPotion : Potion_Template
@@ -52,19 +52,10 @@ public class SpeedPotion : Potion_Template
                 {
                     potionEffect = new StatModifier(flat, StatType.Flat, this);
                     p._gravity.AddModifier(potionEffect, duration);
-                    p._gravity.AddModifier(new StatModifier(factor, StatType.PercentMult, this), duration);
+                   // p._gravity.AddModifier(new StatModifier(factor, StatType.PercentMult, this), duration);
                     return true;
                 }
                 break;
-            case CharacterStatType.Invisibility:
-                //Denna har ingen funktion just nu för att blockera att man tar flera potions, men det är ok for now
-                CharacterState.AddAbilityFlag(ABILITY_FLAG.INVISSIBLE, 30);
-                break;
-
-            case CharacterStatType.Hearing:
-                CharacterState.AddAbilityFlag(ABILITY_FLAG.SUPERHEARING, 30);
-                break;
-
 
             default:
                 if (!(p._speed.GetStatModifiers().Exists(x => x.Source == this)))
@@ -72,6 +63,7 @@ public class SpeedPotion : Potion_Template
                     potionEffect = new StatModifier(flat, StatType.Flat, this);
                     p._speed.AddModifier(potionEffect, duration);
                     p._speed.AddModifier(new StatModifier(factor, StatType.PercentMult, this), duration);
+
                     EventParameter param = new EventParameter() { intParam = -50, floatParam = 1 };
                     EventManager.TriggerEvent(EventNameLibrary.SPEED_INCREASE, param);
                     param.intParam = 0;
