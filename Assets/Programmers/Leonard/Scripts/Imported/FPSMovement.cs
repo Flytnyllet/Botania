@@ -93,22 +93,22 @@ public class FPSMovement : MonoBehaviour
 				Vector3 slopeDirection = groundDetection.normal;
 
 				// Jump, otherwise Slide, otherwise Walk
-				if (Input.GetButtonDown("Jump") && groundDetection.distance <= charCon.bounds.size.y / 2 + _allowedJumpDistance) // && !_inAir)
+				if (Input.GetButtonDown("Jump") && groundDetection.distance <= charCon.bounds.size.y / 2 + _allowedJumpDistance  && !_inAir)
 				{
 					Debug.Log("JUMP!");
 					_velocity.y = 0;
 					Launch(jump);
 					_inAir = true;
 				}
-				//else if (Input.GetButton(DUCK_BUTTON) && terrainAngle > 10f)
-				//{
-				//	Debug.Log("SLIDING!");
-				//	Sliding(x, slopeDirection);
-				//}
-				//else
-				//{
-					Walking(x, y, groundDetection);
-				//}
+                //else if (Input.GetButton(DUCK_BUTTON) && terrainAngle > 10f)
+                //{
+                //	Debug.Log("SLIDING!");
+                //	Sliding(x, slopeDirection);
+                //}
+                else
+                {
+                    Walking(x, y, groundDetection);
+				}
 			}
 			else
 			{
