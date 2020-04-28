@@ -5035,9 +5035,9 @@ CapsuleCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   m_Radius: 0.23
-  m_Height: 0.76
+  m_Height: 0.89
   m_Direction: 1
-  m_Center: {x: -0.02634962, y: 0.4, z: 0.041100256}
+  m_Center: {x: -0.02634962, y: 0.45, z: 0.041100256}
 --- !u!114 &1360476072
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5076,6 +5076,11 @@ MonoBehaviour:
   _flowerData: {fileID: 11400000, guid: 6c8183cf83ef97446865ee2832d3574e, type: 2}
   _pickupAlpha: {fileID: 0}
   _gameobjectOverload: {fileID: 0}
+  _pickupAction:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
 --- !u!114 &572510028
 MonoBehaviour:
   m_ObjectHideFlags: 0

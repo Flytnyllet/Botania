@@ -53,12 +53,12 @@ public class Interactor : MonoBehaviour
         if (Input.GetButtonDown("Fire1"))
         {
             RaycastHit collision;
-            bool hit = Physics.Raycast(transform.position, transform.forward * distance, out collision, distance);
+            bool hit = Physics.Raycast(transform.position, transform.forward * distance, out collision, distance,_layerMask.value);
             Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * distance, Color.green, 1f);
 
             if (hit)
             {
-                //Debug.Log(collision.transform.name);
+                Debug.Log(collision.transform.name);
                 foreach (IInteractable interactable in collision.transform.GetComponents<IInteractable>())
                 {
                     interactable.Interact();
