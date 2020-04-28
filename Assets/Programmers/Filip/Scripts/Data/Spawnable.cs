@@ -16,6 +16,8 @@ public class Spawnable : UpdatableData
 
     [Header("General Settings")]
 
+    [SerializeField, Tooltip("If true it will not spawn anything by itself, only act as parent noise")] bool _parentOnly = false;
+
     [SerializeField, Range(0, 1), Tooltip("How much random rotation should be applied (probably keep it on 1)")] float _rotationAmount = 1.0f;
     [SerializeField, Range(0, 1), Tooltip("At which point in the noise gradient should object start spawning? Low = smooth edges, high = sharp af")] float _noiseStartPoint;
     [SerializeField, Range(0, 2), Tooltip("How thick the area of spawn should be")] float _thickness = 0.75f;
@@ -65,6 +67,9 @@ public class Spawnable : UpdatableData
     public NoiseMergeType NoiseMergeType              { get { return _noiseMergeType; }             private set { _noiseMergeType = value; } }
     public NoiseSettingsData NoiseSettingsData        { get { return _noiseSettingsData; }          private set { _noiseSettingsData = value; } }
     public Spawnable[] SubSpawners                    { get { return _subSpawners; }                private set { _subSpawners = value; } }
+
+    public bool ParentOnly                            { get { return _parentOnly; }                 private set { _parentOnly = value; } }
+
     public float RotationAmount                       { get { return _rotationAmount; }             private set { _rotationAmount = value; } }
     public float NoiseStartPoint                      { get { return _noiseStartPoint; }            private set { _noiseStartPoint = value; } }
     public float Thickness                            { get { return _thickness; }                  private set { _thickness = value; } }
@@ -101,6 +106,7 @@ public class Spawnable : UpdatableData
         this._noiseMergeType = spawnable._noiseMergeType;
         this._noiseSettingsData = spawnable._noiseSettingsData;
         this._subSpawners = spawnable._subSpawners;
+        this._parentOnly = spawnable._parentOnly;
         this._rotationAmount = spawnable._rotationAmount;
         this._noiseStartPoint = spawnable._noiseStartPoint;
         this._thickness = spawnable._thickness;
