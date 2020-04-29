@@ -6,26 +6,26 @@ using UnityEngine.UI;
 public class PotionLoader : MonoBehaviour
 {
     [SerializeField] string _potionName = "";
-    [SerializeField] Text textObject;
+    [SerializeField] Text textObject = null;
     [SerializeField] List<ItemDataContainer> recipe = new List<ItemDataContainer>();
-    Potion _potion;
-    Potion_Template _potionEffect;
-    [SerializeField] ItemDataContainer _item;
-    [SerializeField] Image imageObject;
+    Potion _potion = null;
+    Potion_Template _potionEffect = null;
+    [SerializeField] ItemDataContainer _item = null;
+    [SerializeField] Image imageObject = null;
 
     //Potion_Template _modifiers;
     enum PotionType
     {
         Speed, Flag, Gravity, Jump
     }
-    [SerializeField] PotionType _potionType;
-    [SerializeField] float _potionDuration;
+    [SerializeField] PotionType _potionType = PotionType.Speed;
+    [SerializeField] float _potionDuration = 0;
     [Tooltip("Only used for potions of type 'Flag'")]
-    [SerializeField] string _potionFlag;
+    [SerializeField] string _potionFlag = null;
     [Tooltip("Only used for potions of type 'Speed'")]
-    [SerializeField] float _potionFactor;
+    [SerializeField] float _potionFactor = 0;
     [Tooltip("Only used for potions of type 'Speed'")]
-    [SerializeField] float _potionFlat;
+    [SerializeField] float _potionFlat = 0;
 
     void Awake()
     {

@@ -9,7 +9,7 @@ public class PageLoader : MonoBehaviour
     [System.Serializable]
     protected class PageElement
     {
-        [SerializeField] UnityEngine.UI.MaskableGraphic _bookElement;
+        [SerializeField] UnityEngine.UI.MaskableGraphic _bookElement = null;
         [SerializeField] int _unlockPoint = 0;
 
         public UnityEngine.UI.MaskableGraphic GetBookElement { get => _bookElement; }

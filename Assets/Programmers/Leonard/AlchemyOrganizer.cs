@@ -18,11 +18,10 @@ public class AlchemyOrganizer : MonoBehaviour
     [SerializeField] List<List<ItemDataContainer>> _recipieList = new List<List<ItemDataContainer>>();
     [SerializeField] List<PotionLoader> _availablePotions = new List<PotionLoader>();
     [SerializeField] List<GameObject> _slots = new List<GameObject>();
-    [SerializeField] GameObject _potionSlot;
+    [SerializeField] GameObject _potionSlot = null;
     [SerializeField] List<Transform> _pages = new List<Transform>();
-    [SerializeField] GameObject _recipePrefab;
+    [SerializeField] GameObject _recipePrefab = null;
     PotionLoader _result = new PotionLoader();
-    [SerializeField] float _potionDuration = 5;
 
     void Awake()
     {

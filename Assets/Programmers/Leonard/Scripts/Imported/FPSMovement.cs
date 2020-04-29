@@ -14,45 +14,42 @@ public class FPSMovement : MonoBehaviour
     //[SerializeField] string WATER_TAG = "null";
 
     [Header("Movement")]
-    CharacterController charCon;
-    public CharacterStats _speed;
-    public CharacterStats _jumpForce;
-    public CharacterStats _gravity;
-    public CharacterFlags _flags;
-    public Vector3 _velocity;
+    CharacterController charCon = null;
+    public CharacterStats _speed = null;
+    public CharacterStats _jumpForce = null;
+    public CharacterStats _gravity = null;
+    public CharacterFlags _flags = null;
+    public Vector3 _velocity = Vector3.zero;
     [SerializeField] float _crawlSpeedFactor = 0.5f;
     [SerializeField] float _duckDistance = 0.4f;
     [SerializeField] float _slidingSpeedFactor = 0.5f;
     //Vector3 _slopeDirection;
     [SerializeField] float _groundRayExtraDist = 3f;
     [SerializeField] float _allowedJumpDistance = 0.2f;
-    float _groundRayDistance;
-    [SerializeField] float _minSlidingAngle = 25f;
+    float _groundRayDistance = 0;
+    //[SerializeField] float _minSlidingAngle = 25f;
     [SerializeField] float _slopeWalkCorrection = 2f;
     [SerializeField] float _strafingSpeedFactor = 0.8f;
     [SerializeField] float _sprintSpeedFactor = 2f;
-    [SerializeField] float _jumpTimeout = 0.3f;
-    [SerializeField] LayerMask layerMask;
-    float _lastJump = 0;
-    Vector3 _cameraStartPosition;
+    [SerializeField] LayerMask layerMask = 0;
+    Vector3 _cameraStartPosition = Vector3.zero;
     bool _inAir = false;
-    bool _isDucking = false;
 
     [Header("Bobbing")]
     [SerializeField] float _bobbingAmount = 0.05f;
     [SerializeField] float _bobbingSpeed = 1f;
     float _bobTimer = 0;
-    float _defPosY;
+    float _defPosY = 0;
 
-    Transform _playerCam;
+    Transform _playerCam = null;
     //public LayerMask layerMask;
 
-    Player_Emitter emitPlayerSound;
-    Vector3 _prevPos;
-    float _randWalk;
-    float _timeSinceLastStep;
-    float _travelledDist;
-    [SerializeField] private float _travelDist;
+    Player_Emitter emitPlayerSound = null;
+    Vector3 _prevPos = Vector3.zero;
+    float _randWalk = 0;
+    float _timeSinceLastStep = 0;
+    float _travelledDist = 0;
+    [SerializeField] private float _travelDist = 0;
 
     // !OBS Weird bug causing script to disable itself when awake is used.
     void Awake()
