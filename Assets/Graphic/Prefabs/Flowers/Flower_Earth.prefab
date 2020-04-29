@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 583475435651881016}
   - component: {fileID: 9143645289996552035}
   - component: {fileID: 1993954548}
-  - component: {fileID: -6054194886073604538}
+  - component: {fileID: 2894881923270842432}
   m_Layer: 9
   m_Name: Flower_Earth
   m_TagString: Flower
@@ -50,6 +50,11 @@ MonoBehaviour:
   _flowerData: {fileID: 11400000, guid: fa895d10c1a977146a34926973fca5a0, type: 2}
   _pickupAlpha: {fileID: 2800000, guid: e8f785a14f3c43546b4e3b1b03dacb62, type: 3}
   _gameobjectOverload: {fileID: 1961603443090004696}
+  _pickupAction:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
 --- !u!114 &1993954548
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -63,19 +68,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _spawnPartially: 0
---- !u!135 &-6054194886073604538
-SphereCollider:
+--- !u!65 &2894881923270842432
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 583475435651881015}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.88
-  m_Center: {x: 0, y: 0.48, z: 0}
+  m_Size: {x: 0.9, y: 1, z: 0.9}
+  m_Center: {x: 0.02, y: 0.76, z: 0.06}
 --- !u!1 &1961603443090004696
 GameObject:
   m_ObjectHideFlags: 0
