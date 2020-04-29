@@ -14,51 +14,61 @@ public class FPSMovement : MonoBehaviour
     //[SerializeField] string WATER_TAG = "null";
 
     [Header("Movement")]
-    CharacterController charCon;
-    public CharacterStats _speed;
-    public CharacterStats _jumpForce;
-    public CharacterStats _gravity;
-    public CharacterFlags _flags;
-    public Vector3 _velocity;
+    CharacterController charCon = null;
+    public CharacterStats _speed = null;
+    public CharacterStats _jumpForce = null;
+    public CharacterStats _gravity = null;
+    public CharacterFlags _flags = null;
+    public Vector3 _velocity = Vector3.zero;
     [SerializeField] float _crawlSpeedFactor = 0.5f;
     [SerializeField] float _duckDistance = 0.4f;
     [SerializeField] float _slidingSpeedFactor = 0.5f;
     //Vector3 _slopeDirection;
     [SerializeField] float _groundRayExtraDist = 3f;
     [SerializeField] float _allowedJumpDistance = 0.2f;
-    float _groundRayDistance;
-    [SerializeField] float _minSlidingAngle = 25f;
+    float _groundRayDistance = 0;
+    //[SerializeField] float _minSlidingAngle = 25f;
     [SerializeField] float _slopeWalkCorrection = 2f;
     [SerializeField] float _strafingSpeedFactor = 0.8f;
     [SerializeField] float _sprintSpeedFactor = 2f;
-    [SerializeField] float _jumpTimeout = 0.3f;
-    [SerializeField] LayerMask layerMask;
-    float _lastJump = 0;
-    Vector3 _cameraStartPosition;
+    [SerializeField] LayerMask layerMask = 0;
+    Vector3 _cameraStartPosition = Vector3.zero;
     bool _inAir = false;
-    bool _isDucking = false;
 
     [Header("Bobbing")]
     [SerializeField] float _bobbingAmount = 0.05f;
     [SerializeField] float _bobbingSpeed = 1f;
     float _bobTimer = 0;
-    float _defPosY;
+    float _defPosY = 0;
 
-    Transform _playerCam;
+    Transform _playerCam = null;
     //public LayerMask layerMask;
 
-    Player_Emitter emitPlayerSound;
-    Vector3 _prevPos;
-    float _randWalk;
-    float _timeSinceLastStep;
-    float _travelledDist;
-    [SerializeField] private float _travelDist;
+	// SFX Variables
+    Player_Emitter emitPlayerSound = null;
+    Vector3 _prevPos = Vector3.zero;
+    float _randWalk = 0;
+    float _timeSinceLastStep = 0;
+    float _travelledDist = 0;
+    [SerializeField] private float _travelDist = 0;
+
+	// Swimming Variables
+	[SerializeField] float waterRayDist = 1f;
+	[SerializeField] float waterForceMod = 8f;
+	[SerializeField] float waterBaseNormForce = 5f;
+	[SerializeField] float swimMaxSpeed = 3f;
+	[SerializeField] float swimStartSpeedFactor = 0.5f;
+	[SerializeField] float swimAccelerationTime = 1f;
+
+	Vector2 swimVelocity = new Vector2(0f, 0f);
+	[SerializeField] LayerMask waterLayer;
 
     // !OBS Weird bug causing script to disable itself when awake is used.
     void Awake()
     {
         playerMovement = this;
-    }
+		swimVelocity = new Vector2(0f, 0f);
+	}
 
     void Start()
     {
@@ -84,28 +94,67 @@ public class FPSMovement : MonoBehaviour
         {
             // == Variables ==
             //Input
-            float x = Input.GetAxis("Horizontal");
-            float y = Input.GetAxis("Vertical");
+            Vector2 moveInput = new Vector2 (Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+			if (moveInput.magnitude < 1)
+			{
+				moveInput.Normalize();
+			}
+			
             Vector3 jump = new Vector3(0, 1f * _jumpForce.Value, 0);
             float moveModifier = 1.0f;
 
             //Ground Detection
-            float terrainAngle;
+            //float terrainAngle;
             RaycastHit groundDetection;
             bool grounded = GroundRay(transform.position, Vector3.down, charCon.bounds.size.y / 2 + _groundRayExtraDist, out groundDetection);
-            
 
-            // == Functions ==
-            if (charCon.isGrounded)
+			RaycastHit waterDetection;
+			bool inWater = Physics.Raycast(_playerCam.position + 0.5f * Vector3.up, Vector3.down, out waterDetection, waterRayDist, waterLayer);
+			// == Functions ==
+			if (charCon.isGrounded)
             {
                 _inAir = false;
             }
+			if (inWater)
+			{
+				_inAir = true;
 
+				Vector2 swimming = moveInput * swimAccelerationTime * swimMaxSpeed;
+				Debug.Log("Swimming modifiers total: " + swimming + " being added to " + swimVelocity);
+				swimVelocity += swimming;
+
+				if (swimVelocity.magnitude < swimStartSpeedFactor * swimMaxSpeed && moveInput.magnitude == 1 && swimVelocity.magnitude != 0)
+				{
+					float ratio = (swimStartSpeedFactor * swimMaxSpeed) / swimVelocity.magnitude;
+					swimVelocity *= ratio;
+					Debug.Log("Increasing to swimStartSpeed, swimVelocity is: " + swimVelocity);
+				}
+				else if (swimVelocity.magnitude > swimMaxSpeed && swimVelocity.magnitude != 0)
+				{
+					float ratio = swimMaxSpeed / swimVelocity.magnitude;
+					swimVelocity *= ratio;
+					Debug.Log("Speed limiting ratio is: " + ratio);
+				}
+				Debug.Log("Swim speed is: " + swimVelocity);
+
+				Vector3 readySwimVelocity = swimVelocity.x*_playerCam.right + swimVelocity.y * _playerCam.forward;
+				readySwimVelocity -= Vector3.up * readySwimVelocity.y;
+				charCon.Move(readySwimVelocity*Time.deltaTime);
+				swimVelocity -= swimVelocity * Time.deltaTime;
+
+				//Water Normal Force
+				/*_velocity += Vector3.up * (waterBaseNormForce + (waterRayDist - waterDetection.distance) * waterForceMod);
+				_velocity = _velocity.y * Vector3.up;
+				_velocity += new Vector3(moveInput.x, 0f, moveInput.y);
+
+				charCon.Move(_velocity);*/
+			}
             // Everything that can be done while grounded
-            if (grounded)
+            else if (grounded)
             {
-                terrainAngle = Vector3.Angle(Vector3.up, groundDetection.normal);
-                Vector3 slopeDirection = groundDetection.normal;
+				//swimVelocity = Vector2.zero;
+                //terrainAngle = Vector3.Angle(Vector3.up, groundDetection.normal);
+                //Vector3 slopeDirection = groundDetection.normal;
 
                 if (Input.GetButton(SPRINT_BUTTON))
                 {
@@ -140,21 +189,24 @@ public class FPSMovement : MonoBehaviour
                         Ducking(0);
                     }
 
-                    Walking(x, y, groundDetection, moveModifier);
+                    Walking(moveInput.x, moveInput.y, groundDetection, moveModifier);
                 }
             }
             else
             {
-                Strafing(x, y);
+				//swimVelocity = Vector2.zero;
+				Strafing(moveInput.x, moveInput.y);
             }
 
-            //Gravity
-            charCon.Move(_velocity * Time.deltaTime);
-            if (!charCon.isGrounded) _velocity.y += _gravity.Value * Time.deltaTime;
-            else _velocity.y = 0;
-
+			//Gravity
+			if (!inWater)
+			{
+				charCon.Move(_velocity * Time.deltaTime);
+				if (!charCon.isGrounded) _velocity.y += _gravity.Value * Time.deltaTime;
+				else _velocity.y = 0;
+			}
             // Bobbing
-            HeadBob(x * _speed.Value, y * _speed.Value);
+            HeadBob(moveInput.x * _speed.Value, moveInput.y * _speed.Value);
 
         }
     }
@@ -171,13 +223,13 @@ public class FPSMovement : MonoBehaviour
 
     void Walking(float horizontal, float vertical, RaycastHit ground, float modifier)
     {
-        Vector2 velocity = new Vector2(horizontal, vertical).normalized;
+        //Vector2 velocity = new Vector2(horizontal, vertical).normalized;
 
         Vector3 lookDir = _playerCam.forward;
         lookDir.y = 0;
         Vector3 move =
-            _playerCam.right.normalized * velocity.x +
-            lookDir.normalized * velocity.y;
+            _playerCam.right.normalized * horizontal +
+            lookDir.normalized * vertical;
         charCon.Move(move * _speed.Value * modifier * Time.deltaTime);
 
         //Post move distance to ground check
