@@ -352,7 +352,7 @@ public class AlchemyOrganizer : MonoBehaviour
 		{
 			_result.AddPotion();
 		}
-        ClearAllIngredients();
+        //ClearAllIngredients();
         UpdateIngredients();
 	}
     public void Debug_AddAllIngredients()

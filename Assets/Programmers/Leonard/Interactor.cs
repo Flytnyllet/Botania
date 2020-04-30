@@ -65,6 +65,7 @@ public class Interactor : MonoBehaviour
 
         if (hit)
         {
+            //Debug.Log(collision.transform.name);
             PickupFlower[] pickupFlowers = collision.transform.GetComponents<PickupFlower>();
 
             //Currently looking at an interactable
