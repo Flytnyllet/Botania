@@ -10,13 +10,14 @@ public class PotionLoader : MonoBehaviour
     [SerializeField] List<ItemDataContainer> recipe = new List<ItemDataContainer>();
     Potion _potion = null;
     Potion_Template _potionEffect = null;
+	Potion_Template _potionEffect2 = null;
     [SerializeField] ItemDataContainer _item = null;
     [SerializeField] Image imageObject = null;
 
     //Potion_Template _modifiers;
     enum PotionType
     {
-        Speed, Flag, Gravity, Jump
+        Speed, Flag, Gravity, Jump, FlagGrav
     }
     [SerializeField] PotionType _potionType = PotionType.Speed;
     [SerializeField] float _potionDuration = 0;
@@ -30,7 +31,15 @@ public class PotionLoader : MonoBehaviour
     void Awake()
     {
         _potionName = _item.itemName;
-        _potionEffect = PotionEffect();
+		if (_potionType != PotionType.FlagGrav)
+		{
+			_potionEffect = PotionEffect();
+		}
+		else
+		{
+			_potionEffect = new SpeedPotion(CharacterStatType.Gravity, _potionFactor, _potionFlat, _potionDuration);
+			_potionEffect2 = new FlagPotion(_potionFlag, _potionDuration);
+		}
     }
 
     Potion_Template PotionEffect()
@@ -49,7 +58,7 @@ public class PotionLoader : MonoBehaviour
             case PotionType.Gravity:
                 return new SpeedPotion(CharacterStatType.Gravity, _potionFactor, _potionFlat, _potionDuration);
 
-            default:
+			default:
                 Debug.LogError("No potion type assigned in the potion loader of " + gameObject.name);
                 return null;
         }
