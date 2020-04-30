@@ -89,6 +89,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5052454759719096295}
   - component: {fileID: 6328365559529174585}
+  - component: {fileID: 1629478283193772058}
   m_Layer: 0
   m_Name: OBJ_Tree_Default_02_lod0
   m_TagString: Untagged
@@ -126,6 +127,19 @@ CapsuleCollider:
   m_Height: 4.185478
   m_Direction: 1
   m_Center: {x: 0.12, y: 1.27, z: -0.49}
+--- !u!65 &1629478283193772058
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7663610663540555332}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.75, y: 1.33, z: 1.72}
+  m_Center: {x: 0.18, y: 2.47, z: -0.5}
 --- !u!1001 &5852252676200753936
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -133,6 +147,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5052454759719096295}
     m_Modifications:
+    - target: {fileID: 2740558175149082401, guid: c3b1c9d59b4e6814bb90af7fb020b9cc,
+        type: 3}
+      propertyPath: m_Name
+      value: Amb_Local
+      objectReference: {fileID: 0}
     - target: {fileID: 5516481481565575635, guid: c3b1c9d59b4e6814bb90af7fb020b9cc,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -187,11 +206,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2740558175149082401, guid: c3b1c9d59b4e6814bb90af7fb020b9cc,
-        type: 3}
-      propertyPath: m_Name
-      value: Amb_Local
       objectReference: {fileID: 0}
     - target: {fileID: 95578796053532152, guid: c3b1c9d59b4e6814bb90af7fb020b9cc,
         type: 3}

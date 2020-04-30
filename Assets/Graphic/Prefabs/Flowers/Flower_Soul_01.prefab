@@ -44,7 +44,7 @@ GameObject:
   - component: {fileID: 1598586423185427700}
   - component: {fileID: 3202993841952222378}
   - component: {fileID: 4246647479202577709}
-  - component: {fileID: 8974922523724888621}
+  - component: {fileID: 4683563766599985352}
   m_Layer: 0
   m_Name: Flower_Soul_01
   m_TagString: Untagged
@@ -128,6 +128,11 @@ MonoBehaviour:
   _flowerData: {fileID: 11400000, guid: 075c751935a57444da120c82ef4a2b8f, type: 2}
   _pickupAlpha: {fileID: 2800000, guid: 4a67e82cb99b84847b0006f11d0709cf, type: 3}
   _gameobjectOverload: {fileID: 0}
+  _pickupAction:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
 --- !u!114 &4246647479202577709
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -140,9 +145,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70c2b09e2695b494b8572a2ea101535c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _spawnPartially: 0
---- !u!135 &8974922523724888621
-SphereCollider:
+  _spawnPartially: 1
+--- !u!65 &4683563766599985352
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -152,5 +157,5 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.45
-  m_Center: {x: 0, y: 0, z: 0.0012127459}
+  m_Size: {x: 1.04, y: 0.32, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}

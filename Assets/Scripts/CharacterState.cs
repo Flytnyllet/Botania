@@ -14,6 +14,7 @@ public static class CharacterState
     static CHARACTER_CONTROL_STATE _controlState = 0;
     public static CHARACTER_CONTROL_STATE Control_State { get => _controlState; }
     static List<ABILITY_FLAG> _abilityFlags = new List<ABILITY_FLAG>();
+    public static float PositionType { get; set; }
 
     //Förenkla läslighet i tillkopplad kod
     public static bool MayMove

@@ -87,7 +87,7 @@ CapsuleCollider:
   m_Radius: 0.09
   m_Height: 0.43
   m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: 0.03, z: 0}
 --- !u!135 &1647124270
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -116,6 +116,9 @@ MonoBehaviour:
   _pickupScript: {fileID: 1647124272}
   _animator: {fileID: 6862455786539061685}
   _hideTime: 3
+  _animationId:
+  - Take001
+  - Take002
   event_Digging: event:/blom/blom___common_01_mole_digging
   event_Emerging: event:/blom/blom___common_01_mole_emerging
 --- !u!114 &1647124271
@@ -147,6 +150,11 @@ MonoBehaviour:
   _flowerData: {fileID: 11400000, guid: 349a7f5bbd58f424ba0e1826c4687995, type: 2}
   _pickupAlpha: {fileID: 0}
   _gameobjectOverload: {fileID: 0}
+  _pickupAction:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
 --- !u!1 &1005116278132891850
 GameObject:
   m_ObjectHideFlags: 0

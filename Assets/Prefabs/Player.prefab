@@ -9935,7 +9935,7 @@ Transform:
   m_GameObject: {fileID: 6380197203547624231}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 627.4724, y: 45, z: -760.501}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 0.7, z: 1}
   m_Children:
   - {fileID: 6172904241753422899}
   - {fileID: 84080863121934545}
@@ -10032,17 +10032,24 @@ MonoBehaviour:
   _slidingSpeedFactor: 2.5
   _groundRayExtraDist: 1.5
   _allowedJumpDistance: 0.2
-  _minSlidingAngle: 35
   _slopeWalkCorrection: 2
   _strafingSpeedFactor: 0.8
   _sprintSpeedFactor: 2
-  _jumpTimeout: 0.5
   layerMask:
     serializedVersion: 2
-    m_Bits: 55
+    m_Bits: 39
   _bobbingAmount: 0.05
   _bobbingSpeed: 1
   _travelDist: 1.5
+  waterRayDist: 1
+  waterForceMod: 8
+  waterBaseNormForce: 5
+  swimMaxSpeed: 3
+  swimStartSpeedFactor: 0.5
+  swimAccelerationTime: 1
+  waterLayer:
+    serializedVersion: 2
+    m_Bits: 16
 --- !u!114 &104122664
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10258,7 +10265,7 @@ MonoBehaviour:
   sensitivityY: 3
   minimumX: -360
   maximumX: 360
-  minimumY: -90
+  minimumY: -89
   maximumY: 60
 --- !u!114 &6380197204816857827
 MonoBehaviour:
@@ -10275,7 +10282,7 @@ MonoBehaviour:
   _defaultLookImage: {fileID: 174108845}
   _hoverOverPickupImage: {fileID: 296370620}
   inventory: {fileID: 0}
-  distance: 1
+  distance: 2.5
   interactKey: 101
   _layerMask:
     serializedVersion: 2
