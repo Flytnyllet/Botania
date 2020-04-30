@@ -6,22 +6,19 @@ using UnityEngine.UI;
 public class BookManager : MonoBehaviour
 {
     const string INPUT_INVENTORY = "Inventory";
-    [SerializeField] Sprite[] _BookSprites;
+    [SerializeField] Sprite[] _BookSprites = null;
 
     [SerializeField] List<GameObject> _bookmarks = new List<GameObject>();
     [SerializeField] List<PageLoader> _flowerPages = new List<PageLoader>();
     [SerializeField] List<PageLoader> _lorePages = new List<PageLoader>();
-    [SerializeField] int _flowerOrganizerId;
-    [SerializeField] RectTransform _bookmarkTemplate;
-    [SerializeField] GameObject _emptyPageTemplate;
-    //[SerializeField] GameObject _nextPageTemplate;
-    [SerializeField] Vector2[] _bookmarkPositions;
-    [SerializeField] Color[] _bookmarkColors;
+    [SerializeField] int _flowerOrganizerId = 0;
+    [SerializeField] RectTransform _bookmarkTemplate = null;
+    [SerializeField] GameObject _emptyPageTemplate = null;
+    [SerializeField] Vector2[] _bookmarkPositions = null;
+    [SerializeField] Color[] _bookmarkColors = null;
     int _currentBookmark = 0;
     int _currentPage = 0;
-    [SerializeField] GameObject _book;
-    //[SerializeField] GameObject _prevPage;
-    //[SerializeField] GameObject _nextPage;
+    [SerializeField] GameObject _book = null;
 
     private void OnEnable()
     {
@@ -65,7 +62,7 @@ public class BookManager : MonoBehaviour
                 _book.SetActive(true);
                 EventManager.TriggerEvent(EventNameLibrary.OPEN_BOOK, new EventParameter());
                 CharacterState.SetControlState(CHARACTER_CONTROL_STATE.MENU);
-                ToBookmark(0);
+                ToBookmark(_currentBookmark);
             }
             else
             {
