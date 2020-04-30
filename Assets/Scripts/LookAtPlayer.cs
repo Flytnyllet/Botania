@@ -4,10 +4,14 @@ using UnityEngine;
 
 public class LookAtPlayer : MonoBehaviour
 {
-    [SerializeField] Transform _player;
-    // This thing is dumb and just for testing, don't use it in its current state in the game.
-    void Update()
+    Transform _target;
+    private void Start()
     {
-        transform.LookAt(_player,-Vector3.up);
+        _target = Player.GetPlayerTransform();
+    }
+    // This thing is dumb and just for testing, don't use it in its current state in the game.
+    void FixedUpdate()
+    {
+        transform.LookAt(_target, -Vector3.up);
     }
 }

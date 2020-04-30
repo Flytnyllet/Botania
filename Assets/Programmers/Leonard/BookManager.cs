@@ -62,7 +62,7 @@ public class BookManager : MonoBehaviour
                 _book.SetActive(true);
                 EventManager.TriggerEvent(EventNameLibrary.OPEN_BOOK, new EventParameter());
                 CharacterState.SetControlState(CHARACTER_CONTROL_STATE.MENU);
-                ToBookmark(0);
+                ToBookmark(_currentBookmark);
             }
             else
             {
