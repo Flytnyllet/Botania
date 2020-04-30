@@ -151,10 +151,10 @@ public class MapGenerator : MonoBehaviour, IDragHandler, IScrollHandler, IPointe
     private void Update()
     {
         //Only for testing
-        if (Input.GetKeyDown(KeyCode.M))
+        /*if (Input.GetKeyDown(KeyCode.M))
         {
             Display(!_displaying);
-        }
+        }*/
 
         if (_displaying)
         {
@@ -486,14 +486,14 @@ public class MapGenerator : MonoBehaviour, IDragHandler, IScrollHandler, IPointe
 
             _enableDisableObject.SetActive(status);
 
-            if (status)
+            /*if (status)
             {
                 CharacterState.SetControlState(CHARACTER_CONTROL_STATE.MENU);
                 UpdatePlayerIcon();
                 FocusOnPlayer();
             }
             else
-                CharacterState.SetControlState(CHARACTER_CONTROL_STATE.PLAYERCONTROLLED);
+                CharacterState.SetControlState(CHARACTER_CONTROL_STATE.PLAYERCONTROLLED);*/
         }
     }
 }
