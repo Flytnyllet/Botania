@@ -348,7 +348,16 @@ public class AlchemyOrganizer : MonoBehaviour
     }
     public void CraftPotion()
     {
-		if (_result != null)
+		bool hasIngredients = true;
+		foreach (ItemLoader ingredient in _currentIngredients.Values)
+		{
+			if (1 > FlowerLibrary.GetFlowerAmount(ingredient.GetItemData().itemName))
+			{
+				hasIngredients = false;
+			}
+		}
+
+		if (_result != null && hasIngredients)
 		{
 			_result.AddPotion();
 		}
