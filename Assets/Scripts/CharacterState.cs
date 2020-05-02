@@ -61,8 +61,13 @@ public static class CharacterState
     {
         return (_abilityFlags.Contains(flag));
     }
+	public static bool IsAbilityFlagActive(string name)
+	{
+		ABILITY_FLAG flag = GetFlagFromString(name);
+		return (_abilityFlags.Contains(flag));
+	}
 
-    public static void SetControlState(CHARACTER_CONTROL_STATE state)
+	public static void SetControlState(CHARACTER_CONTROL_STATE state)
     {
         _controlState = state;
         _cursorControll.SetMouseState(state);
