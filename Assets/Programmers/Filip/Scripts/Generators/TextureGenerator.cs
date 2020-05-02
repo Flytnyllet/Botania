@@ -47,7 +47,7 @@ public static class TextureGenerator
                             if (noises[i][x, y] >= mapSettings.MapRegions[i].NoiseStartPoint && currentHeight > mapSettings.MapRegions[i].MinHeightStart)
                             {
                                 finalColor = finalColor.grayscale * mapSettings.MapRegions[i].Color;
-                                finalColor.a = 1.0f;
+                                finalColor.a = mapSettings.MapRegions[i].Color.a;
                                 break;
                             }
                         }
