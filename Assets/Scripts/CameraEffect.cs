@@ -11,7 +11,7 @@ using UnityEngine.Rendering.PostProcessing;
 public class CameraEffect : MonoBehaviour
 {
 
-    Material _material = null;
+    public Material _material = null;
     PostProcessVolume _ppVolume;
 
 
@@ -40,6 +40,8 @@ public class CameraEffect : MonoBehaviour
     private void Awake()
     {
         _ppVolume = GetComponent<PostProcessVolume>();
+        Camera cam = GetComponent<Camera>();
+        cam.depthTextureMode = DepthTextureMode.Depth;
     }
     //Some events for activating effects
     private void OnEnable()

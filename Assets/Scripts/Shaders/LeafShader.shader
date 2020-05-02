@@ -18,7 +18,7 @@
 
 
 		CGPROGRAM
-			#pragma surface surf Lambert noforwardadd vertex:vert addshadow
+			#pragma surface surf Lambert noforwardadd vertex:vert addshadow dithercrossfade 
 			#pragma target 3.0
 
 			sampler2D _MainTex;
