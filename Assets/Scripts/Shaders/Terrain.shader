@@ -9,7 +9,7 @@
 	}
 		SubShader
 	{
-		Tags { "RenderType" = "Opaque" }
+		Tags { "RenderType" = "Geometry" }
 		LOD 200
 
 		CGPROGRAM
@@ -48,13 +48,7 @@
 		UNITY_INSTANCING_BUFFER_START(Props)
 			// put more per-instance properties here
 		UNITY_INSTANCING_BUFFER_END(Props)
-
-		float inverseLerp(float a, float b, float value)
-		{
-			return saturate((value - a) / (b - a));
-		}
-
-
+			
 		//triplanar mapping
 		float3 GetTriplanarMap (sampler2D tex, float3 worldPos, float scale ) {
 			float3 scaledWorldPos = worldPos / scale;
@@ -75,16 +69,17 @@
 		{
 			float3 blendAxes = abs(IN.worldNormal);
 			blendAxes /= blendAxes.x + blendAxes.y + blendAxes.z;
+			float3 scalesPos = IN.worldPos / 2;
 
 			//float noiseStrenght = tex2D(_NoiseTextures, IN.uv_MainTex).x*baseTextureStrenght[0];
 			float noiseStrenght = tex2D(_NoiseTextures, IN.uv_MainTex).x;
 			//int2 pixelCoord = IN.uv_MainTex*_NoiseSize;
 			//float noiseStrenght = smoothstep(0.01 ,0.05 , _NoiseArray[pixelCoord.x, pixelCoord.y].x);
-			//float3 altCol = tex2D(_AltTex, IN.uv_MainTex);
-			float3 altCol = triplanar(_AltTex, IN.worldPos, 2, blendAxes);
-			//float3 colour = tex2D(_MainTex, IN.uv_MainTex);
-			float3 colour = triplanar(_MainTex, IN.worldPos, 2, blendAxes);
-			float3 emissions = tex2D(_Emission, IN.worldPos.xz/2);
+			float3 altCol = tex2D(_AltTex, scalesPos.xz);
+			//float3 altCol = triplanar(_AltTex, IN.worldPos, 2, blendAxes);
+			float3 colour = tex2D(_MainTex, scalesPos.xz);
+			//float3 colour = triplanar(_MainTex, IN.worldPos, 2, blendAxes);
+			float3 emissions = tex2D(_Emission, scalesPos.xz);
 			//for (int i = 0; i < layerCount; i++) {
 			//	//float drawStrength = inverseLerp();
 

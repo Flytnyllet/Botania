@@ -24,7 +24,9 @@ public class MapGenerator : MonoBehaviour, IDragHandler, IScrollHandler, IPointe
     static RectTransform _pivotSpawnContainer;
     static RectTransform _mapHolder;
     static GameObject _enableDisableObject;
+    static RectTransform _objectsRectTransform;
     static Image _playerIcon;
+    static Image _raycastMask;
     static GameObject _waypointPrefab;
     static GameObject _markerPrefab;
 
@@ -53,8 +55,10 @@ public class MapGenerator : MonoBehaviour, IDragHandler, IScrollHandler, IPointe
     [SerializeField] RectTransform _markersContainerInstance;
     [SerializeField] RectTransform _waypointContainerInstance;
     [SerializeField] GameObject _enableDisableObjectInstance;
+    [SerializeField] RectTransform _objectsRectTransformInstance;
     [SerializeField] Image _waypointSelectedImage;
     [SerializeField] Image _playerIconInstance;
+    [SerializeField] Image _raycastMaskInstance;
 
     [SerializeField] AudioSource _waypointDestroyAudioSourceInstance;
 
@@ -124,6 +128,9 @@ public class MapGenerator : MonoBehaviour, IDragHandler, IScrollHandler, IPointe
             _markerPrefab = _markerPrefabInstance;
             _waypointPrefab = _waypointPrefabInstance;
             _standardWayPointName = _standardWayPointNameInstance;
+
+            _objectsRectTransform = _objectsRectTransformInstance;
+            _raycastMask = _raycastMaskInstance;
 
             _spriteAndIndexes = _spriteAndIndexesInstance;
 
@@ -362,7 +369,7 @@ public class MapGenerator : MonoBehaviour, IDragHandler, IScrollHandler, IPointe
         //Create GameObject
         GameObject mapChunk = new GameObject(chunkCoord.ToString());
         mapChunk.transform.parent = _spawnContainer;
-        mapChunk.transform.rotation = Quaternion.Euler(0.0f, 0.0f, -90f);
+        mapChunk.transform.localRotation = Quaternion.Euler(0.0f, 0.0f, -90f);
 
         //Position
         mapChunk.transform.localScale = Vector3.one;
@@ -387,7 +394,7 @@ public class MapGenerator : MonoBehaviour, IDragHandler, IScrollHandler, IPointe
             //Position
             float x = (eventData.position.x / Screen.width - 0.5f) * _canvasRectTransform.sizeDelta.x / _pivotSpawnContainer.localScale.x;
             float y = (eventData.position.y / Screen.height - 0.5f) * _canvasRectTransform.sizeDelta.y / _pivotSpawnContainer.localScale.y;
-            Vector3 waypointPosition = new Vector3(x, y, 0.0f) - _mapHolder.localPosition - _pivotSpawnContainer.localPosition / _pivotSpawnContainer.localScale.x;
+            Vector3 waypointPosition = new Vector3(x, y, 0.0f) - _objectsRectTransform.localPosition * _canvasRectTransform.localScale.x - _mapHolder.localPosition - _pivotSpawnContainer.localPosition / _pivotSpawnContainer.localScale.x;
 
             AddWaypoint(waypointPosition, _standardWayPointName, false);
         }
@@ -484,16 +491,17 @@ public class MapGenerator : MonoBehaviour, IDragHandler, IScrollHandler, IPointe
         {
             _displaying = status;
 
+            _raycastMask.raycastTarget = status;
             _enableDisableObject.SetActive(status);
 
-            /*if (status)
+            if (status)
             {
-                CharacterState.SetControlState(CHARACTER_CONTROL_STATE.MENU);
+                //CharacterState.SetControlState(CHARACTER_CONTROL_STATE.MENU);
                 UpdatePlayerIcon();
                 FocusOnPlayer();
             }
-            else
-                CharacterState.SetControlState(CHARACTER_CONTROL_STATE.PLAYERCONTROLLED);*/
+            //else
+            //    CharacterState.SetControlState(CHARACTER_CONTROL_STATE.PLAYERCONTROLLED);*/
         }
     }
 }

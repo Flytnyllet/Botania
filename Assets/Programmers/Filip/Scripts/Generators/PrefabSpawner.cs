@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PrefabSpawner
+public class PrefabSpawner : MonoBehaviour
 {
+    static readonly float SPAWNING_DELAY_MULTIPLIER = 1.1f;
     static readonly int DEGREES_360 = 360;
     static readonly float STANDARD_GRID_OFFSET = 0.5f;
 
+    bool _readyToFixNormals = false;
     bool[,] _occupiedGrid;
     List<SpawnInfo> _gameObjectsInChunkWithNoNormals = new List<SpawnInfo>();
 
@@ -105,7 +107,7 @@ public class PrefabSpawner
                                 if (insideNoise && gradientSpawn && uniformSpread && noiseSpread && minHeight && maxHeight && minSlope && maxSlope)
                                 {
                                     //Since the object can spawn, mark it's space as occopied
-                                    if (spawnables[i].OthersCanSpawnInside)
+                                    if (!spawnables[i].OthersCanSpawnInside)
                                         OccupyWithObject(x, y, spawnables[i].Size, meshSettings.ChunkSize, ref _occupiedGrid);
 
                                     OccupyWithObject(x, y, spawnables[i].Size, meshSettings.ChunkSize, ref localOccupiedGrid);
@@ -147,8 +149,8 @@ public class PrefabSpawner
     //Returns true if the object can fit in chunk where it is trying to fit depending on difference in highest and lowest point in spawn area
     public bool CanObjectSpawnDiff(int x, int y, int size, bool othersCanSpawnInside, float[,] heightMap, float spawnDifferencial, int chunkSize)
     {
-        int maxX = x + size < chunkSize - 1 ? x + size : chunkSize - 1;
-        int maxY = y + size < chunkSize - 1 ? y + size : chunkSize - 1;
+        int maxX = x + size < chunkSize ? x + size : chunkSize;
+        int maxY = y + size < chunkSize ? y + size : chunkSize;
 
         float currentMin = float.MaxValue;
         float currentMax = float.MinValue;
@@ -172,8 +174,8 @@ public class PrefabSpawner
 
     public bool CanObjectSpawnSize(int x, int y, int size, int chunkSize, ref bool[,] grid)
     {
-        int maxX = x + size < chunkSize - 1 ? x + size : -1;
-        int maxY = y + size < chunkSize - 1 ? y + size : -1;
+        int maxX = x + size < chunkSize ? x + size : -1;
+        int maxY = y + size < chunkSize ? y + size : -1;
 
         //Object is trying to fit in on the corner on a chunk -> no room!
         if (maxX == -1 || maxY == -1)
@@ -194,8 +196,8 @@ public class PrefabSpawner
     //Tells other objects this spot it taken lol
     public void OccupyWithObject(int x, int y, int size, int chunkSize, ref bool[,] grid)
     {
-        int maxX = x + size < chunkSize - 1 ? x + size : chunkSize - 1;
-        int maxY = y + size < chunkSize - 1 ? y + size : chunkSize - 1;
+        int maxX = x + size < chunkSize ? x + size : chunkSize;
+        int maxY = y + size < chunkSize ? y + size : chunkSize;
 
         for (int checkX = x; checkX < maxX; checkX++)
         {
@@ -206,23 +208,41 @@ public class PrefabSpawner
         }
     }
 
-    public void SpawnSpawnInfo(List<SpawnInfo> spawnInfo, Transform container)
+    public void SpawnSpawnInfo(List<SpawnInfo> spawnInfo, Transform container, bool highestLOD)
     {
         for (int i = 0; i < spawnInfo.Count; i++)
         {
-            spawnInfo[i].Spawn(container);
+            StartCoroutine(SpawnWithDelay(spawnInfo[i], container, i % 2 == 0 ? i : spawnInfo.Count - i, spawnInfo.Count - 1, i == spawnInfo.Count - 1 && highestLOD));
 
             if (spawnInfo[i].DetailType != 0)
                 _gameObjectsInChunkWithNoNormals.Add(spawnInfo[i]);
         }
     }
 
+    IEnumerator SpawnWithDelay(SpawnInfo spawnInfo, Transform container, int index, int highest, bool last)
+    {
+        float value = index / (float)highest;
+
+        yield return new WaitForSecondsRealtime(value * SPAWNING_DELAY_MULTIPLIER);
+        spawnInfo.Spawn(container);
+
+        if (last)
+            _readyToFixNormals = true;
+    }
+
     public void SetNormals(MeshData meshData, int chunkSize)
     {
+        StartCoroutine(WaitToFixNormals(meshData, chunkSize));
+    }
+
+    IEnumerator WaitToFixNormals(MeshData meshData, int chunkSize)
+    {
+        //Wait until everyspawnable is spawned until actually fixing their normals (to avoid fixing a null instance)
+        while (!_readyToFixNormals)
+            yield return null;
+
         for (int i = 0; i < _gameObjectsInChunkWithNoNormals.Count; i++)
-        {
             _gameObjectsInChunkWithNoNormals[i].SetNormal(meshData, chunkSize);
-        }
     }
 }
 
