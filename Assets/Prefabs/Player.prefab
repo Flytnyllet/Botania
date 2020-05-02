@@ -5116,8 +5116,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.92156863, b: 0.4117647, a: 0.078431375}
-  m_RaycastTarget: 1
+  m_Color: {r: 0.41176474, g: 0.6260933, b: 1, a: 0.047058824}
+  m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -10047,6 +10047,7 @@ MonoBehaviour:
   swimMaxSpeed: 3
   swimStartSpeedFactor: 0.5
   swimAccelerationTime: 1
+  underwaterFloatBack: 3
   waterLayer:
     serializedVersion: 2
     m_Bits: 16
@@ -10299,6 +10300,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10d69d23a37a2ca479ce26a67367ea8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _material: {fileID: 0}
 --- !u!114 &6172904241153392434
 MonoBehaviour:
   m_ObjectHideFlags: 0

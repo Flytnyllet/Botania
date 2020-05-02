@@ -87,7 +87,7 @@ public class MapPreview : MonoBehaviour
             DrawMesh(meshData);
             PrefabSpawner prefabSpawner = new PrefabSpawner();
             List<SpawnInfo> spawnInfo = prefabSpawner.SpawnOnChunk(2, 0, _biome, heightMap, meshData, _meshSettings, new Vector2(sampleCenter.x, -sampleCenter.y), _chunkCoord);
-            prefabSpawner.SpawnSpawnInfo(spawnInfo, _biomeContainer);
+            prefabSpawner.SpawnSpawnInfo(spawnInfo, _biomeContainer, true);
         }
         else if (_drawMode == DrawMode.MAP)
         {

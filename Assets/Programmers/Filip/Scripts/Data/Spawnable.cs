@@ -139,7 +139,7 @@ public class Spawnable : UpdatableData
         Spawnable[] newSpawnable = new Spawnable[spawnables.Length];
         for (int i = 0; i < spawnables.Length; i++)
         {
-            newSpawnable[i] = new Spawnable(spawnables[i]);
+            newSpawnable[i] = Instantiate(spawnables[i]);
 
             if (newSpawnable[i]._subSpawners != null)
                 newSpawnable[i]._subSpawners = CopySpawnables(newSpawnable[i]._subSpawners);

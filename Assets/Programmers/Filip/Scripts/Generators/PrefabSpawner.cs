@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PrefabSpawner
+public class PrefabSpawner : MonoBehaviour
 {
+    static readonly float SPAWNING_DELAY_MULTIPLIER = 1.1f;
     static readonly int DEGREES_360 = 360;
     static readonly float STANDARD_GRID_OFFSET = 0.5f;
 
+    bool _readyToFixNormals = false;
     bool[,] _occupiedGrid;
     List<SpawnInfo> _gameObjectsInChunkWithNoNormals = new List<SpawnInfo>();
 
@@ -206,23 +208,41 @@ public class PrefabSpawner
         }
     }
 
-    public void SpawnSpawnInfo(List<SpawnInfo> spawnInfo, Transform container)
+    public void SpawnSpawnInfo(List<SpawnInfo> spawnInfo, Transform container, bool highestLOD)
     {
         for (int i = 0; i < spawnInfo.Count; i++)
         {
-            spawnInfo[i].Spawn(container);
+            StartCoroutine(SpawnWithDelay(spawnInfo[i], container, i % 2 == 0 ? i : spawnInfo.Count - i, spawnInfo.Count - 1, i == spawnInfo.Count - 1 && highestLOD));
 
             if (spawnInfo[i].DetailType != 0)
                 _gameObjectsInChunkWithNoNormals.Add(spawnInfo[i]);
         }
     }
 
+    IEnumerator SpawnWithDelay(SpawnInfo spawnInfo, Transform container, int index, int highest, bool last)
+    {
+        float value = index / (float)highest;
+
+        yield return new WaitForSecondsRealtime(value * SPAWNING_DELAY_MULTIPLIER);
+        spawnInfo.Spawn(container);
+
+        if (last)
+            _readyToFixNormals = true;
+    }
+
     public void SetNormals(MeshData meshData, int chunkSize)
     {
+        StartCoroutine(WaitToFixNormals(meshData, chunkSize));
+    }
+
+    IEnumerator WaitToFixNormals(MeshData meshData, int chunkSize)
+    {
+        //Wait until everyspawnable is spawned until actually fixing their normals (to avoid fixing a null instance)
+        while (!_readyToFixNormals)
+            yield return null;
+
         for (int i = 0; i < _gameObjectsInChunkWithNoNormals.Count; i++)
-        {
             _gameObjectsInChunkWithNoNormals[i].SetNormal(meshData, chunkSize);
-        }
     }
 }
 
