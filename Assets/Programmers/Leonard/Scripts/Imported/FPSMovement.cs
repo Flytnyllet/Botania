@@ -117,6 +117,7 @@ public class FPSMovement : MonoBehaviour
 			bool inWater = Physics.Raycast(_playerCam.position + 0.5f * Vector3.up, Vector3.down, out waterDetection, waterRayDist, waterLayer);
 			bool isStoned = CharacterState.IsAbilityFlagActive("STONE");
 			bool isLevitating = CharacterState.IsAbilityFlagActive("LEVITATE");
+			float gravityFactor = 1.0f;
 
 			if (isStoned)
 			{
@@ -234,8 +235,19 @@ public class FPSMovement : MonoBehaviour
 			//Gravity
 			if ((!inWater && !isLevitating) || isStoned )
 			{
+				if(CharacterState.IsAbilityFlagActive(CharacterState.GetFlagFromString("SLOWFALL")))
+				{
+					if(charCon.isGrounded)
+					{
+						CharacterState.RemoveAbilityFlag("SLOWFALL");
+					}
+					else
+					{
+						gravityFactor *= 0.35f;
+					}
+				}
 				charCon.Move(_velocity * Time.deltaTime);
-				if (!charCon.isGrounded) _velocity.y += _gravity.Value * Time.deltaTime;
+				if (!charCon.isGrounded) _velocity.y += _gravity.Value * gravityFactor * Time.deltaTime;
 				else _velocity.y = 0;
 			}
 			else if(Time.time%1 < 0.1)

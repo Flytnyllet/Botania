@@ -236,4 +236,9 @@ public class BookManager : MonoBehaviour
     {
         EventManager.TriggerEvent(EventNameLibrary.FLIP_PAGE, new EventParameter());
     }
+
+	public GameObject GetBookmark(int i)
+	{
+		return _bookmarks[i];
+	}
 }

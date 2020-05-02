@@ -46,7 +46,12 @@ public class FlagPotion : Potion_Template
                 ActionDelayer.RunAfterDelay(() => { EventManager.TriggerEvent(EventNameLibrary.SUPER_HEARING, param); }, duration);
                 break;
 
-            default:
+			case ABILITY_FLAG.LEVITATE:
+
+
+				ActionDelayer.RunAfterDelay(() => { CharacterState.AddAbilityFlag("SLOWFALL", 5f); }, duration);
+				break;
+			default:
                 break;
         }
     }
