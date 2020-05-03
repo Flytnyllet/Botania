@@ -14,7 +14,6 @@ public class CameraEffect : MonoBehaviour
     public Material _material = null;
     PostProcessVolume _ppVolume;
 
-
     //awful static Action which should be faster than the central EventManager,
     //This is only used because when used it's run every frame
     public static Action Renders;
@@ -39,9 +38,11 @@ public class CameraEffect : MonoBehaviour
     }
     private void Awake()
     {
+        Debug.Log(RenderSettings.ambientLight);
         _ppVolume = GetComponent<PostProcessVolume>();
         Camera cam = GetComponent<Camera>();
         cam.depthTextureMode = DepthTextureMode.Depth;
+        
     }
     //Some events for activating effects
     private void OnEnable()

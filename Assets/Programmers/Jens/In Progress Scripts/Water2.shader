@@ -2,7 +2,8 @@
 {
 	Properties
 	{
-		_Color("Color", Color) = (1,1,1,1)
+		_Color("Color Division", Color) = (1,1,1,1)
+		_ColDivStr("Color Division Strenght", range(0,1)) = 1.0
 		_MainTex("Albedo (RGB)", 2D) = "white" {}
 		_Glossiness("Smoothness", Range(0,1)) = 0.5
 		_Metallic("Metallic", Range(0,1)) = 0.0
@@ -15,12 +16,12 @@
 	}
 		SubShader
 		{
-			Tags  { "RenderType" = "Geometry" "Queue" = "Transparent" }
+			Tags  { "RenderType" = "Transparent" "Queue" = "Transparent" }
 			LOD 200
 
 			CGPROGRAM
 			// Physically based Standard lighting model, and enable shadows on all light types
-			#pragma surface surf Standard 
+			#pragma surface surf Standard
 
 			// Use shader model 3.0 target, to get nicer looking lighting
 			#pragma target 3.0
@@ -28,6 +29,8 @@
 			sampler2D _MainTex;
 			float _Delta;
 			float _Alpha;
+			float _ColDivStr;
+			float4 _Color;
 			float4 _DepthGradientShallow;
 			float4 _DepthGradientDeep;
 			float _DepthMaxDistance;
@@ -95,7 +98,6 @@
 
 			half _Glossiness;
 			half _Metallic;
-			fixed4 _Color;
 
 			// Add instancing support for this shader. You need to check 'Enable Instancing' on materials that use the shader.
 			// See https://docs.unity3d.com/Manual/GPUInstancing.html for more information about instancing.
@@ -110,18 +112,19 @@
 				float existingDepthLinear = LinearEyeDepth(existingDepth01);
 				float depthDifference = existingDepthLinear - IN.screenPos.w;
 				float waterDepthDifference01 = saturate(depthDifference / _DepthMaxDistance);
-				float4 waterColor = lerp(_DepthGradientShallow, _DepthGradientDeep, waterDepthDifference01);
+				float4 ambientCol = lerp(1, _Color, _ColDivStr);
+				float4 waterColor = lerp(_DepthGradientShallow / ambientCol, _DepthGradientDeep/ambientCol, waterDepthDifference01);
 				
 				// Albedo comes from a texture tinted by color
 				fixed4 c = tex2D(_MainTex, IN.uv_MainTex) * _Color;
 				// Metallic and smoothness come from slider variables
 				float3 trest = IN.worldNormal* float3(1,1,1);
 				float2 waterNormal = sobel(IN.worldPos.xz + _Time.w*0.5);
-				o.Normal = UnpackNormal(half4(waterNormal.x*0.01, -waterNormal.y*0.01,-1, 0))*0.5 + 0.5;
+				o.Normal = UnpackNormal(half4(waterNormal.x*0.01, -waterNormal.y*0.05,-1, 0))*0.5 + 0.5;
 				o.Albedo = waterColor;
 				o.Metallic = _Metallic* waterColor.a;
 				o.Smoothness = _Glossiness* waterColor.a;
-				o.Alpha = waterColor.a;
+				o.Alpha = _Alpha;
 			}
 			ENDCG
 		}

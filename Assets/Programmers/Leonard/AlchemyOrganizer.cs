@@ -31,6 +31,10 @@ public class AlchemyOrganizer : MonoBehaviour
     {
         SetupRecipes();
     }
+    //private void OnEnable()
+    //{
+    //    UpdateIngredients();
+    //}
     public List<Transform> GetPages()
     {
         return _pages;
