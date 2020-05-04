@@ -29,7 +29,10 @@ public static class Noise
     public static float[,] GenerateNoiseMap(int mapWidth, int mapHeight, int detailLevel, NoiseSettings settings, Vector2 sampleCenter)
     {
         if (detailLevel <= 0)
+        {
             Debug.LogError("Detail level of noise may not be lower than 1!!");
+            detailLevel = 1;
+        }
 
         float[,] noiseMap = new float[mapWidth / detailLevel, mapHeight / detailLevel];
 

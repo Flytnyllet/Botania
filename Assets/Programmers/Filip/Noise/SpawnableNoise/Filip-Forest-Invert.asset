@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _autoUpdate: 1
   _noiseSettings:
-  - _noiseMergeType: 0
+  - _noiseMergeType: 2
     _noiseSettings:
       _allWhite: 0
       _invert: 1
@@ -22,10 +22,40 @@ MonoBehaviour:
       _strength: 1
       _seed: 50
       _offset: {x: 0, y: 0}
-      _scale: 297
+      _scale: 400
       _octaves: 4
       _persistance: 0.455
       _lacunarity: 2.6
-      _darken: -2.07
+      _darken: -1.7
+      _useDarken: 1
+      _normalizeMode: 1
+  - _noiseMergeType: 2
+    _noiseSettings:
+      _allWhite: 0
+      _invert: 1
+      _addValue: 3.25
+      _strength: 1
+      _seed: 52
+      _offset: {x: 0, y: 0}
+      _scale: 400
+      _octaves: 4
+      _persistance: 0.455
+      _lacunarity: 2.6
+      _darken: -1.7
+      _useDarken: 1
+      _normalizeMode: 1
+  - _noiseMergeType: 4
+    _noiseSettings:
+      _allWhite: 0
+      _invert: 1
+      _addValue: 3.25
+      _strength: 1
+      _seed: 51
+      _offset: {x: 0, y: 0}
+      _scale: 400
+      _octaves: 4
+      _persistance: 0.455
+      _lacunarity: 2.6
+      _darken: -1.7
       _useDarken: 1
       _normalizeMode: 1
