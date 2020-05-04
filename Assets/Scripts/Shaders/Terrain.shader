@@ -48,54 +48,54 @@
 		UNITY_INSTANCING_BUFFER_START(Props)
 			// put more per-instance properties here
 		UNITY_INSTANCING_BUFFER_END(Props)
-			
-		//triplanar mapping
-		float3 GetTriplanarMap (sampler2D tex, float3 worldPos, float scale ) {
-			float3 scaledWorldPos = worldPos / scale;
-			float3 xProjection = tex2D(tex, scaledWorldPos.zy);
-			float3 yProjection = tex2D(tex, scaledWorldPos.xz);
-			float3 zProjection = tex2D(tex, scaledWorldPos.xy);
-			return xProjection + yProjection + zProjection;
-		}
-		float3 triplanar(sampler2D tex,float3 worldPos, float scale, float3 blendAxes) {
-			float3 scaledWorldPos = worldPos / scale;
-			float3 xProjection = tex2D(tex, float2(scaledWorldPos.y, scaledWorldPos.z))* blendAxes.x;
-			float3 yProjection = tex2D(tex, float2(scaledWorldPos.x, scaledWorldPos.z)) * blendAxes.y;
-			float3 zProjection = tex2D(tex, float2(scaledWorldPos.x, scaledWorldPos.y)) * blendAxes.z;
-			return xProjection + yProjection + zProjection;
-		}
 
-		void surf(Input IN, inout SurfaceOutput o)
-		{
-			float3 blendAxes = abs(IN.worldNormal);
-			blendAxes /= blendAxes.x + blendAxes.y + blendAxes.z;
-			float3 scalesPos = IN.worldPos / 2;
+			//triplanar mapping
+			float3 GetTriplanarMap(sampler2D tex, float3 worldPos, float scale) {
+				float3 scaledWorldPos = worldPos / scale;
+				float3 xProjection = tex2D(tex, scaledWorldPos.zy);
+				float3 yProjection = tex2D(tex, scaledWorldPos.xz);
+				float3 zProjection = tex2D(tex, scaledWorldPos.xy);
+				return xProjection + yProjection + zProjection;
+			}
+			float3 triplanar(sampler2D tex,float3 worldPos, float scale, float3 blendAxes) {
+				float3 scaledWorldPos = worldPos / scale;
+				float3 xProjection = tex2D(tex, float2(scaledWorldPos.y, scaledWorldPos.z))* blendAxes.x;
+				float3 yProjection = tex2D(tex, float2(scaledWorldPos.x, scaledWorldPos.z)) * blendAxes.y;
+				float3 zProjection = tex2D(tex, float2(scaledWorldPos.x, scaledWorldPos.y)) * blendAxes.z;
+				return xProjection + yProjection + zProjection;
+			}
 
-			//float noiseStrenght = tex2D(_NoiseTextures, IN.uv_MainTex).x*baseTextureStrenght[0];
-			float noiseStrenght = tex2D(_NoiseTextures, IN.uv_MainTex).x;
-			//int2 pixelCoord = IN.uv_MainTex*_NoiseSize;
-			//float noiseStrenght = smoothstep(0.01 ,0.05 , _NoiseArray[pixelCoord.x, pixelCoord.y].x);
-			float3 altCol = tex2D(_AltTex, scalesPos.xz);
-			//float3 altCol = triplanar(_AltTex, IN.worldPos, 2, blendAxes);
-			float3 colour = tex2D(_MainTex, scalesPos.xz);
-			//float3 colour = triplanar(_MainTex, IN.worldPos, 2, blendAxes);
-			float3 emissions = tex2D(_Emission, scalesPos.xz);
-			//for (int i = 0; i < layerCount; i++) {
-			//	//float drawStrength = inverseLerp();
+			void surf(Input IN, inout SurfaceOutput o)
+			{
+				float3 blendAxes = abs(IN.worldNormal);
+				blendAxes /= blendAxes.x + blendAxes.y + blendAxes.z;
+				float3 scalesPos = IN.worldPos / 2;
 
-			//	//float3 baseColor = baseColors[i] * baseColorStrength[i];
-			//	//float3 textureColor = triplanar(float3(IN.worldPos), baseTextureScales[i], blendAxes, i)*noiseStrenght;
-			//	float3 textureColor = triplanar(float3(IN.worldPos), baseTextureScales[i], blendAxes, i);
+				//float noiseStrenght = tex2D(_NoiseTextures, IN.uv_MainTex).x*baseTextureStrenght[0];
+				float noiseStrenght = tex2D(_NoiseTextures, IN.uv_MainTex).x;
+				//int2 pixelCoord = IN.uv_MainTex*_NoiseSize;
+				//float noiseStrenght = smoothstep(0.01 ,0.05 , _NoiseArray[pixelCoord.x, pixelCoord.y].x);
+				float3 altCol = tex2D(_AltTex, scalesPos.xz / 4);
+				//float3 altCol = triplanar(_AltTex, IN.worldPos, 2, blendAxes);
+				float3 colour = tex2D(_MainTex, scalesPos.xz / 4);
+				//float3 colour = triplanar(_MainTex, IN.worldPos, 2, blendAxes);
+				float3 emissions = tex2D(_Emission, scalesPos.xz / 4);
+				//for (int i = 0; i < layerCount; i++) {
+				//	//float drawStrength = inverseLerp();
 
-			//	o.Albedo = colour;
-			//}
-			o.Albedo = lerp(colour, altCol, smoothstep(mainTexStart, mainTexStop, noiseStrenght));
-			o.Emission = lerp(emissions, float3(0,0,0), smoothstep(0.815, 0.825, noiseStrenght));
-			//o.Albedo = altCol+colour;
-			//o.Albedo = float4(noiseStrenght, 0,0,1);
-			//o.Albedo = float4(IN.uv_MainTex,0,1);
-		}
-		ENDCG
+				//	//float3 baseColor = baseColors[i] * baseColorStrength[i];
+				//	//float3 textureColor = triplanar(float3(IN.worldPos), baseTextureScales[i], blendAxes, i)*noiseStrenght;
+				//	float3 textureColor = triplanar(float3(IN.worldPos), baseTextureScales[i], blendAxes, i);
+
+				//	o.Albedo = colour;
+				//}
+				o.Albedo = lerp(altCol, colour, smoothstep(mainTexStart, mainTexStop, noiseStrenght));
+				o.Emission = lerp( float3(0,0,0), emissions, smoothstep(0.815, 0.825, noiseStrenght));
+				//o.Albedo = altCol+colour;
+				//o.Albedo = float4(noiseStrenght, 0,0,1);
+				//o.Albedo = float4(IN.uv_MainTex,0,1);
+			}
+			ENDCG
 	}
 		FallBack "Diffuse"
 }
