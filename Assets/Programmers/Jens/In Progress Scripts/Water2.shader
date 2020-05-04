@@ -12,6 +12,8 @@
 		_DepthGradientShallow("Depth Gradient Shallow", Color) = (0.325, 0.807, 0.971, 0.725)
 		_DepthGradientDeep("Depth Gradient Deep", Color) = (0.086, 0.407, 1, 0.749)
 		_DepthMaxDistance("Depth Maximum Distance", Float) = 1
+		_WaveDirection("Wave DiVector XY", Vector) = (1,1,0,0)
+		_WaveSpeed("Wave Speed Multipier", float) = 1.0
 
 	}
 		SubShader
@@ -33,6 +35,8 @@
 			float4 _Color;
 			float4 _DepthGradientShallow;
 			float4 _DepthGradientDeep;
+			float2 _WaveDirection;
+			float _WaveSpeed;
 			float _DepthMaxDistance;
 			sampler2D _CameraDepthTexture;
 
@@ -113,17 +117,17 @@
 				float depthDifference = existingDepthLinear - IN.screenPos.w;
 				float waterDepthDifference01 = saturate(depthDifference / _DepthMaxDistance);
 				float4 ambientCol = lerp(1, _Color, _ColDivStr);
-				float4 waterColor = lerp(_DepthGradientShallow / ambientCol, _DepthGradientDeep/ambientCol, waterDepthDifference01);
-				
+				float4 waterColor = lerp(_DepthGradientShallow / ambientCol, _DepthGradientDeep / ambientCol, waterDepthDifference01);
+
 				// Albedo comes from a texture tinted by color
 				fixed4 c = tex2D(_MainTex, IN.uv_MainTex) * _Color;
 				// Metallic and smoothness come from slider variables
 				float3 trest = IN.worldNormal* float3(1,1,1);
-				float2 waterNormal = sobel(IN.worldPos.xz + _Time.w*0.5);
-				o.Normal = UnpackNormal(half4(waterNormal.x*0.01, -waterNormal.y*0.05,-1, 0))*0.5 + 0.5;
+				float2 waterNormal = sobel(IN.worldPos.xz + _WaveDirection * _Time.w*_WaveSpeed);
+				o.Normal = UnpackNormal(half4(waterNormal.x*0.01, waterNormal.y*0.01,1, 0))*0.5 + 0.5;
 				o.Albedo = waterColor;
-				o.Metallic = _Metallic* waterColor.a;
-				o.Smoothness = _Glossiness* waterColor.a;
+				o.Metallic = _Metallic * waterColor.a;
+				o.Smoothness = _Glossiness * waterColor.a;
 				o.Alpha = _Alpha;
 			}
 			ENDCG

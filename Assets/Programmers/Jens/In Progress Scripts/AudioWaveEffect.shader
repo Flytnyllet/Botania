@@ -80,45 +80,55 @@
 
 				sampler2D _MainTex;
 				sampler2D _Noise;
+				sampler2D _CameraDepthTexture;
 				float4 _Color;
 				float _Thickness;
 
 				fixed4 frag(v2f i) : SV_Target
 				{
+					float depth = 1- tex2D(_CameraDepthTexture, i.uv).x*1;
+					depth += sin(i.uv.x*pi)*-.001;
+					float waves = ((depth + _Time.w*0.001) % 0.005)*200;
+					float wavesA = smoothstep(0, 0.5, waves);
+					float wavesB = smoothstep(0.5,1, waves);
 					fixed4 col = tex2D(_MainTex, i.uv);
 					float2 uv = i.uv - 0.5;
 					float tanVal = atan2(uv.y, uv.x) + pi;
 					float centerDist = distance(uv, 0);
-					float sinVal = sin((sin(tanVal) - _Time.w * 1)*0.5 + 0.5);
+					float sinVal = sin((sin(depth) - _Time.w * 0.01)*0.5 + 0.5);
 					float noiseVal = tex2D(_Noise, float2(0, sinVal));
+					return col-(1-(wavesA-wavesB)*clamp(0,1,tex2D(_CameraDepthTexture, i.uv).x*10000));
 					float lineThickness = noiseVal * _Thickness;
-					float A = smoothstep(0.6, 0.6 + lineThickness, centerDist);
-					float B = smoothstep(0.6, 0.6 - lineThickness, centerDist);
-					float ringA = 1 - (A + B);
 
-					noiseVal = tex2D(_Noise, float2(0, sinVal + 0.33));
-					A = smoothstep(0.65, 0.65 + lineThickness, centerDist);
-					B = smoothstep(0.65, 0.65 - lineThickness, centerDist);
-					float ringB = 1 - (A + B);
 
-					noiseVal = tex2D(_Noise, float2(0, sinVal + 0.66));
-					A = smoothstep(0.7, 0.7 + lineThickness, centerDist);
-					B = smoothstep(0.7, 0.7 - lineThickness, centerDist);
-					float ringC = 1 - (A + B);
 
-					float rings = (ringA+ringB+ringC);
-					col *= (1 - rings*_Color.a);
+					//float A = smoothstep(0.6, 0.6 + lineThickness, centerDist);
+					//float B = smoothstep(0.6, 0.6 - lineThickness, centerDist);
+					//float ringA = 1 - (A + B);
 
-					return col+rings*_Color*_Color.a;
+					//noiseVal = tex2D(_Noise, float2(0, sinVal + 0.33));
+					//A = smoothstep(0.65, 0.65 + lineThickness, centerDist);
+					//B = smoothstep(0.65, 0.65 - lineThickness, centerDist);
+					//float ringB = 1 - (A + B);
 
-					float dist = step(centerDist, 0.602 + noiseVal * 0.1);
-					float dist2 = step(centerDist, 0.6 + noiseVal * 0.1);
-					float lineA = dist - dist2;
+					//noiseVal = tex2D(_Noise, float2(0, sinVal + 0.66));
+					//A = smoothstep(0.7, 0.7 + lineThickness, centerDist);
+					//B = smoothstep(0.7, 0.7 - lineThickness, centerDist);
+					//float ringC = 1 - (A + B);
 
-					dist = step(centerDist, 0.592 + noiseVal * 0.2);
-					dist2 = step(centerDist, 0.59 + noiseVal * 0.2);
-					float lineB = dist - dist2;
-					return lineA + lineB;
+					//float rings = (ringA+ringB+ringC);
+					//col *= (1 - rings*_Color.a);
+
+					//return col+rings*_Color*_Color.a;
+
+					//float dist = step(centerDist, 0.602 + noiseVal * 0.1);
+					//float dist2 = step(centerDist, 0.6 + noiseVal * 0.1);
+					//float lineA = dist - dist2;
+
+					//dist = step(centerDist, 0.592 + noiseVal * 0.2);
+					//dist2 = step(centerDist, 0.59 + noiseVal * 0.2);
+					//float lineB = dist - dist2;
+					//return lineA + lineB;
 				}
 				ENDCG
 			}
