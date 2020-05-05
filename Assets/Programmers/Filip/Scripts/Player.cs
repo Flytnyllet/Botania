@@ -86,7 +86,6 @@ public struct BiomeInfo
         for (int i = 0; i < _biomeTypes.Count; i++)
         {
             _biomeTypes[i].NormalizeValue(totalSum);
-            Debug.Log(_biomeTypes[i].GetValue());
         }
     }
 }
