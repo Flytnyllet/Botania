@@ -55,39 +55,13 @@
 						(d - b) * u.x * u.y;
 				}
 
-				///////
-				////////
-				////
-				// Maximum number of cells a ripple can cross.
-				int _Radius;
 
-				// Hash function:
-				// https://www.shadertoy.com/view/4djSRW
-				#define HASHSCALE1 .1031
-				#define HASHSCALE3 float3(.1031, .1030, .0973)
-
-				float hash12(float2 p)
+				float samplePoint(float2 p)
 				{
-					float3 p3 = frac(float3(p.xyx) * HASHSCALE1);
+					float3 p3 = frac(float3(p.xyx) * .103);
 					p3 += dot(p3, p3.yzx + 19.19);
 					return frac((p3.x + p3.y) * p3.z);
 				}
-
-				float2 hash22(float2 p)
-				{
-					float3 p3 = frac(float3(p.xyx) * HASHSCALE3);
-					p3 += dot(p3, p3.yzx + 19.19);
-					return frac((p3.xx + p3.yz)*p3.zy);
-
-				}
-
-
-
-
-
-				//////
-				//////
-				//////
 
 				struct appdata
 				{
@@ -110,46 +84,52 @@
 				}
 
 				sampler2D _MainTex;
+				int _Radius;
 
 				fixed4 frag(v2f IN) : SV_Target
 				{
-					/*float EPSILON = 1e-3;
-					float2 p0 = floor(IN.uv*10);
+					float EPSILON = 1e-3;
+				//Dela upp i en 10*10 grid
+					float2 origin = floor(IN.uv*10);
 					float2 circles = float2(0,0);
 					for (int j = -_Radius; j <= _Radius; ++j)
 					{
 						for (int i = -_Radius; i <= _Radius; ++i)
 						{
-							float2 pi = p0 + float2(i, j);
+							//För varje grid
+							float2 pi = origin + float2(i, j);
 
-							float2 hsh = pi;
-							float2 p = pi + hash22(hsh);
+							float3 p3 = frac(float3(pi.xyx) * .103);
+							p3 += dot(p3, p3.yzx + 19.19);
+							float samplePoin = frac((p3.x + p3.y) * p3.z);
+							
+							float2 p = pi + samplePoin;
 
-							float t = frac(0.3*_Time.w*0.5 + hash12(hsh));
+							float t = frac(0.3*_Time.w*0.5 + samplePoin);
 							float2 v = p - IN.uv * 10;
-							float d = length(v) - (float(_Radius) + 1.)*t;
-
-
-							float d1 = d - EPSILON;
-							float d2 = d + EPSILON;
-							float p1 = sin(31.*d1) * smoothstep(-0.6, -0.3, d1) * smoothstep(0., -0.3, d1);
-							float p2 = sin(31.*d2) * smoothstep(-0.6, -0.3, d2) * smoothstep(0., -0.3, d2);
+							float dist = length(v) - (float(_Radius) + 1.)*t;
+							float dist1 = dist - EPSILON;
+							float dist2 = dist + EPSILON;
+							float p1 = sin(31.*dist1) * smoothstep(-0.6, -0.3, dist1) * smoothstep(0., -0.3, dist1);
+							float p2 = sin(31.*dist2) * smoothstep(-0.6, -0.3, dist2) * smoothstep(0., -0.3, dist2);
 							circles += 0.5 * normalize(v) * ((p2 - p1) / (2. * EPSILON) * (1. - t) * (1. - t));
 						}
 					}
 					circles /= float((_Radius * 2 + 1)*(_Radius * 2 + 1));
 
 					float intensity = lerp(0.01, 0.15, smoothstep(0.1, 0.6, abs(frac(0.05*_Time.w*0.5+ 0.5)*2. - 1.)));
-					float3 n = float3(circles, sqrt(1. - dot(circles, circles)));*/
-					float2 uv = IN.uv*10;
-					float4 o = _Time;
+					float3 normal = float3(circles, sqrt(1. - dot(circles, circles)));
 
-					uv = mul(uv, float2x2(7, -5, 5, 7)*.1);
-					o = min(o, length(frac(uv) - .5) / .6);
-					uv = mul(uv, float2x2(7, -5, 5, 7)*.1);
-					o = min(o, length(frac(uv) - .5) / .6);
-					uv = mul(uv, float2x2(7, -5, 5, 7)*.1);
-					o = min(o, length(frac(uv) - .5) / .6);
+
+					//float2 uv = IN.uv*10;
+					//float4 o = _Time;
+
+					//uv = mul(uv, float2x2(7, -5, 5, 7)*.1);
+					//o = min(o, length(frac(uv) - .5) / .6);
+					//uv = mul(uv, float2x2(7, -5, 5, 7)*.1);
+					//o = min(o, length(frac(uv) - .5) / .6);
+					//uv = mul(uv, float2x2(7, -5, 5, 7)*.1);
+					//o = min(o, length(frac(uv) - .5) / .6);
 
 
 
@@ -161,7 +141,7 @@
 							float2 uv = IN.uv - 0.5;
 							float dist = step(distance(uv, 0), 0.55);*/
 
-							return smoothstep(0.05,0,o);
+							return float4(normal,1);
 						}
 						ENDCG
 					}

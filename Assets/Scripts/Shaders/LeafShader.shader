@@ -22,6 +22,8 @@
 			#pragma surface surf Lambert noforwardadd vertex:vert addshadow dithercrossfade 
 			#pragma target 3.0
 
+			float gWindSpeed;
+
 			sampler2D _MainTex;
 			sampler2D _EmissionMap;
 			sampler2D _Alpha;
@@ -44,7 +46,7 @@
 				float height = lerp(0,1, v.vertex.y);
 				float sinW = sin((worldPos.x + worldPos.z) + _Time.y*_Speed);
 
-				v.vertex.x += height * sinW*_Strenght;
+				v.vertex.x += height * sinW*_Strenght*gWindSpeed;
 			}
 
 			void surf(Input IN, inout SurfaceOutput o) {
