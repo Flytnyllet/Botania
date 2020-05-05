@@ -34,6 +34,41 @@
 		//float minHeight;
 		//float maxHeight;
 
+		float random(float2 st) {
+			return frac(sin(dot(st.xy,
+				float2(12.9898, 78.233)))
+				* 43758.5453123);
+		}
+		float noise(float2 xy) {
+			float2 i = floor(xy);
+			float2 f = frac(xy);
+
+			float a = random(i);
+			float b = random(i + float2(1.0, 0.0));
+			float c = random(i + float2(0.0, 1.0));
+			float d = random(i + float2(1.0, 1.0));
+
+			float2 u = f * f*(3.0 - 2.0*f);
+
+			return lerp(a, b, u.x) +
+				(c - a)* u.y * (1.0 - u.x) +
+				(d - b) * u.x * u.y;
+		}
+		float noise(float x, float y) {
+			float2 i = floor(float2(x, y));
+			float2 f = frac(float2(x, y));
+
+			float a = random(i);
+			float b = random(i + float2(1.0, 0.0));
+			float c = random(i + float2(0.0, 1.0));
+			float d = random(i + float2(1.0, 1.0));
+
+			float2 u = f * f*(3.0 - 2.0*f);
+
+			return lerp(a, b, u.x) +
+				(c - a)* u.y * (1.0 - u.x) +
+				(d - b) * u.x * u.y;
+		}
 
 		struct Input
 		{
@@ -70,7 +105,7 @@
 				float3 blendAxes = abs(IN.worldNormal);
 				blendAxes /= blendAxes.x + blendAxes.y + blendAxes.z;
 				float3 scalesPos = IN.worldPos / 2;
-
+				float  noiseVal =1-smoothstep(0.01,0.2,noise(IN.worldPos.xz/4));
 				//float noiseStrenght = tex2D(_NoiseTextures, IN.uv_MainTex).x*baseTextureStrenght[0];
 				float noiseStrenght = tex2D(_NoiseTextures, IN.uv_MainTex).x;
 				//int2 pixelCoord = IN.uv_MainTex*_NoiseSize;
@@ -90,7 +125,7 @@
 				//	o.Albedo = colour;
 				//}
 				o.Albedo = lerp(altCol, colour, smoothstep(mainTexStart, mainTexStop, noiseStrenght));
-				o.Emission = lerp( float3(0,0,0), emissions, smoothstep(0.815, 0.825, noiseStrenght));
+				o.Emission = lerp( float3(0,0,0), emissions, smoothstep(0.815, 0.825, noiseStrenght))*noiseVal;
 				//o.Albedo = altCol+colour;
 				//o.Albedo = float4(noiseStrenght, 0,0,1);
 				//o.Albedo = float4(IN.uv_MainTex,0,1);

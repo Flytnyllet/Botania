@@ -6,6 +6,7 @@
 		_EmissionMap("Emission Map", 2D) = "black" {}
 		_SpecularMap("Metallic", 2D) = "white" {}
 		_RoughMap("Roghness", 2D) = "white" {}
+		_Color("Color", Color) = (1,1,1,1)
 	}
 		SubShader{
 			Tags { "Queue" = "AlphaTest" "IgnoreProjector" = "True" "RenderType" = "TransparentCutout" }
@@ -24,6 +25,7 @@
 		sampler2D _Alpha;
 		sampler2D _SpecularMap;
 		sampler2D _RoughMap;
+		float4 _Color;
 
 		struct Input {
 			float2 uv_MainTex;
@@ -32,7 +34,7 @@
 		}; 
 		void surf(Input IN, inout SurfaceOutputStandard  o) {
 			fixed4 c = tex2D(_MainTex, IN.uv_MainTex);
-			o.Albedo = c.rgb;
+			o.Albedo = c.rgb*_Color;
 			o.Alpha = tex2D(_Alpha, IN.uv_MainTex);
 			float2 pos = IN.screenPos.xy / IN.screenPos.w;
 			pos *= _ScreenParams.xy; // pixel position
