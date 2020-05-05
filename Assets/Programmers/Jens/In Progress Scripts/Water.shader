@@ -26,10 +26,9 @@
 
 			CGPROGRAM
 			// Physically based Standard lighting model, and enable shadows on all light types
-			#pragma surface surf Standard
+			#pragma surface surf Standard exclude_path:deferred exclude_path:prepass alpha:fade
 
-			// Use shader model 3.0 target, to get nicer looking lighting
-			#pragma target 3.0
+			#pragma target 4.0
 
 			sampler2D _MainTex;
 			float _Delta;

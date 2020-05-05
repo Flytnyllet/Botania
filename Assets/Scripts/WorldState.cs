@@ -26,22 +26,11 @@ public class WorldState : MonoBehaviour
     private void Start()
     {
         setRaining(false);
-        SetWindSpeed(1);
-        StartEvent(0);
+        StartEvent(WORLD_EVENTS.Normal);
+        StartCoroutine(changeWindSpeed(1, 1));
     }
 
-    enum WORLD_EVENTS { Normal, Rain, Fog };
-    void StartEvent(int i)
-    {
-        try
-        {
-            StartEvent((WORLD_EVENTS)i);
-        }
-        catch (System.Exception e)
-        {
-            Debug.LogError(e);
-        }
-    }
+    enum WORLD_EVENTS { Normal = 0, Rain, Fog, StrongWind };
     void StartEvent(WORLD_EVENTS worldEvent)
     {
         switch (worldEvent)
@@ -49,7 +38,8 @@ public class WorldState : MonoBehaviour
             case WORLD_EVENTS.Normal:
                 ActionDelayer.RunAfterDelay(() =>
                 {
-                    StartEvent(Random.Range(1, System.Enum.GetNames(typeof(WORLD_EVENTS)).Length));
+                    //pick random enum
+                    StartEvent((WORLD_EVENTS)Random.Range(1, System.Enum.GetValues(typeof(WORLD_EVENTS)).Length));
                 }, Random.Range(_eventMinTime, _eventMaxTime));
                 break;
 
@@ -65,9 +55,22 @@ public class WorldState : MonoBehaviour
             case WORLD_EVENTS.Fog:
 
                 StartCoroutine(ChangeFogDensity(_fogChangeTime, _targetFogDensity));
+                _thickFog = true;
                 ActionDelayer.RunAfterDelay(() =>
                 {
                     StartCoroutine(ChangeFogDensity(_fogChangeTime, _baseFogDensity));
+                    _thickFog = false;
+                    StartEvent(WORLD_EVENTS.Normal);
+                }, Random.Range(_eventMinTime, _eventMaxTime));
+                break;
+
+            case WORLD_EVENTS.StrongWind:
+                Debug.Log("A wind is rising");
+                StartCoroutine(changeWindSpeed(2, 3));
+                ActionDelayer.RunAfterDelay(() =>
+                {
+                    Debug.Log("the wind is settling");
+                    StartCoroutine(changeWindSpeed(2, 1));
                     StartEvent(WORLD_EVENTS.Normal);
                 }, Random.Range(_eventMinTime, _eventMaxTime));
                 break;
@@ -84,24 +87,27 @@ public class WorldState : MonoBehaviour
     {
         get => _windSpeed;
     }
-    public void SetWindSpeed(float time)
-    {
-        StartCoroutine(changeWindSpeed(time, 2));
-    }
-    public void SetWindSpeed(float time, float targetSpeed)
-    {
-        StartCoroutine(changeWindSpeed(time, targetSpeed));
-    }
+    //public void SetWindSpeed(float time)
+    //{
+    //    StartCoroutine(changeWindSpeed(time, 2));
+    //}
+    //public void SetWindSpeed(float time, float targetSpeed)
+    //{
+    //    StartCoroutine(changeWindSpeed(time, targetSpeed));
+    //}
     IEnumerator changeWindSpeed(float lerpTime, float targetSpeed)
     {
         float time = 0;
         float startVal = _windSpeed;
         while (time < lerpTime)
         {
-            Mathf.Lerp(startVal, targetSpeed, time / lerpTime);
+            _windSpeed = Mathf.Lerp(startVal, targetSpeed, time / lerpTime);
+            Shader.SetGlobalFloat("gWindSpeed", _windSpeed);
+            time += Time.deltaTime;
             yield return null;
         }
-        Shader.SetGlobalFloat("gWindSpeed", 0.95f);
+        _windSpeed = targetSpeed;
+        Shader.SetGlobalFloat("gWindSpeed", targetSpeed);
     }
 
     //
@@ -128,6 +134,8 @@ public class WorldState : MonoBehaviour
     //
     //Fog
     //
+    bool _thickFog = false;
+    public bool ThickFog { get => _thickFog; }
     IEnumerator ChangeFogDensity(float lerpTime, float targetStrenght)
     {
         float time = 0;
