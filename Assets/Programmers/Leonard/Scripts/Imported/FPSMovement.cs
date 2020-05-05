@@ -65,6 +65,8 @@ public class FPSMovement : MonoBehaviour
 	[SerializeField] LayerMask waterLayer;
 	Collider lastWaterChunk;
 	bool isUnderwater = false;
+	
+	[SerializeField] float _levitationSpeed = 1f;
 
 	// !OBS Weird bug causing script to disable itself when awake is used.
 	void Awake()
@@ -114,7 +116,12 @@ public class FPSMovement : MonoBehaviour
 			RaycastHit waterDetection;
 			bool inWater = Physics.Raycast(_playerCam.position + 0.5f * Vector3.up, Vector3.down, out waterDetection, waterRayDist, waterLayer);
 			bool isStoned = CharacterState.IsAbilityFlagActive("STONE");
+			bool isLevitating = CharacterState.IsAbilityFlagActive("LEVITATE");
 
+			if (isStoned)
+			{
+				Debug.Log("I am stoned");
+			}
 			// == Functions ==
 			if (charCon.isGrounded)
 			{
@@ -219,17 +226,28 @@ public class FPSMovement : MonoBehaviour
 				Strafing(moveInput.x, moveInput.y);
 			}
 
-			if (!isStoned && lastWaterChunk != null && lastWaterChunk.transform.position.y > transform.position.y)
+			if (!inWater && !isStoned && lastWaterChunk != null && lastWaterChunk.transform.position.y > transform.position.y)
 			{
 				isUnderwater = true;
 			}
 
 			//Gravity
-			if (!inWater || isStoned)
+			if ((!inWater && !isLevitating) || isStoned )
 			{
 				charCon.Move(_velocity * Time.deltaTime);
 				if (!charCon.isGrounded) _velocity.y += _gravity.Value * Time.deltaTime;
 				else _velocity.y = 0;
+			}
+			else if(Time.time%1 < 0.1)
+			{
+				Debug.Log("Gravity is disabled");
+			}
+
+			if(isLevitating)
+			{
+				charCon.Move(_levitationSpeed *Vector3.up*Time.deltaTime);
+				_inAir = true;
+				_velocity.y = -5f;
 			}
 			// Bobbing
 			HeadBob(moveInput.x * _speed.Value, moveInput.y * _speed.Value);

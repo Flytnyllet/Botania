@@ -2,21 +2,28 @@
 {
 	Properties
 	{
-		_Color("Color", Color) = (1,1,1,1)
+		_Color("Color Division", Color) = (1,1,1,1)
+		_ColDivStr("Color Division Strenght", range(0,1)) = 1.0
 		_MainTex("Albedo (RGB)", 2D) = "white" {}
 		_Glossiness("Smoothness", Range(0,1)) = 0.5
 		_Metallic("Metallic", Range(0,1)) = 0.0
 		_Alpha("Alpha", Range(0,1)) = 0.0
 		_Delta("Delta", Range(0,1)) = 0.01
+		_DepthGradientShallow("Depth Gradient Shallow", Color) = (0.325, 0.807, 0.971, 0.725)
+		_DepthGradientDeep("Depth Gradient Deep", Color) = (0.086, 0.407, 1, 0.749)
+		_DepthMaxDistance("Depth Maximum Distance", Float) = 1
+		_WaveDirection("Wave DiVector XY", Vector) = (1,1,0,0)
+		_WaveSpeed("Wave Speed Multipier", float) = 1.0
+
 	}
 		SubShader
 		{
-			Tags  { "RenderType" = "Geometry" "Queue" = "Transparent" }
+			Tags  { "RenderType" = "Transparent" "Queue" = "Transparent" }
 			LOD 200
 
 			CGPROGRAM
 			// Physically based Standard lighting model, and enable shadows on all light types
-			#pragma surface surf Standard noambient halfasview 
+			#pragma surface surf Standard
 
 			// Use shader model 3.0 target, to get nicer looking lighting
 			#pragma target 3.0
@@ -24,6 +31,14 @@
 			sampler2D _MainTex;
 			float _Delta;
 			float _Alpha;
+			float _ColDivStr;
+			float4 _Color;
+			float4 _DepthGradientShallow;
+			float4 _DepthGradientDeep;
+			float2 _WaveDirection;
+			float _WaveSpeed;
+			float _DepthMaxDistance;
+			sampler2D _CameraDepthTexture;
 
 			float random(float2 st) {
 				return frac(sin(dot(st.xy,
@@ -82,12 +97,11 @@
 				float2 uv_MainTex;
 				float3 worldPos;
 				float3 worldNormal; INTERNAL_DATA
-				float3 screenPos;
+				float4 screenPos;
 			};
 
 			half _Glossiness;
 			half _Metallic;
-			fixed4 _Color;
 
 			// Add instancing support for this shader. You need to check 'Enable Instancing' on materials that use the shader.
 			// See https://docs.unity3d.com/Manual/GPUInstancing.html for more information about instancing.
@@ -98,15 +112,22 @@
 
 			void surf(Input IN, inout SurfaceOutputStandard  o)
 			{
+				float existingDepth01 = tex2Dproj(_CameraDepthTexture, UNITY_PROJ_COORD(IN.screenPos)).r;
+				float existingDepthLinear = LinearEyeDepth(existingDepth01);
+				float depthDifference = existingDepthLinear - IN.screenPos.w;
+				float waterDepthDifference01 = saturate(depthDifference / _DepthMaxDistance);
+				float4 ambientCol = lerp(1, _Color, _ColDivStr);
+				float4 waterColor = lerp(_DepthGradientShallow / ambientCol, _DepthGradientDeep / ambientCol, waterDepthDifference01);
+
 				// Albedo comes from a texture tinted by color
 				fixed4 c = tex2D(_MainTex, IN.uv_MainTex) * _Color;
 				// Metallic and smoothness come from slider variables
 				float3 trest = IN.worldNormal* float3(1,1,1);
-				float2 waterNormal = sobel(IN.worldPos.xz+ _Time.w*0.5);
-				o.Normal = UnpackNormal(half4(waterNormal.x*0.01, -waterNormal.y*0.01,-1, 0))*0.5+0.5;
-				o.Albedo = 1;
-				o.Metallic = _Metallic;
-				o.Smoothness = _Glossiness;
+				float2 waterNormal = sobel(IN.worldPos.xz + _WaveDirection * _Time.w*_WaveSpeed);
+				o.Normal = UnpackNormal(half4(waterNormal.x*0.01, waterNormal.y*0.01,1, 0))*0.5 + 0.5;
+				o.Albedo = waterColor;
+				o.Metallic = _Metallic * waterColor.a;
+				o.Smoothness = _Glossiness * waterColor.a;
 				o.Alpha = _Alpha;
 			}
 			ENDCG
