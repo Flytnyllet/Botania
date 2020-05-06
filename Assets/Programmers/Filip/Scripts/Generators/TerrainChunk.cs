@@ -247,7 +247,7 @@ class SpawnInfoRequester
 
     public SpawnInfoRequester(Biome biome, GameObject container)
     {
-        this._thisBiome = GameObject.Instantiate(biome);
+        this._thisBiome = new Biome(biome);
         this._prefabSpawner = container.AddComponent<PrefabSpawner>();
     }
 

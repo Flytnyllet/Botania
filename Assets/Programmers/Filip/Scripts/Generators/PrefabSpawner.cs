@@ -220,6 +220,9 @@ public class PrefabSpawner : MonoBehaviour
 
         //This will always be called last and have the longest waiting time, when it is done -> Normals are ready to be set
         StartCoroutine(SpawnWithDelay(spawnInfo[spawnInfo.Count - 1], container, spawnInfo.Count - 1, spawnInfo.Count - 1, highestLOD));
+
+        if (spawnInfo[spawnInfo.Count - 1].DetailType != 0)
+            _gameObjectsInChunkWithNoNormals.Add(spawnInfo[spawnInfo.Count - 1]);
     }
 
     IEnumerator SpawnWithDelay(SpawnInfo spawnInfo, Transform container, int index, int highest, bool last)
@@ -230,7 +233,10 @@ public class PrefabSpawner : MonoBehaviour
         spawnInfo.Spawn(container);
 
         if (last)
+        {
+            yield return new WaitForSecondsRealtime(value * SPAWNING_DELAY_MULTIPLIER / 2);
             _readyToFixNormals = true;
+        }
     }
 
     public void SetNormals(MeshData meshData, int chunkSize)
