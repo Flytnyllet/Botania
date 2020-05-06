@@ -280,7 +280,7 @@ public class NoiseSettings
     [SerializeField, Range(0, 1), Tooltip("Amount of increase in frequency of each octave")] float _persistance = 0.6f;
     [SerializeField, Range(1, 25), Tooltip("How much effect each octave should have")] float _lacunarity = 1.5f;
 
-    [SerializeField, Range(-3, 3)] float _darken = 0.0f;
+    [SerializeField, Range(-10, 10)] float _darken = 0.0f;
     [SerializeField] bool _useDarken = false;
 
     [SerializeField, Tooltip("Keep on GLOBAL! LOCAL is only used for testing purposes!")] Noise.NormalizeMode _normalizeMode = Noise.NormalizeMode.GLOBAL;
