@@ -60,6 +60,8 @@ public class FPSMovement : MonoBehaviour
 	[SerializeField] float swimStartSpeedFactor = 0.5f;
 	[SerializeField] float swimAccelerationTime = 1f;
 	[SerializeField] float underwaterFloatBack = 3f;
+	[SerializeField] float _swimBobAmount = 0.05f;
+	[SerializeField] float _swimBobSpeed = 1.0f;
 
 	Vector2 swimVelocity = new Vector2(0f, 0f);
 	[SerializeField] LayerMask waterLayer;
@@ -149,34 +151,33 @@ public class FPSMovement : MonoBehaviour
 				_inAir = true;
 
 				Vector2 swimming = moveInput * swimAccelerationTime * swimMaxSpeed;
-				Debug.Log("Swimming modifiers total: " + swimming + " being added to " + swimVelocity);
+				//Debug.Log("Swimming modifiers total: " + swimming + " being added to " + swimVelocity);
 				swimVelocity += swimming;
 
 				if (swimVelocity.magnitude < swimStartSpeedFactor * swimMaxSpeed && moveInput.magnitude == 1 && swimVelocity.magnitude != 0)
 				{
 					float ratio = (swimStartSpeedFactor * swimMaxSpeed) / swimVelocity.magnitude;
 					swimVelocity *= ratio;
-					Debug.Log("Increasing to swimStartSpeed, swimVelocity is: " + swimVelocity);
+					//Debug.Log("Increasing to swimStartSpeed, swimVelocity is: " + swimVelocity);
 				}
 				else if (swimVelocity.magnitude > swimMaxSpeed && swimVelocity.magnitude != 0)
 				{
 					float ratio = swimMaxSpeed / swimVelocity.magnitude;
 					swimVelocity *= ratio;
-					Debug.Log("Speed limiting ratio is: " + ratio);
+					//Debug.Log("Speed limiting ratio is: " + ratio);
 				}
-				Debug.Log("Swim speed is: " + swimVelocity);
+				//Debug.Log("Swim speed is: " + swimVelocity);
 
-				Vector3 readySwimVelocity = swimVelocity.x * _playerCam.right + swimVelocity.y * _playerCam.forward;
-				readySwimVelocity -= Vector3.up * readySwimVelocity.y;
+				Vector3 readyX = _playerCam.right;
+				Vector3 readyZ = _playerCam.forward;
+				readyX.y = 0f;
+				readyZ.y = 0f;
+				Vector3 readySwimVelocity = readyX.normalized * swimVelocity.x + readyZ.normalized * swimVelocity.y;
 				charCon.Move(readySwimVelocity * Time.deltaTime);
+				
+				SwimBob(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+
 				swimVelocity -= swimVelocity * Time.deltaTime;
-
-				//Water Normal Force
-				/*_velocity += Vector3.up * (waterBaseNormForce + (waterRayDist - waterDetection.distance) * waterForceMod);
-				_velocity = _velocity.y * Vector3.up;
-				_velocity += new Vector3(moveInput.x, 0f, moveInput.y);
-
-				charCon.Move(_velocity);*/
 			}
 			// Everything that can be done while grounded
 			else if (grounded)
@@ -344,6 +345,24 @@ public class FPSMovement : MonoBehaviour
 			_bobTimer = 0;
 			_playerCam.localPosition = new Vector3(_playerCam.localPosition.x,
 				Mathf.Lerp(_playerCam.localPosition.y, _defPosY, Time.deltaTime * _bobbingSpeed), _playerCam.localPosition.z);
+		}
+	}
+	void SwimBob(float x, float z)
+	{
+
+		if (Mathf.Abs(x) > 0.1f || Mathf.Abs(z) > 0.1f)
+		{
+			//Player is moving
+			_bobTimer += Time.deltaTime * _swimBobSpeed;
+			_playerCam.localPosition = new Vector3(_playerCam.localPosition.x,
+				_defPosY + Mathf.Sin(_bobTimer) * _swimBobAmount, _playerCam.localPosition.z);
+		}
+		else
+		{
+			//Idle
+			_bobTimer = 0;
+			_playerCam.localPosition = new Vector3(_playerCam.localPosition.x,
+				Mathf.Lerp(_playerCam.localPosition.y, _defPosY, Time.deltaTime * _swimBobSpeed), _playerCam.localPosition.z);
 		}
 	}
 

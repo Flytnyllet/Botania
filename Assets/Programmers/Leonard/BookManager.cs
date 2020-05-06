@@ -6,7 +6,8 @@ using UnityEngine.UI;
 public class BookManager : MonoBehaviour
 {
     const string INPUT_INVENTORY = "Inventory";
-    [SerializeField] Sprite[] _BookSprites = null;
+	const string OPEN_WHEEL = "Wheel";
+	[SerializeField] Sprite[] _BookSprites = null;
 
     [SerializeField] List<GameObject> _bookmarks = new List<GameObject>();
     [SerializeField] List<PageLoader> _flowerPages = new List<PageLoader>();
@@ -20,6 +21,7 @@ public class BookManager : MonoBehaviour
     int _currentPage = 0;
     [SerializeField] GameObject _book = null;
 	[SerializeField] GameObject _map = null;
+	[SerializeField] GameObject _potionWheel = null;
 
     private void OnEnable()
     {
@@ -58,7 +60,7 @@ public class BookManager : MonoBehaviour
 
 	void Update()
     {
-        if (Input.GetButtonDown(INPUT_INVENTORY))
+        if (Input.GetButtonDown(INPUT_INVENTORY) && !_potionWheel.activeSelf)
         {
             Debug.Log("Inventory button");
             if (!_book.activeSelf)
@@ -73,13 +75,32 @@ public class BookManager : MonoBehaviour
                 CloseBook(new EventParameter()); //ignore the eventparameter
             }
         }
-    }
+		if (Input.GetButton(OPEN_WHEEL))// && !_book.activeSelf)
+		{
+			_potionWheel.SetActive(true);
+			//_potionWheel.SetActive(!_potionWheel.activeSelf);
+			//if(_potionWheel.activeSelf)
+			//{
+				CharacterState.SetControlState(CHARACTER_CONTROL_STATE.MENU);
+			//}
+			//else
+			//{
+			//	CharacterState.SetControlState(CHARACTER_CONTROL_STATE.PLAYERCONTROLLED);
+			//}
+		}
+		else if(Input.GetButtonUp(OPEN_WHEEL))
+		{
+			_potionWheel.SetActive(false);
+			CharacterState.SetControlState(CHARACTER_CONTROL_STATE.PLAYERCONTROLLED);
+
+		}
+	}
 
     void SetupPage(int pageParentID, List<PageLoader> pages)
     {
         for (int i = 0; i < pages.Count; i++)
         {
-            GameObject page = Instantiate<GameObject>(pages[i].gameObject, _bookmarks[pageParentID].transform);
+            GameObject page = Instantiate(pages[i].gameObject, _bookmarks[pageParentID].transform);
 
             if (i == _currentPage || i == _currentPage + 1)
             {
@@ -96,7 +117,7 @@ public class BookManager : MonoBehaviour
         }
         if (pages.Count % 2 == 1)
         {
-            GameObject emptyPage = Instantiate<GameObject>(_emptyPageTemplate, _bookmarks[pageParentID].transform);
+            GameObject emptyPage = Instantiate(_emptyPageTemplate, _bookmarks[pageParentID].transform);
             emptyPage.gameObject.SetActive(false);
             pages.Add(emptyPage.GetComponent<PageLoader>());
         }
@@ -107,7 +128,7 @@ public class BookManager : MonoBehaviour
         for (int i = 0; i < _bookmarks.Count; i++)
         {
             GameObject bookmark = _bookmarks[i];
-            _bookmarks[i] = Instantiate<GameObject>(bookmark, _book.transform);
+            _bookmarks[i] = Instantiate(bookmark, _book.transform);
             _bookmarks[i].transform.SetAsFirstSibling();
 			//CreateBookmarkObject(i, bookmark, bookmarks);
 		}
