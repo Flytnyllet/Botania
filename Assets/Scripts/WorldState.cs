@@ -65,11 +65,11 @@ public class WorldState : MonoBehaviour
                 break;
 
             case WORLD_EVENTS.StrongWind:
-                Debug.Log("A wind is rising");
+                //Debug.Log("A wind is rising");
                 StartCoroutine(changeWindSpeed(2, 3));
                 ActionDelayer.RunAfterDelay(() =>
                 {
-                    Debug.Log("the wind is settling");
+                   // Debug.Log("the wind is settling");
                     StartCoroutine(changeWindSpeed(2, 1));
                     StartEvent(WORLD_EVENTS.Normal);
                 }, Random.Range(_eventMinTime, _eventMaxTime));
@@ -87,14 +87,6 @@ public class WorldState : MonoBehaviour
     {
         get => _windSpeed;
     }
-    //public void SetWindSpeed(float time)
-    //{
-    //    StartCoroutine(changeWindSpeed(time, 2));
-    //}
-    //public void SetWindSpeed(float time, float targetSpeed)
-    //{
-    //    StartCoroutine(changeWindSpeed(time, targetSpeed));
-    //}
     IEnumerator changeWindSpeed(float lerpTime, float targetSpeed)
     {
         float time = 0;
@@ -119,7 +111,7 @@ public class WorldState : MonoBehaviour
     {
         if (b)
         {
-            Shader.SetGlobalFloat("gRainWave", 0.95f);
+            Shader.SetGlobalFloat("gRainWave", 0.9f);
             raining = true;
             EventManager.TriggerEvent(EventNameLibrary.START_RAIN, new EventParameter());
         }

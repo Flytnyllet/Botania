@@ -75,14 +75,15 @@
             }
 
             sampler2D _MainTex;
+            sampler2D _CameraGBufferTexture2;
 
             fixed4 frag (v2f i) : SV_Target
             {
-                fixed4 col = tex2D(_MainTex, i.uv);
+                fixed4 col = tex2D(_CameraGBufferTexture2, i.uv);
 				float2 uv = i.uv - 0.5;
 				float dist = step(distance(uv, 0), 0.55);
 
-                return dist;
+                return col;
             }
             ENDCG
         }

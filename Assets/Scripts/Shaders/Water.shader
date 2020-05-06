@@ -7,6 +7,8 @@
 		_MainTex("Albedo (RGB)", 2D) = "white" {}
 		_Glossiness("Smoothness", Range(0,1)) = 0.5
 		_Metallic("Metallic", Range(0,1)) = 0.0
+		_FresnelLow("Fresnel Low", Range(-1,0.9)) = 0.0
+		_FresnelHigh("Fresnel High", Range(0,1)) = 0.0
 		_Alpha("Alpha", Range(0,1)) = 0.0
 		_Delta("Delta", Range(0,1)) = 0.01
 		_DepthGradientShallow("Depth Gradient Shallow", Color) = (0.325, 0.807, 0.971, 0.725)
@@ -28,7 +30,7 @@
 			// Physically based Standard lighting model, and enable shadows on all light types
 			#pragma surface surf Standard exclude_path:deferred exclude_path:prepass alpha:fade
 
-			#pragma target 4.0
+			#pragma target 3.0
 
 			sampler2D _MainTex;
 			float _Delta;
@@ -43,6 +45,8 @@
 			float _Radius;
 			float _RainSpeed;
 			float gRainWave;
+			float _FresnelLow;
+			float _FresnelHigh;
 			sampler2D _CameraDepthTexture;
 
 			float random(float2 st) {
@@ -103,8 +107,14 @@
 				float3 worldPos;
 				float3 worldNormal; INTERNAL_DATA
 				float4 screenPos;
+				float3 viewDir;
+				float3 vertexNormal;
 			};
 
+			void vert(inout appdata_full v, out Input o) {
+				UNITY_INITIALIZE_OUTPUT(Input, o);
+				o.vertexNormal = v.normal;
+			}
 			half _Glossiness;
 			half _Metallic;
 
@@ -162,11 +172,13 @@
 				// Metallic and smoothness come from slider variables
 				float3 trest = IN.worldNormal* float3(1,1,1);
 				float2 waterNormal = sobel(IN.worldPos.xz + _WaveDirection * _Time.w*_WaveSpeed);
-				o.Normal = lerp(rainNormal ,UnpackNormal(half4(waterNormal*0.02,1, 0))*0.5 + 0.5, gRainWave);
+				float fresnelfactor =dot(float3(0, 1, 0),1-normalize(UnityWorldSpaceViewDir(IN.worldPos)));
+				fresnelfactor = smoothstep(_FresnelLow, _FresnelHigh, fresnelfactor);
+				o.Normal += lerp(rainNormal ,UnpackNormal(half4(waterNormal*0.02,1, 0))*0.5 + 0.5, gRainWave);
 				o.Albedo = waterColor;
-				o.Metallic = _Metallic * waterColor.a;
-				o.Smoothness = _Glossiness * waterColor.a;
-				o.Alpha = _Alpha;
+				o.Metallic = 1;
+				o.Smoothness = _Glossiness * waterColor.a*fresnelfactor;
+				o.Alpha = _Alpha * waterColor.a;
 			}
 			ENDCG
 		}
