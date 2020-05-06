@@ -18,6 +18,7 @@ public static class TextureGenerator
     public static TextureChunkData DrawMap(int size, MapSettings mapSettings, Vector2 center, Vector2 chunkCoord, int noiseViewSize = 1)
     {
         float[,] heightNoise = Noise.GenerateNoiseMap(size * noiseViewSize, size * noiseViewSize, mapSettings.DetailLevel, mapSettings.HeightRegion.NoiseData.NoiseSettingsDataMerge, center);
+
         float[][,] noises = new float[mapSettings.MapRegions.Length][,];
 
         for (int i = 0; i < mapSettings.MapRegions.Length; i++)
@@ -42,15 +43,13 @@ public static class TextureGenerator
                     {
                         Color finalColor = mapSettings.HeightRegion.Regions[h].color;
 
-                        float oldHighest = 0.0f;
-
                         for (int i = 0; i < noises.Length; i++)
                         {
-                            if (noises[i][x, y] >= mapSettings.MapRegions[i].NoiseStartPoint && currentHeight > mapSettings.MapRegions[i].MinHeightStart && noises[i][x, y] > oldHighest)
+                            if (noises[i][x, y] >= mapSettings.MapRegions[i].NoiseStartPoint && currentHeight > mapSettings.MapRegions[i].MinHeightStart)
                             {
-                                oldHighest = noises[i][x, y];
                                 finalColor = finalColor.grayscale * mapSettings.MapRegions[i].Color;
                                 finalColor.a = mapSettings.MapRegions[i].Color.a;
+                                break;
                             }
                         }
 
