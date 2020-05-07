@@ -31,6 +31,60 @@ Shader "Botania/Skybox" {
 			half _Exposure;
 			float _Rotation;
 
+
+			float random(float2 st) {
+				return frac(sin(dot(st.xy,
+					float2(12.9898, 78.233)))
+					* 43758.5453123);
+			}
+			float noise(float2 xy) {
+				float2 i = floor(xy);
+				float2 f = frac(xy);
+
+				float a = random(i);
+				float b = random(i + float2(1.0, 0.0));
+				float c = random(i + float2(0.0, 1.0));
+				float d = random(i + float2(1.0, 1.0));
+
+				float2 u = f * f*(3.0 - 2.0*f);
+
+				return lerp(a, b, u.x) +
+					(c - a)* u.y * (1.0 - u.x) +
+					(d - b) * u.x * u.y;
+			}
+			float noise(float x, float y) {
+				float2 i = floor(float2(x, y));
+				float2 f = frac(float2(x, y));
+
+				float a = random(i);
+				float b = random(i + float2(1.0, 0.0));
+				float c = random(i + float2(0.0, 1.0));
+				float d = random(i + float2(1.0, 1.0));
+
+				float2 u = f * f*(3.0 - 2.0*f);
+
+				return lerp(a, b, u.x) +
+					(c - a)* u.y * (1.0 - u.x) +
+					(d - b) * u.x * u.y;
+			}
+
+#define NUM_OCTAVES 5
+			float fbm(in float2 _st) {
+				float v = 0.0;
+				float a = 0.5;
+				float2 shift = float2(100.0,100.0);
+				// Rotate to reduce axial bias
+				float2x2 rot = float2x2(cos(0.5), sin(0.5),-sin(0.5), cos(0.50));
+				for (int i = 0; i < NUM_OCTAVES; ++i) {
+					v += a * noise(_st);
+					_st = mul(rot, _st) * 2.0 + shift;
+					a *= 0.5;
+				}
+				return smoothstep(0.5, 1, v);
+			}
+
+
+
 	float3 RotateAroundYInDegrees(float3 vertex, float degrees)
 	{
 		float alpha = degrees * UNITY_PI / 180.0;
