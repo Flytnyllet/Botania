@@ -50,6 +50,7 @@ public class GroundMaterialGenerator : ScriptableObject
                     if (_layers[i].GetNoise != null)
                     {
                         noises[i] = Noise.GenerateNoiseMap(size, size, _noiseDetailLevel, _layers[i].GetNoise.NoiseSettingsDataMerge, pos);
+                        noises[i] = Noise.Clamp(noises[i], _layers[i].GetNoise);
                     }
                     else
                     {
@@ -59,12 +60,12 @@ public class GroundMaterialGenerator : ScriptableObject
                 //byte[] noiseByte = new byte[size * size];
                 for (int y = 0; y < size; y++)
                 {
-                for (int x = 0; x < size; x++)
-                {
-                    //if (noises[0][x, y] < 0 || noises[0][x, y] > 1) ThreadedDataRequester.AddToCallbackQueue(() => { Debug.LogError("Noise Value out of range"); });
-                    //ThreadedDataRequester.AddToCallbackQueue(() => { Debug.Log(noises[1][x, y]); });
-                            // colour[y * size + x] = (byte)(255 * noise[x, y]);
-                            colorMap[y * size + x].r = noises[0][x, y] * 255;
+                    for (int x = 0; x < size; x++)
+                    {
+                        //if (noises[0][x, y] < 0 || noises[0][x, y] > 1) ThreadedDataRequester.AddToCallbackQueue(() => { Debug.LogError("Noise Value out of range"); });
+                        //ThreadedDataRequester.AddToCallbackQueue(() => { Debug.Log(noises[1][x, y]); });
+                        // colour[y * size + x] = (byte)(255 * noise[x, y]);
+                        colorMap[y * size + x].r = noises[0][x, y] * 255;
                         colorMap[y * size + x].g = noises[1][x, y] * 255;
                         colorMap[y * size + x].b = noises[2][x, y] * 255;
                         colorMap[y * size + x].a = noises[3][x, y] * 255;
