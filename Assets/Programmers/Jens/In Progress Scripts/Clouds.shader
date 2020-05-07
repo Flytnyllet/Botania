@@ -2,7 +2,7 @@
 {
 	Properties
 	{
-		_LowStep("Cloud Lower Cuttoff", range(0,1)) = 0.4
+		//_LowStep("Cloud Lower Cuttoff", range(0,1)) = 0.4
 		_HighStep("Cloud Upper Cuttoff", range(0,2)) = 1.0
 		_Directon("Cloud Velocity XY", Vector) = (1,1,0,0)
 		_Offset("Cloud Offset XY", Vector) = (1,1,0,0)
@@ -101,6 +101,7 @@
 			float4 _FogColor;
 			float4 _CloudCol;
 			float _LowStep;
+			float gCloudLowStep;
 			float _HighStep;
 			float _FogHeight;
 			float _FogOffset;
@@ -123,7 +124,7 @@
 				float noise = fbm(i.worldPos.xz * 0.1 + _Offset + _Time.w*0.1*_Directon);
 			//UNITY_APPLY_FOG(i.fogCoord, noise);
 			//return float4(1, 1, 1, 1);
-			float clouds = smoothstep(_LowStep, _HighStep, noise);
+			float clouds = smoothstep(gCloudLowStep, _HighStep, noise);
 			return clouds * _CloudCol;
 			//return lerp(col, _FogColor, 1 - smoothstep(_FogHeight, _FogHeight + _FogOffset, i.worldPos.y));
 		}
