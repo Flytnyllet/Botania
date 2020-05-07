@@ -7,6 +7,7 @@
 		_Alpha("Alpha Map", 2D) = "white" {}
 		[Toggle(ALPHA_CUTOUT)]
 		_Cutout("Alpha Cutout", float) = 0
+		_CutoutValue("Cutout Value",range(0,1)) = 0.4
 		_noiseTex("Noise", 2D) = "white" {}
 		_WindSize("Wind Size", float) = 1.0
 		_Speed("Speed", float) = 1.0
@@ -18,7 +19,7 @@
 		  CGPROGRAM
 		  #pragma surface surf Lambert vertex:vert addshadow
 		  #pragma target 3.0 
-		#pragma shader_feature ALPHA_CUTOUT
+		  #pragma shader_feature ALPHA_CUTOUT
 
 		struct Input {
 			  float2 uv_MainTex;
@@ -39,10 +40,10 @@
 		sampler2D _Alpha;
 		sampler2D _noiseTex;
 		float4 _Color;
-		float _Cutout;
 		float _Speed;
 		float _WindSize;
 		float _Strenght;
+		float _CutoutValue;
 
 
 
@@ -95,7 +96,7 @@
 		  16.0 / 17.0,  8.0 / 17.0,   14.0 / 17.0,  6.0 / 17.0
 		  };
 #ifdef ALPHA_CUTOUT 
-		  clip(o.Alpha - 0.99);
+		  clip(o.Alpha - _CutoutValue);
 #else
 		  clip(o.Alpha - thresholdMatrix[fmod(pos.x, 4)][pos.y % 4]);
 #endif
