@@ -16,12 +16,20 @@ MonoBehaviour:
   _shader: {fileID: 4800000, guid: f282adb13a6e5774ebd1fabf3cb1fdb9, type: 3}
   _noiseDetailLevel: 1
   _mainTex: {fileID: 2800000, guid: 547a26e3963e34045a42a1d3f6205edb, type: 3}
-  _mainTexStart: 0.8
   _emission: {fileID: 2800000, guid: 5b5cc8c6b60776742bf37e09d80f207d, type: 3}
-  _layer:
-    _noise: {fileID: 11400000, guid: 1a3c314bb7fe7604dba499589c7f0141, type: 2}
-    _texture: {fileID: 2800000, guid: 96902b42b73a889408d1d949508ecd91, type: 3}
-    _mainTexStop: 0.9
-    _textureStrenght: 1
-    _tint: {r: 0, g: 0, b: 0, a: 0}
-    _textureScale: 1
+  _mainTexStart: 0.8
+  _mainTexStop: 0.7
+  _mainTexScale: 4
+  _layers:
+  - _noise: {fileID: 11400000, guid: a62c29c9b5130a249893b94dbd8eb1ba, type: 2}
+    _texture: {fileID: 0}
+    _textureScale: 0
+  - _noise: {fileID: 11400000, guid: 66cf935bfb3271b40a6cdded6bd17f58, type: 2}
+    _texture: {fileID: 0}
+    _textureScale: 0
+  - _noise: {fileID: 11400000, guid: cb26e806f5e550c478dc5ce068d4e871, type: 2}
+    _texture: {fileID: 0}
+    _textureScale: 0
+  - _noise: {fileID: 0}
+    _texture: {fileID: 0}
+    _textureScale: 0
