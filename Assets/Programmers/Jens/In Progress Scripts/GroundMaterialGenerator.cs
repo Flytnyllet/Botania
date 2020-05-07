@@ -33,6 +33,7 @@ public class GroundMaterialGenerator : ScriptableObject
 
                 colorMap = new Color[size * size];
                 float[,] noise = Noise.GenerateNoiseMap(size, size, _noiseDetailLevel, _layer.GetNoise.NoiseSettingsDataMerge, pos);
+                noise = Noise.Clamp(noise, _layer.GetNoise);
                 //byte[] noiseByte = new byte[size * size];
                 for (int y = 0; y < size; y++)
                 {

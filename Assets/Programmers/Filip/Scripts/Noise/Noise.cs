@@ -228,6 +228,19 @@ public static class Noise
         return noise;
     }
 
+    public static float[,] Clamp(float[,] noise, NoiseSettingsData data)
+    {
+        for (int x = 0; x < noise.GetLength(0); x++)
+        {
+            for (int y = 0; y < noise.GetLength(1); y++)
+            {
+                noise[x, y] = Mathf.Clamp(noise[x, y], data.ClampMin, data.ClampMax);
+            }
+        }
+
+        return noise;
+    }
+
     //Converts different input parameter data and sends it to base merge function ^
     public static float[,] MergeNoise(int mapWidth, int mapHeight, int detailLevel, NoiseSettingsDataMerge[] settingsMerge_1, NoiseSettingsDataMerge[] settingsMerge_2, NoiseMergeType noiseMergeType, Vector2 sampleCenter)
     {

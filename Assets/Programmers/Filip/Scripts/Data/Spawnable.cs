@@ -156,6 +156,8 @@ public class Spawnable : UpdatableData
         else
             _noise = Noise.GenerateNoiseMap(chunkSize, chunkSize, 1, _noiseSettingsData.NoiseSettingsDataMerge, new Vector2(center.x, -center.y));
 
+        _noise = Noise.Clamp(_noise, _noiseSettingsData);
+
         _offsetNoise = Noise.GenerateNoiseMap(chunkSize, chunkSize, 1, offsetNoiseSettings.NoiseSettingsDataMerge, new Vector2(center.x, -center.y) + offsetNoiseOffset);
         _spreadNoise = Noise.GenerateNoiseMap(chunkSize, chunkSize, 1, offsetNoiseSettings.NoiseSettingsDataMerge, new Vector2(center.x, -center.y) + offsetNoiseOffset * 2);
 

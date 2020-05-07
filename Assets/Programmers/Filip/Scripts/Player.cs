@@ -105,6 +105,7 @@ public class BiomeInfoInstance
     public float GetAndSetPointInNoise(Vector2 samplePoint)
     {
         float[,] noise = Noise.GenerateNoiseMap(1, 1, 1, _noiseSettings.NoiseSettingsDataMerge, samplePoint);
+        noise = Noise.Clamp(noise, _noiseSettings);
         _value = noise[0, 0] > _noiseStartPoint ? noise[0, 0] : 0;
 
         return _value;
