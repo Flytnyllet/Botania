@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Audio/Data/Amb_Data", fileName = "Amb_Data_Asset")]
-public class Amb_Data : UnityEngine.ScriptableObject
+public class Amb_Data : ScriptableObject
 {
     [Header("Amb_Local_Wind")]
     [FMODUnity.EventRef]
-    public string amb_forest_wind = null;
+    public string amb_tree1_wind = null;
+
+    [FMODUnity.EventRef]
+    public string amb_tree2_wind = null;
 
     [Space(10)]
 

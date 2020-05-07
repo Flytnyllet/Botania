@@ -35,7 +35,7 @@
 			<destination>{0befe015-3dcb-4939-923d-01201743caf2}</destination>
 		</relationship>
 		<relationship name="banks">
-			<destination>{01714977-9472-4f6d-a8d6-ee6e0f884b40}</destination>
+			<destination>{370830f3-8e54-43ea-86a7-38489c122a41}</destination>
 		</relationship>
 	</object>
 	<object class="EventMixer" id="{489742cb-40db-4853-9923-10c48b96112a}">
@@ -64,7 +64,7 @@
 			<value>7</value>
 		</property>
 		<property name="voiceStealing">
-			<value>4</value>
+			<value>1</value>
 		</property>
 	</object>
 	<object class="MarkerTrack" id="{07aa7eed-d320-4c5a-a36a-65d2d717b7a9}" />
@@ -94,9 +94,6 @@
 		</relationship>
 	</object>
 	<object class="EventMixerMaster" id="{8d9d55cb-3bcc-4efa-aba0-777818342259}">
-		<property name="volume">
-			<value>-11</value>
-		</property>
 		<relationship name="effectChain">
 			<destination>{70e59f68-7453-423d-a407-1f15f661b8eb}</destination>
 		</relationship>
@@ -128,7 +125,7 @@
 			<value>true</value>
 		</property>
 		<property name="triggerProbability">
-			<value>40.5</value>
+			<value>30.5</value>
 		</property>
 		<property name="isAsync">
 			<value>true</value>
@@ -247,8 +244,11 @@
 	</object>
 	<object class="MixerBusFader" id="{b38310af-5de8-474c-89e1-2eec971c5920}" />
 	<object class="SpatialiserEffect" id="{430148c0-b2c6-4393-8120-983b8f562908}">
+		<property name="minimumDistance">
+			<value>0.5</value>
+		</property>
 		<property name="maximumDistance">
-			<value>13</value>
+			<value>14</value>
 		</property>
 		<property name="extentMode">
 			<value>1</value>

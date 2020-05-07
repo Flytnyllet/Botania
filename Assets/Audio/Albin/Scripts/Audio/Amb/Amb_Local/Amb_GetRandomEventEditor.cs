@@ -7,8 +7,9 @@ using System;
 [CanEditMultipleObjects]
 public class Amb_GetRandomEventEditor : Editor
 {
-    SerializedProperty dataAsset;
-    SerializedProperty dataList;
+    SerializedProperty ambLocalWind;
+    SerializedProperty ambIsShy;
+    SerializedProperty ambList;
 
     string[] _lists = new[]
     {
@@ -20,9 +21,10 @@ public class Amb_GetRandomEventEditor : Editor
 
     void OnEnable()
     {
-        dataAsset = serializedObject.FindProperty("amb_Data");
-        dataList = serializedObject.FindProperty("amb_List");
-        _listIndex = Array.IndexOf(_lists, dataList.stringValue);
+        ambLocalWind = serializedObject.FindProperty("amb_AttachLocalWind");
+        ambIsShy = serializedObject.FindProperty("amb_ShyBehaviour");
+        ambList = serializedObject.FindProperty("amb_List");
+        _listIndex = Array.IndexOf(_lists, ambList.stringValue);
 
     }
 
@@ -30,12 +32,13 @@ public class Amb_GetRandomEventEditor : Editor
     {
         serializedObject.Update();
 
-        EditorGUILayout.PropertyField(dataAsset, new GUIContent("Amb_Data_Asset"));
+        EditorGUILayout.PropertyField(ambLocalWind, new GUIContent("Amb_AttachLocalWind"));
+        EditorGUILayout.PropertyField(ambIsShy, new GUIContent("Amb_IsShyBehaviour"));
 
         _listIndex = EditorGUILayout.Popup("Amb_Local_List", _listIndex, _lists);
         if (_listIndex < 0)
             _listIndex = 0;
-        dataList.stringValue = _lists[_listIndex];
+        ambList.stringValue = _lists[_listIndex];
 
         serializedObject.ApplyModifiedProperties();
     }
