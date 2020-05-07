@@ -3,6 +3,10 @@
 	Properties
 	{
 		[PerRendererData]_MainTex("Texture", 2D) = "white" {}
+		[PerRendererData]_AltTex0("Texture", 2D) = "white" {}
+		[PerRendererData]_AltTex1("Texture", 2D) = "white" {}
+		[PerRendererData]_AltTex2("Texture", 2D) = "white" {}
+		[PerRendererData]_AltTex3("Texture", 2D) = "white" {}
 		[PerRendererData]_Emission("Texture", 2D) = "white" {}
 		[PerRendererData]_NoiseTexture("Texture", 2D) = "white" {}
 	}
@@ -23,6 +27,10 @@
 
 		sampler2D _MainTex;
 		float baseTextureScale;
+		float altTextureScale[LAYER_COUNT];
+		float startStep[LAYER_COUNT];
+		float endStep[LAYER_COUNT];
+		float4 altTextureColour[LAYER_COUNT];
 		sampler2D _Emission;
 		sampler2D _AltTex0;
 		sampler2D _AltTex1;
@@ -101,19 +109,29 @@
 
 			void surf(Input IN, inout SurfaceOutput o)
 			{
-				float3 blendAxes = abs(IN.worldNormal);
-				blendAxes /= blendAxes.x + blendAxes.y + blendAxes.z;
-				float3 scalesPos = IN.worldPos / 2;
-				float  noiseVal = 1 - smoothstep(0.01,0.2,Noise(IN.worldPos.xz / 4));
+				//float3 blendAxes = abs(IN.worldNormal);
+				//blendAxes /= blendAxes.x + blendAxes.y + blendAxes.z;
+				float  noiseVal = 1 - smoothstep(0.01, 0.2, Noise(IN.worldPos.xz / 4));
+
+				float3 mainTex = tex2D(_MainTex, IN.worldPos.xz / baseTextureScale);
 				float4 noise = tex2D(_NoiseTexture, IN.uv_MainTex);
-				float3 altCol = tex2D(_AltTex0, scalesPos.xz / 4);
-				float3 colour = tex2D(_MainTex, scalesPos.xz / 4);
-				float3 emissions = tex2D(_Emission, scalesPos.xz / 4);
-				o.Albedo = lerp(altCol, colour, smoothstep(mainTexStart, mainTexStop, noise.x));
-				o.Emission = lerp(float3(0,0,0), emissions, smoothstep(0.815, 0.825, noise.x))*noiseVal;
+				noise.r = smoothstep(startStep[0], endStep[0], noise.r);
+				noise.g = smoothstep(startStep[1], endStep[1], noise.g)*(1 - noise.r);
+				noise.b = smoothstep(startStep[2], endStep[2], noise.b)*(1 - noise.r)*(1 - noise.g);
+				noise.a = smoothstep(startStep[3], endStep[3], noise.a)*(1 - noise.r)*(1 - noise.g)*(1 - noise.b);
+				float mainTexVal = 1 * (1 - noise.r)*(1 - noise.g)*(1 - noise.b)*(1 - noise.a);
+				mainTex *= mainTexVal;
+				float3 emissions = tex2D(_Emission, IN.worldPos.xz / baseTextureScale);
+				o.Emission = lerp(float3(0,0,0), emissions, mainTexVal)*noiseVal;
 				//o.Albedo = altCol+colour;
-				o.Albedo = noise;
-				//o.Albedo = float4(IN.uv_MainTex,0,1);
+
+				float4 altCol0 = tex2D(_AltTex0, IN.worldPos.xz / altTextureScale[0])*altTextureColour[0] * noise.r;
+				float4 altCol1 = tex2D(_AltTex1, IN.worldPos.xz / altTextureScale[1])*altTextureColour[1] * noise.g;
+				float4 altCol2 = tex2D(_AltTex2, IN.worldPos.xz / altTextureScale[2])*altTextureColour[2] * noise.b;
+				float4 altCol3 = tex2D(_AltTex3, IN.worldPos.xz / altTextureScale[3])*altTextureColour[3] * noise.a;
+				o.Albedo = mainTex + altCol0 + altCol1 + altCol2 + altCol3;
+
+				//o.Albedo = noise;
 			}
 			ENDCG
 	}
