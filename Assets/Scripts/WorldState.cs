@@ -25,9 +25,11 @@ public class WorldState : MonoBehaviour
     }
     private void Start()
     {
+        _cloudthicknessLowStepSTARTVALUE = _cloudthicknessLowStep;
         setRaining(false);
         StartEvent(WORLD_EVENTS.Normal);
         StartCoroutine(changeWindSpeed(1, 1));
+        StartCoroutine(ChangeCloudThickness(1, _cloudthicknessLowStep));
     }
 
     enum WORLD_EVENTS { Normal = 0, Rain, Fog, StrongWind };
@@ -69,7 +71,7 @@ public class WorldState : MonoBehaviour
                 StartCoroutine(changeWindSpeed(2, 3));
                 ActionDelayer.RunAfterDelay(() =>
                 {
-                   // Debug.Log("the wind is settling");
+                    // Debug.Log("the wind is settling");
                     StartCoroutine(changeWindSpeed(2, 1));
                     StartEvent(WORLD_EVENTS.Normal);
                 }, Random.Range(_eventMinTime, _eventMaxTime));
@@ -105,23 +107,41 @@ public class WorldState : MonoBehaviour
     //
     //Rain
     //
-    bool raining = false;
-    public bool IsRaining { get => raining; }
+    bool _raining = false;
+    float _cloudthicknessLowStep = 0.6f;
+    float _cloudthicknessLowStepSTARTVALUE;
+    public bool IsRaining { get => _raining; }
     public void setRaining(bool b)
     {
         if (b)
         {
             Shader.SetGlobalFloat("gRainWave", 0.9f);
-            raining = true;
+            StartCoroutine(ChangeCloudThickness(2, 0));
+            _raining = true;
             EventManager.TriggerEvent(EventNameLibrary.START_RAIN, new EventParameter());
         }
         else
         {
             Shader.SetGlobalFloat("gRainWave", 1f);
-            raining = false;
+            StartCoroutine(ChangeCloudThickness(2, _cloudthicknessLowStepSTARTVALUE));
+            _raining = false;
             EventManager.TriggerEvent(EventNameLibrary.STOP_RAIN, new EventParameter());
         }
     }
+    IEnumerator ChangeCloudThickness(float lerpTime, float lowSmoothstepTarget)
+    {
+        float time = 0;
+        float startVal = _cloudthicknessLowStep;
+        while (time < lerpTime)
+        {
+            time += Time.deltaTime;
+            _cloudthicknessLowStep = Mathf.Lerp(startVal, lowSmoothstepTarget, time / lerpTime);
+            Shader.SetGlobalFloat("gCloudLowStep", _cloudthicknessLowStep);
+            yield return null;
+        }
+
+    }
+
 
     //
     //Fog
