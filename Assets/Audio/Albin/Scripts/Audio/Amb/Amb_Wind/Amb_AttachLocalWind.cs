@@ -12,7 +12,6 @@ public class Amb_AttachLocalWind : MonoBehaviour
     {
         if (gameObject.activeInHierarchy)
         {
-            //switch
             _windEmitter = GetComponentInChildren<Amb_Wind_Emitter>();
             _windCollider = GetComponent<SphereCollider>();
             _windCollider.isTrigger = true;
@@ -36,14 +35,17 @@ public class Amb_AttachLocalWind : MonoBehaviour
 
     private void Update()
     {
-        if (_windEmitter == null) { return; }
-        _windEmitter.Set_Parameter(Amb_Global_Wind.Instance.wind_IntensityValue);
+        if (_isAttached)
+        {
+            if (_windEmitter == null) { return; }
+            _windEmitter.Set_Parameter(Amb_Global_Wind.Instance.wind_IntensityValue);
+        }
     }
 
     private void OnTriggerExit(Collider other)
     {
         if (other.gameObject.tag != "Player") { return; }
-
         _windEmitter.Stop_Wind_Emitter();
+        _isAttached = false;
     }
 }

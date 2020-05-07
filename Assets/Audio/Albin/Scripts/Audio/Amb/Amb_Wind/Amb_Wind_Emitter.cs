@@ -43,6 +43,9 @@ public class Amb_Wind_Emitter : MonoBehaviour
         {
             event_Instance.isVirtual(out _isVirtual);
             event_Instance.getPlaybackState(out _playbackState);
+
+            if (_playbackState != PLAYBACK_STATE.STOPPED) { return; }
+            else { _isPlaying = false; }
         }
     }
 
@@ -54,8 +57,5 @@ public class Amb_Wind_Emitter : MonoBehaviour
     public void Stop_Wind_Emitter()
     {
         event_Instance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
-
-        if (_playbackState != PLAYBACK_STATE.STOPPED) { return; }
-        else { _isPlaying = false; Debug.Log("Wind stopped."); }
     }
 }
