@@ -18,12 +18,14 @@ public static class TextureGenerator
     public static TextureChunkData DrawMap(int size, MapSettings mapSettings, Vector2 center, Vector2 chunkCoord, int noiseViewSize = 1)
     {
         float[,] heightNoise = Noise.GenerateNoiseMap(size * noiseViewSize, size * noiseViewSize, mapSettings.DetailLevel, mapSettings.HeightRegion.NoiseData.NoiseSettingsDataMerge, center);
+        heightNoise = Noise.Clamp(heightNoise, mapSettings.HeightRegion.NoiseData);
 
         float[][,] noises = new float[mapSettings.MapRegions.Length][,];
 
         for (int i = 0; i < mapSettings.MapRegions.Length; i++)
         {
             noises[i] = Noise.GenerateNoiseMap(size * noiseViewSize, size * noiseViewSize, mapSettings.DetailLevel, mapSettings.MapRegions[i].NoiseData.NoiseSettingsDataMerge, center);
+            noises[i] = Noise.Clamp(noises[i], mapSettings.MapRegions[i].NoiseData);
         }
 
         int width = noises[0].GetLength(0);
