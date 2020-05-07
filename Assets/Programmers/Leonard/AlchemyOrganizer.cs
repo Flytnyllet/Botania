@@ -18,11 +18,10 @@ public class AlchemyOrganizer : MonoBehaviour
     [SerializeField] List<List<ItemDataContainer>> _recipieList = new List<List<ItemDataContainer>>();
     [SerializeField] List<PotionLoader> _availablePotions = new List<PotionLoader>();
     [SerializeField] List<GameObject> _slots = new List<GameObject>();
-    [SerializeField] GameObject _potionSlot;
+    [SerializeField] GameObject _potionSlot = null;
     [SerializeField] List<Transform> _pages = new List<Transform>();
-    [SerializeField] GameObject _recipePrefab;
+    [SerializeField] GameObject _recipePrefab = null;
     PotionLoader _result = new PotionLoader();
-    [SerializeField] float _potionDuration = 5;
 
     void Awake()
     {
@@ -32,6 +31,10 @@ public class AlchemyOrganizer : MonoBehaviour
     {
         SetupRecipes();
     }
+    //private void OnEnable()
+    //{
+    //    UpdateIngredients();
+    //}
     public List<Transform> GetPages()
     {
         return _pages;
@@ -349,11 +352,20 @@ public class AlchemyOrganizer : MonoBehaviour
     }
     public void CraftPotion()
     {
-		if (_result != null)
+		bool hasIngredients = true;
+		foreach (ItemLoader ingredient in _currentIngredients.Values)
+		{
+			if (1 > FlowerLibrary.GetFlowerAmount(ingredient.GetItemData().itemName))
+			{
+				hasIngredients = false;
+			}
+		}
+
+		if (_result != null && hasIngredients)
 		{
 			_result.AddPotion();
 		}
-        ClearAllIngredients();
+        //ClearAllIngredients();
         UpdateIngredients();
 	}
     public void Debug_AddAllIngredients()

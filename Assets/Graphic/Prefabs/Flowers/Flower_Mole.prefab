@@ -11,11 +11,8 @@ GameObject:
   - component: {fileID: 3582143928312839375}
   - component: {fileID: 6862455786539061685}
   - component: {fileID: 8416348243444189596}
-  - component: {fileID: 1647124268}
-  - component: {fileID: 1647124270}
   - component: {fileID: 1647124269}
-  - component: {fileID: 1647124271}
-  - component: {fileID: 1647124272}
+  - component: {fileID: 2103222753326323618}
   m_Layer: 0
   m_Name: Flower_Mole
   m_TagString: Untagged
@@ -74,33 +71,6 @@ Animation:
   m_PlayAutomatically: 0
   m_AnimatePhysics: 0
   m_CullingType: 0
---- !u!136 &1647124268
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 571127247201521372}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.09
-  m_Height: 0.43
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!135 &1647124270
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 571127247201521372}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 1
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &1647124269
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -113,39 +83,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b2e43c0d3f936a49b22523e751c5bcc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _pickupScript: {fileID: 1647124272}
   _animator: {fileID: 6862455786539061685}
   _hideTime: 3
+  _animationId:
+  - Take001
+  - Take002
   event_Digging: event:/blom/blom___common_01_mole_digging
   event_Emerging: event:/blom/blom___common_01_mole_emerging
---- !u!114 &1647124271
-MonoBehaviour:
+--- !u!65 &2103222753326323618
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 571127247201521372}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
   m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 70c2b09e2695b494b8572a2ea101535c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _spawnPartially: 0
---- !u!114 &1647124272
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 571127247201521372}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee66933cb94b3af499283834dca2703c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _flowerData: {fileID: 11400000, guid: 349a7f5bbd58f424ba0e1826c4687995, type: 2}
-  _pickupAlpha: {fileID: 0}
-  _gameobjectOverload: {fileID: 0}
+  serializedVersion: 2
+  m_Size: {x: 2.1, y: 0.1, z: 2.1}
+  m_Center: {x: 0, y: 0.06, z: 0}
 --- !u!1 &1005116278132891850
 GameObject:
   m_ObjectHideFlags: 0
@@ -175,7 +132,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 6108613376685085768}
   m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: -3.049429e-17, y: 1.36298975e-17, z: 2.5261982e-17}
+  m_LocalEulerAnglesHint: {x: -39.625526, y: -9.512849, z: 40.667503}
 --- !u!1 &1322096251713775098
 GameObject:
   m_ObjectHideFlags: 0
@@ -205,7 +162,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 6108613376685085768}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 4.2166816e-17, y: 7.462002e-18, z: -2.9683327e-18}
+  m_LocalEulerAnglesHint: {x: 52.48802, y: 4.320592, z: -6.0988436}
 --- !u!1 &1531555330404642446
 GameObject:
   m_ObjectHideFlags: 0
@@ -235,7 +192,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 6108613376685085768}
   m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: -3.9090382e-17, y: -5.2299892e-18, z: -2.0286633e-17}
+  m_LocalEulerAnglesHint: {x: -47.306316, y: 25.27449, z: -41.509155}
 --- !u!1 &2589202229695284679
 GameObject:
   m_ObjectHideFlags: 0
@@ -265,7 +222,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 6108613376685085768}
   m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 7.806752e-19, y: 8.993568e-18, z: -4.2899383e-17}
+  m_LocalEulerAnglesHint: {x: 9.419945, y: 5.8361573, z: -52.57798}
 --- !u!1 &4479559681333051961
 GameObject:
   m_ObjectHideFlags: 0
@@ -311,6 +268,9 @@ GameObject:
   m_Component:
   - component: {fileID: 4981341859254192492}
   - component: {fileID: 7393627682094336285}
+  - component: {fileID: 2043165060065828453}
+  - component: {fileID: 4382437963562476940}
+  - component: {fileID: 835659366559506947}
   m_Layer: 0
   m_Name: OBJ_Flower_Mole
   m_TagString: Untagged
@@ -388,6 +348,54 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.009834826, y: 0.10093105, z: -0.014627397}
     m_Extent: {x: 0.25768244, y: 0.12603405, z: 0.25564724}
   m_DirtyAABB: 0
+--- !u!114 &2043165060065828453
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6099764678478996562}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee66933cb94b3af499283834dca2703c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _dissableTriggerafterPickup: 0
+  _flowerData: {fileID: 11400000, guid: 349a7f5bbd58f424ba0e1826c4687995, type: 2}
+  _pickupAlpha: {fileID: 0}
+  _gameobjectOverload: {fileID: 571127247201521372}
+  _pickupAction:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+--- !u!136 &4382437963562476940
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6099764678478996562}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 0.06
+  m_Height: 0.2520681
+  m_Direction: 1
+  m_Center: {x: -0.010297388, y: 0.10093105, z: -0.014288366}
+--- !u!114 &835659366559506947
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6099764678478996562}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70c2b09e2695b494b8572a2ea101535c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _spawnPartially: 0
 --- !u!1 &8741202388233148325
 GameObject:
   m_ObjectHideFlags: 0
@@ -417,4 +425,4 @@ Transform:
   m_Children: []
   m_Father: {fileID: 6108613376685085768}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 1.9830527e-17, y: 7.886927e-19, z: 3.7168166e-17}
+  m_LocalEulerAnglesHint: {x: 15.856061, y: 18.74933, z: 48.347515}

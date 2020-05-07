@@ -5,8 +5,17 @@ using UnityEngine.UI;
 
 public class Interactor : MonoBehaviour
 {
+    static readonly string PLAYER_INTERACT_ACTION = "Fire1";
+
     static GameObject _log;
     static GameObject _logEntry;
+
+    [Header("Looking at Pickup Settings")]
+
+    [SerializeField] Image _defaultLookImage;
+    [SerializeField] Image _hoverOverPickupImage;
+
+    [Header("Other")]
 
     [SerializeField] GameObject inventory;
     [SerializeField] float distance = 100;
@@ -50,23 +59,50 @@ public class Interactor : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetButtonDown("Fire1"))
+        RaycastHit collision;
+        bool hit = Physics.Raycast(transform.position, transform.forward * distance, out collision, distance, _layerMask.value);
+        Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * distance, Color.green, 1f);
+
+        if (hit)
         {
-            RaycastHit collision;
-            bool hit = Physics.Raycast(transform.position, transform.forward * distance, out collision, distance);
-            Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * distance, Color.green, 1f);
+            //Debug.Log(collision.transform.name);
+            PickupFlower[] pickupFlowers = collision.transform.GetComponents<PickupFlower>();
 
-            if (hit)
+            //Currently looking at an interactable
+            bool lookingAtFlower = false;
+            for (int i = 0; i <  pickupFlowers.Length; i++)
             {
-                //Debug.Log(collision.transform.name);
-                foreach (IInteractable interactable in collision.transform.GetComponents<IInteractable>())
+                if (pickupFlowers[i].SetEnabled)
                 {
-                    interactable.Interact();
+                    lookingAtFlower = true;
+                    break;
                 }
+            }
 
+            ChangeLookingCursor(lookingAtFlower);
+
+            if (Input.GetButtonDown(PLAYER_INTERACT_ACTION))
+            {
+                IInteractable[] interactables = collision.transform.GetComponents<IInteractable>();
+                Debug.Log(collision.transform.name);
+
+                for (int i = 0; i < interactables.Length; i++)
+                {
+                    interactables[i].Interact();
+                }
             }
         }
+        else
+            ChangeLookingCursor(false);
+    }
 
+    void ChangeLookingCursor(bool lookingAtPickup)
+    {
+        if (_defaultLookImage.gameObject.activeSelf == lookingAtPickup)
+        {
+            _defaultLookImage.gameObject.SetActive(!lookingAtPickup);
+            _hoverOverPickupImage.gameObject.SetActive(lookingAtPickup);
+        }
     }
 
     public static void AddLogEntry(string entry)

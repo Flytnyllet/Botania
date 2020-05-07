@@ -6,53 +6,71 @@ using UnityEngine.UI;
 public class BookManager : MonoBehaviour
 {
     const string INPUT_INVENTORY = "Inventory";
+    [SerializeField] Sprite[] _BookSprites = null;
+
     [SerializeField] List<GameObject> _bookmarks = new List<GameObject>();
     [SerializeField] List<PageLoader> _flowerPages = new List<PageLoader>();
     [SerializeField] List<PageLoader> _lorePages = new List<PageLoader>();
-    [SerializeField] int _flowerOrganizerId;
-    [SerializeField] RectTransform _bookmarkTemplate;
-    [SerializeField] GameObject _emptyPageTemplate;
-    //[SerializeField] GameObject _nextPageTemplate;
-    [SerializeField] Vector2[] _bookmarkPositions;
-    [SerializeField] Color[] _bookmarkColors;
+    [SerializeField] int _flowerOrganizerId = 0;
+    [SerializeField] RectTransform _bookmarkTemplate = null;
+    [SerializeField] GameObject _emptyPageTemplate = null;
+    [SerializeField] Vector2[] _bookmarkPositions = null;
+    [SerializeField] Color[] _bookmarkColors = null;
     int _currentBookmark = 0;
     int _currentPage = 0;
-    [SerializeField] GameObject _book;
-    //[SerializeField] GameObject _prevPage;
-    //[SerializeField] GameObject _nextPage;
+    [SerializeField] GameObject _book = null;
+	[SerializeField] GameObject _map = null;
+
+    private void OnEnable()
+    {
+        EventManager.Subscribe(EventNameLibrary.DRINK_POTION, CloseBook);
+    }
+    private void OnDisable()
+    {
+        EventManager.UnSubscribe(EventNameLibrary.DRINK_POTION, CloseBook);
+    }
+    void CloseBook(EventParameter param)
+    {
+        _book.SetActive(false);
+		MapGenerator.Display(false);
+        EventManager.TriggerEvent(EventNameLibrary.CLOSE_BOOK, new EventParameter());
+        CharacterState.SetControlState(CHARACTER_CONTROL_STATE.PLAYERCONTROLLED);
+    }
 
     void Awake()
     {
-        SetupExtraBookmarks();
-        SetupPage(_flowerOrganizerId, _flowerPages);
-        foreach (PageLoader page in _flowerPages)
-        {
+		SetupBookmarks();
+		SetupPage(_flowerOrganizerId, _flowerPages);
 
-        }
-
-        /*
+		/*
 		if (_book == null)
 		{
 			_book = transform.Find("Book").gameObject; //slow
 		}
 		_book.SetActive(false); */
-    }
+	}
 
-    void Update()
+	private void Start()
+	{
+		_bookmarks.Add(_map);
+		SetupBookTabs();
+	}
+
+	void Update()
     {
         if (Input.GetButtonDown(INPUT_INVENTORY))
         {
             Debug.Log("Inventory button");
-            _book.SetActive(!_book.activeSelf);
-            if (_book.activeSelf)
+            if (!_book.activeSelf)
             {
+                _book.SetActive(true);
                 EventManager.TriggerEvent(EventNameLibrary.OPEN_BOOK, new EventParameter());
                 CharacterState.SetControlState(CHARACTER_CONTROL_STATE.MENU);
+                ToBookmark(_currentBookmark);
             }
             else
             {
-                EventManager.TriggerEvent(EventNameLibrary.CLOSE_BOOK, new EventParameter());
-                CharacterState.SetControlState(CHARACTER_CONTROL_STATE.PLAYERCONTROLLED);
+                CloseBook(new EventParameter()); //ignore the eventparameter
             }
         }
     }
@@ -84,34 +102,47 @@ public class BookManager : MonoBehaviour
         }
 
     }
-    void SetupExtraBookmarks()
+    void SetupBookmarks()
     {
-        List<GameObject> bookmarks = new List<GameObject>();
-        //int[] bmI = new int[_bookmarks.Count]; //BookMarkIndex
         for (int i = 0; i < _bookmarks.Count; i++)
         {
             GameObject bookmark = _bookmarks[i];
             _bookmarks[i] = Instantiate<GameObject>(bookmark, _book.transform);
             _bookmarks[i].transform.SetAsFirstSibling();
-            GameObject bookmarkObject = Instantiate<GameObject>(_bookmarkTemplate.gameObject, _book.transform);
-            RectTransform bookmarkTransform = bookmarkObject.GetComponent<RectTransform>();
-            bookmarkTransform.localPosition += Vector3.right * _bookmarkPositions[i].x + Vector3.up * _bookmarkPositions[i].y;
-            bookmarkObject.GetComponent<Image>().color = _bookmarkColors[i];
-
-            //bmI[i] = i;
-            bookmarkObject.name = i.ToString();
-            Debug.Log("Adding a lisener to a bookmark for index " + i);
-            bookmarkObject.GetComponent<Button>().onClick.AddListener(delegate { ToBookmark((int.Parse(bookmarkObject.name))); });
-            //bookmarkObject.GetComponent<Button>().
-            bookmarks.Add(bookmarkObject);
-            //bookmarkObject.transform.position = new Vector3(_bookmarkPositions[i].x, _bookmarkPositions[i].y, 0.0f);
-        }
-        for (int i = 0; i < bookmarks.Count; i++)
-        {
-            bookmarks[i].transform.SetAsFirstSibling();
-        }
+			//CreateBookmarkObject(i, bookmark, bookmarks);
+		}
     }
-    public void ChangePage(int change)
+
+	void SetupBookTabs()
+	{
+		List<GameObject> bookmarks = new List<GameObject>();
+
+		for (int i = 0; i < _bookmarks.Count; i++)
+		{
+			CreateBookmarkObject(i, _bookmarks[i], bookmarks);
+		}
+		for (int i = 0; i < bookmarks.Count; i++)
+		{
+			bookmarks[i].transform.SetAsFirstSibling();
+		}
+	}
+
+	void CreateBookmarkObject(int i, GameObject bookmark, List<GameObject> bookmarks)
+	{
+		GameObject bookmarkObject = Instantiate<GameObject>(_bookmarkTemplate.gameObject, _book.transform);
+		RectTransform bookmarkTransform = bookmarkObject.GetComponent<RectTransform>();
+		bookmarkTransform.localPosition += Vector3.right * _bookmarkPositions[i].x + Vector3.up * _bookmarkPositions[i].y;
+		bookmarkObject.GetComponent<Image>().color = _bookmarkColors[i];
+
+		bookmarkObject.name = i.ToString();
+		Debug.Log("Adding a lisener to a bookmark for index " + i);
+		bookmarkObject.GetComponent<Button>().onClick.AddListener(delegate { ToBookmark((int.Parse(bookmarkObject.name))); });
+		//bookmarkObject.GetComponent<Button>().
+		bookmarks.Add(bookmarkObject);
+		//bookmarkObject.transform.position = new Vector3(_bookmarkPositions[i].x, _bookmarkPositions[i].y, 0.0f);
+	}
+
+	public void ChangePage(int change)
     {
         switch (_currentBookmark)
         {
@@ -183,11 +214,23 @@ public class BookManager : MonoBehaviour
 
     void ToBookmark(int index)
     {
-        Debug.Log("Current bookmark changed from " + _currentBookmark + " to " + index);
-        _bookmarks[_currentBookmark].SetActive(false);
-        _currentBookmark = index;
-        _currentPage = 0;
-        _bookmarks[_currentBookmark].SetActive(true);
+		if(_currentBookmark != _bookmarks.Count-1)
+		{
+			_bookmarks[_currentBookmark].SetActive(false);
+		}
+
+		_currentPage = 0;
+		_currentBookmark = index;
+		if (index == _bookmarks.Count - 1)
+		{
+			MapGenerator.Display(true);
+		}
+		else
+		{
+			MapGenerator.Display(false);
+			_bookmarks[_currentBookmark].SetActive(true);
+			_book.GetComponent<Image>().sprite = _BookSprites[index];
+		}
     }
     public void FlipPage()
     {

@@ -4,6 +4,7 @@
 		_MainTex("Base (RGB)", 2D) = "white" {}
 		_Alpha("Alpha", 2D) = "white" {}
 		_EmissionMap("Emission Map", 2D) = "black" {}
+		_EmissionMult("Emission Multiplier", float) = 1.0
 		//_Metal("Metallness Map", 2D) = "black" {}
 //		_Rough("Roughness Map", 2D) = "black" {}
 		_Metallic("Metallic", Range(0,1)) = 0.0
@@ -18,8 +19,10 @@
 
 
 		CGPROGRAM
-			#pragma surface surf Lambert noforwardadd vertex:vert addshadow
+			#pragma surface surf Lambert noforwardadd vertex:vert addshadow dithercrossfade 
 			#pragma target 3.0
+
+			float gWindSpeed;
 
 			sampler2D _MainTex;
 			sampler2D _EmissionMap;
@@ -27,9 +30,10 @@
 			sampler2D _Metal;
 			sampler2D _Rough;
 
-			half _Metallic;
-			half _Speed;
-			half _Strenght;
+			float _Metallic;
+			float _EmissionMult;
+			float _Speed;
+			float _Strenght;
 
 			struct Input {
 				float2 uv_MainTex;
@@ -42,7 +46,7 @@
 				float height = lerp(0,1, v.vertex.y);
 				float sinW = sin((worldPos.x + worldPos.z) + _Time.y*_Speed);
 
-				v.vertex.x += height * sinW*_Strenght;
+				v.vertex.x += height * sinW*_Strenght*gWindSpeed;
 			}
 
 			void surf(Input IN, inout SurfaceOutput o) {
@@ -59,7 +63,7 @@
 				clip(alpha - thresholdMatrix[fmod(pos.x, 4)][pos.y % 4]);
 				fixed4 c = tex2D(_MainTex, IN.uv_MainTex);
 				o.Albedo = c.rgb;
-				o.Emission = tex2D(_EmissionMap, IN.uv_MainTex);
+				o.Emission = tex2D(_EmissionMap, IN.uv_MainTex)*_EmissionMult;
 
 				if (IN.facing < 0.5)
 					o.Normal *= -1.0;

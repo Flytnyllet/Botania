@@ -32,7 +32,7 @@ public class Spawnable : UpdatableData
 
     [SerializeField, Range(1, 30), Tooltip("How many squares does this object occupy?")] int _size;
     [SerializeField, Tooltip("Do not have this enabled for pickups!!! It will crash!")] bool _othersCanSpawnInside = false;
-    [SerializeField, Range(0, 15), Tooltip("How high can the difference between highest and lowest point in spawn area be for it to spawn?")] float _spawnDifferencial;
+    [SerializeField, Range(0, 50), Tooltip("How high can the difference between highest and lowest point in spawn area be for it to spawn?")] float _spawnDifferencial;
 
 
     [Header("Height Spawn Settings")]
@@ -207,3 +207,53 @@ public class SpawnablePrefab
         return size;
     }
 }
+
+/* BIOME 1
+ 
+    Biome_1_LOD_0 (NONE)
+        
+    Biome_1_LOD_1 (NONE)
+        - Trees (NONE)
+            - Rare-0
+            - Soul
+            - Mole
+            - Teleport
+
+    Biome_1_LOD_2 (NONE)
+        - Trees
+
+*/
+/* BIOME 2
+   Biome_2_LOD_0(NONE)
+
+   Biome_2_LOD_1 (NONE)
+
+   Biome_2_LOD_2 (NONE)
+*/
+/* BIOME 3
+   Biome_3_LOD_0(NONE)
+
+   Biome_3_LOD_1 (NONE)
+
+   Biome_3_LOD_2 (NONE)
+*/
+/* BIOME ZERO
+   Biome_ZERO_LOD_0(NONE)
+
+   Biome_ZERO_LOD_1 (NONE)
+       - Earth flower
+
+   Biome_ZERO_LOD_2 (NONE)
+*/
+/* NONE
+   Biome_NONE_LOD_0(NONE)
+       - Grass High LOD    
+
+   Biome_NONE_LOD_1 (NONE)
+       - Seaweed
+       - Beach
+       - Bord och stolar
+       - Grass Low LOD
+
+   Biome_NONE_LOD_2 (NONE)
+*/

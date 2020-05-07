@@ -29,7 +29,10 @@ public static class Noise
     public static float[,] GenerateNoiseMap(int mapWidth, int mapHeight, int detailLevel, NoiseSettings settings, Vector2 sampleCenter)
     {
         if (detailLevel <= 0)
+        {
             Debug.LogError("Detail level of noise may not be lower than 1!!");
+            detailLevel = 1;
+        }
 
         float[,] noiseMap = new float[mapWidth / detailLevel, mapHeight / detailLevel];
 
@@ -76,9 +79,9 @@ public static class Noise
         float halfWidth = mapWidth / 2f;
         float halfHeight = mapHeight / 2f;
 
-        for (int y = 0; y < mapHeight; y+=detailLevel)
+        for (int y = 0; y < mapHeight; y += detailLevel)
         {
-            for (int x = 0; x < mapWidth; x+=detailLevel)
+            for (int x = 0; x < mapWidth; x += detailLevel)
             {
                 //amplitude and frequency are changed per octave
                 amplitude = 1;
@@ -113,14 +116,14 @@ public static class Noise
 
                 if (x / detailLevel < mapWidth / detailLevel && y / detailLevel < mapHeight / detailLevel)
                 {
-                    noiseMap[x / detailLevel, y / detailLevel] = noiseHeight + settings.AddValue * (settings.Invert ? -1 : 1);
+                    noiseMap[x / detailLevel, y / detailLevel] = noiseHeight + settings.AddValue;
                     noiseMap[x / detailLevel, y / detailLevel] *= settings.Strength;
                 }
             }
         }
 
         //Normalize values in noiseMap
-        
+
         for (int y = 0; y < noiseMap.GetLength(0); y++)
         {
             for (int x = 0; x < noiseMap.GetLength(1); x++)
@@ -130,18 +133,18 @@ public static class Noise
                 else
                 {
                     float normalizedHeight = (noiseMap[x, y] + 1) / (maxPossibleHeight / GLOBAL_MODE_ESTIMATE_MULTIPLIER);
-                    normalizedHeight *= settings.Invert ? -1 : 1;
                     noiseMap[x, y] = Mathf.Clamp(normalizedHeight, 0, int.MaxValue);
                 }
             }
         }
-                
-            
+
+        noiseMap = SetupNoise(noiseMap, settings.MaskValue, settings.Mask, settings.Invert);
+
         return noiseMap;
     }
 
     //Base for all merge noise functions, combine two different noise according to mode
-    public static float[,] MergeNoise(int width, int height, float[,] noise_1, float[,] noise_2, NoiseMergeType noiseMergeType, Vector2 center)
+    public static float[,] MergeNoise(int width, int height, float[,] noise_1, float[,] noise_2, NoiseMergeType noiseMergeType, Vector2 center, bool mask)
     {
         float[,] finalNoise = new float[width, height];
         float maxHeight = 1f;
@@ -160,6 +163,9 @@ public static class Noise
                     if (noiseMergeType == NoiseMergeType.ADD)
                     {
                         finalNoise[i, j] = noise_1[i, j] + noise_2[i, j];
+
+                        if (mask)
+                            finalNoise[i, j] = Mathf.Clamp(finalNoise[i, j], 0, 1);
                         if (i == 0 && j == 0)
                         {
                             maxHeight = 2f;
@@ -195,7 +201,7 @@ public static class Noise
 
 
         ////Normalize 
-        
+
 
         //for (int y = 0; y < height; y++)
         //    for (int x = 0; x < width; x++)
@@ -206,38 +212,54 @@ public static class Noise
         return finalNoise;
     }
 
+    public static float[,] SetupNoise(float[,] noise, float maskValue, bool mask, bool invert)
+    {
+        if (mask || invert)
+        {
+            for (int x = 0; x < noise.GetLength(0); x++)
+            {
+                for (int y = 0; y < noise.GetLength(1); y++)
+                {
+                    noise[x, y] = noise[x, y] >= maskValue ? invert ? 0 : 1 : invert ? 1 : 0;
+                }
+            }
+        }
+        
+        return noise;
+    }
+
     //Converts different input parameter data and sends it to base merge function ^
     public static float[,] MergeNoise(int mapWidth, int mapHeight, int detailLevel, NoiseSettingsDataMerge[] settingsMerge_1, NoiseSettingsDataMerge[] settingsMerge_2, NoiseMergeType noiseMergeType, Vector2 sampleCenter)
     {
         float[,] noise_1 = GenerateNoiseMap(mapWidth, mapHeight, detailLevel, settingsMerge_1, sampleCenter);
         float[,] noise_2 = GenerateNoiseMap(mapWidth, mapHeight, detailLevel, settingsMerge_2, sampleCenter);
 
-        return MergeNoise(mapWidth / detailLevel, mapHeight / detailLevel, noise_1, noise_2, noiseMergeType, sampleCenter);
+        return MergeNoise(mapWidth / detailLevel, mapHeight / detailLevel, noise_1, noise_2, noiseMergeType, sampleCenter, false);
     }
     public static float[,] MergeNoise(int mapWidth, int mapHeight, int detailLevel, NoiseSettingsDataMerge[] settingsMerge_1, float[,] noise_2, NoiseMergeType noiseMergeType, Vector2 sampleCenter)
     {
         float[,] noise_1 = GenerateNoiseMap(mapWidth, mapHeight, detailLevel, settingsMerge_1, sampleCenter);
 
-        return MergeNoise(mapWidth / detailLevel, mapHeight / detailLevel, noise_1, noise_2, noiseMergeType, sampleCenter);
+        return MergeNoise(mapWidth / detailLevel, mapHeight / detailLevel, noise_1, noise_2, noiseMergeType, sampleCenter, false);
     }
     public static float[,] MergeNoise(int width, int height, int detailLevel, NoiseSettings noiseSettings_1, NoiseSettings noiseSettings_2, NoiseMergeType noiseMergeType, Vector2 center)
     {
         float[,] noise_1 = GenerateNoiseMap(width, height, detailLevel, noiseSettings_1, center);
         float[,] noise_2 = GenerateNoiseMap(width, height, detailLevel, noiseSettings_2, center);
 
-        return MergeNoise(width / detailLevel, height / detailLevel, noise_1, noise_2, noiseMergeType, center);
+        return MergeNoise(width / detailLevel, height / detailLevel, noise_1, noise_2, noiseMergeType, center, noiseSettings_1.Mask && noiseSettings_2.Mask);
     }
     public static float[,] MergeNoise(int width, int height, int detailLevel, float[,] noise_1, NoiseSettings noiseSettings_2, NoiseMergeType noiseMergeType, Vector2 center)
     {
         float[,] noise_2 = GenerateNoiseMap(width, height, detailLevel, noiseSettings_2, center);
 
-        return MergeNoise(width / detailLevel, height / detailLevel, noise_1, noise_2, noiseMergeType, center);
+        return MergeNoise(width / detailLevel, height / detailLevel, noise_1, noise_2, noiseMergeType, center, noiseSettings_2.Mask);
     }
     public static float[,] MergeNoise(int width, int height, int detailLevel, NoiseSettings noiseSettings_1, float[,] noise_2, NoiseMergeType noiseMergeType, Vector2 center)
     {
         float[,] noise_1 = GenerateNoiseMap(width, height, detailLevel, noiseSettings_1, center);
 
-        return MergeNoise(width / detailLevel, height / detailLevel, noise_1, noise_2, noiseMergeType, center);
+        return MergeNoise(width / detailLevel, height / detailLevel, noise_1, noise_2, noiseMergeType, center, noiseSettings_1.Mask);
     }
 }
 
@@ -246,6 +268,8 @@ public class NoiseSettings
 {
     [SerializeField, Tooltip("Enable this if you want just white!")] bool _allWhite = false;
     [SerializeField] bool _invert = false;
+    [SerializeField] bool _mask = false;
+    [SerializeField] float _maskValue = 0.5f;
     [SerializeField, Range(0, 5), Tooltip("Add this to every point in the noise to make it more white")] float _addValue = 0;
     [SerializeField, Range(0, 15), Tooltip("How strong should this noise have as an effect?")] float _strength = 1.0f;
 
@@ -256,13 +280,15 @@ public class NoiseSettings
     [SerializeField, Range(0, 1), Tooltip("Amount of increase in frequency of each octave")] float _persistance = 0.6f;
     [SerializeField, Range(1, 25), Tooltip("How much effect each octave should have")] float _lacunarity = 1.5f;
 
-    [SerializeField, Range(-3, 3)] float _darken = 0.0f;
+    [SerializeField, Range(-10, 10)] float _darken = 0.0f;
     [SerializeField] bool _useDarken = false;
 
     [SerializeField, Tooltip("Keep on GLOBAL! LOCAL is only used for testing purposes!")] Noise.NormalizeMode _normalizeMode = Noise.NormalizeMode.GLOBAL;
 
     public bool AllWhite                     { get { return _allWhite; }      private set { _allWhite = value; } }
     public bool Invert                       { get { return _invert; }        private set { _invert = value; } }
+    public bool Mask                         { get { return _mask; } private set { _mask = value; } }
+    public float MaskValue                   { get { return _maskValue; } private set { _maskValue = value; } }
     public float AddValue                    { get { return _addValue; }      private set { _addValue = value; } }
     public float Strength                    { get { return _strength; }      private set { _strength = value; } }
 

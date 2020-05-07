@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PickupFlower : InteractableSaving, IInteractable
 {
@@ -16,6 +17,7 @@ public class PickupFlower : InteractableSaving, IInteractable
 
     [Tooltip("Används i fall ett annat objekt än det lokala skall tas bort vid upplockning")]
     [SerializeField] GameObject _gameobjectOverload;
+    [SerializeField] UnityEvent _pickupAction;
 
     public bool Interact()
     {
@@ -36,7 +38,6 @@ public class PickupFlower : InteractableSaving, IInteractable
             //Debug.Log(debugFlowerNames);
 
             FlowerLibrary.IncrementFlower(_flowerData.name, 1);
-
             if (_gameobjectOverload == null)
             {
                 if (_pickupAlpha != null)
@@ -53,9 +54,10 @@ public class PickupFlower : InteractableSaving, IInteractable
                     _gameobjectOverload.GetComponent<MeshRenderer>().material.SetTexture("_Alpha", _pickupAlpha);
                     GetComponent<Collider>().enabled = false;//This may not work since there are multiple colliders
                 }
-                else { Destroy(this.gameObject); }
+                else { Destroy(_gameobjectOverload); }
             }
             if (_dissableTriggerafterPickup) GetComponent<Collider>().enabled = false;
+            _pickupAction.Invoke();
             return true; //Doesn't really have a purpose for this
         }
         return false;

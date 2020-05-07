@@ -70,7 +70,12 @@ public class MapPreview : MonoBehaviour
 
         Vector2 sampleCenter = _chunkCoord * _meshSettings.MeshWorldSize / _meshSettings.MeshScale;
 
-        float[,] noise = Noise.MergeNoise(_meshSettings.NumVertsPerLine * _noiseViewSize, _meshSettings.NumVertsPerLine * _noiseViewSize, 1, _noiseSettingsData_1.NoiseSettingsDataMerge, _noiseSettingsData_2.NoiseSettingsDataMerge, _noiseMergeType, _chunkCoord);
+        float[,] noise1 = Noise.GenerateNoiseMap(_meshSettings.NumVertsPerLine * _noiseViewSize, _meshSettings.NumVertsPerLine * _noiseViewSize, 1, _noiseSettingsData_1.NoiseSettingsDataMerge, _chunkCoord);
+        float[,] noise2 = Noise.GenerateNoiseMap(_meshSettings.NumVertsPerLine * _noiseViewSize, _meshSettings.NumVertsPerLine * _noiseViewSize, 1, _noiseSettingsData_2.NoiseSettingsDataMerge, _chunkCoord);
+
+        float[,] noise = _noiseMergeType == NoiseMergeType.ONLY_FIRST ? noise1 : noise2;
+
+        
 
         if (_drawMode == DrawMode.NOISE_MAP)
             DrawTexture(TextureGenerator.TextureFromNoise(noise));
@@ -87,7 +92,7 @@ public class MapPreview : MonoBehaviour
             DrawMesh(meshData);
             PrefabSpawner prefabSpawner = new PrefabSpawner();
             List<SpawnInfo> spawnInfo = prefabSpawner.SpawnOnChunk(2, 0, _biome, heightMap, meshData, _meshSettings, new Vector2(sampleCenter.x, -sampleCenter.y), _chunkCoord);
-            prefabSpawner.SpawnSpawnInfo(spawnInfo, _biomeContainer);
+            prefabSpawner.SpawnSpawnInfo(spawnInfo, _biomeContainer, true);
         }
         else if (_drawMode == DrawMode.MAP)
         {

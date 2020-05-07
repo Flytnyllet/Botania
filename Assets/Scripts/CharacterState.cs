@@ -7,13 +7,14 @@ using UnityEngine;
 //This is supposed to act as a place to store character variables which
 // can be edidted by other objects for the sake of avoiding dependendies.
 public enum CHARACTER_CONTROL_STATE { PLAYERCONTROLLED = 0, CUTSCENE, MENU, MENU_NO_MOVEMENT }
-public enum ABILITY_FLAG { NULL, INVISSIBLE, SUPERHEARING }
+public enum ABILITY_FLAG { NULL = 0, INVISSIBLE, SUPERHEARING, STONE, LEVITATE }
 public static class CharacterState
 {
     static CursorUsabilityControll _cursorControll = new CursorUsabilityControll();
     static CHARACTER_CONTROL_STATE _controlState = 0;
     public static CHARACTER_CONTROL_STATE Control_State { get => _controlState; }
     static List<ABILITY_FLAG> _abilityFlags = new List<ABILITY_FLAG>();
+    public static float PositionType { get; set; }
 
     //Förenkla läslighet i tillkopplad kod
     public static bool MayMove
@@ -58,10 +59,19 @@ public static class CharacterState
 
     public static bool IsAbilityFlagActive(ABILITY_FLAG flag)
     {
-        return (_abilityFlags.Contains(flag));
+		return (_abilityFlags.Contains(flag));
     }
+	public static bool IsAbilityFlagActive(string name)
+	{
+		ABILITY_FLAG flag = GetFlagFromString(name);
+		if(flag == ABILITY_FLAG.NULL)
+		{
+			return false;
+		}
+		return (_abilityFlags.Contains(flag));
+	}
 
-    public static void SetControlState(CHARACTER_CONTROL_STATE state)
+	public static void SetControlState(CHARACTER_CONTROL_STATE state)
     {
         _controlState = state;
         _cursorControll.SetMouseState(state);
@@ -89,7 +99,11 @@ public static class CharacterState
                 return ABILITY_FLAG.INVISSIBLE;
             case "SUPERHEARING":
                 return ABILITY_FLAG.SUPERHEARING;
-            default:
+			case "STONE":
+				return ABILITY_FLAG.STONE;
+			case "LEVITATE":
+				return ABILITY_FLAG.LEVITATE;
+			default:
                 return ABILITY_FLAG.NULL;
         }
     }

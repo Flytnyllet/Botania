@@ -5,11 +5,11 @@ using UnityEngine.UI;
 
 public class ItemLoader : MonoBehaviour
 {
-	[SerializeField] string _flowerName;
-	[SerializeField] Text textObject;
-	[SerializeField] Image imageObject;
+	[SerializeField] string _flowerName = null;
+	[SerializeField] Text textObject = null;
+	[SerializeField] Image imageObject = null;
 	int itemAmount = 0;
-	[SerializeField] ItemDataContainer _item;
+	[SerializeField] ItemDataContainer _item = null;
 	//Flower _flower;
 
 	private void Awake()
@@ -41,7 +41,7 @@ public class ItemLoader : MonoBehaviour
 
 	public void UpdateUI()
 	{
-		itemAmount = FlowerLibrary.GetFlowerAmount(_flowerName);
+		itemAmount = FlowerLibrary.GetFlowerAmount(_item.name);
 		textObject.text = _flowerName + "\n x" + itemAmount;
 	}
 }
