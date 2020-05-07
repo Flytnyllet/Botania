@@ -239,10 +239,10 @@ public class FPSMovement : MonoBehaviour
 		charCon.Move(move * _speed.Value * modifier * Time.deltaTime);
 
 		//Post move distance to ground check
-		if (ground.distance <= _slopeWalkCorrection && !_inAir)
+		/*if (ground.distance <= _slopeWalkCorrection && !_inAir)
 		{
 			charCon.Move(Vector3.down * ground.distance);
-		}
+		}*/
 	}
 
 	void Ducking(float duckDirection)
@@ -284,7 +284,7 @@ public class FPSMovement : MonoBehaviour
 		}
 		else
 		{
-			_velocity.y = 0;
+			_velocity.y = _gravity.Value;
 		}
 	}
 
@@ -313,17 +313,12 @@ public class FPSMovement : MonoBehaviour
 
 		SwimBob(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
 
-		if(inputs.magnitude < 0.1f)
+		if (inputs.magnitude < 0.1f)
 		{
 			_swimVelocity -= (_swimVelocity / _swimDeceleration) * Time.deltaTime;
 		}
 
 		_swimVelocity -= _swimVelocity * Time.deltaTime;
-	}
-
-	void Teleport()
-	{
-
 	}
 
 	void Launch(Vector3 launchVector)

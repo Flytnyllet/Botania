@@ -10038,19 +10038,22 @@ MonoBehaviour:
   layerMask:
     serializedVersion: 2
     m_Bits: 39
-  _bobbingAmount: 0.05
-  _bobbingSpeed: 1
+  _bobbingAmount: 0.3
+  _bobbingSpeed: 2
   _travelDist: 1.5
-  waterRayDist: 1
-  waterForceMod: 8
-  waterBaseNormForce: 5
-  swimMaxSpeed: 5
-  swimStartSpeedFactor: 0.5
-  swimAccelerationTime: 1
-  underwaterFloatBack: 3
-  waterLayer:
+  _waterRayDist: 0.5
+  _waterForceMod: 8
+  _swimMaxSpeed: 3
+  _swimStartSpeedFactor: 0.5
+  _swimAccelerationTime: 1
+  _underwaterFloatBack: 3
+  _swimBobAmount: 0.3
+  _swimBobSpeed: 3
+  _swimDeceleration: 1
+  _waterLayer:
     serializedVersion: 2
     m_Bits: 16
+  _levitationSpeed: 3
 --- !u!114 &104122664
 MonoBehaviour:
   m_ObjectHideFlags: 0
