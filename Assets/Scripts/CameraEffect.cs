@@ -42,7 +42,7 @@ public class CameraEffect : MonoBehaviour
         _ppVolume = GetComponent<PostProcessVolume>();
         Camera cam = GetComponent<Camera>();
         cam.depthTextureMode = DepthTextureMode.Depth;
-        
+
     }
     //Some events for activating effects
     private void OnEnable()
@@ -171,6 +171,24 @@ public class CameraEffect : MonoBehaviour
                 yield return null;
             }
             distortionLayer.intensity.value = targetDistort;
+        }
+    }
+
+
+    IEnumerator LightningFlash(float flashTime, float flashStrenght)
+    {
+        ColorGrading colGrad;
+        if (_ppVolume.profile.TryGetSettings(out colGrad))
+        {
+            colGrad.postExposure.value = flashStrenght;
+            float time = 0;
+            while (time < flashTime)
+            {
+                colGrad.postExposure.value = Mathf.Lerp(flashStrenght, 0, time / flashTime);
+                time += Time.deltaTime;
+                yield return null;
+            }
+            colGrad.postExposure.value = 0;
         }
     }
 }

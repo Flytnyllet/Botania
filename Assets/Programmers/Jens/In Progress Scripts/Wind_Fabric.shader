@@ -3,7 +3,7 @@
 		_Color("Colour", Color) = (1,1,1,1)
 		_MainTex("Texture", 2D) = "white" {}
 		_EmissionMap("Emission Map", 2D) = "black" {}
-		_PhysicsMap("Physics Map", 2D) = "white" {}
+		_PhysicsMap("Physics Map", 2D) = "black" {}
 		_Alpha("Alpha Map", 2D) = "white" {}
 		_noiseTex("Noise", 2D) = "white" {}
 		_WindSize("Wind Size", float) = 1.0

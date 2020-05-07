@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.PostProcessing;
 
 public class WorldState : MonoBehaviour
 {
@@ -128,6 +129,7 @@ public class WorldState : MonoBehaviour
             EventManager.TriggerEvent(EventNameLibrary.STOP_RAIN, new EventParameter());
         }
     }
+    //Cloud
     IEnumerator ChangeCloudThickness(float lerpTime, float lowSmoothstepTarget)
     {
         float time = 0;
@@ -139,7 +141,6 @@ public class WorldState : MonoBehaviour
             Shader.SetGlobalFloat("gCloudLowStep", _cloudthicknessLowStep);
             yield return null;
         }
-
     }
 
 
