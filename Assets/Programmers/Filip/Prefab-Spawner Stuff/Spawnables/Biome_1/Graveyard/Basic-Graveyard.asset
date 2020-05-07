@@ -10,22 +10,22 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a2ef82269fb17cf43a9f1163b1dfd939, type: 3}
-  m_Name: Filip-Flowers-Soul
+  m_Name: Basic-Graveyard
   m_EditorClassIdentifier: 
   _autoUpdate: 0
   _noiseMergeType: 2
-  _noiseSettingsData: {fileID: 11400000, guid: d52b3c9741721c940a50f714b87fae4d, type: 2}
+  _noiseSettingsData: {fileID: 11400000, guid: d40e9444266e1314aad647b950b64892, type: 2}
   _parentOnly: 0
-  _rotationAmount: 1
+  _rotationAmount: 0.1
   _noiseStartPoint: 0
-  _thickness: 1.78
-  _uniformSpreadAmount: 2
-  _randomSpread: 0
-  _offsetAmount: 0.72
+  _thickness: 0.51
+  _uniformSpreadAmount: 5
+  _randomSpread: 0.504
+  _offsetAmount: 0.39
   _height: 0
-  _scale: 2
+  _scale: 1
   _scaleRandom: 0.25
-  _size: 2
+  _size: 3
   _othersCanSpawnInside: 0
   _spawnDifferencial: 15
   _hardMinHeight: 10
@@ -39,13 +39,12 @@ MonoBehaviour:
   _softMaxSlope: 0
   _hardMaxSlope: 0
   _prefabs:
-  - _prefab: {fileID: 2848612143786917910, guid: e9c16f39e34b8944cb78eb28d38aea09,
+  - _prefab: {fileID: 1505994326585637055, guid: 9d205f97a2af4b2488bc1138f025dec8,
       type: 3}
     _probability: 1
-  - _prefab: {fileID: 317380404115697696, guid: 886d02e8f02d4ab4e9e23a888089a7c7,
+  - _prefab: {fileID: 1505994326585637055, guid: c85c4980146a0494eb3b5e5bb4bc80dd,
       type: 3}
     _probability: 1
-  - _prefab: {fileID: 8326550125473898944, guid: 76dd5666b54349744b7fdf72bbdc4c6c,
-      type: 3}
-    _probability: 1
-  _subSpawners: []
+  _subSpawners:
+  - {fileID: 11400000, guid: 389917ec96217f04d8b37c663bdf9d91, type: 2}
+  - {fileID: 11400000, guid: ccc4cca279d577a47895674f1f5049a2, type: 2}

@@ -13,11 +13,15 @@ MonoBehaviour:
   m_Name: Graveyard-Noise
   m_EditorClassIdentifier: 
   _autoUpdate: 1
+  _clampMin: -3.4028235e+38
+  _clampMax: 3.4028235e+38
   _noiseSettings:
   - _noiseMergeType: 2
     _noiseSettings:
       _allWhite: 0
       _invert: 0
+      _mask: 0
+      _maskValue: 0.5
       _addValue: 0
       _strength: 1
       _seed: 0
@@ -27,20 +31,5 @@ MonoBehaviour:
       _persistance: 0.297
       _lacunarity: 13.8
       _darken: 1.58
-      _useDarken: 1
-      _normalizeMode: 1
-  - _noiseMergeType: 0
-    _noiseSettings:
-      _allWhite: 0
-      _invert: 0
-      _addValue: 0
-      _strength: 1
-      _seed: 0
-      _offset: {x: 0, y: 0}
-      _scale: 500
-      _octaves: 1
-      _persistance: 0.297
-      _lacunarity: 13.8
-      _darken: 1.28
       _useDarken: 1
       _normalizeMode: 1
