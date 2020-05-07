@@ -31,6 +31,12 @@ public class WorldState : MonoBehaviour
         StartEvent(WORLD_EVENTS.Normal);
         StartCoroutine(changeWindSpeed(1, 1));
         StartCoroutine(ChangeCloudThickness(1, _cloudthicknessLowStep));
+        ActionDelayer.RunAfterDelay(() =>
+        {
+            Debug.Log("TEST");
+            EventParameter param = new EventParameter() { floatParam = .75f, floatParam2 = 5 };
+            EventManager.TriggerEvent(EventNameLibrary.LIGHTNING_STRIKE, param);
+        }, 10);
     }
 
     enum WORLD_EVENTS { Normal = 0, Rain, Fog, StrongWind };
@@ -56,7 +62,6 @@ public class WorldState : MonoBehaviour
                 break;
 
             case WORLD_EVENTS.Fog:
-
                 StartCoroutine(ChangeFogDensity(_fogChangeTime, _targetFogDensity));
                 _thickFog = true;
                 ActionDelayer.RunAfterDelay(() =>

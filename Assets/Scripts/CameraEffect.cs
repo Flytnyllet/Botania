@@ -51,6 +51,7 @@ public class CameraEffect : MonoBehaviour
         EventManager.Subscribe(EventNameLibrary.SPEED_INCREASE, SpeedDistortion);
         EventManager.Subscribe(EventNameLibrary.SUPER_HEARING, HearingEffect);
         EventManager.Subscribe(EventNameLibrary.INVISSIBLE, InvissibilityEffect);
+        EventManager.Subscribe(EventNameLibrary.LIGHTNING_STRIKE, LightningStrikeEffect);
     }
     private void OnDisable()
     {
@@ -58,6 +59,7 @@ public class CameraEffect : MonoBehaviour
         EventManager.UnSubscribe(EventNameLibrary.SPEED_INCREASE, SpeedDistortion);
         EventManager.UnSubscribe(EventNameLibrary.SUPER_HEARING, HearingEffect);
         EventManager.UnSubscribe(EventNameLibrary.INVISSIBLE, InvissibilityEffect);
+        EventManager.UnSubscribe(EventNameLibrary.LIGHTNING_STRIKE, LightningStrikeEffect);
     }
 
 
@@ -174,9 +176,13 @@ public class CameraEffect : MonoBehaviour
         }
     }
 
-
+    void LightningStrikeEffect(EventParameter param)
+    {
+        StartCoroutine(LightningFlash(param.floatParam, param.floatParam2));
+    }
     IEnumerator LightningFlash(float flashTime, float flashStrenght)
     {
+        Debug.Log("lightning Strike");
         ColorGrading colGrad;
         if (_ppVolume.profile.TryGetSettings(out colGrad))
         {

@@ -92,8 +92,6 @@ public class GroundMaterialGenerator : ScriptableObject
                                     //MaterialPropertyBlock prop = new MaterialPropertyBlock();
                                     //prop.SetTexture("_NoiseTextures", noiseTex);
                                     //renderer.SetPropertyBlock(prop);
-                                    Debug.Log(f);
-                                    Debug.Log(noiseTex.GetPixel(aa, bb));
                                     _material.SetTexture("_NoiseTexture", noiseTex);
                                 });
             }
