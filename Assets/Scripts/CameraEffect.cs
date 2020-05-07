@@ -188,7 +188,7 @@ public class CameraEffect : MonoBehaviour
         {
             colGrad.postExposure.value = flashStrenght;
             float time = 0;
-            while (time < flashTime)
+            while (time < flashTime && WorldState.Instance.IsRaining)
             {
                 colGrad.postExposure.value = Mathf.Lerp(flashStrenght, 0, time / flashTime);
                 time += Time.deltaTime;

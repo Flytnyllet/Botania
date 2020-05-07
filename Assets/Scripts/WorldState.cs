@@ -12,8 +12,10 @@ public class WorldState : MonoBehaviour
     [SerializeField] float _targetFogDensity = 0.5f;
     float _baseFogDensity;
 
-    WorldState _instance;
-    public WorldState Instance { get => _instance; }
+    [SerializeField] int _lightningStrikesPerRain = 2;
+
+    static WorldState _instance;
+    public static WorldState Instance { get => _instance; }
     private void Awake()
     {
         if (_instance == null)
@@ -31,12 +33,6 @@ public class WorldState : MonoBehaviour
         StartEvent(WORLD_EVENTS.Normal);
         StartCoroutine(changeWindSpeed(1, 1));
         StartCoroutine(ChangeCloudThickness(1, _cloudthicknessLowStep));
-        ActionDelayer.RunAfterDelay(() =>
-        {
-            Debug.Log("TEST");
-            EventParameter param = new EventParameter() { floatParam = .75f, floatParam2 = 5 };
-            EventManager.TriggerEvent(EventNameLibrary.LIGHTNING_STRIKE, param);
-        }, 10);
     }
 
     enum WORLD_EVENTS { Normal = 0, Rain, Fog, StrongWind };
@@ -54,11 +50,24 @@ public class WorldState : MonoBehaviour
 
             case WORLD_EVENTS.Rain:
                 setRaining(true);
+                float eventTime = Random.Range(_eventMinTime, _eventMaxTime);
+                float lightningTimingBaseOffset = eventTime / _lightningStrikesPerRain;
+                float lightningTiming = 0;
+                for (int i = 0; i < _lightningStrikesPerRain; i++)
+                {
+                    lightningTiming += lightningTimingBaseOffset + Random.Range(-1, 1);
+                    EventParameter param = new EventParameter() { floatParam = 0.75f, floatParam2 = 4f };
+                    ActionDelayer.RunAfterDelay(() =>
+                    {
+
+                        EventManager.TriggerEvent(EventNameLibrary.LIGHTNING_STRIKE, param);
+                    }, lightningTiming);
+                }
                 ActionDelayer.RunAfterDelay(() =>
                 {
                     setRaining(false);
                     StartEvent(WORLD_EVENTS.Normal);
-                }, Random.Range(_eventMinTime, _eventMaxTime));
+                }, eventTime);
                 break;
 
             case WORLD_EVENTS.Fog:
@@ -122,7 +131,7 @@ public class WorldState : MonoBehaviour
         if (b)
         {
             Shader.SetGlobalFloat("gRainWave", 0.9f);
-            StartCoroutine(ChangeCloudThickness(2, 0));
+            StartCoroutine(ChangeCloudThickness(2, -0.8f));
             _raining = true;
             EventManager.TriggerEvent(EventNameLibrary.START_RAIN, new EventParameter());
         }
@@ -146,6 +155,7 @@ public class WorldState : MonoBehaviour
             Shader.SetGlobalFloat("gCloudLowStep", _cloudthicknessLowStep);
             yield return null;
         }
+        Shader.SetGlobalFloat("gCloudLowStep", _cloudthicknessLowStep);
     }
 
 

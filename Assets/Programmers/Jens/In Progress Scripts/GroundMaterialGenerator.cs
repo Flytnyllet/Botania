@@ -22,6 +22,7 @@ public class GroundMaterialGenerator : ScriptableObject
     // Update is called once per frame
     object obj;
 
+#if (UNITY_EDITOR)
     void OnValidate()
     {
         if (_layers.Length != LAYER_COUNT)
@@ -30,6 +31,7 @@ public class GroundMaterialGenerator : ScriptableObject
             Array.Resize(ref _layers, LAYER_COUNT);
         }
     }
+#endif
 
     public Material MakeMaterial(int size, Vector2 pos, MeshRenderer renderer)
     {
