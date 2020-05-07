@@ -66,6 +66,7 @@ public class FPSMovement : MonoBehaviour
 	[SerializeField] LayerMask _waterLayer;
 	Collider _lastWaterChunk;
 	bool _isUnderwater = false;
+	float _savedMoveModifier = 1.0f;
 	
 	[SerializeField] float _levitationSpeed = 1f;
 
@@ -160,6 +161,7 @@ public class FPSMovement : MonoBehaviour
 					_velocity.y = 0;
 					Launch(jump);
 					_inAir = true;
+					_savedMoveModifier = moveModifier;
 				}
 				//else if (Input.GetButton(DUCK_BUTTON) && terrainAngle > 10f)
 				//{
@@ -224,7 +226,7 @@ public class FPSMovement : MonoBehaviour
 		Vector3 move =
 			_playerCam.right.normalized * horizontal +
 			lookDir.normalized * vertical;
-		charCon.Move(move * _speed.Value * _strafingSpeedFactor * Time.deltaTime);
+		charCon.Move(move * _speed.Value * _strafingSpeedFactor * _savedMoveModifier * Time.deltaTime);
 	}
 
 	void Walking(float horizontal, float vertical, RaycastHit ground, float modifier)
