@@ -42,10 +42,9 @@ public class FPSMovement : MonoBehaviour
 	float _defPosY = 0;
 
 	Transform _playerCam = null;
-	//public LayerMask layerMask;
 
 	// SFX Variables
-	Player_Emitter emitPlayerSound = null;
+	Player_Emitter _emitPlayerSound = null;
 	Vector3 _prevPos = Vector3.zero;
 	float _randWalk = 0;
 	float _timeSinceLastStep = 0;
@@ -53,20 +52,20 @@ public class FPSMovement : MonoBehaviour
 	[SerializeField] private float _travelDist = 0;
 
 	// Swimming Variables
-	[SerializeField] float waterRayDist = 1f;
-	[SerializeField] float waterForceMod = 8f;
-	[SerializeField] float waterBaseNormForce = 5f;
-	[SerializeField] float swimMaxSpeed = 3f;
-	[SerializeField] float swimStartSpeedFactor = 0.5f;
-	[SerializeField] float swimAccelerationTime = 1f;
-	[SerializeField] float underwaterFloatBack = 3f;
+	[SerializeField] float _waterRayDist = 1f;
+	[SerializeField] float _waterForceMod = 8f;
+	[SerializeField] float _swimMaxSpeed = 3f;
+	[SerializeField] float _swimStartSpeedFactor = 0.5f;
+	[SerializeField] float _swimAccelerationTime = 1f;
+	[SerializeField] float _underwaterFloatBack = 3f;
 	[SerializeField] float _swimBobAmount = 0.05f;
 	[SerializeField] float _swimBobSpeed = 1.0f;
+	[SerializeField] float _swimDeceleration = 1.0f;
 
-	Vector2 swimVelocity = new Vector2(0f, 0f);
-	[SerializeField] LayerMask waterLayer;
-	Collider lastWaterChunk;
-	bool isUnderwater = false;
+	Vector2 _swimVelocity = new Vector2(0f, 0f);
+	[SerializeField] LayerMask _waterLayer;
+	Collider _lastWaterChunk;
+	bool _isUnderwater = false;
 	
 	[SerializeField] float _levitationSpeed = 1f;
 
@@ -74,14 +73,14 @@ public class FPSMovement : MonoBehaviour
 	void Awake()
 	{
 		playerMovement = this;
-		swimVelocity = new Vector2(0f, 0f);
+		_swimVelocity = new Vector2(0f, 0f);
 	}
 
 	void Start()
 	{
 		_prevPos = transform.position;
 		_randWalk = Random.Range(0.8f, 1.2f);
-		emitPlayerSound = GetComponent<Player_Emitter>();
+		_emitPlayerSound = GetComponent<Player_Emitter>();
 
 		charCon = GetComponent<CharacterController>();
 		_playerCam = transform.Find("PlayerCam");
@@ -116,15 +115,11 @@ public class FPSMovement : MonoBehaviour
 			bool grounded = GroundRay(transform.position, Vector3.down, charCon.bounds.size.y / 2 + _groundRayExtraDist, out groundDetection);
 
 			RaycastHit waterDetection;
-			bool inWater = Physics.Raycast(_playerCam.position + 0.5f * Vector3.up, Vector3.down, out waterDetection, waterRayDist, waterLayer);
+			bool inWater = Physics.Raycast(_playerCam.position + 0.3f * Vector3.up, Vector3.down, out waterDetection, _waterRayDist, _waterLayer);
 			bool isStoned = CharacterState.IsAbilityFlagActive("STONE");
 			bool isLevitating = CharacterState.IsAbilityFlagActive("LEVITATE");
 			float gravityFactor = 1.0f;
 
-			if (isStoned)
-			{
-				Debug.Log("I am stoned");
-			}
 			// == Functions ==
 			if (charCon.isGrounded)
 			{
@@ -133,63 +128,30 @@ public class FPSMovement : MonoBehaviour
 
 			if(inWater)
 			{
-				isUnderwater = false;
-				lastWaterChunk = waterDetection.collider;
+				_isUnderwater = false;
+				_lastWaterChunk = waterDetection.collider;
 			}
 			if(isStoned)
 			{
-				isUnderwater = false;
+				_isUnderwater = false;
 			}
-			if (isUnderwater && !isStoned)
+			if (_isUnderwater && !isStoned && _lastWaterChunk.transform.position.y > _playerCam.position.y)
 			{
-				_velocity = Vector3.up*underwaterFloatBack*Time.deltaTime;
+				_velocity = Vector3.up*_underwaterFloatBack*Time.deltaTime;
 				charCon.Move(_velocity);
 				_inAir = true;
 			}
 			else if (inWater && !isStoned)
 			{
 				_inAir = true;
-
-				Vector2 swimming = moveInput * swimAccelerationTime * swimMaxSpeed;
-				//Debug.Log("Swimming modifiers total: " + swimming + " being added to " + swimVelocity);
-				swimVelocity += swimming;
-
-				if (swimVelocity.magnitude < swimStartSpeedFactor * swimMaxSpeed && moveInput.magnitude == 1 && swimVelocity.magnitude != 0)
-				{
-					float ratio = (swimStartSpeedFactor * swimMaxSpeed) / swimVelocity.magnitude;
-					swimVelocity *= ratio;
-					//Debug.Log("Increasing to swimStartSpeed, swimVelocity is: " + swimVelocity);
-				}
-				else if (swimVelocity.magnitude > swimMaxSpeed && swimVelocity.magnitude != 0)
-				{
-					float ratio = swimMaxSpeed / swimVelocity.magnitude;
-					swimVelocity *= ratio;
-					//Debug.Log("Speed limiting ratio is: " + ratio);
-				}
-				//Debug.Log("Swim speed is: " + swimVelocity);
-
-				Vector3 readyX = _playerCam.right;
-				Vector3 readyZ = _playerCam.forward;
-				readyX.y = 0f;
-				readyZ.y = 0f;
-				Vector3 readySwimVelocity = readyX.normalized * swimVelocity.x + readyZ.normalized * swimVelocity.y;
-				charCon.Move(readySwimVelocity * Time.deltaTime);
-				
-				SwimBob(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
-
-				swimVelocity -= swimVelocity * Time.deltaTime;
+				Swimming(moveInput);
 			}
 			// Everything that can be done while grounded
 			else if (grounded)
 			{
-				//swimVelocity = Vector2.zero;
-				//terrainAngle = Vector3.Angle(Vector3.up, groundDetection.normal);
-				//Vector3 slopeDirection = groundDetection.normal;
-
 				if (Input.GetButton(SPRINT_BUTTON))
 				{
 					moveModifier *= _sprintSpeedFactor;
-					//Walking(x, y, groundDetection, moveModifier);
 				}
 				// Jump, otherwise Slide, otherwise Walk
 				if (Input.GetButtonDown("Jump") && groundDetection.distance <= charCon.bounds.size.y / 2 + _allowedJumpDistance && !_inAir && !Input.GetButton(DUCK_BUTTON))
@@ -224,32 +186,19 @@ public class FPSMovement : MonoBehaviour
 			}
 			else
 			{
-				//swimVelocity = Vector2.zero;
+				//_swimVelocity = Vector2.zero;
 				Strafing(moveInput.x, moveInput.y);
 			}
 
-			if (!inWater && !isStoned && lastWaterChunk != null && lastWaterChunk.transform.position.y > transform.position.y)
+			if (!inWater && !isStoned && _lastWaterChunk != null && _lastWaterChunk.transform.position.y > transform.position.y)
 			{
-				isUnderwater = true;
+				_isUnderwater = true;
 			}
 
 			//Gravity
 			if ((!inWater && !isLevitating) || isStoned )
 			{
-				if(CharacterState.IsAbilityFlagActive(CharacterState.GetFlagFromString("SLOWFALL")))
-				{
-					if(charCon.isGrounded)
-					{
-						CharacterState.RemoveAbilityFlag("SLOWFALL");
-					}
-					else
-					{
-						gravityFactor *= 0.35f;
-					}
-				}
-				charCon.Move(_velocity * Time.deltaTime);
-				if (!charCon.isGrounded) _velocity.y += _gravity.Value * gravityFactor * Time.deltaTime;
-				else _velocity.y = 0;
+				Gravity(gravityFactor);
 			}
 			else if(Time.time%1 < 0.1)
 			{
@@ -313,6 +262,63 @@ public class FPSMovement : MonoBehaviour
 		move += strafe * -z;
 		//Debug.Log(move * _speed * _slidingSpeedFactor * Time.deltaTime);
 		charCon.Move(move * _speed.Value * _slidingSpeedFactor * Time.deltaTime);
+	}
+
+	void Gravity(float factor)
+	{
+		if (CharacterState.IsAbilityFlagActive(CharacterState.GetFlagFromString("SLOWFALL")))
+		{
+			if (charCon.isGrounded)
+			{
+				CharacterState.RemoveAbilityFlag("SLOWFALL");
+			}
+			else
+			{
+				factor *= 0.35f;
+			}
+		}
+		charCon.Move(_velocity * Time.deltaTime);
+		if (!charCon.isGrounded)
+		{
+			_velocity.y += _gravity.Value * factor * Time.deltaTime;
+		}
+		else
+		{
+			_velocity.y = 0;
+		}
+	}
+
+	void Swimming(Vector2 inputs)
+	{
+		Vector2 swimming = inputs * _swimAccelerationTime * _swimMaxSpeed;
+		_swimVelocity += swimming;
+
+		if (_swimVelocity.magnitude < _swimStartSpeedFactor * _swimMaxSpeed && inputs.magnitude == 1 && _swimVelocity.magnitude != 0)
+		{
+			float ratio = (_swimStartSpeedFactor * _swimMaxSpeed) / _swimVelocity.magnitude;
+			_swimVelocity *= ratio;
+		}
+		else if (_swimVelocity.magnitude > _swimMaxSpeed && _swimVelocity.magnitude != 0)
+		{
+			float ratio = _swimMaxSpeed / _swimVelocity.magnitude;
+			_swimVelocity *= ratio;
+		}
+
+		Vector3 readyX = _playerCam.right;
+		Vector3 readyZ = _playerCam.forward;
+		readyX.y = 0f;
+		readyZ.y = 0f;
+		Vector3 readySwimVelocity = readyX.normalized * _swimVelocity.x + readyZ.normalized * _swimVelocity.y;
+		charCon.Move(readySwimVelocity * Time.deltaTime);
+
+		SwimBob(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+
+		if(inputs.magnitude < 0.1f)
+		{
+			_swimVelocity -= (_swimVelocity / _swimDeceleration) * Time.deltaTime;
+		}
+
+		_swimVelocity -= _swimVelocity * Time.deltaTime;
 	}
 
 	void Teleport()
@@ -402,7 +408,7 @@ public class FPSMovement : MonoBehaviour
 	{
 		if (!_inAir && _travelledDist >= _travelDist + _randWalk)
 		{
-			emitPlayerSound.Init_Footsteps(0);
+			_emitPlayerSound.Init_Footsteps(0);
 			_travelledDist = 0f;
 		}
 		_prevPos = transform.position;
