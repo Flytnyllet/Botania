@@ -117,10 +117,10 @@
 			<value>3</value>
 		</property>
 		<property name="minimumTimeBetweenSounds">
-			<value>6000</value>
+			<value>5000</value>
 		</property>
 		<property name="maximumTimeBetweenSounds">
-			<value>21000</value>
+			<value>9250</value>
 		</property>
 		<property name="minimumScatterDistance">
 			<value>4.20000029</value>
@@ -128,6 +128,15 @@
 		<property name="maximumScatterDistance">
 			<value>15</value>
 		</property>
+		<property name="volumeRandomization">
+			<value>-5.5</value>
+		</property>
+		<property name="pitchRandomization">
+			<value>0.649999976</value>
+		</property>
+		<relationship name="modulators">
+			<destination>{9ad45f9f-04a3-4c3a-b6fb-99401a8ad9ac}</destination>
+		</relationship>
 		<relationship name="sound">
 			<destination>{fa09ce7c-00ea-466b-8671-8fca947552d5}</destination>
 		</relationship>
@@ -186,6 +195,11 @@
 	</object>
 	<object class="MixerBusPanner" id="{49269757-7443-4467-a636-2cca7d319c0b}" />
 	<object class="MixerBusFader" id="{fb223d0c-51ff-4792-8b1d-a402c26e46d7}" />
+	<object class="RandomizerModulator" id="{9ad45f9f-04a3-4c3a-b6fb-99401a8ad9ac}">
+		<property name="nameOfPropertyBeingModulated">
+			<value>pitch</value>
+		</property>
+	</object>
 	<object class="MultiSound" id="{fa09ce7c-00ea-466b-8671-8fca947552d5}">
 		<relationship name="sounds">
 			<destination>{077a8e74-3ec6-48e2-8011-95b839ab3931}</destination>
@@ -193,6 +207,10 @@
 			<destination>{82a1bd35-86cd-4cae-a011-a047a6d5d633}</destination>
 			<destination>{a1fcb46e-66bf-41dd-ac6b-7435750c4cd2}</destination>
 			<destination>{3015e220-49f9-4e0e-a678-d94b06ae5e99}</destination>
+		</relationship>
+		<relationship name="playPercentages">
+			<destination>{50319d9d-9f90-424d-a85d-b83e110c5ca2}</destination>
+			<destination>{a85e548d-2506-4789-b1bd-752aa5c5e356}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusEffectChain" id="{15adb06e-77de-4ba1-a17c-3d9607910d20}">
@@ -255,6 +273,12 @@
 		</relationship>
 	</object>
 	<object class="SingleSound" id="{a1fcb46e-66bf-41dd-ac6b-7435750c4cd2}">
+		<property name="startOffset">
+			<value>20.5</value>
+		</property>
+		<relationship name="modulators">
+			<destination>{e280ffe3-6c16-4d61-a4db-62b42c5b5012}</destination>
+		</relationship>
 		<relationship name="audioFile">
 			<destination>{942f4261-f61c-4d1f-91a5-694523dc089f}</destination>
 		</relationship>
@@ -264,5 +288,29 @@
 			<destination>{101802eb-da0f-4ca1-b8b0-81ee0c93d6e0}</destination>
 		</relationship>
 	</object>
+	<object class="PlayPercentage" id="{50319d9d-9f90-424d-a85d-b83e110c5ca2}">
+		<property name="percentage">
+			<value>15</value>
+		</property>
+		<relationship name="sound">
+			<destination>{a1fcb46e-66bf-41dd-ac6b-7435750c4cd2}</destination>
+		</relationship>
+	</object>
+	<object class="PlayPercentage" id="{a85e548d-2506-4789-b1bd-752aa5c5e356}">
+		<property name="percentage">
+			<value>17</value>
+		</property>
+		<relationship name="sound">
+			<destination>{3015e220-49f9-4e0e-a678-d94b06ae5e99}</destination>
+		</relationship>
+	</object>
 	<object class="MixerBusFader" id="{6132adc2-d3a5-4d82-974c-0d93dc9eff22}" />
+	<object class="RandomizerModulator" id="{e280ffe3-6c16-4d61-a4db-62b42c5b5012}">
+		<property name="nameOfPropertyBeingModulated">
+			<value>startOffset</value>
+		</property>
+		<property name="amount">
+			<value>45.5</value>
+		</property>
+	</object>
 </objects>
