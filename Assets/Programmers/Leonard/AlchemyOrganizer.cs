@@ -115,6 +115,7 @@ public class AlchemyOrganizer : MonoBehaviour
         image = null;
         return false;
     }
+
     void AddIngredientButton()
     {
         for (int i = 0; i < _allIngredients.Count; i++)
@@ -367,6 +368,10 @@ public class AlchemyOrganizer : MonoBehaviour
 		}
         //ClearAllIngredients();
         UpdateIngredients();
+	}
+	public List<PotionLoader> GetAllPotions()
+	{
+		return _availablePotions;
 	}
     public void Debug_AddAllIngredients()
     {
