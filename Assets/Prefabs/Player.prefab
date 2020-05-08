@@ -15051,7 +15051,7 @@ MonoBehaviour:
     _baseValue: 4
   _gravity:
     _baseValue: -9.81
-  _velocity: {x: 0, y: 0, z: 0}
+  _velocity: {x: 0, y: -9.81, z: 0}
   _crawlSpeedFactor: 0.5
   _duckDistance: 0.4
   _slidingSpeedFactor: 2.5
@@ -15063,9 +15063,9 @@ MonoBehaviour:
   layerMask:
     serializedVersion: 2
     m_Bits: 39
-  _bobbingAmount: 0.3
-  _bobbingSpeed: 2
-  _travelDist: 1.5
+  _bobbingAmount: 0.05
+  _bobbingSpeed: 10
+  _travelDist: 2
   _waterRayDist: 0.5
   _waterForceMod: 8
   _swimMaxSpeed: 3
@@ -15328,7 +15328,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10d69d23a37a2ca479ce26a67367ea8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _material: {fileID: 0}
+  _materials: []
 --- !u!114 &6172904241153392434
 MonoBehaviour:
   m_ObjectHideFlags: 0

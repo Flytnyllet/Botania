@@ -115,6 +115,10 @@
 
 				float3 mainTex = tex2D(_MainTex, IN.worldPos.xz / baseTextureScale);
 				float4 noise = tex2D(_NoiseTexture, IN.uv_MainTex);
+				//noise.r = smoothstep(startStep[0], endStep[0], noise.r);
+				//noise.g = smoothstep(startStep[1], endStep[1], noise.g)*(1 - noise.r);
+				//noise.b = smoothstep(startStep[2], endStep[2], noise.b)*(1 - noise.r)*(1 - noise.g);
+				//noise.a = smoothstep(startStep[3], endStep[3], noise.a)*(1 - noise.r)*(1 - noise.g)*(1 - noise.b);
 				noise.r = smoothstep(startStep[0], endStep[0], noise.r);
 				noise.g = smoothstep(startStep[1], endStep[1], noise.g)*(1 - noise.r);
 				noise.b = smoothstep(startStep[2], endStep[2], noise.b)*(1 - noise.r)*(1 - noise.g);
