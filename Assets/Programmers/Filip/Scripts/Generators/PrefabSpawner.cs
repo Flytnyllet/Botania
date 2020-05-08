@@ -210,7 +210,7 @@ public class PrefabSpawner : MonoBehaviour
 
     public void SpawnSpawnInfo(List<SpawnInfo> spawnInfo, Transform container, bool highestLOD)
     {
-        for (int i = 0; i < spawnInfo.Count - 2; i++)
+        for (int i = 0; i < spawnInfo.Count - 1; i++)
         {
             if (spawnInfo[i].DetailType != 0)
                 _gameObjectsInChunkWithNoNormals.Add(spawnInfo[i]);
@@ -218,11 +218,14 @@ public class PrefabSpawner : MonoBehaviour
             StartCoroutine(SpawnWithDelay(spawnInfo[i], container, i % 2 == 0 ? i : spawnInfo.Count - i, spawnInfo.Count - 1, false));
         }
 
-        if (spawnInfo[spawnInfo.Count - 1].DetailType != 0)
-            _gameObjectsInChunkWithNoNormals.Add(spawnInfo[spawnInfo.Count - 1]);
+        if (spawnInfo.Count > 0)
+        {
+            if (spawnInfo[spawnInfo.Count - 1].DetailType != 0)
+                _gameObjectsInChunkWithNoNormals.Add(spawnInfo[spawnInfo.Count - 1]);
 
-        //This will always be called last and have the longest waiting time, when it is done -> Normals are ready to be set
-        StartCoroutine(SpawnWithDelay(spawnInfo[spawnInfo.Count - 1], container, spawnInfo.Count - 1, spawnInfo.Count - 1, highestLOD));
+            //This will always be called last and have the longest waiting time, when it is done -> Normals are ready to be set
+            StartCoroutine(SpawnWithDelay(spawnInfo[spawnInfo.Count - 1], container, spawnInfo.Count - 1, spawnInfo.Count - 1, highestLOD));
+        }
     }
 
     IEnumerator SpawnWithDelay(SpawnInfo spawnInfo, Transform container, int index, int highest, bool last)
