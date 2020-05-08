@@ -26,7 +26,7 @@ public class PickupFlower : InteractableSaving, IInteractable
             //Pickup save system
             PickUp();
 
-            string debugFlowerNames = "Trying to pick up a " + _flowerData.name
+            string debugFlowerNames = "Trying to pick up a " + _flowerData.itemName
                 + ". Accepted flower types are: [";
             string[] flowerTypes = FlowerLibrary.GetAllFlowerNames();
             foreach (string flower in flowerTypes)
@@ -37,7 +37,7 @@ public class PickupFlower : InteractableSaving, IInteractable
 
             //Debug.Log(debugFlowerNames);
 
-            FlowerLibrary.IncrementFlower(_flowerData.name, 1);
+            FlowerLibrary.IncrementFlower(_flowerData.itemName, 1);
             if (_gameobjectOverload == null)
             {
                 if (_pickupAlpha != null)

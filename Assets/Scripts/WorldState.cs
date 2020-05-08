@@ -51,7 +51,7 @@ public class WorldState : MonoBehaviour
             case WORLD_EVENTS.Rain:
                 setRaining(true);
                 float eventTime = Random.Range(_eventMinTime, _eventMaxTime);
-                float lightningTimingBaseOffset = eventTime / _lightningStrikesPerRain;
+                float lightningTimingBaseOffset = (eventTime-5) / _lightningStrikesPerRain;
                 float lightningTiming = 0;
                 for (int i = 0; i < _lightningStrikesPerRain; i++)
                 {

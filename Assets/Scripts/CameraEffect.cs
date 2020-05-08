@@ -11,7 +11,7 @@ using UnityEngine.Rendering.PostProcessing;
 public class CameraEffect : MonoBehaviour
 {
 
-    public Material _material = null;
+    public List<Material> _materials = new List<Material>();
     PostProcessVolume _ppVolume;
 
     //awful static Action which should be faster than the central EventManager,
@@ -27,13 +27,16 @@ public class CameraEffect : MonoBehaviour
 
     void OnRenderImage(RenderTexture source, RenderTexture destination)
     {
-        if (_material == null)
+        if (_materials.Count == 0)
         {
             Graphics.Blit(source, destination);
         }
         else
         {
-            Graphics.Blit(source, destination, _material);
+            for (int i = 0; i < _materials.Count; i++)
+            {
+                Graphics.Blit(source, destination, _materials[i]);
+            }
         }
     }
     private void Awake()
@@ -47,43 +50,66 @@ public class CameraEffect : MonoBehaviour
     //Some events for activating effects
     private void OnEnable()
     {
-        EventManager.Subscribe(EventNameLibrary.CAMERA_EFFECT_EVENT_NAME, ActivateEffect);
+        EventManager.Subscribe(EventNameLibrary.DRINK_POTION, ActivateEffect);
         EventManager.Subscribe(EventNameLibrary.SPEED_INCREASE, SpeedDistortion);
-        EventManager.Subscribe(EventNameLibrary.SUPER_HEARING, HearingEffect);
+        //EventManager.Subscribe(EventNameLibrary.SUPER_HEARING, HearingEffect);
         EventManager.Subscribe(EventNameLibrary.INVISSIBLE, InvissibilityEffect);
         EventManager.Subscribe(EventNameLibrary.LIGHTNING_STRIKE, LightningStrikeEffect);
     }
     private void OnDisable()
     {
-        EventManager.UnSubscribe(EventNameLibrary.CAMERA_EFFECT_EVENT_NAME, ActivateEffect);
+        EventManager.UnSubscribe(EventNameLibrary.DRINK_POTION, ActivateEffect);
         EventManager.UnSubscribe(EventNameLibrary.SPEED_INCREASE, SpeedDistortion);
-        EventManager.UnSubscribe(EventNameLibrary.SUPER_HEARING, HearingEffect);
+        //EventManager.UnSubscribe(EventNameLibrary.SUPER_HEARING, HearingEffect);
         EventManager.UnSubscribe(EventNameLibrary.INVISSIBLE, InvissibilityEffect);
         EventManager.UnSubscribe(EventNameLibrary.LIGHTNING_STRIKE, LightningStrikeEffect);
     }
 
 
-    public void DeactivateEffect()
-    {
-        _material = null;
-    }
-
     public void ActivateEffect(Material material)
     {
-        _material = material;
+        _materials.Add(material);
     }
     //Set an effect for a certain amount of time
     public void ActivateEffect(Material material, float time)
     {
-        _material = material;
-        ActionDelayer.RunAfterDelayAsync(() => { _material = null; }, time);
+        _materials.Add(material);
+        ActionDelayer.RunAfterDelayAsync(() => { _materials.Remove(material); }, time);
     }
     void ActivateEffect(EventParameter eventParam)
     {
-        _material = eventParam.materialParam;
-        ActionDelayer.RunAfterDelayAsync(() => { _material = null; }, eventParam.floatParam);
+        if (eventParam.materialParam != null)
+        {
+            Material material = eventParam.materialParam;
+            material.SetFloat("_Lerp", 0);
+            _materials.Add(material);
+            StartCoroutine(LerpInCameraEffect(material, eventParam.floatParam2, false));
+            ActionDelayer.RunAfterDelay(() => { StartCoroutine(LerpInCameraEffect(material, eventParam.floatParam2, true)); }, eventParam.floatParam);
+        }
     }
-
+    //floatParam = _potionDuration,
+    //floatParam2 = _potionCameraEffectFadeTime
+    IEnumerator LerpInCameraEffect(Material mat, float lerpTime, bool remove)
+    {
+        float time = 0;
+        while (time < lerpTime)
+        {
+            if (remove)
+            {
+                mat.SetFloat("_Lerp", 1 - time / lerpTime);
+            }
+            else
+            {
+                mat.SetFloat("_Lerp", time / lerpTime);
+            }
+            time += Time.deltaTime;
+            yield return null;
+        }
+        if (remove)
+        {
+            _materials.Remove(mat);
+        }
+    }
     //private void Update()
     //{
     //    if (Input.GetKeyDown(KeyCode.K))

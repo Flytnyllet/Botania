@@ -192,7 +192,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 009e78e7a9c0321489527e2f5b67b508, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _potionName: Speed Elixir
   textObject: {fileID: 53454560002081677}
   recipe:
   - {fileID: 11400000, guid: fa895d10c1a977146a34926973fca5a0, type: 2}
@@ -200,6 +199,8 @@ MonoBehaviour:
   _item: {fileID: 11400000, guid: 40a96718c2e4c714ea476d8c4b00ef4e, type: 2}
   imageObject: {fileID: 2725785774361159184}
   _potionType: 0
+  _potionCameraEffect: {fileID: 0}
+  _potionCameraEffectFadeTime: 0
   _potionDuration: 30
   _potionFlag: 
   _potionFactor: 0.3
@@ -482,7 +483,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d032c747c95bd04b8535857b4a1d672, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _flowerName: Earth
   textObject: {fileID: 53454561118333363}
   imageObject: {fileID: 2875640245607616301}
   _item: {fileID: 11400000, guid: fa895d10c1a977146a34926973fca5a0, type: 2}
@@ -788,7 +788,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d032c747c95bd04b8535857b4a1d672, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _flowerName: Poppy
   textObject: {fileID: 7049686935255500029}
   imageObject: {fileID: 474525830526447095}
   _item: {fileID: 11400000, guid: 6c8183cf83ef97446865ee2832d3574e, type: 2}
@@ -972,7 +971,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 009e78e7a9c0321489527e2f5b67b508, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _potionName: Invissible Potion
   textObject: {fileID: 1320514514126603720}
   recipe:
   - {fileID: 11400000, guid: fa895d10c1a977146a34926973fca5a0, type: 2}
@@ -981,6 +979,8 @@ MonoBehaviour:
   _item: {fileID: 11400000, guid: 31f089bc73d5c524aac7df2b1672955a, type: 2}
   imageObject: {fileID: 6750141948388882163}
   _potionType: 1
+  _potionCameraEffect: {fileID: 0}
+  _potionCameraEffectFadeTime: 0
   _potionDuration: 30
   _potionFlag: INVISSIBLE
   _potionFactor: 2.5
@@ -1101,7 +1101,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 009e78e7a9c0321489527e2f5b67b508, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _potionName: Levitation
   textObject: {fileID: 5488880216098778445}
   recipe:
   - {fileID: 11400000, guid: 349a7f5bbd58f424ba0e1826c4687995, type: 2}
@@ -1110,6 +1109,8 @@ MonoBehaviour:
   _item: {fileID: 11400000, guid: 59d0c1cda930f5042ba72e2dbb195868, type: 2}
   imageObject: {fileID: 4396341855240603281}
   _potionType: 1
+  _potionCameraEffect: {fileID: 0}
+  _potionCameraEffectFadeTime: 0
   _potionDuration: 5
   _potionFlag: LEVITATE
   _potionFactor: -1
@@ -1441,7 +1442,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d032c747c95bd04b8535857b4a1d672, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _flowerName: Poppy
   textObject: {fileID: 7203925241300372380}
   imageObject: {fileID: 9013995629498401798}
   _item: {fileID: 11400000, guid: 40d1c592d35f93f4bb580293262564fa, type: 2}
@@ -3000,7 +3000,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d032c747c95bd04b8535857b4a1d672, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _flowerName: Digger
   textObject: {fileID: 4163762172043236754}
   imageObject: {fileID: 3769927952329800375}
   _item: {fileID: 11400000, guid: 349a7f5bbd58f424ba0e1826c4687995, type: 2}
@@ -3109,7 +3108,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 009e78e7a9c0321489527e2f5b67b508, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _potionName: Hearing Potion
   textObject: {fileID: 3469483879198302748}
   recipe:
   - {fileID: 11400000, guid: 075c751935a57444da120c82ef4a2b8f, type: 2}
@@ -3118,6 +3116,8 @@ MonoBehaviour:
   _item: {fileID: 11400000, guid: f4c225a2cfca90744be955e7b1b32369, type: 2}
   imageObject: {fileID: 555156909986603664}
   _potionType: 1
+  _potionCameraEffect: {fileID: 2100000, guid: 33ccf6d88dece5c4a9bf526d0b456182, type: 2}
+  _potionCameraEffectFadeTime: 2
   _potionDuration: 60
   _potionFlag: SUPERHEARING
   _potionFactor: 2.5
@@ -3238,7 +3238,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 009e78e7a9c0321489527e2f5b67b508, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _potionName: Stone Potion
   textObject: {fileID: 2846704269246400649}
   recipe:
   - {fileID: 11400000, guid: 349a7f5bbd58f424ba0e1826c4687995, type: 2}
@@ -3247,6 +3246,8 @@ MonoBehaviour:
   _item: {fileID: 11400000, guid: 0fd01059d17034c4fb4cc8666a937cf8, type: 2}
   imageObject: {fileID: 511694206807967704}
   _potionType: 1
+  _potionCameraEffect: {fileID: 0}
+  _potionCameraEffectFadeTime: 0
   _potionDuration: 5
   _potionFlag: STONE
   _potionFactor: 2.5
@@ -3367,7 +3368,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d032c747c95bd04b8535857b4a1d672, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _flowerName: Earth
   textObject: {fileID: 4023626178853022387}
   imageObject: {fileID: 2861269160077155973}
   _item: {fileID: 11400000, guid: 075c751935a57444da120c82ef4a2b8f, type: 2}
@@ -4099,7 +4099,7 @@ MonoBehaviour:
     m_Alignment: 1
     m_AlignByGeometry: 0
     m_RichText: 1
-    m_HorizontalOverflow: 0
+    m_HorizontalOverflow: 1
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: 'Poppy
