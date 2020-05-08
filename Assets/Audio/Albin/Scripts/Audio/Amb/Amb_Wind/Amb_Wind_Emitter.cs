@@ -35,6 +35,7 @@ public class Amb_Wind_Emitter : MonoBehaviour
         event_Instance.start();
         event_Instance.release();
         _isPlaying = true;
+        //WaitBeforeStart();
     }
 
     private void Update()
@@ -58,4 +59,11 @@ public class Amb_Wind_Emitter : MonoBehaviour
     {
         event_Instance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
     }
+
+    //private IEnumerator WaitBeforeStart()
+    //{
+    //    yield return new WaitForSeconds(1f);
+        
+
+    //}
 }

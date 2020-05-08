@@ -15,7 +15,7 @@ public class Amb_AttachLocalWind : MonoBehaviour
             _windEmitter = GetComponentInChildren<Amb_Wind_Emitter>();
             _windCollider = GetComponent<SphereCollider>();
             _windCollider.isTrigger = true;
-            _windCollider.radius = Amb_Local_Wind.Instance._amb_Wind_List[0].MaxDistance;
+            _windCollider.radius = 8.5f;        // Amb_Local_Wind.Instance._amb_Wind_List[0].MaxDistance
         }
     }
 

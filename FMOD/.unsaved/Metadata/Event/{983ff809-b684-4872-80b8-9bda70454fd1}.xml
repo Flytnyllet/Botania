@@ -60,7 +60,14 @@
 			<destination>{188885a1-6692-44d3-89fa-7ea6a74a4f08}</destination>
 		</relationship>
 	</object>
-	<object class="EventAutomatableProperties" id="{f1d995d6-5963-4bb1-ac64-c7f420e8f257}" />
+	<object class="EventAutomatableProperties" id="{f1d995d6-5963-4bb1-ac64-c7f420e8f257}">
+		<property name="maxVoices">
+			<value>1</value>
+		</property>
+		<property name="voiceStealing">
+			<value>3</value>
+		</property>
+	</object>
 	<object class="MarkerTrack" id="{9584a4ae-6df0-4bcf-ae6c-78f19c3914ca}" />
 	<object class="MarkerTrack" id="{be108e89-dd59-4c5a-b6a6-76cdd5544000}" />
 	<object class="GroupTrack" id="{d706e0c4-3a5c-4d26-9b0b-71a2efc2f903}">
@@ -91,9 +98,6 @@
 		</relationship>
 	</object>
 	<object class="EventMixerMaster" id="{4288d23b-ab87-4395-8221-df430e70403f}">
-		<property name="volume">
-			<value>-7.5</value>
-		</property>
 		<relationship name="effectChain">
 			<destination>{49339a04-0fd1-4d22-95c4-0812d8a8e709}</destination>
 		</relationship>
@@ -118,7 +122,7 @@
 			<value>25.281186486783231</value>
 		</property>
 		<property name="volume">
-			<value>-0.5</value>
+			<value>-1.5</value>
 		</property>
 		<property name="looping">
 			<value>true</value>
