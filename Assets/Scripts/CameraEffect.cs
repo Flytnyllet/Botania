@@ -13,6 +13,7 @@ public class CameraEffect : MonoBehaviour
 
     public List<Material> _materials = new List<Material>();
     PostProcessVolume _ppVolume;
+    Camera _camera;
 
     //awful static Action which should be faster than the central EventManager,
     //This is only used because when used it's run every frame
@@ -33,9 +34,24 @@ public class CameraEffect : MonoBehaviour
         }
         else
         {
-            for (int i = 0; i < _materials.Count; i++)
+            if (!_materials.Contains(null))
             {
-                Graphics.Blit(source, destination, _materials[i]);
+                RenderTexture temp = new RenderTexture(_camera.pixelWidth, _camera.pixelHeight, (int)_camera.depth);
+                for (int i = 0; i < _materials.Count; i++)
+                {
+                    if (i == 0)
+                    {
+                        Graphics.Blit(source, temp, _materials[i]);
+                    }
+                    else if (i != _materials.Count - 1)
+                    {
+                        Graphics.Blit(temp, temp, _materials[i]);
+                    }
+                    else
+                    {
+                        Graphics.Blit(temp, destination, _materials[i]);
+                    }
+                }
             }
         }
     }
@@ -43,8 +59,8 @@ public class CameraEffect : MonoBehaviour
     {
         Debug.Log(RenderSettings.ambientLight);
         _ppVolume = GetComponent<PostProcessVolume>();
-        Camera cam = GetComponent<Camera>();
-        cam.depthTextureMode = DepthTextureMode.Depth;
+        _camera = GetComponent<Camera>();
+        _camera.depthTextureMode = DepthTextureMode.Depth;
 
     }
     //Some events for activating effects
