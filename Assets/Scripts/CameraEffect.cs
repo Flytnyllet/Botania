@@ -12,6 +12,7 @@ public class CameraEffect : MonoBehaviour
 {
 
     public List<Material> _materials = new List<Material>();
+    RenderTexture _tempRenderTexture;
     PostProcessVolume _ppVolume;
     Camera _camera;
 
@@ -34,25 +35,13 @@ public class CameraEffect : MonoBehaviour
         }
         else
         {
-            if (!_materials.Contains(null))
+            Graphics.Blit(source, _tempRenderTexture, _materials[0]);
+            for (int i = 1; i < _materials.Count; i++)
             {
-                RenderTexture temp = new RenderTexture(_camera.pixelWidth, _camera.pixelHeight, (int)_camera.depth);
-                for (int i = 0; i < _materials.Count; i++)
-                {
-                    if (i == 0)
-                    {
-                        Graphics.Blit(source, temp, _materials[i]);
-                    }
-                    else if (i != _materials.Count - 1)
-                    {
-                        Graphics.Blit(temp, temp, _materials[i]);
-                    }
-                    else
-                    {
-                        Graphics.Blit(temp, destination, _materials[i]);
-                    }
-                }
+                Graphics.Blit(_tempRenderTexture, _tempRenderTexture, _materials[i]);
+
             }
+            Graphics.Blit(_tempRenderTexture, destination);
         }
     }
     private void Awake()
@@ -60,8 +49,8 @@ public class CameraEffect : MonoBehaviour
         Debug.Log(RenderSettings.ambientLight);
         _ppVolume = GetComponent<PostProcessVolume>();
         _camera = GetComponent<Camera>();
+        _tempRenderTexture = new RenderTexture(_camera.pixelWidth, _camera.pixelHeight, (int)_camera.depth);
         _camera.depthTextureMode = DepthTextureMode.Depth;
-
     }
     //Some events for activating effects
     private void OnEnable()

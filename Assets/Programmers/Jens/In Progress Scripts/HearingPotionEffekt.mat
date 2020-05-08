@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: VisualEffect
-  m_Shader: {fileID: 4800000, guid: 34c36df04cd324f4eb9507ee8714bafe, type: 3}
+  m_Name: HearingPotionEffekt
+  m_Shader: {fileID: 4800000, guid: 00d7717785b9a44498867f4abe4cfb18, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -67,6 +67,7 @@ Material:
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
+    - _Lerp: 0.0010140538
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
@@ -74,9 +75,11 @@ Material:
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
-    - _Thickness: 0.3
+    - _Str: 0.01
+    - _Thickness: 5
     - _UVSec: 0
     - _ZWrite: 1
+    - _speed: 60
     m_Colors:
-    - _Color: {r: 0.633473, g: 1, b: 0.42924505, a: 0.09019608}
+    - _Color: {r: 0.76481783, g: 0.9433962, b: 0.6630473, a: 0.09019608}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
