@@ -217,11 +217,14 @@ public class PrefabSpawner : MonoBehaviour
                 _gameObjectsInChunkWithNoNormals.Add(spawnInfo[i]);
         }
 
-        //This will always be called last and have the longest waiting time, when it is done -> Normals are ready to be set
-        StartCoroutine(SpawnWithDelay(spawnInfo[spawnInfo.Count - 1], container, spawnInfo.Count - 1, spawnInfo.Count - 1, highestLOD));
+        if (spawnInfo.Count > 0)
+        {
+            if (spawnInfo[spawnInfo.Count - 1].DetailType != 0)
+                _gameObjectsInChunkWithNoNormals.Add(spawnInfo[spawnInfo.Count - 1]);
 
-        if (spawnInfo[spawnInfo.Count - 1].DetailType != 0)
-            _gameObjectsInChunkWithNoNormals.Add(spawnInfo[spawnInfo.Count - 1]);
+            //This will always be called last and have the longest waiting time, when it is done -> Normals are ready to be set
+            StartCoroutine(SpawnWithDelay(spawnInfo[spawnInfo.Count - 1], container, spawnInfo.Count - 1, spawnInfo.Count - 1, highestLOD));
+        }
     }
 
     //public void SpawnSpawnInfo(List<SpawnInfo> spawnInfo, Transform container, bool highestLOD)
