@@ -103,8 +103,12 @@ public class PrefabSpawner : MonoBehaviour
                                 bool minHeight = (heightMap.heightMap[x, y] > spawnables[i].HardMinHeight + spawnables[i].SoftMinAmount * spawnables[i].OffsetNoise[x, y]);
                                 bool maxHeight = (heightMap.heightMap[x, y] <= spawnables[i].HardMaxHeight - spawnables[i].SoftMaxAmount * spawnables[i].OffsetNoise[x, y]);
 
+                                bool shouldSpawnIfFixedHeight = true;
+                                if (spawnables[i].SpawnFixedHeight)
+                                    shouldSpawnIfFixedHeight = heightMap.heightMap[x + (int)(STANDARD_GRID_OFFSET * spawnables[i].Size) + 1, y + (int)(STANDARD_GRID_OFFSET * spawnables[i].Size) + 1] + spawnables[i].Height <= spawnables[i].FixedHeight + spawnables[i].Height;
+
                                 //Things inside the if statement only need to be determined if it should spawn
-                                if (insideNoise && gradientSpawn && uniformSpread && noiseSpread && minHeight && maxHeight && minSlope && maxSlope)
+                                if (insideNoise && gradientSpawn && uniformSpread && noiseSpread && minHeight && maxHeight && minSlope && maxSlope && shouldSpawnIfFixedHeight)
                                 {
                                     //Since the object can spawn, mark it's space as occopied
                                     if (!spawnables[i].OthersCanSpawnInside)
@@ -119,6 +123,11 @@ public class PrefabSpawner : MonoBehaviour
                                     float xPos = x + STANDARD_GRID_OFFSET + (STANDARD_GRID_OFFSET * spawnables[i].Size) - meshSettings.ChunkSize / 2 - 1; //Due to the border around the mesh + STANDARD_GRID_OFFSET corrects it to the right grid position
                                     float zPos = y + STANDARD_GRID_OFFSET + (STANDARD_GRID_OFFSET * spawnables[i].Size) - meshSettings.ChunkSize / 2 - 1; //Due to the border around the mesh + STANDARD_GRID_OFFSET corrects it to the right grid position
                                     float yPos = heightMap.heightMap[x + (int)(STANDARD_GRID_OFFSET * spawnables[i].Size) + 1, y + (int)(STANDARD_GRID_OFFSET * spawnables[i].Size) + 1] + spawnables[i].Height;
+
+                                    //Used if the object should not follow the world geometry and spawn at fixed height -> spawn in water 
+                                    // Only allow it if the object won't spawn under the terrain!
+                                    if (spawnables[i].SpawnFixedHeight)
+                                        yPos = spawnables[i].FixedHeight + spawnables[i].Height;
 
                                     //Position from grid in world
                                     Vector3 objectPosition = new Vector3((xPos + chunkPosition.x) * meshSettings.MeshScale, yPos, -(zPos + chunkPosition.y) * meshSettings.MeshScale);
@@ -226,23 +235,6 @@ public class PrefabSpawner : MonoBehaviour
             StartCoroutine(SpawnWithDelay(spawnInfo[spawnInfo.Count - 1], container, spawnInfo.Count - 1, spawnInfo.Count - 1, highestLOD));
         }
     }
-
-    //public void SpawnSpawnInfo(List<SpawnInfo> spawnInfo, Transform container, bool highestLOD)
-    //{
-    //    for (int i = 0; i < spawnInfo.Count - 2; i++)
-    //    {
-    //        if (spawnInfo[i].DetailType != 0)
-    //            _gameObjectsInChunkWithNoNormals.Add(spawnInfo[i]);
-
-    //        StartCoroutine(SpawnWithDelay(spawnInfo[i], container, i % 2 == 0 ? i : spawnInfo.Count - i, spawnInfo.Count - 1, false));
-    //    }
-
-    //    if (spawnInfo[spawnInfo.Count - 1].DetailType != 0)
-    //        _gameObjectsInChunkWithNoNormals.Add(spawnInfo[spawnInfo.Count - 1]);
-
-    //    //This will always be called last and have the longest waiting time, when it is done -> Normals are ready to be set
-    //    StartCoroutine(SpawnWithDelay(spawnInfo[spawnInfo.Count - 1], container, spawnInfo.Count - 1, spawnInfo.Count - 1, highestLOD));
-    //}
 
     IEnumerator SpawnWithDelay(SpawnInfo spawnInfo, Transform container, int index, int highest, bool last)
     {
