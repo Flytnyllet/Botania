@@ -1,4 +1,4 @@
-﻿Shader "Hidden/NewImageEffectShader"
+﻿Shader "Botania/ScreenEffects/NewImageEffectShader"
 {
     Properties
     {

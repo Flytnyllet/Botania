@@ -22,6 +22,8 @@ public class CameraEffect : MonoBehaviour
 
     private void OnPreRender()
     {
+        Matrix4x4 screenToWorld = (_camera.projectionMatrix * _camera.worldToCameraMatrix).inverse;
+        Shader.SetGlobalMatrix("gScreenToWorld", screenToWorld);
         //Controlling the rendering of portals which are subscribed to Renderers from PortalCameraController
         if (Renders != null)
             Renders.Invoke();
@@ -69,7 +71,7 @@ public class CameraEffect : MonoBehaviour
         EventManager.UnSubscribe(EventNameLibrary.INVISSIBLE, InvissibilityEffect);
         EventManager.UnSubscribe(EventNameLibrary.LIGHTNING_STRIKE, LightningStrikeEffect);
     }
-
+    
 
     public void ActivateEffect(Material material)
     {
