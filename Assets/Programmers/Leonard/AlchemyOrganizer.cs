@@ -118,6 +118,7 @@ public class AlchemyOrganizer : MonoBehaviour
         {
             ItemLoader itemLoader = _allIngredients[i].GetComponent<ItemLoader>();
             _allIngredients[i].GetComponent<Button>().onClick.AddListener(delegate { AddIngredient(itemLoader); });
+			
         }
     }
     /*

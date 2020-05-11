@@ -39,6 +39,7 @@ public class FPSMovement : MonoBehaviour
 	[SerializeField] float _bobbingAmount = 0.05f;
 	[SerializeField] float _bobbingSpeed = 1f;
 	float _bobTimer = 0;
+	float _defPosX = 0;
 	float _defPosY = 0;
 
 	Transform _playerCam = null;
@@ -86,6 +87,7 @@ public class FPSMovement : MonoBehaviour
 		charCon = GetComponent<CharacterController>();
 		_playerCam = transform.Find("PlayerCam");
 		_cameraStartPosition = _playerCam.localPosition;
+		_defPosX = _cameraStartPosition.x;
 		_defPosY = _cameraStartPosition.y;
 		CharacterState.SetControlState(CHARACTER_CONTROL_STATE.PLAYERCONTROLLED);
 	}
@@ -184,6 +186,9 @@ public class FPSMovement : MonoBehaviour
 					}
 
 					Walking(moveInput.x, moveInput.y, groundDetection, moveModifier);
+
+					// Bobbing
+					HeadBob(moveInput.x, moveInput.y, moveModifier);
 				}
 			}
 			else
@@ -213,8 +218,6 @@ public class FPSMovement : MonoBehaviour
 				_inAir = true;
 				_velocity.y = -5f;
 			}
-			// Bobbing
-			HeadBob(moveInput.x * _speed.Value, moveInput.y * _speed.Value);
 
 		}
 	}
@@ -329,7 +332,7 @@ public class FPSMovement : MonoBehaviour
 	}
 
 	//Head Bobbing !Stolen from the internet
-	void HeadBob(float x, float z)
+	void HeadBob(float x, float z, float modifier = 1.0f)
 	{
 		_timeSinceLastStep += Time.deltaTime;
 		_travelledDist += (transform.position - _prevPos).magnitude;
@@ -339,8 +342,8 @@ public class FPSMovement : MonoBehaviour
 			//Player is moving
 			FootstepsSound();
 			_bobTimer += Time.deltaTime * _bobbingSpeed;
-			_playerCam.localPosition = new Vector3(_playerCam.localPosition.x,
-				_defPosY + Mathf.Sin(_bobTimer) * _bobbingAmount, _playerCam.localPosition.z);
+			_playerCam.localPosition = new Vector3(_defPosX + Mathf.Sin(_bobTimer*modifier) * _bobbingAmount* modifier,
+				_defPosY - Mathf.Abs(Mathf.Sin(_bobTimer * modifier)) * _bobbingAmount * modifier, _playerCam.localPosition.z);
 		}
 		else
 		{
@@ -369,7 +372,6 @@ public class FPSMovement : MonoBehaviour
 		}
 	}
 
-	//Ground Detection !Stolen from the internet
 	bool GroundRay(Vector3 rayStart, Vector3 rayDirection, float rayDistance, out RaycastHit hit)
 	{
 		//Ray groundRay = new Ray(rayStart, rayDirection);
