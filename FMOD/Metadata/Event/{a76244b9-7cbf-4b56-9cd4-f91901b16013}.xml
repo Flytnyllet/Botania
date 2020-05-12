@@ -93,6 +93,9 @@
 		</relationship>
 	</object>
 	<object class="EventMixerMaster" id="{f81b2fe8-63e0-424c-9d1f-f9d94aeada82}">
+		<property name="volume">
+			<value>-6</value>
+		</property>
 		<relationship name="modulators">
 			<destination>{26674c8c-de47-4ed2-9ec7-ddf5b2af68fe}</destination>
 		</relationship>
@@ -120,6 +123,9 @@
 	<object class="SoundScatterer" id="{50869871-dff8-4c38-973f-2d05abaef311}">
 		<property name="length">
 			<value>5.5</value>
+		</property>
+		<property name="volume">
+			<value>10</value>
 		</property>
 		<property name="minimumTimeBetweenSounds">
 			<value>16000</value>
@@ -238,6 +244,9 @@
 		</property>
 	</object>
 	<object class="SingleSound" id="{945bc344-51b3-4da0-8136-792299985f3b}">
+		<property name="volume">
+			<value>10</value>
+		</property>
 		<relationship name="audioFile">
 			<destination>{41cf70c4-c3fe-4a30-bfc1-381d3d081632}</destination>
 		</relationship>
