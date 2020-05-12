@@ -22,9 +22,7 @@ MonoBehaviour:
   _uniformSpreadAmount: 4
   _randomSpread: 0.261
   _offsetAmount: 0.82
-  _height: 0.05
-  _scale: 1
-  _scaleRandom: 0.75
+  _spawnFixedHeight: 0
   _size: 1
   _othersCanSpawnInside: 1
   _spawnDifferencial: 50
@@ -41,11 +39,23 @@ MonoBehaviour:
   _prefabs:
   - _prefab: {fileID: 3983006143052000417, guid: 2b677496a93648a4d895810b1825ef19,
       type: 3}
-    _probability: 2
+    _probability: 12
+    _height: 0.05
+    _fixedHeight: 0
+    _scale: 1
+    _scaleRandom: 0.75
   - _prefab: {fileID: 2826261102914021520, guid: 97b81db2c764eec419a81c255713ba30,
       type: 3}
-    _probability: 1
+    _probability: 6
+    _height: 0.05
+    _fixedHeight: 0
+    _scale: 1
+    _scaleRandom: 0.75
   - _prefab: {fileID: 5018618361986190427, guid: f2aef5709445186409a9e662af37d729,
       type: 3}
-    _probability: 2
+    _probability: 12
+    _height: 0.05
+    _fixedHeight: 0
+    _scale: 1
+    _scaleRandom: 0.75
   _subSpawners: []
