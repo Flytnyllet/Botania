@@ -6,6 +6,8 @@ using FMOD.Studio;
 
 public class Amb_Local_Emitter : MonoBehaviour
 {
+    [EventRef]
+    public string event_Ref;
     private EventInstance event_Instance;
     private EventDescription event_Description;
     public float MaxDistance { get { return _maxDistance; } }

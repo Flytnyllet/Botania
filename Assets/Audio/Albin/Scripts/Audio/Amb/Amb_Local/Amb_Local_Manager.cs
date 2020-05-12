@@ -12,10 +12,6 @@ public class Amb_Local_Manager : MonoBehaviour
     [SerializeField]
     private GameObject amb_02;
 
-
-
-
-
     private void Awake()
     {
         if (Instance != null && Instance != this)
