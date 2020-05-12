@@ -22,9 +22,7 @@ MonoBehaviour:
   _uniformSpreadAmount: 9
   _randomSpread: 0.017
   _offsetAmount: 2
-  _height: -0.5
-  _scale: 0.75
-  _scaleRandom: 0.5
+  _spawnFixedHeight: 0
   _size: 2
   _othersCanSpawnInside: 0
   _spawnDifferencial: 15
@@ -42,4 +40,8 @@ MonoBehaviour:
   - _prefab: {fileID: 8436135779611101657, guid: b27dd6528b5200c4688b84c71bffbaa5,
       type: 3}
     _probability: 1
+    _height: -0.5
+    _fixedHeight: 0
+    _scale: 0.75
+    _scaleRandom: 0.5
   _subSpawners: []

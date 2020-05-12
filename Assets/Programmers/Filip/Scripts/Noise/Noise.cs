@@ -6,11 +6,23 @@ public static class Noise
 {
     //Constant to try and guess height in global normalize mode
     static readonly float GLOBAL_MODE_ESTIMATE_MULTIPLIER = 2.25f;
+    public const int MAX_SEED_SIZE = 100000;
+    static int _seed = 0;
 
     public enum NormalizeMode
     {
         LOCAL,
         GLOBAL
+    }
+
+    public static void SetSeed(string stringSeed)
+    {
+        _seed = stringSeed.GetHashCode();
+    }
+
+    static int GetSeed(int noiseSeed)
+    {
+        return (noiseSeed + _seed) % MAX_SEED_SIZE;
     }
 
     //Combines different noises of one noise object into one final noise
@@ -51,7 +63,7 @@ public static class Noise
         }
 
         //Used as offset based on seed to get new noise
-        System.Random prng = new System.Random(settings.Seed);
+        System.Random prng = new System.Random(GetSeed(settings.Seed));
         Vector2[] octaveOffsets = new Vector2[settings.Octaves];
 
         float maxPossibleHeight = 0;
@@ -286,7 +298,7 @@ public class NoiseSettings
     [SerializeField, Range(0, 5), Tooltip("Add this to every point in the noise to make it more white")] float _addValue = 0;
     [SerializeField, Range(0, 15), Tooltip("How strong should this noise have as an effect?")] float _strength = 1.0f;
 
-    [SerializeField, Range(0, 100000), Tooltip("Gives a different starting point for noise")] int _seed;
+    [SerializeField, Range(0, Noise.MAX_SEED_SIZE), Tooltip("Gives a different starting point for noise")] int _seed;
     [SerializeField, Tooltip("Offset from noise seed if desired")] Vector2 _offset;
     [SerializeField, Range(0.001f, 100000), Tooltip("Scale of Noise")] float _scale = 10;
     [SerializeField, Range(1, 10), Tooltip("Amount of noiselayers stacked on eachother (3 is good)")] int _octaves = 4;
