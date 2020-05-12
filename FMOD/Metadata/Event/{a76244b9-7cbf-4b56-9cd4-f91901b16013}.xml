@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.00.00">
 	<object class="Event" id="{a76244b9-7cbf-4b56-9cd4-f91901b16013}">
 		<property name="name">
-			<value>amb___001_forest___bird_rnd_birdsong4</value>
+			<value>amb___02___bird_rnd_birdsong4</value>
 		</property>
 		<property name="outputFormat">
 			<value>2</value>
@@ -121,6 +121,18 @@
 		<property name="length">
 			<value>5.5</value>
 		</property>
+		<property name="minimumTimeBetweenSounds">
+			<value>16000</value>
+		</property>
+		<property name="maximumTimeBetweenSounds">
+			<value>28000</value>
+		</property>
+		<property name="minimumScatterDistance">
+			<value>3.20000005</value>
+		</property>
+		<property name="maximumScatterDistance">
+			<value>8.60000038</value>
+		</property>
 		<relationship name="sound">
 			<destination>{0e79c978-437d-4c41-b51e-da79d2dfb40d}</destination>
 		</relationship>
@@ -178,13 +190,18 @@
 	</object>
 	<object class="MixerBusEffectChain" id="{51a8aced-d75d-4d8a-af6f-3cb0b413930e}">
 		<relationship name="effects">
+			<destination>{7a1adbed-99b8-422f-9a8e-ac30b1404abd}</destination>
 			<destination>{8e588adf-f15b-476a-8cc7-6f30e7a0341d}</destination>
 			<destination>{5202c10e-c53d-4ebc-a159-51a1c82a63fe}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{97b65063-ae92-47d6-8a0d-433bceaee883}" />
 	<object class="MixerBusFader" id="{d5a9380a-5635-4f2a-95e7-e0653811b63a}" />
-	<object class="MultiSound" id="{0e79c978-437d-4c41-b51e-da79d2dfb40d}" />
+	<object class="MultiSound" id="{0e79c978-437d-4c41-b51e-da79d2dfb40d}">
+		<relationship name="sounds">
+			<destination>{945bc344-51b3-4da0-8136-792299985f3b}</destination>
+		</relationship>
+	</object>
 	<object class="Automator" id="{69135ecd-a311-4e28-b702-0f5dbdad39d4}">
 		<property name="nameOfPropertyBeingAutomated">
 			<value>volume</value>
@@ -200,6 +217,11 @@
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{e96584b9-c6bc-41e2-acce-8ef4ec7b2668}" />
+	<object class="GainEffect" id="{7a1adbed-99b8-422f-9a8e-ac30b1404abd}">
+		<property name="gain">
+			<value>10</value>
+		</property>
+	</object>
 	<object class="MixerBusFader" id="{8e588adf-f15b-476a-8cc7-6f30e7a0341d}" />
 	<object class="SpatialiserEffect" id="{5202c10e-c53d-4ebc-a159-51a1c82a63fe}">
 		<property name="maximumDistance">
@@ -215,6 +237,11 @@
 			<value>154</value>
 		</property>
 	</object>
+	<object class="SingleSound" id="{945bc344-51b3-4da0-8136-792299985f3b}">
+		<relationship name="audioFile">
+			<destination>{41cf70c4-c3fe-4a30-bfc1-381d3d081632}</destination>
+		</relationship>
+	</object>
 	<object class="AutomationCurve" id="{2e850649-05f8-4680-91ae-2f37fda9fecf}">
 		<relationship name="parameter">
 			<destination>{48188020-fe17-407e-837f-2362996c3294}</destination>
@@ -225,11 +252,14 @@
 		</relationship>
 	</object>
 	<object class="ThreeEQEffect" id="{0a099446-b4b6-42af-a657-a7240c1542b5}">
+		<property name="lowGain">
+			<value>10</value>
+		</property>
 		<property name="midGain">
-			<value>-3.5</value>
+			<value>10</value>
 		</property>
 		<property name="highGain">
-			<value>-17</value>
+			<value>-6</value>
 		</property>
 		<property name="highCrossover">
 			<value>3200</value>
