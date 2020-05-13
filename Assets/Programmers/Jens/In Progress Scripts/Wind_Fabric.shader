@@ -3,8 +3,11 @@
 		_Color("Colour", Color) = (1,1,1,1)
 		_MainTex("Texture", 2D) = "white" {}
 		_EmissionMap("Emission Map", 2D) = "black" {}
-		_PhysicsMap("Physics Map", 2D) = "white" {}
+		_PhysicsMap("Physics Map", 2D) = "black" {}
 		_Alpha("Alpha Map", 2D) = "white" {}
+		[Toggle(ALPHA_CUTOUT)]
+		_Cutout("Alpha Cutout", float) = 0
+		_CutoutValue("Cutout Value",range(0,1)) = 0.4
 		_noiseTex("Noise", 2D) = "white" {}
 		_WindSize("Wind Size", float) = 1.0
 		_Speed("Speed", float) = 1.0
@@ -15,7 +18,8 @@
 		  cull off
 		  CGPROGRAM
 		  #pragma surface surf Lambert vertex:vert addshadow
-		  #pragma target 3.0
+		  #pragma target 3.0 
+		  #pragma shader_feature ALPHA_CUTOUT
 
 		struct Input {
 			  float2 uv_MainTex;
@@ -36,9 +40,10 @@
 		sampler2D _Alpha;
 		sampler2D _noiseTex;
 		float4 _Color;
-		half _Speed;
-		half _WindSize;
-		half _Strenght;
+		float _Speed;
+		float _WindSize;
+		float _Strenght;
+		float _CutoutValue;
 
 
 
@@ -90,7 +95,11 @@
 		  4.0 / 17.0,   12.0 / 17.0,  2.0 / 17.0,   10.0 / 17.0,
 		  16.0 / 17.0,  8.0 / 17.0,   14.0 / 17.0,  6.0 / 17.0
 		  };
+#ifdef ALPHA_CUTOUT 
+		  clip(o.Alpha - _CutoutValue);
+#else
 		  clip(o.Alpha - thresholdMatrix[fmod(pos.x, 4)][pos.y % 4]);
+#endif
 		  o.Emission = tex2D(_EmissionMap, IN.uv_MainTex);
 	  }
 	ENDCG

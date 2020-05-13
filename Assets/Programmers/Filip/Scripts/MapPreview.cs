@@ -70,7 +70,14 @@ public class MapPreview : MonoBehaviour
 
         Vector2 sampleCenter = _chunkCoord * _meshSettings.MeshWorldSize / _meshSettings.MeshScale;
 
-        float[,] noise = Noise.MergeNoise(_meshSettings.NumVertsPerLine * _noiseViewSize, _meshSettings.NumVertsPerLine * _noiseViewSize, 1, _noiseSettingsData_1.NoiseSettingsDataMerge, _noiseSettingsData_2.NoiseSettingsDataMerge, _noiseMergeType, _chunkCoord);
+        float[,] noise1 = Noise.GenerateNoiseMap(_meshSettings.NumVertsPerLine * _noiseViewSize, _meshSettings.NumVertsPerLine * _noiseViewSize, 1, _noiseSettingsData_1.NoiseSettingsDataMerge, _chunkCoord);
+        noise1 = Noise.Clamp(noise1, _noiseSettingsData_1);
+        float[,] noise2 = Noise.GenerateNoiseMap(_meshSettings.NumVertsPerLine * _noiseViewSize, _meshSettings.NumVertsPerLine * _noiseViewSize, 1, _noiseSettingsData_2.NoiseSettingsDataMerge, _chunkCoord);
+        noise2 = Noise.Clamp(noise2, _noiseSettingsData_2);
+
+        float[,] noise = _noiseMergeType == NoiseMergeType.ONLY_FIRST ? noise1 : noise2;
+
+        
 
         if (_drawMode == DrawMode.NOISE_MAP)
             DrawTexture(TextureGenerator.TextureFromNoise(noise));

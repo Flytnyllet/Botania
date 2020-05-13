@@ -394,7 +394,7 @@ public class MapGenerator : MonoBehaviour, IDragHandler, IScrollHandler, IPointe
             //Position
             float x = (eventData.position.x / Screen.width - 0.5f) * _canvasRectTransform.sizeDelta.x / _pivotSpawnContainer.localScale.x;
             float y = (eventData.position.y / Screen.height - 0.5f) * _canvasRectTransform.sizeDelta.y / _pivotSpawnContainer.localScale.y;
-            Vector3 waypointPosition = new Vector3(x, y, 0.0f) - _objectsRectTransform.localPosition * _canvasRectTransform.localScale.x - _mapHolder.localPosition - _pivotSpawnContainer.localPosition / _pivotSpawnContainer.localScale.x;
+            Vector3 waypointPosition = new Vector3(x, y, 0.0f) - _objectsRectTransform.localPosition / _pivotSpawnContainerInstance.localScale.x - _mapHolder.localPosition - _pivotSpawnContainer.localPosition / _pivotSpawnContainer.localScale.x;
 
             AddWaypoint(waypointPosition, _standardWayPointName, false);
         }

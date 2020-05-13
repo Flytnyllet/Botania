@@ -11,9 +11,10 @@ using UnityEngine.Rendering.PostProcessing;
 public class CameraEffect : MonoBehaviour
 {
 
-    public Material _material = null;
+    public List<Material> _materials = new List<Material>();
+    RenderTexture _tempRenderTexture;
     PostProcessVolume _ppVolume;
-
+    Camera _camera;
 
     //awful static Action which should be faster than the central EventManager,
     //This is only used because when used it's run every frame
@@ -21,6 +22,8 @@ public class CameraEffect : MonoBehaviour
 
     private void OnPreRender()
     {
+        Matrix4x4 screenToWorld = (_camera.projectionMatrix * _camera.worldToCameraMatrix).inverse;
+        Shader.SetGlobalMatrix("gScreenToWorld", screenToWorld);
         //Controlling the rendering of portals which are subscribed to Renderers from PortalCameraController
         if (Renders != null)
             Renders.Invoke();
@@ -28,59 +31,92 @@ public class CameraEffect : MonoBehaviour
 
     void OnRenderImage(RenderTexture source, RenderTexture destination)
     {
-        if (_material == null)
+        if (_materials.Count == 0)
         {
             Graphics.Blit(source, destination);
         }
         else
         {
-            Graphics.Blit(source, destination, _material);
+            Graphics.Blit(source, _tempRenderTexture, _materials[0]);
+            for (int i = 1; i < _materials.Count; i++)
+            {
+                Graphics.Blit(_tempRenderTexture, _tempRenderTexture, _materials[i]);
+
+            }
+            Graphics.Blit(_tempRenderTexture, destination);
         }
     }
     private void Awake()
     {
+        Debug.Log(RenderSettings.ambientLight);
         _ppVolume = GetComponent<PostProcessVolume>();
-        Camera cam = GetComponent<Camera>();
-        cam.depthTextureMode = DepthTextureMode.Depth;
+        _camera = GetComponent<Camera>();
+        _tempRenderTexture = new RenderTexture(_camera.pixelWidth, _camera.pixelHeight, (int)_camera.depth);
+        _camera.depthTextureMode = DepthTextureMode.Depth;
     }
     //Some events for activating effects
     private void OnEnable()
     {
-        EventManager.Subscribe(EventNameLibrary.CAMERA_EFFECT_EVENT_NAME, ActivateEffect);
+        EventManager.Subscribe(EventNameLibrary.DRINK_POTION, ActivateEffect);
         EventManager.Subscribe(EventNameLibrary.SPEED_INCREASE, SpeedDistortion);
-        EventManager.Subscribe(EventNameLibrary.SUPER_HEARING, HearingEffect);
+        //EventManager.Subscribe(EventNameLibrary.SUPER_HEARING, HearingEffect);
         EventManager.Subscribe(EventNameLibrary.INVISSIBLE, InvissibilityEffect);
+        EventManager.Subscribe(EventNameLibrary.LIGHTNING_STRIKE, LightningStrikeEffect);
     }
     private void OnDisable()
     {
-        EventManager.UnSubscribe(EventNameLibrary.CAMERA_EFFECT_EVENT_NAME, ActivateEffect);
+        EventManager.UnSubscribe(EventNameLibrary.DRINK_POTION, ActivateEffect);
         EventManager.UnSubscribe(EventNameLibrary.SPEED_INCREASE, SpeedDistortion);
-        EventManager.UnSubscribe(EventNameLibrary.SUPER_HEARING, HearingEffect);
+        //EventManager.UnSubscribe(EventNameLibrary.SUPER_HEARING, HearingEffect);
         EventManager.UnSubscribe(EventNameLibrary.INVISSIBLE, InvissibilityEffect);
+        EventManager.UnSubscribe(EventNameLibrary.LIGHTNING_STRIKE, LightningStrikeEffect);
     }
-
-
-    public void DeactivateEffect()
-    {
-        _material = null;
-    }
+    
 
     public void ActivateEffect(Material material)
     {
-        _material = material;
+        _materials.Add(material);
     }
     //Set an effect for a certain amount of time
     public void ActivateEffect(Material material, float time)
     {
-        _material = material;
-        ActionDelayer.RunAfterDelayAsync(() => { _material = null; }, time);
+        _materials.Add(material);
+        ActionDelayer.RunAfterDelayAsync(() => { _materials.Remove(material); }, time);
     }
     void ActivateEffect(EventParameter eventParam)
     {
-        _material = eventParam.materialParam;
-        ActionDelayer.RunAfterDelayAsync(() => { _material = null; }, eventParam.floatParam);
+        if (eventParam.materialParam != null)
+        {
+            Material material = eventParam.materialParam;
+            material.SetFloat("_Lerp", 0);
+            _materials.Add(material);
+            StartCoroutine(LerpInCameraEffect(material, eventParam.floatParam2, false));
+            ActionDelayer.RunAfterDelay(() => { StartCoroutine(LerpInCameraEffect(material, eventParam.floatParam2, true)); }, eventParam.floatParam);
+        }
     }
-
+    //floatParam = _potionDuration,
+    //floatParam2 = _potionCameraEffectFadeTime
+    IEnumerator LerpInCameraEffect(Material mat, float lerpTime, bool remove)
+    {
+        float time = 0;
+        while (time < lerpTime)
+        {
+            if (remove)
+            {
+                mat.SetFloat("_Lerp", 1 - time / lerpTime);
+            }
+            else
+            {
+                mat.SetFloat("_Lerp", time / lerpTime);
+            }
+            time += Time.deltaTime;
+            yield return null;
+        }
+        if (remove)
+        {
+            _materials.Remove(mat);
+        }
+    }
     //private void Update()
     //{
     //    if (Input.GetKeyDown(KeyCode.K))
@@ -170,6 +206,28 @@ public class CameraEffect : MonoBehaviour
                 yield return null;
             }
             distortionLayer.intensity.value = targetDistort;
+        }
+    }
+
+    void LightningStrikeEffect(EventParameter param)
+    {
+        StartCoroutine(LightningFlash(param.floatParam, param.floatParam2));
+    }
+    IEnumerator LightningFlash(float flashTime, float flashStrenght)
+    {
+        Debug.Log("lightning Strike");
+        ColorGrading colGrad;
+        if (_ppVolume.profile.TryGetSettings(out colGrad))
+        {
+            colGrad.postExposure.value = flashStrenght;
+            float time = 0;
+            while (time < flashTime && WorldState.Instance.IsRaining)
+            {
+                colGrad.postExposure.value = Mathf.Lerp(flashStrenght, 0, time / flashTime);
+                time += Time.deltaTime;
+                yield return null;
+            }
+            colGrad.postExposure.value = 0;
         }
     }
 }

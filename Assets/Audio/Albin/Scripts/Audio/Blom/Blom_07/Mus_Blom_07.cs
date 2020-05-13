@@ -87,7 +87,6 @@ public class Mus_Blom_07 : MonoBehaviour
                 blom_07.transform.position = _followCollider.ClosestPoint(_player.transform.position);
                 break;
             case true:
-                Debug.Log("DERP");
                 blom_07.Override_Max_Distance(blom_07._maxDistance * 1.25f);
                 if (!isFollow)
                 {

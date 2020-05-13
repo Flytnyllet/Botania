@@ -42,6 +42,9 @@ public class TerrainGenerator : MonoBehaviour
     {
         _viewer = Player.GetPlayerTransform();
 
+        _viewerPosition = new Vector2(_viewer.position.x, _viewer.position.z);
+        _viewerPositionOld = _viewerPosition;
+
         //_textureSettings. ApplyToMaterial(_mapMaterial);
         //_textureSettings.UpdateMeshHeights(_mapMaterial, _heightMapSettings.MinHeight, _heightMapSettings.MaxHeight);
 

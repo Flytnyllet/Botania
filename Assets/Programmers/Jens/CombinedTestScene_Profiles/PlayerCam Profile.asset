@@ -66,7 +66,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40b924e2dad56384a8df2a1e111bb675, type: 3}
   m_Name: Vignette
   m_EditorClassIdentifier: 
-  active: 0
+  active: 1
   enabled:
     overrideState: 1
     value: 1
@@ -218,11 +218,11 @@ MonoBehaviour:
     overrideState: 1
     value: 1
   intensity:
-    overrideState: 0
-    value: 15
+    overrideState: 1
+    value: 2
   threshold:
     overrideState: 1
-    value: 0.95
+    value: 0.5
   softKnee:
     overrideState: 0
     value: 0.5
@@ -231,13 +231,13 @@ MonoBehaviour:
     value: 65472
   diffusion:
     overrideState: 1
-    value: 6
+    value: 8
   anamorphicRatio:
     overrideState: 0
     value: 0
   color:
     overrideState: 1
-    value: {r: 1, g: 0.41176474, b: 0.49704987, a: 1}
+    value: {r: 0.8537736, g: 0.9191088, b: 1, a: 1}
   fastMode:
     overrideState: 0
     value: 0
@@ -318,7 +318,7 @@ MonoBehaviour:
     overrideState: 0
     value: 0
   postExposure:
-    overrideState: 0
+    overrideState: 1
     value: 0
   contrast:
     overrideState: 0

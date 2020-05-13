@@ -15,6 +15,7 @@ public class PotionWheelManager : MonoBehaviour
 	RectTransform rect = null;
 	[SerializeField] float selectedScale = 1.2f;
 	[SerializeField] [Range(0.05f, 0.8f)] float selectionDistance = 0.46f;
+    Camera _mainCam;
 	//Color selectedColor = Color.green;
 	Vector3[] regionPositions = new Vector3[5] 
 		{ Vector3.up, new Vector3(1, 1, 0).normalized, Vector3.right, new Vector3(1, -1, 0).normalized, Vector3.down }; 
@@ -23,7 +24,8 @@ public class PotionWheelManager : MonoBehaviour
 	// Start is called before the first frame update
 	void Start()
 	{
-		rect = GetComponent<RectTransform>();
+        _mainCam = Camera.main; //slow
+        rect = GetComponent<RectTransform>();
 		_allPotions = _bookManager.GetBookmark(1).GetComponent<AlchemyOrganizer>().GetAllPotions();
 		SetUpRegions();
 	}
@@ -36,15 +38,15 @@ public class PotionWheelManager : MonoBehaviour
 		//var screenPoint = Vector3.zero + Input.mousePosition;
 		//screenPoint = (Camera.main.ScreenToViewportPoint(screenPoint) - new Vector3(0.5f, 0.5f)) * 2f;
 		//screenPoint = Vector3.right * screenPoint.x * rect.rect.width + Vector3.forward * screenPoint.y * rect.rect.height + Vector3.forward*10f;
-		Vector2 screenPoint = (Input.mousePosition / Camera.main.pixelHeight) * 2 - new Vector3(1f * Camera.main.aspect, 1f);//Camera.main.ScreenToViewportPoint(Input.mousePosition) *2 - new Vector3(1f, 1f);
-
+		Vector2 screenPoint = (Input.mousePosition / _mainCam.pixelHeight) * 2 - new Vector3(1f * _mainCam.aspect, 1f);//Camera.main.ScreenToViewportPoint(Input.mousePosition) *2 - new Vector3(1f, 1f);
+        //Debug.Log(screenPoint.normalized);
 		//Debug.Log("Mouse to close to center at: " + screenPoint);
 
-		if (screenPoint.magnitude > selectionDistance)
+		if (screenPoint.magnitude > selectionDistance && screenPoint.magnitude < selectionDistance*2)
 		{
-			Debug.Log("screenPoint magnitude : " + screenPoint.magnitude);
+			//Debug.Log("screenPoint magnitude : " + screenPoint.magnitude);
 			int? region;
-			if (GetClosestPotion(screenPoint, out region))
+			if (GetClosestPotion(screenPoint.normalized, out region))
 			{
 				SelectPotion((int)region);
 			}
@@ -58,7 +60,7 @@ public class PotionWheelManager : MonoBehaviour
 		else
 		{
 			SelectPotion(-1);
-			Debug.Log("Mouse too close to center: " + screenPoint + " " + Input.mousePosition + "  " + screenPoint.magnitude.ToString() + " \n mouse position is: " + Input.mousePosition);
+			//Debug.Log("Mouse too close to center: " + screenPoint + " " + Input.mousePosition + "  " + screenPoint.magnitude.ToString() + " \n mouse position is: " + Input.mousePosition);
 		}
 	}
 
@@ -80,7 +82,7 @@ public class PotionWheelManager : MonoBehaviour
 				go.transform.position = transform.position + regionPositions[i] * regionDistanceFromCenter;
 				//GameObject image = Instantiate(_wheelRegion, go.transform);
 				
-				go.GetComponentInChildren<Text>().text = potionName + "   x" + FlowerLibrary.GetPotionAmount(potionName);
+				go.GetComponentInChildren<Text>().text = potionName + "\n x" + FlowerLibrary.GetPotionAmount(potionName);
 				Image imageSprite = go.transform.GetChild(0).GetComponent<Image>();
 				imageSprite.sprite = potion.GetPotionItemData().itemIcon;
 				
@@ -102,7 +104,7 @@ public class PotionWheelManager : MonoBehaviour
 		float distance = 3000;
 		for(int i = 0; i < transform.childCount; i++)
 		{
-			Vector2 childPosition = transform.GetChild(i).position / Camera.main.pixelHeight * 2f - new Vector3(1f * Camera.main.aspect, 1f); //Camera.main.ScreenToViewportPoint(transform.GetChild(i).position) * 2f  - new Vector3(1f, 1f);
+			Vector2 childPosition = transform.GetChild(i).position / _mainCam.pixelHeight * 2f - new Vector3(1f * _mainCam.aspect, 1f); //Camera.main.ScreenToViewportPoint(transform.GetChild(i).position) * 2f  - new Vector3(1f, 1f);
 			//(Camera.main.ToViewportPoint(transform.GetChild(i).position) - new Vector3(0.5f, 0.5f)) * 2f;
 			//Debug.Log("During closest potion calculation the child position is: " + childPosition);
 			float newDistance = Vector3.Distance(targetPosition, childPosition);

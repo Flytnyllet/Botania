@@ -9,12 +9,12 @@ public class DiggingFlower : MonoBehaviour
     //Detta använder animationer med states och kräver controllern "Digging Fllower"
     public enum FlowerState { Idle, Digging, Hidden, Interactable }; //använder nog inte alla
     FlowerState _flowerState = FlowerState.Idle;
-    [SerializeField] PickupFlower _pickupScript;
+    //[SerializeField] PickupFlower _pickupScript;
     bool _playerInArea = false;
     [SerializeField] Animator _animator;
     [Tooltip("Skall sättas på objektet som har script och collider för att plockas upp")]
-    CapsuleCollider _capsuleCollider;
-    SphereCollider _sphereCol;
+    //CapsuleCollider _capsuleCollider;
+    //SphereCollider _sphereCol;
     [SerializeField] float _hideTime = 3.0f;
     [SerializeField] string[] _animationId;
 
@@ -25,21 +25,21 @@ public class DiggingFlower : MonoBehaviour
 
     private void Awake()
     {
-        _sphereCol = GetComponent<SphereCollider>();
-        _capsuleCollider = GetComponent<CapsuleCollider>();
-        MakeInteractable();
+        //_sphereCol = GetComponent<SphereCollider>();
+        //_capsuleCollider = GetComponent<CapsuleCollider>();
+        //MakeInteractable();
     }
 
     //Har inte fixat så att events kan ta imot methoder utan parametrar, så det här känns som den mest eleganta lösningen
-    void playerWentInvisible(EventParameter param) { MakeInteractable(); }
-    private void OnEnable()
-    {
-        EventManager.Subscribe(EventNameLibrary.INVISSIBLE, playerWentInvisible);
-    }
-    private void OnDisable()
-    {
-        EventManager.UnSubscribe(EventNameLibrary.INVISSIBLE, playerWentInvisible);
-    }
+    //void playerWentInvisible(EventParameter param) { MakeInteractable(); }
+    //private void OnEnable()
+    //{
+    //    EventManager.Subscribe(EventNameLibrary.INVISSIBLE, playerWentInvisible);
+    //}
+    //private void OnDisable()
+    //{
+    //    EventManager.UnSubscribe(EventNameLibrary.INVISSIBLE, playerWentInvisible);
+    //}
 
     void PlayerInvissible(EventParameter param)
     {
@@ -92,23 +92,23 @@ public class DiggingFlower : MonoBehaviour
     }
 
     //Detta är funktionen som ska kallas när en abbility gör blomman användbar, hur detta görs är inte kritiskt i nuläget
-    void MakeInteractable()
-    {
-        if (CharacterState.IsAbilityFlagActive(ABILITY_FLAG.INVISSIBLE))
-        {
-            _pickupScript.SetEnabled = true;
-            //_animator.Play("BaseState");
-            _capsuleCollider.enabled = true;
-            _sphereCol.enabled = false;
-            _flowerState = FlowerState.Interactable;
-        }
-        else
-        {
-            _pickupScript.SetEnabled = false;
-            _capsuleCollider.enabled = false;
-            _sphereCol.enabled = true;
-            _flowerState = FlowerState.Idle;
-            StartCoroutine(DigAndWait());
-        }
-    }
+    //void MakeInteractable()
+    //{
+    //    if (CharacterState.IsAbilityFlagActive(ABILITY_FLAG.INVISSIBLE))
+    //    {
+    //        //_pickupScript.SetEnabled = true;
+    //        //_animator.Play("BaseState");
+    //        //_capsuleCollider.enabled = true;
+    //        _sphereCol.enabled = false;
+    //        _flowerState = FlowerState.Interactable;
+    //    }
+    //    else
+    //    {
+    //        //_pickupScript.SetEnabled = false;
+    //        //_capsuleCollider.enabled = false;
+    //        _sphereCol.enabled = true;
+    //        _flowerState = FlowerState.Idle;
+    //        StartCoroutine(DigAndWait());
+    //    }
+    //}
 }

@@ -17,7 +17,7 @@ public class PickupFlower : InteractableSaving, IInteractable
 
     [Tooltip("Används i fall ett annat objekt än det lokala skall tas bort vid upplockning")]
     [SerializeField] GameObject _gameobjectOverload;
-    [SerializeField] UnityEvent _pickupAction; 
+    [SerializeField] UnityEvent _pickupAction;
 
     public bool Interact()
     {
@@ -26,7 +26,7 @@ public class PickupFlower : InteractableSaving, IInteractable
             //Pickup save system
             PickUp();
 
-            string debugFlowerNames = "Trying to pick up a " + _flowerData.name
+            string debugFlowerNames = "Trying to pick up a " + _flowerData.itemName
                 + ". Accepted flower types are: [";
             string[] flowerTypes = FlowerLibrary.GetAllFlowerNames();
             foreach (string flower in flowerTypes)
@@ -37,8 +37,7 @@ public class PickupFlower : InteractableSaving, IInteractable
 
             //Debug.Log(debugFlowerNames);
 
-            FlowerLibrary.IncrementFlower(_flowerData.name, 1);
-
+            FlowerLibrary.IncrementFlower(_flowerData.itemName, 1);
             if (_gameobjectOverload == null)
             {
                 if (_pickupAlpha != null)
@@ -55,7 +54,7 @@ public class PickupFlower : InteractableSaving, IInteractable
                     _gameobjectOverload.GetComponent<MeshRenderer>().material.SetTexture("_Alpha", _pickupAlpha);
                     GetComponent<Collider>().enabled = false;//This may not work since there are multiple colliders
                 }
-                else { Destroy(this.gameObject); }
+                else { Destroy(_gameobjectOverload); }
             }
             if (_dissableTriggerafterPickup) GetComponent<Collider>().enabled = false;
             _pickupAction.Invoke();
