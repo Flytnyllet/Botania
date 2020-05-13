@@ -47,38 +47,66 @@
 
 
 
-		//void vert(inout appdata_full v, out Input l) {
-		   // float3 worldPos = mul(unity_ObjectToWorld, float4(v.vertex.xyz, 1)).xyz;
-		   // UNITY_INITIALIZE_OUTPUT(Input, l);
-		   // l.leafuv = v.texcoord3;
-		   // appdata o;
-		   // o.uv2 = float4( v.texcoord1.xy, 0, 0);
-		   // float f = tex2Dlod(_Noise, float4(abs(worldPos.xy % 1), 0,0)).r * 100;
+		float random(float2 st) {
+			return frac(sin(dot(st.xy,
+				float2(12.9898, 78.233)))
+				* 43758.5453123);
+		}
+		float Noise(float2 xy) {
+			float2 i = floor(xy);
+			float2 f = frac(xy);
 
-		   // if (o.uv2.y > .95f) {
+			float a = random(i);
+			float b = random(i + float2(1.0, 0.0));
+			float c = random(i + float2(0.0, 1.0));
+			float d = random(i + float2(1.0, 1.0));
 
-			  //  v.vertex.x += cos(_Time.z*.3)*o.uv2.y*0.3f;
-			  //  v.vertex.y += sin(_Time.z*.5)*o.uv2.y*0.1f;
+			float2 u = f * f*(3.0 - 2.0*f);
 
-			  //  v.vertex.x += cos(f + _Time.z*.3)*o.uv2.y*0.1f;
-			  //  v.vertex.y += sin(f + _Time.z*.5)*o.uv2.y*0.05f;
-		   // }
-		//}
+			return lerp(a, b, u.x) +
+				(c - a)* u.y * (1.0 - u.x) +
+				(d - b) * u.x * u.y;
+		}
+
+		float Noise(float x, float y) {
+			float2 i = floor(float2(x, y));
+			float2 f = frac(float2(x, y));
+
+			float a = random(i);
+			float b = random(i + float2(1.0, 0.0));
+			float c = random(i + float2(0.0, 1.0));
+			float d = random(i + float2(1.0, 1.0));
+
+			float2 u = f * f*(3.0 - 2.0*f);
+
+			return lerp(a, b, u.x) +
+				(c - a)* u.y * (1.0 - u.x) +
+				(d - b) * u.x * u.y;
+		}
+#define NUM_OCTAVES 5
+		float fBm(float2 pos) {
+			float v = 0.0;
+			float a = 0.5;
+			float2 shift = float2(100.0, 100.0);
+			// Rotate to reduce axial bias
+			float2x2 rot = float2x2(cos(0.5), sin(0.5), -sin(0.5), cos(0.50));
+			for (int i = 0; i < NUM_OCTAVES; ++i) {
+				v += a * Noise(pos);
+				pos = mul(rot, pos) * 2.0 + shift;
+				a *= 0.5;
+			}
+			return v;
+		}
 
 	  void vert(inout appdata_full v) {
 		  float3 worldPos = mul(unity_ObjectToWorld, float4(v.vertex.xyz, 1)).xyz;
 
 		  float tex = tex2Dlod(_PhysicsMap, float4(v.texcoord.xy, 0, 0)).r;
-		  float sinW, cosW;
-		  sincos(worldPos.x + worldPos.z + worldPos.y + _Time.y*_Speed, sinW, cosW);
-		  float noise = tex2Dlod(_noiseTex, float4(sinW,0, 0, 0)).r;
+		  float sinW= sin((worldPos.x + worldPos.z + worldPos.y + _Time.y*_Speed)*4);
+		  float noise = fBm(worldPos.xz + _Time.w*_Speed*0.5);
 
-		  float largeWaveSin = sin(worldPos.x + worldPos.z + worldPos.y + _Time.y*_WindSize);
-		  float smallWaveSin = sin(worldPos.x + worldPos.z + worldPos.y + _Time.y*_WindSize*noise);
-
-		  //v.vertex.x += cos * v.vertex.x*0.03f;
-		  v.vertex.x += tex * (sinW )*_Strenght;
-		  v.vertex.y += tex * (cosW)*_Strenght;
+		  v.vertex.x += tex * ( noise)*_Strenght;
+		  v.vertex.y += tex * (sinW)*_Strenght;
 	  }
 
 
