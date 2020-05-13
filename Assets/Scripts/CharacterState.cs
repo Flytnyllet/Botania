@@ -7,7 +7,7 @@ using UnityEngine;
 //This is supposed to act as a place to store character variables which
 // can be edidted by other objects for the sake of avoiding dependendies.
 public enum CHARACTER_CONTROL_STATE { PLAYERCONTROLLED = 0, CUTSCENE, MENU, MENU_NO_MOVEMENT }
-public enum ABILITY_FLAG { NULL = 0, INVISSIBLE, SUPERHEARING, STONE, LEVITATE, SLOWFALL }
+public enum ABILITY_FLAG { NULL = 0, INVISSIBLE, SUPERHEARING, STONE, LEVITATE, SLOWFALL, CALM_ALL_FLOWERS }
 public static class CharacterState
 {
     static CursorUsabilityControll _cursorControll = new CursorUsabilityControll();

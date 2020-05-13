@@ -92,11 +92,11 @@
 
 				fixed4 frag(v2f i) : SV_Target
 				{
-					float depth = 1 - tex2D(_CameraDepthTexture, i.uv).x * 1;
+					float depth = 1 - clamp(0,1,tex2D(_CameraDepthTexture, i.uv).x);
 					depth += sin(i.uv.x*pi)*-.001;
 					float waves =((depth + _Time.w*_speed*0.0001) % 0.05) * 1000;
-					float wavesA = smoothstep(0.5- _Thickness, 0.5, waves);
-					float wavesB = smoothstep(0.5, 0.5+ _Thickness, waves);
+					float wavesA = smoothstep(5- _Thickness, 0.5, waves);
+					float wavesB = smoothstep(5, 0.5+ _Thickness, waves);
 					waves = (wavesA - wavesB)*clamp(0, 1, tex2D(_CameraDepthTexture, i.uv).x * 10000);
 					fixed4 col = tex2D(_MainTex, i.uv);
 					float2 uv = i.uv - 0.5;
