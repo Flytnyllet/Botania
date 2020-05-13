@@ -23,7 +23,7 @@ RenderSettings:
   m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
-  m_AmbientIntensity: 0.9
+  m_AmbientIntensity: 0.6
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
   m_SkyboxMaterial: {fileID: 2100000, guid: ad84faed901dde64b83fa3cf4e33aa47, type: 2}
@@ -121,6 +121,36 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &152707348
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 152707349}
+  m_Layer: 0
+  m_Name: DELETE ME IF MANY OF ME
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &152707349
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 152707348}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &230781293
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -382,6 +412,36 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1605332295}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1297777938
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1297777939}
+  m_Layer: 0
+  m_Name: DELETE ME IF MANY OF ME
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1297777939
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1297777938}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1354636521
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -711,5 +771,65 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: 879a5fe3b8d9641478814691d2dc556c,
         type: 2}
+    - target: {fileID: 9029605244914123631, guid: d04509d9a33d4314785a21cdc704c4b2,
+        type: 3}
+      propertyPath: _biomeFogColors.Array.data[0].r
+      value: 0.2890092
+      objectReference: {fileID: 0}
+    - target: {fileID: 9029605244914123631, guid: d04509d9a33d4314785a21cdc704c4b2,
+        type: 3}
+      propertyPath: _biomeFogColors.Array.data[0].g
+      value: 0.21893913
+      objectReference: {fileID: 0}
+    - target: {fileID: 9029605244914123631, guid: d04509d9a33d4314785a21cdc704c4b2,
+        type: 3}
+      propertyPath: _biomeFogColors.Array.data[0].b
+      value: 0.3773585
+      objectReference: {fileID: 0}
+    - target: {fileID: 9029605244914123631, guid: d04509d9a33d4314785a21cdc704c4b2,
+        type: 3}
+      propertyPath: _biomeFogColors.Array.data[1].r
+      value: 0.3962264
+      objectReference: {fileID: 0}
+    - target: {fileID: 9029605244914123631, guid: d04509d9a33d4314785a21cdc704c4b2,
+        type: 3}
+      propertyPath: _biomeFogColors.Array.data[1].g
+      value: 0.25978997
+      objectReference: {fileID: 0}
+    - target: {fileID: 9029605244914123631, guid: d04509d9a33d4314785a21cdc704c4b2,
+        type: 3}
+      propertyPath: _biomeFogColors.Array.data[1].b
+      value: 0.38409868
+      objectReference: {fileID: 0}
+    - target: {fileID: 9029605244914123631, guid: d04509d9a33d4314785a21cdc704c4b2,
+        type: 3}
+      propertyPath: _biomeFogColors.Array.data[2].r
+      value: 0.21181916
+      objectReference: {fileID: 0}
+    - target: {fileID: 9029605244914123631, guid: d04509d9a33d4314785a21cdc704c4b2,
+        type: 3}
+      propertyPath: _biomeFogColors.Array.data[2].g
+      value: 0.25957087
+      objectReference: {fileID: 0}
+    - target: {fileID: 9029605244914123631, guid: d04509d9a33d4314785a21cdc704c4b2,
+        type: 3}
+      propertyPath: _biomeFogColors.Array.data[2].b
+      value: 0.3773585
+      objectReference: {fileID: 0}
+    - target: {fileID: 9029605244914123631, guid: d04509d9a33d4314785a21cdc704c4b2,
+        type: 3}
+      propertyPath: _biomeFogColors.Array.data[3].r
+      value: 0.3773585
+      objectReference: {fileID: 0}
+    - target: {fileID: 9029605244914123631, guid: d04509d9a33d4314785a21cdc704c4b2,
+        type: 3}
+      propertyPath: _biomeFogColors.Array.data[3].g
+      value: 0.2829162
+      objectReference: {fileID: 0}
+    - target: {fileID: 9029605244914123631, guid: d04509d9a33d4314785a21cdc704c4b2,
+        type: 3}
+      propertyPath: _biomeFogColors.Array.data[3].b
+      value: 0.21893913
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d04509d9a33d4314785a21cdc704c4b2, type: 3}
