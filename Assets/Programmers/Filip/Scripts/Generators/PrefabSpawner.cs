@@ -259,8 +259,30 @@ public class PrefabSpawner : MonoBehaviour
     IEnumerator WaitToFixNormals(MeshData meshData, int chunkSize)
     {
         //Wait until everyspawnable is spawned until actually fixing their normals (to avoid fixing a null instance)
+        //This works 99 % of the time
         while (!_readyToFixNormals)
             yield return null;
+
+        //Hard check for the 1 % time
+        bool valid = false;
+        
+        while (!valid)
+        {
+            bool moveOut = true;
+
+            for (int i = 0; i < _gameObjectsInChunkWithNoNormals.Count; i++)
+            {
+                if (!_gameObjectsInChunkWithNoNormals[i].ReadyToSetNormal())
+                {
+                    moveOut = false;
+                    break;
+                }
+            }
+
+            valid = moveOut;
+
+            yield return null;
+        }
 
         for (int i = 0; i < _gameObjectsInChunkWithNoNormals.Count; i++)
             _gameObjectsInChunkWithNoNormals[i].SetNormal(meshData, chunkSize);
@@ -315,6 +337,11 @@ public class SpawnInfo
 
         _spawnedTransform.rotation = newRotation;
         _spawnedTransform.RotateAround(_spawnPosition, _spawnedTransform.up, _localRotationAmount);
+    }
+
+    public bool ReadyToSetNormal()
+    {
+        return _spawnedTransform != null;
     }
 
     public void Spawn(Transform container)

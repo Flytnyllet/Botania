@@ -10,16 +10,21 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5a29f2ff204e9fd47b6aacf16bc19fd1, type: 3}
-  m_Name: Table-Chairs-Noise
+  m_Name: Sundial
   m_EditorClassIdentifier: 
   _autoUpdate: 1
+  _clampMin: -3.4028235e+38
+  _clampMax: 3.4028235e+38
   _noiseSettings:
   - _noiseMergeType: 0
     _noiseSettings:
       _allWhite: 0
+      _invert: 0
+      _mask: 0
+      _maskValue: 0.5
       _addValue: 0
       _strength: 1
-      _seed: 100000
+      _seed: 99999
       _offset: {x: 0, y: 0}
       _scale: 50
       _octaves: 1
