@@ -134,7 +134,7 @@
 				float4 altCol2 = tex2D(_AltTex2, IN.worldPos.xz / altTextureScale[2])*altTextureColour[2] * noise.b;
 				float4 altCol3 = tex2D(_AltTex3, IN.worldPos.xz / altTextureScale[3])*altTextureColour[3] * noise.a;
 				o.Albedo = mainTex + altCol0 + altCol1 + altCol2 + altCol3;
-
+				//o.Albedo = o.Normal;
 				//o.Albedo = noise;
 			}
 			ENDCG

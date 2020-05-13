@@ -25,6 +25,7 @@ public class FlowerTeleportation : MonoBehaviour
     {
         _pickupScript.SetEnabled = false;
         _capCollider = GetComponent<CapsuleCollider>();
+        Debug.Log(_capCollider.bounds.size.x);
         _sphereCollider = GetComponent<SphereCollider>();
         _objectHeight = new Vector3(0, _capCollider.bounds.size.y, 0);
         _objectAltitudeOffset = new Vector3(0, _capCollider.bounds.center.y, 0);
@@ -75,7 +76,7 @@ public class FlowerTeleportation : MonoBehaviour
                 if (HIT && hit.transform.tag != "Flower")
                 {
                     Vector3 hitPos = hit.point;
-                    if (!Physics.CheckCapsule(hitPos + groundOffset, hitPos + _objectHeight * 1.1f, _capCollider.bounds.size.x, 0, QueryTriggerInteraction.Ignore))
+                    if (!Physics.CheckCapsule(hitPos + groundOffset, hitPos + _objectHeight * 1.1f, _capCollider.bounds.size.x*2, 0, QueryTriggerInteraction.Ignore))
                     {
                         ReleaseTrailObject(hitPos);
                         break;
@@ -86,7 +87,7 @@ public class FlowerTeleportation : MonoBehaviour
                 if (HIT && hit.transform.tag != "Flower")
                 {
                     Vector3 hitPos = hit.point;
-                    if (!Physics.CheckCapsule(hitPos + groundOffset, hitPos + _objectHeight * 1.1f, this.transform.localScale.y, 0, QueryTriggerInteraction.Ignore))
+                    if (!Physics.CheckCapsule(hitPos + groundOffset, hitPos + _objectHeight * 1.1f, this.transform.localScale.x*2, 0, QueryTriggerInteraction.Ignore))
                     {
                         ReleaseTrailObject(hitPos);
                         break;
