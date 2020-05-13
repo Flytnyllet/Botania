@@ -75,7 +75,7 @@ public class PrefabSpawner : MonoBehaviour
                         }
                         if (shouldSpawn)
                         {
-                            bool canObjectSpawnSize = CanObjectSpawnSize(x, y, spawnables[i].Size, meshSettings.ChunkSize, ref localOccupiedGrid) && (CanObjectSpawnSize(x, y, spawnables[i].Size, meshSettings.ChunkSize, ref _occupiedGrid) || spawnables[i].OthersCanSpawnInside);
+                            bool canObjectSpawnSize = CanObjectSpawnSize(x, y, spawnables[i].Size, meshSettings.ChunkSize, ref localOccupiedGrid) && (CanObjectSpawnSize(x, y, spawnables[i].Spacing, meshSettings.ChunkSize, ref _occupiedGrid) || spawnables[i].OthersCanSpawnInside);
                             bool canObjectSpawnDiff = CanObjectSpawnDiff(x, y, spawnables[i].Size, spawnables[i].OthersCanSpawnInside, heightMap.heightMap, spawnables[i].SpawnDifferencial, meshSettings.ChunkSize);
 
                             //No use in checking if it can spawn if that square is occopied
@@ -116,7 +116,7 @@ public class PrefabSpawner : MonoBehaviour
                                     if (!spawnables[i].OthersCanSpawnInside)
                                         OccupyWithObject(x, y, spawnables[i].Size, meshSettings.ChunkSize, ref _occupiedGrid);
 
-                                    OccupyWithObject(x, y, spawnables[i].Size, meshSettings.ChunkSize, ref localOccupiedGrid);
+                                    OccupyWithObject(x, y, spawnables[i].Spacing, meshSettings.ChunkSize, ref localOccupiedGrid);
 
                                     float scale = spawnPrefab.ScaleRandom * spawnables[i].OffsetNoise[x, y] + spawnPrefab.Scale;
                                     Vector3 newScale = new Vector3(scale, scale, scale);

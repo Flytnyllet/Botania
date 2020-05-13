@@ -29,6 +29,7 @@ public class Spawnable : UpdatableData
     [Header("Size Settings")]
 
     [SerializeField, Range(1, 30), Tooltip("How many squares does this object occupy?")] int _size;
+    [SerializeField, Range(1, 30)] int _spacing = 0; 
     [SerializeField, Tooltip("Do not have this enabled for pickups!!! It will crash!")] bool _othersCanSpawnInside = false;
     [SerializeField, Range(0, 50), Tooltip("How high can the difference between highest and lowest point in spawn area be for it to spawn?")] float _spawnDifferencial;
 
@@ -77,6 +78,7 @@ public class Spawnable : UpdatableData
     public bool SpawnFixedHeight                      { get { return _spawnFixedHeight; }           private set { _spawnFixedHeight = value; } }
 
     public int Size                                   { get { return _size; }                       private set { _size = value; } }
+    public int Spacing                                { get { return _spacing; }                    private set { _spacing = value; } }
     public bool OthersCanSpawnInside                  { get { return _othersCanSpawnInside; }       private set { _othersCanSpawnInside = value; } }
     public float SpawnDifferencial                    { get { return _spawnDifferencial; }          private set { _spawnDifferencial = value; } }
 
@@ -111,6 +113,7 @@ public class Spawnable : UpdatableData
         this._offsetAmount = spawnable._offsetAmount;
         this._spawnFixedHeight = spawnable._spawnFixedHeight;
         this._size = spawnable._size;
+        this._spacing = spawnable._spacing;
         this._othersCanSpawnInside = spawnable._othersCanSpawnInside;
         this._spawnDifferencial = spawnable._spawnDifferencial;
         this._softMinAmount = spawnable._softMinAmount;
@@ -140,6 +143,18 @@ public class Spawnable : UpdatableData
         }
 
         return newSpawnable;
+    }
+
+    static SpawnablePrefab[] CopyPrefabs(SpawnablePrefab[] prefabs)
+    {
+        SpawnablePrefab[] newPrefabs = new SpawnablePrefab[prefabs.Length];
+
+        for (int i = 0; i < newPrefabs.Length; i++)
+        {
+            newPrefabs[i] = new SpawnablePrefab(prefabs[i]);
+        }
+
+        return newPrefabs;
     }
 
     // Used to calculate all the different noises for every spawable
@@ -198,6 +213,16 @@ public class SpawnablePrefab
     public float FixedHeight { get { return _fixedHeight; } private set { _fixedHeight = value; } }
     public float Scale { get { return _scale; } private set { _scale = value; } }
     public float ScaleRandom { get { return _scaleRandom; } private set { _scaleRandom = value; } }
+
+    public SpawnablePrefab(SpawnablePrefab copyPrefabs)
+    {
+        this._prefab = copyPrefabs._prefab;
+        this._probability = copyPrefabs._probability;
+        this._height = copyPrefabs._height;
+        this._fixedHeight = copyPrefabs._fixedHeight;
+        this._scale = copyPrefabs._scale;
+        this._scaleRandom = copyPrefabs._scaleRandom;
+    }
 
     //Return total combined probability
     public static int GetMaxSize(SpawnablePrefab[] spawnablePrefabs)
