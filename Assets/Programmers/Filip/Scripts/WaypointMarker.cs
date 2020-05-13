@@ -8,6 +8,7 @@ using TMPro;
 public class WaypointMarker : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     public static readonly string STANDARD_WAYPOINT_NAME = "New Waypoint";
+	static bool _usingInputField = false;
 
     [Header("Settings")]
 
@@ -34,6 +35,7 @@ public class WaypointMarker : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     private void Update()
     {
         FormatText();
+		UsingInputField();
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -52,6 +54,23 @@ public class WaypointMarker : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         _text.rectTransform.localPosition = Vector2.zero;
         transform.GetComponentInChildren<TMP_SelectionCaret>().rectTransform.localPosition = Vector2.zero;
     }
+
+	void UsingInputField()
+	{
+		if(_inputField.isFocused)
+		{
+			_usingInputField = true;
+		}
+		else
+		{
+			_usingInputField = false;
+		}
+	}
+
+	public static bool InputFieldFocus()
+	{
+		return _usingInputField;
+	}
 
     public void Select(bool status)
     {

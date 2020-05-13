@@ -6,6 +6,10 @@ using UnityEngine.UI;
 public class BookManager : MonoBehaviour
 {
     const string INPUT_INVENTORY = "Inventory";
+	const string INPUT_MAP = "Map";
+	const string INPUT_FLOWERS = "Flowers";
+	const string INPUT_LORE = "Lore";
+	const string INPUT_ALCHEMY = "Alchemy";
 	const string OPEN_WHEEL = "Wheel";
 	[SerializeField] Sprite[] _BookSprites = null;
 
@@ -60,42 +64,69 @@ public class BookManager : MonoBehaviour
 
 	void Update()
     {
-        if (Input.GetButtonDown(INPUT_INVENTORY) && !_potionWheel.activeSelf)
-        {
-            Debug.Log("Inventory button");
-            if (!_book.activeSelf)
-            {
-                _book.SetActive(true);
-                EventManager.TriggerEvent(EventNameLibrary.OPEN_BOOK, new EventParameter());
-                CharacterState.SetControlState(CHARACTER_CONTROL_STATE.MENU);
-                ToBookmark(_currentBookmark);
-            }
-            else
-            {
-                CloseBook(new EventParameter()); //ignore the eventparameter
-            }
-        }
-		if (Input.GetButton(OPEN_WHEEL))// && !_book.activeSelf)
+		if (!WaypointMarker.InputFieldFocus())
+		{
+			InputHandling();
+		}
+	}
+
+	void InputHandling()
+	{
+		if (OpenBookmark(_currentBookmark, INPUT_INVENTORY)) ;
+
+		else if (OpenBookmark(3, INPUT_MAP)) ;
+
+		else if (OpenBookmark(2, INPUT_LORE)) ;
+		
+		else if (OpenBookmark(1, INPUT_FLOWERS)) ;
+		
+		else if (OpenBookmark(0, INPUT_ALCHEMY)) ;
+
+		if (Input.GetButtonDown(OPEN_WHEEL) && !_book.activeSelf)
 		{
 			_potionWheel.SetActive(true);
 			//_potionWheel.SetActive(!_potionWheel.activeSelf);
 			//if(_potionWheel.activeSelf)
 			//{
-				CharacterState.SetControlState(CHARACTER_CONTROL_STATE.MENU);
+			CharacterState.SetControlState(CHARACTER_CONTROL_STATE.MENU);
 			//}
 			//else
 			//{
 			//	CharacterState.SetControlState(CHARACTER_CONTROL_STATE.PLAYERCONTROLLED);
 			//}
 		}
-		else if(Input.GetButtonUp(OPEN_WHEEL))
+		else if (Input.GetButtonUp(OPEN_WHEEL))
 		{
 			_potionWheel.SetActive(false);
 			CharacterState.SetControlState(CHARACTER_CONTROL_STATE.PLAYERCONTROLLED);
-
 		}
 	}
 
+	bool OpenBookmark (int index, string input)
+	{
+		if (Input.GetButtonDown(input) && !_potionWheel.activeSelf)
+		{
+			if (_book.activeSelf)
+			{
+				CloseBook(new EventParameter());
+			}
+			else
+			{
+				OpenBook(index);
+			}
+			return true;
+		}
+		return false;
+	}
+
+	void OpenBook(int index)
+	{
+		_book.SetActive(true);
+		EventManager.TriggerEvent(EventNameLibrary.OPEN_BOOK, new EventParameter());
+		CharacterState.SetControlState(CHARACTER_CONTROL_STATE.MENU);
+		ToBookmark(index);
+	}
+	
     void SetupPage(int pageParentID, List<PageLoader> pages)
     {
         for (int i = 0; i < pages.Count; i++)
@@ -250,9 +281,9 @@ public class BookManager : MonoBehaviour
 		{
 			MapGenerator.Display(false);
 			_bookmarks[_currentBookmark].SetActive(true);
-			_book.GetComponent<Image>().sprite = _BookSprites[index];
 		}
-    }
+		_book.GetComponent<Image>().sprite = _BookSprites[index];
+	}
     public void FlipPage()
     {
         EventManager.TriggerEvent(EventNameLibrary.FLIP_PAGE, new EventParameter());

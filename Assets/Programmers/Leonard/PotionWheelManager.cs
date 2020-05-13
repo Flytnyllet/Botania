@@ -42,7 +42,7 @@ public class PotionWheelManager : MonoBehaviour
         //Debug.Log(screenPoint.normalized);
 		//Debug.Log("Mouse to close to center at: " + screenPoint);
 
-		if (screenPoint.magnitude > selectionDistance && screenPoint.magnitude < selectionDistance*2)
+		if (screenPoint.magnitude > selectionDistance ) // && screenPoint.magnitude < selectionDistance*2)
 		{
 			//Debug.Log("screenPoint magnitude : " + screenPoint.magnitude);
 			int? region;

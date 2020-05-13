@@ -39,6 +39,7 @@ public class FPSMovement : MonoBehaviour
 	[SerializeField] float _bobbingAmount = 0.05f;
 	[SerializeField] float _bobbingSpeed = 1f;
 	float _bobTimer = 0;
+	float _swimBobTimer = 0;
 	float _defPosX = 0;
 	float _defPosY = 0;
 
@@ -81,7 +82,7 @@ public class FPSMovement : MonoBehaviour
 	void Start()
 	{
 		_prevPos = transform.position;
-		_randWalk = Random.Range(0.8f, 1.2f);
+		_randWalk = Random.Range(0.8f, 1.2f);	
 		_emitPlayerSound = GetComponent<Player_Emitter>();
 
 		charCon = GetComponent<CharacterController>();
@@ -93,11 +94,6 @@ public class FPSMovement : MonoBehaviour
 	}
 
 	void FixedUpdate()
-	{
-
-	}
-
-	void Update()
 	{
 		if (CharacterState.Control_State == CHARACTER_CONTROL_STATE.PLAYERCONTROLLED || CharacterState.Control_State == CHARACTER_CONTROL_STATE.MENU)
 		{
@@ -133,6 +129,7 @@ public class FPSMovement : MonoBehaviour
 			{
 				_isUnderwater = false;
 				_lastWaterChunk = waterDetection.collider;
+				
 			}
 			if(isStoned)
 			{
@@ -207,7 +204,7 @@ public class FPSMovement : MonoBehaviour
 			{
 				Gravity(gravityFactor);
 			}
-			else if(Time.time%1 < 0.1)
+			else if(Time.time%5 < 0.01)
 			{
 				Debug.Log("Gravity is disabled");
 			}
@@ -343,7 +340,7 @@ public class FPSMovement : MonoBehaviour
 			FootstepsSound();
 			_bobTimer += Time.deltaTime * _bobbingSpeed;
 			_playerCam.localPosition = new Vector3(_defPosX + Mathf.Sin(_bobTimer*modifier) * _bobbingAmount* modifier,
-				_defPosY - Mathf.Abs(Mathf.Sin(_bobTimer * modifier)) * _bobbingAmount * modifier, _playerCam.localPosition.z);
+				Mathf.Lerp(_playerCam.localPosition.y, _defPosY - Mathf.Abs(Mathf.Sin(_bobTimer * modifier)) * _bobbingAmount * modifier, Time.deltaTime * _swimBobSpeed), _playerCam.localPosition.z);
 		}
 		else
 		{
@@ -359,14 +356,14 @@ public class FPSMovement : MonoBehaviour
 		if (Mathf.Abs(x) > 0.1f || Mathf.Abs(z) > 0.1f)
 		{
 			//Player is moving
-			_bobTimer += Time.deltaTime * _swimBobSpeed;
+			_swimBobTimer += Time.deltaTime * _swimBobSpeed;
 			_playerCam.localPosition = new Vector3(_playerCam.localPosition.x,
-				_defPosY + Mathf.Sin(_bobTimer) * _swimBobAmount, _playerCam.localPosition.z);
+				Mathf.Lerp(_playerCam.localPosition.y, _defPosY + Mathf.Sin(_swimBobTimer) * _swimBobAmount, Time.deltaTime * _swimBobSpeed), _playerCam.localPosition.z);
 		}
 		else
 		{
 			//Idle
-			_bobTimer = 0;
+			_swimBobTimer = 0;
 			_playerCam.localPosition = new Vector3(_playerCam.localPosition.x,
 				Mathf.Lerp(_playerCam.localPosition.y, _defPosY, Time.deltaTime * _swimBobSpeed), _playerCam.localPosition.z);
 		}
