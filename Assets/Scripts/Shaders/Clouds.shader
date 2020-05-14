@@ -102,6 +102,7 @@
 			float4 _CloudCol;
 			float _LowStep;
 			float gCloudLowStep;
+			float gEmissionMult;
 			float _HighStep;
 			float _FogHeight;
 			float _FogOffset;
@@ -125,7 +126,7 @@
 			//UNITY_APPLY_FOG(i.fogCoord, noise);
 			//return float4(1, 1, 1, 1);
 			float clouds = smoothstep(gCloudLowStep, _HighStep, noise);
-			return clouds * _CloudCol;
+			return clouds * _CloudCol / gEmissionMult;
 			//return lerp(col, _FogColor, 1 - smoothstep(_FogHeight, _FogHeight + _FogOffset, i.worldPos.y));
 		}
 		ENDCG

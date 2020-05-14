@@ -6,6 +6,7 @@
 		[Toggle(ALPHA_CUTOUT)]
 		_Cutout("Alpha Cutout", float) = 0
 		_CutoutValue("Alpha Cutout Value", float) = 0
+
 		_EmissionMap("Emission Map", 2D) = "black" {}
 		_EmissionMult("Emission Multiplier", range(0,1)) = 1.0
 			//_Metal("Metallness Map", 2D) = "black" {}
@@ -24,9 +25,10 @@
 
 
 		CGPROGRAM
-			#pragma surface surf Lambert noforwardadd vertex:vert addshadow dithercrossfade 
+			#pragma shader_feature ALPHA_CUTOUT 
+
+			#pragma surface surf Lambert vertex:vert dithercrossfade addshadow
 			#pragma target 3.0
-			#pragma shader_feature ALPHA_CUTOUT
 
 			float gWindSpeed;
 
@@ -43,6 +45,7 @@
 			float _StrenghtY;
 			float _StrenghtShake;
 			float _CutoutValue;
+			float gEmissionMult;
 
 
 			float random(float2 st) {
@@ -105,8 +108,10 @@
 			void vert(inout appdata_full v) {
 				float3 worldPos = mul(unity_ObjectToWorld, float4(v.vertex.xyz, 1)).xyz;
 				float height = lerp(0,1, v.vertex.y);
-				float sinW = sin((unity_ObjectToWorld[1].x + unity_ObjectToWorld[1].z) + _Time.y*_Speed)*0.1;
-				float cosW = cos((unity_ObjectToWorld[1].x + unity_ObjectToWorld[1].z) + _Time.y*_Speed*2)*0.1;
+				//float sinW = sin((unity_ObjectToWorld[1].x + unity_ObjectToWorld[1].z) + _Time.y*_Speed)*0.1;
+				//float cosW = cos((unity_ObjectToWorld[1].x + unity_ObjectToWorld[1].z) + _Time.y*_Speed*2)*0.1;
+				float sinW = sin((worldPos.x + worldPos.z) + _Time.y*_Speed)*0.1;
+				float cosW = cos((worldPos.x + worldPos.z) + _Time.y*_Speed*2)*0.1;
 				//float noise = sin(unity_ObjectToWorld[1].x+ unity_ObjectToWorld[1].z + _Time.y*_Speed);
 				//float noise = fBm(unity_ObjectToWorld[1].xz+ _Time.y*_Speed);
 				//float noise = sin((worldPos.x + worldPos.x) + _Time.y*_Speed * 10);
@@ -133,8 +138,8 @@
 				clip(alpha - thresholdMatrix[fmod(pos.x, 4)][pos.y % 4]);
 #endif
 				fixed4 c = tex2D(_MainTex, IN.uv_MainTex);
-				o.Albedo = c.rgb;
-				o.Emission = tex2D(_EmissionMap, IN.uv_MainTex)*_EmissionMult;
+				o.Albedo = c.rgb/ gEmissionMult;
+				o.Emission = tex2D(_EmissionMap, IN.uv_MainTex)*_EmissionMult*gEmissionMult;
 
 				if (IN.facing < 0.5)
 					o.Normal *= -1.0;

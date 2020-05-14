@@ -10,7 +10,9 @@ public class WorldState : MonoBehaviour
 
     [SerializeField] float _fogChangeTime = 4;
     [SerializeField] float _targetFogDensity = 0.5f;
+    float _currentFogDensity;
     float _baseFogDensity;
+    System.Threading.Tasks.Task _task;
 
     [SerializeField] int _lightningStrikesPerRain = 2;
 
@@ -28,6 +30,7 @@ public class WorldState : MonoBehaviour
     }
     private void Start()
     {
+        _currentFogDensity = RenderSettings.fogDensity;
         _cloudthicknessLowStepSTARTVALUE = _cloudthicknessLowStep;
         setRaining(false);
         StartEvent(WORLD_EVENTS.Normal);
@@ -41,7 +44,7 @@ public class WorldState : MonoBehaviour
         switch (worldEvent)
         {
             case WORLD_EVENTS.Normal:
-                ActionDelayer.RunAfterDelay(() =>
+                var test = ActionDelayer.RunAfterDelay(() =>
                 {
                     //pick random enum
                     StartEvent((WORLD_EVENTS)Random.Range(1, System.Enum.GetValues(typeof(WORLD_EVENTS)).Length));
@@ -51,7 +54,7 @@ public class WorldState : MonoBehaviour
             case WORLD_EVENTS.Rain:
                 setRaining(true);
                 float eventTime = Random.Range(_eventMinTime, _eventMaxTime);
-                float lightningTimingBaseOffset = (eventTime-5) / _lightningStrikesPerRain;
+                float lightningTimingBaseOffset = (eventTime - 5) / _lightningStrikesPerRain;
                 float lightningTiming = 0;
                 for (int i = 0; i < _lightningStrikesPerRain; i++)
                 {
@@ -170,7 +173,34 @@ public class WorldState : MonoBehaviour
         float startVal = RenderSettings.fogDensity;
         while (time < lerpTime)
         {
-            RenderSettings.fogDensity = Mathf.Lerp(startVal, targetStrenght, time / lerpTime);
+            _currentFogDensity = Mathf.Lerp(startVal, targetStrenght, time / lerpTime);
+            if (worldStateDominant)
+            {
+                RenderSettings.fogDensity = _currentFogDensity;
+            }
+            time += Time.deltaTime;
+            yield return null;
+        }
+    }
+
+    //Absolute fucking trash, like holy fuck don't even look at it
+    //Lerps between 0 and current FogThickness, depending on wether something wants to override the actual value
+    //This is all because Unity doesn't use the fucking alpha colour on the fog colour
+    //Forget to change the worldState back and I'll stab you, then stab myself for creating this garbage.
+    bool worldStateDominant = true;
+    public void ChangeFogThickness(float lerpTime)
+    {
+        worldStateDominant = !worldStateDominant;
+        StartCoroutine(ChangeFogDensityChild(lerpTime));
+    }
+    IEnumerator ChangeFogDensityChild(float lerpTime)
+    {
+        float time = 0;
+        float startVal = RenderSettings.fogDensity;
+        while (time < lerpTime)
+        {
+            RenderSettings.fogDensity = Mathf.Lerp(startVal,
+                worldStateDominant ? _currentFogDensity : 0, time / lerpTime);
             time += Time.deltaTime;
             yield return null;
         }

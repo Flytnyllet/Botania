@@ -18,7 +18,7 @@
 		_WaveSpeed("Wave Speed Multipier", float) = 1.0
 		_Radius("Rain Drop Radius", float) = 2
 		_RainSpeed("Rain Drop Speed", float) = 2
-		//_RainWave("Rain To Wave Ratio", range(0,1)) = 0.9
+			//_RainWave("Rain To Wave Ratio", range(0,1)) = 0.9
 
 	}
 		SubShader
@@ -47,6 +47,7 @@
 			float gRainWave;
 			float _FresnelLow;
 			float _FresnelHigh;
+			float gEmissionMult;
 			sampler2D _CameraDepthTexture;
 
 			float random(float2 st) {
@@ -126,11 +127,11 @@
 			UNITY_INSTANCING_BUFFER_END(Props)
 
 			void surf(Input IN, inout SurfaceOutputStandard  o)
-			{  
+			{
 				int radius = 2;
 				float EPSILON = 1e-3;
 				//Dela upp i en 10*10 grid
-				float2 origin = floor(IN.uv_MainTex * 10/ _Radius);
+				float2 origin = floor(IN.uv_MainTex * 10 / _Radius);
 				float2 circles = float2(0, 0);
 				for (int j = -radius; j <= radius; ++j)
 				{
@@ -146,7 +147,7 @@
 						float2 p = pi + samplePoin;
 
 						float t = frac(0.3*_Time.w*_RainSpeed + samplePoin);
-						float2 v = p - IN.uv_MainTex * 10/ _Radius;
+						float2 v = p - IN.uv_MainTex * 10 / _Radius;
 						float dist = length(v) - (float(radius) + 1.)*t;
 						float dist1 = dist - EPSILON;
 						float dist2 = dist + EPSILON;
@@ -172,12 +173,15 @@
 				// Metallic and smoothness come from slider variables
 				float3 trest = IN.worldNormal* float3(1,1,1);
 				float2 waterNormal = sobel(IN.worldPos.xz + _WaveDirection * _Time.w*_WaveSpeed);
-				float fresnelfactor =dot(float3(0, 1, 0),1-normalize(UnityWorldSpaceViewDir(IN.worldPos)));
+				float fresnelfactor = dot(float3(0, 1, 0),1 - normalize(UnityWorldSpaceViewDir(IN.worldPos)));
+
+				float VissionPotionEffectMultiplier = 1 / gEmissionMult / gEmissionMult;
+
 				fresnelfactor = smoothstep(_FresnelLow, _FresnelHigh, fresnelfactor);
 				o.Normal += lerp(rainNormal ,UnpackNormal(half4(waterNormal*0.02,1, 0))*0.5 + 0.5, gRainWave);
-				o.Albedo = waterColor;
-				o.Metallic = 1;
-				o.Smoothness = _Glossiness * waterColor.a*fresnelfactor;
+				o.Albedo = waterColor * VissionPotionEffectMultiplier;
+				o.Metallic = 1 * VissionPotionEffectMultiplier;
+				o.Smoothness = _Glossiness * waterColor.a*fresnelfactor*VissionPotionEffectMultiplier;
 				o.Alpha = _Alpha * waterColor.a;
 			}
 			ENDCG

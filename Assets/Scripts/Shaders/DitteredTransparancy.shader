@@ -10,6 +10,7 @@
 		_SpecularMap("Metallic", 2D) = "white" {}
 		_RoughMap("Roghness", 2D) = "white" {}
 		_Color("Color", Color) = (1,1,1,1)
+		_EmissionMult ("Emission Multiplier", float) =1
 	}
 		SubShader{
 			Tags { "Queue" = "AlphaTest" "IgnoreProjector" = "True" "RenderType" = "TransparentCutout" }
@@ -31,6 +32,8 @@
 		sampler2D _RoughMap;
 		float4 _Color;
 		float _CutoutValue;
+		float _EmissionMult;
+		float gEmissionMult;
 
 		struct Input {
 			float2 uv_MainTex;
@@ -55,7 +58,7 @@
 #else
 			clip(o.Alpha - thresholdMatrix[fmod(pos.x, 4)][pos.y % 4]);
 #endif
-			o.Emission = tex2D(_EmissionMap, IN.uv_MainTex);
+			o.Emission = tex2D(_EmissionMap, IN.uv_MainTex)*_EmissionMult*gEmissionMult;
 			o.Metallic = tex2D(_SpecularMap, IN.uv_MainTex).r*tex2D(_RoughMap, IN.uv_MainTex).r;
 
 			if (IN.facing < 0.5)

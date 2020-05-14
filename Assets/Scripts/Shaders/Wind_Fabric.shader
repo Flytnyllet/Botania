@@ -44,6 +44,7 @@
 		float _WindSize;
 		float _Strenght;
 		float _CutoutValue;
+		float gEmissionMult;
 
 
 
@@ -112,7 +113,7 @@
 
 	  void surf(Input IN, inout SurfaceOutput o) {
 		  fixed4 c = tex2D(_MainTex, IN.uv_MainTex)*_Color;
-		  o.Albedo = c.rgb;
+		  o.Albedo = c.rgb/ gEmissionMult;
 		  o.Alpha = tex2D(_Alpha, IN.uv_MainTex)*_Color;
 		  float2 pos = IN.screenPos.xy / IN.screenPos.w;
 		  pos *= _ScreenParams.xy; // pixel position
@@ -128,7 +129,7 @@
 #else
 		  clip(o.Alpha - thresholdMatrix[fmod(pos.x, 4)][pos.y % 4]);
 #endif
-		  o.Emission = tex2D(_EmissionMap, IN.uv_MainTex);
+		  o.Emission = tex2D(_EmissionMap, IN.uv_MainTex)*gEmissionMult;
 	  }
 	ENDCG
 		}

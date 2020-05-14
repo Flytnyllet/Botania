@@ -66,4 +66,14 @@ public class PickupFlower : InteractableSaving, IInteractable
         }
         return false;
     }
+    IEnumerator ShakeFlower(float force, float duration)
+    {
+        float time = 0;
+        while (time < duration)
+        {
+
+            time += Time.deltaTime;
+            yield return null;
+        }
+    }
 }
