@@ -357,11 +357,12 @@ public class MapGenerator : MonoBehaviour, IDragHandler, IScrollHandler, IPointe
     private static void AddTexture(Texture2D texture, Vector2 chunkCoord)
     {
         if (!_renderedMapChunks.ContainsKey(chunkCoord))
+        {
             _renderedMapChunks.Add(chunkCoord, new TextureSave(chunkCoord));
+            InstantiateChunk(texture, chunkCoord);
+        }
         else
             Debug.LogWarning("This terrainchunk is already a key for a texture? Multiple callings? Or reading savings?");
-
-        InstantiateChunk(texture, chunkCoord);
     }
 
     private static void InstantiateChunk(Texture2D texture, Vector2 chunkCoord)
