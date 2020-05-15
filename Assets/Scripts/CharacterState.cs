@@ -86,11 +86,6 @@ public static class CharacterState
 
     public static void SetControlState(CHARACTER_CONTROL_STATE state)
     {
-        //Kanske fel ställe att lägga in det på så flytta ifall bad => sparar här!
-        if (state != CHARACTER_CONTROL_STATE.PLAYERCONTROLLED)
-            SaveSystem.SaveStatic();
-        //=====
-
         _controlState = state;
         _cursorControll.SetMouseState(state);
     }
