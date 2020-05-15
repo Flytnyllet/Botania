@@ -19,7 +19,6 @@ public class MaterialColourLerper : MonoBehaviour
     }
     IEnumerator ColourLerp(float lerpTime)
     {
-        Debug.Log(cloudState);
         Color colA = _startColour;
         Color colB = _targetColour;
         if (cloudState)
