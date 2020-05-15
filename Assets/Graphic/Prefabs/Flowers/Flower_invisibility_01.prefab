@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 598900750935656401}
   - component: {fileID: 446984145099543045}
   - component: {fileID: 4688689593499785003}
+  - component: {fileID: 645986671935899920}
   m_Layer: 0
   m_Name: Flower_invisibility_01
   m_TagString: Untagged
@@ -110,6 +111,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _spawnPartially: 0
+--- !u!114 &645986671935899920
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3099797202361627142}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef70da52aeca2474cb021927f54dffe6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _renderer:
+  - {fileID: 8486109138785911885}
+  - {fileID: 8236999523444817370}
+  _visibleTex: {fileID: 2800000, guid: 18c38d7571f6bac4da1ffa82c9b85581, type: 3}
+  _invisibleTex: {fileID: 2800000, guid: 82cc1525c3b9c0246aff426f5ddac89c, type: 3}
 --- !u!1 &6789691386491916300
 GameObject:
   m_ObjectHideFlags: 0
