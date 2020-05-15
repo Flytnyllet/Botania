@@ -12,6 +12,9 @@ public class SaveSystem : MonoBehaviour
     [SerializeField, Range(1, 1200)] float _saveIntervalTime = 300;
     [SerializeField] AnimationCurve _saveIconAlphaCurve;
     [SerializeField, Range(0.01f, 5)] float _saveIconTime = 2.5f;
+    [SerializeField] bool _intervallSave = false;
+    [SerializeField] bool _menuSave = true;
+    [SerializeField, Range(0.01f, 200)] float _menuSaveIntervall = 30;
     [SerializeField] bool _save = true;
     [SerializeField] bool _load = true;
 
@@ -22,6 +25,8 @@ public class SaveSystem : MonoBehaviour
 
     Timer _saveTimer;
     Timer _saveIconTimer;
+    Timer _menuIntervallTimer;
+    bool _canCurrentlyMenuSave = true;
 
     Color _saveIconStartColor;
 
@@ -29,9 +34,12 @@ public class SaveSystem : MonoBehaviour
     {
         if (_thisSaveSystem == null)
         {
+            _menuSaveIntervall = _menuSaveIntervall < _saveIconTime ? _saveIconTime : _menuSaveIntervall;
+
             _thisSaveSystem = this;
             _saveTimer = new Timer(_saveIntervalTime);
             _saveIconTimer = new Timer(_saveIconTime);
+            _menuIntervallTimer = new Timer(_menuSaveIntervall);
 
             _saveIconStartColor = _saveIcon.color;
             ResetIconColor();
@@ -47,12 +55,23 @@ public class SaveSystem : MonoBehaviour
 
     private void Update()
     {
-        _saveTimer.Time += Time.deltaTime;
-
-        if (_saveTimer.Expired())
+        if (_menuSave)
         {
-            _saveTimer.Reset();
-            Save();
+            _menuIntervallTimer.Time += Time.deltaTime;
+
+            if (_menuIntervallTimer.Expired() && !_canCurrentlyMenuSave)
+                _canCurrentlyMenuSave = true;
+        }
+
+        if (_intervallSave)
+        {
+            _saveTimer.Time += Time.deltaTime;
+
+            if (_saveTimer.Expired())
+            {
+                _saveTimer.Reset();
+                Save();
+            }
         }
     }
 
@@ -63,6 +82,16 @@ public class SaveSystem : MonoBehaviour
         {
             PrefabSpawnerSaveData.Load();
             MapGenerator.Load();
+        }
+    }
+
+    public static void SaveStatic()
+    {
+        if (_thisSaveSystem._save && _thisSaveSystem._canCurrentlyMenuSave)
+        {
+            _thisSaveSystem._canCurrentlyMenuSave = false;
+            _thisSaveSystem._menuIntervallTimer.Reset();
+            _thisSaveSystem.Save();
         }
     }
 
