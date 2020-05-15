@@ -96,6 +96,25 @@ MonoBehaviour:
   - {r: 0.3773585, g: 0.2829162, b: 0.21893913, a: 1}
   _checkForBiomeChangeTime: 0.5
   _changeFogColorTime: 10
+--- !u!95 &1050758378
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8190450542591125302}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 5ee5508ca10c8ac43b560a5290f197f7, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &8190450543575226651
 GameObject:
   m_ObjectHideFlags: 0
@@ -330,6 +349,91 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1223879523873368332, guid: c5b2c4b49a19dda44b1287dede7d68e2,
         type: 3}
+      propertyPath: _saveIntervalTime
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1223879523873368332, guid: c5b2c4b49a19dda44b1287dede7d68e2,
+        type: 3}
+      propertyPath: _saveIconAlphaCurve.m_Curve.Array.data[0].value
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1223879523873368332, guid: c5b2c4b49a19dda44b1287dede7d68e2,
+        type: 3}
+      propertyPath: _saveIconAlphaCurve.m_Curve.Array.data[0].inSlope
+      value: -0.16055033
+      objectReference: {fileID: 0}
+    - target: {fileID: 1223879523873368332, guid: c5b2c4b49a19dda44b1287dede7d68e2,
+        type: 3}
+      propertyPath: _saveIconAlphaCurve.m_Curve.Array.data[0].outSlope
+      value: -0.16055033
+      objectReference: {fileID: 0}
+    - target: {fileID: 1223879523873368332, guid: c5b2c4b49a19dda44b1287dede7d68e2,
+        type: 3}
+      propertyPath: _saveIconAlphaCurve.m_Curve.Array.data[0].tangentMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1223879523873368332, guid: c5b2c4b49a19dda44b1287dede7d68e2,
+        type: 3}
+      propertyPath: _saveIconAlphaCurve.m_Curve.Array.data[0].outWeight
+      value: 0.074074075
+      objectReference: {fileID: 0}
+    - target: {fileID: 1223879523873368332, guid: c5b2c4b49a19dda44b1287dede7d68e2,
+        type: 3}
+      propertyPath: _saveIconAlphaCurve.m_Curve.Array.data[1].time
+      value: 0.8005742
+      objectReference: {fileID: 0}
+    - target: {fileID: 1223879523873368332, guid: c5b2c4b49a19dda44b1287dede7d68e2,
+        type: 3}
+      propertyPath: _saveIconAlphaCurve.m_Curve.Array.data[1].value
+      value: 0.9503105
+      objectReference: {fileID: 0}
+    - target: {fileID: 1223879523873368332, guid: c5b2c4b49a19dda44b1287dede7d68e2,
+        type: 3}
+      propertyPath: _saveIconAlphaCurve.m_Curve.Array.data[1].inSlope
+      value: -0.17083357
+      objectReference: {fileID: 0}
+    - target: {fileID: 1223879523873368332, guid: c5b2c4b49a19dda44b1287dede7d68e2,
+        type: 3}
+      propertyPath: _saveIconAlphaCurve.m_Curve.Array.data[1].outSlope
+      value: -0.17083357
+      objectReference: {fileID: 0}
+    - target: {fileID: 1223879523873368332, guid: c5b2c4b49a19dda44b1287dede7d68e2,
+        type: 3}
+      propertyPath: _saveIconAlphaCurve.m_Curve.Array.data[1].inWeight
+      value: 0.08903877
+      objectReference: {fileID: 0}
+    - target: {fileID: 1223879523873368332, guid: c5b2c4b49a19dda44b1287dede7d68e2,
+        type: 3}
+      propertyPath: _saveIconAlphaCurve.m_Curve.Array.data[1].outWeight
+      value: 0.33333334
+      objectReference: {fileID: 0}
+    - target: {fileID: 1223879523873368332, guid: c5b2c4b49a19dda44b1287dede7d68e2,
+        type: 3}
+      propertyPath: _saveIconAlphaCurve.m_Curve.Array.data[2].inSlope
+      value: -2.9908893
+      objectReference: {fileID: 0}
+    - target: {fileID: 1223879523873368332, guid: c5b2c4b49a19dda44b1287dede7d68e2,
+        type: 3}
+      propertyPath: _saveIconAlphaCurve.m_Curve.Array.data[2].outSlope
+      value: -2.9908893
+      objectReference: {fileID: 0}
+    - target: {fileID: 1223879523873368332, guid: c5b2c4b49a19dda44b1287dede7d68e2,
+        type: 3}
+      propertyPath: _saveIconAlphaCurve.m_Curve.Array.data[2].tangentMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1223879523873368332, guid: c5b2c4b49a19dda44b1287dede7d68e2,
+        type: 3}
+      propertyPath: _saveIconAlphaCurve.m_Curve.Array.data[2].inWeight
+      value: 0.064412236
+      objectReference: {fileID: 0}
+    - target: {fileID: 1223879523873368332, guid: c5b2c4b49a19dda44b1287dede7d68e2,
+        type: 3}
+      propertyPath: _saveIconTime
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1223879523873368332, guid: c5b2c4b49a19dda44b1287dede7d68e2,
+        type: 3}
       propertyPath: _save
       value: 1
       objectReference: {fileID: 0}
@@ -338,8 +442,20 @@ PrefabInstance:
       propertyPath: _load
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 140128496697346228, guid: c5b2c4b49a19dda44b1287dede7d68e2,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -5329841368100483496, guid: a2a9f2a92a4f9d642b86b5906e0bf7d4,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c5b2c4b49a19dda44b1287dede7d68e2, type: 3}
+--- !u!1 &8190450542591125302 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1223879523873368331, guid: c5b2c4b49a19dda44b1287dede7d68e2,
+    type: 3}
+  m_PrefabInstance: {fileID: 7013868987714113085}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8190450542591125296 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1223879523873368333, guid: c5b2c4b49a19dda44b1287dede7d68e2,
