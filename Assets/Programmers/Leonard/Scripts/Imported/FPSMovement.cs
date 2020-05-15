@@ -102,7 +102,7 @@ public class FPSMovement : MonoBehaviour
 			// == Variables ==
 			//Input
 			Vector2 moveInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
-			if (moveInput.magnitude < 1)
+			if (moveInput.magnitude > 1)
 			{
 				moveInput.Normalize();
 			}
