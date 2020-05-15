@@ -6,6 +6,8 @@ using FMOD.Studio;
 
 public class Amb_Global_Wind : MonoBehaviour
 {
+    public static Amb_Global_Wind Instance;
+
     [EventRef]
     public string event_Ref;
     private EventInstance event_Instance;
@@ -25,6 +27,15 @@ public class Amb_Global_Wind : MonoBehaviour
 
     private void Awake()
     {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this.gameObject);
+        }
+        else
+        {
+            Instance = this;
+        }
+
         event_Instance = RuntimeManager.CreateInstance(event_Ref);
         event_Description = RuntimeManager.GetEventDescription(event_Ref);
         event_Description.is3D(out is3D);

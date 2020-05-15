@@ -40,6 +40,7 @@
 
 		float mainTexStart;
 		float mainTexStop;
+		float gEmissionMult;
 
 		float random(float2 st) {
 			return frac(sin(dot(st.xy,
@@ -133,8 +134,8 @@
 				float4 altCol1 = tex2D(_AltTex1, IN.worldPos.xz / altTextureScale[1])*altTextureColour[1] * noise.g;
 				float4 altCol2 = tex2D(_AltTex2, IN.worldPos.xz / altTextureScale[2])*altTextureColour[2] * noise.b;
 				float4 altCol3 = tex2D(_AltTex3, IN.worldPos.xz / altTextureScale[3])*altTextureColour[3] * noise.a;
-				o.Albedo = mainTex + altCol0 + altCol1 + altCol2 + altCol3;
-
+				o.Albedo = (mainTex + altCol0 + altCol1 + altCol2 + altCol3) / gEmissionMult / gEmissionMult;
+				//o.Albedo = o.Normal;
 				//o.Albedo = noise;
 			}
 			ENDCG

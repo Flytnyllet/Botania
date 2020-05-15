@@ -1,75 +1,43 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using FMODUnity;
-using FMOD.Studio;
 
 public class Amb_Local_Wind : MonoBehaviour
 {
-    private string event_Ref;
-    private EventInstance event_Instance;
-    private EventDescription event_Description;
-    private PLAYBACK_STATE _event_State;
-    private bool _is3D;
-    private bool _isVirtual;
+    public static Amb_Local_Wind Instance;
 
     [SerializeField]
-    private Amb_Data amb_Data = default;
-    private Amb_GetRandomEvent amb_RandomEvent;
+    private Amb_Data _amb_Data;
 
-    private void OnEnable()
-    {
-        amb_RandomEvent = GetComponentInParent<Amb_GetRandomEvent>();
-        Init_Local_Wind();
-    }
+    public Dictionary<int, Amb_Wind_Emitter> _amb_Wind_List = new Dictionary<int, Amb_Wind_Emitter>();
+    //public List<Amb_Wind_Emitter> _active_Wind_List = new List<Amb_Wind_Emitter>();
+    public string[] Amb_Wind_Data { get { return _amb_Wind_Data; } }
+    private string[] _amb_Wind_Data;
 
-    private void OnDrawGizmos()
+    private void Awake()
     {
-        Gizmos.DrawIcon(transform.position, "FMOD/FMODEmitter.tiff", true);
-    }
-
-    private void Init_Local_Wind()
-    {
-        switch (amb_RandomEvent.amb_List)
+        if (Instance != null && Instance != this)
         {
-            case "Amb_Forest":
-                event_Ref = amb_Data.amb_forest_wind;
-                break;
-            case "Amb_Grassland":
-                event_Ref = amb_Data.amb_forest_wind;
-                break;
+            Destroy(this.gameObject);
         }
-        event_Instance = RuntimeManager.CreateInstance(event_Ref);
-        event_Description = RuntimeManager.GetEventDescription(event_Ref);
-        event_Description.is3D(out _is3D);
-        if (_is3D)
-            RuntimeManager.AttachInstanceToGameObject(event_Instance, transform, GetComponent<Rigidbody>());
-
-        Start_Local_Wind();
-    }
-
-    public void Start_Local_Wind()
-    {
-        event_Instance.start();
-    }
-
-    public void Stop_Local_Wind()
-    {
-        event_Instance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
-    }
-
-    private void FixedUpdate()
-    {
-        //event_Instance.getPlaybackState(out _event_State);
-        event_Instance.isVirtual(out _isVirtual);
-
-        if (!_isVirtual)
-            return;
         else
         {
-            event_Instance.release();
-            event_Instance.clearHandle();
-            gameObject.SetActive(false);
+            Instance = this;
         }
+
+        _amb_Wind_Data = new string[]
+        {
+            _amb_Data.amb_tree1_wind
+        };
+
+        Amb_Wind_Emitter amb_tree1_wind = gameObject.AddComponent<Amb_Wind_Emitter>();
+        _amb_Wind_List.Add(0, amb_tree1_wind);
+
+        Init_Amb_Wind_List();
+    }
+
+    private void Init_Amb_Wind_List()
+    {
+        _amb_Wind_List[0].Init_Event(_amb_Wind_Data[0]);
     }
 }

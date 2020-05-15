@@ -30,6 +30,7 @@ Shader "Botania/Skybox" {
 			half4 _Tint;
 			half _Exposure;
 			float _Rotation;
+			float gEmissionMult;
 
 
 			float random(float2 st) {
@@ -122,7 +123,7 @@ Shader "Botania/Skybox" {
 		c = c * _Tint.rgb * unity_ColorSpaceDouble.rgb;
 		c *= _Exposure;
 		half4 skyCol = half4(c, 1);
-			return lerp(skyCol, _FogColor, 1 - smoothstep(_FogHeight, _FogHeight + _FogOffset, i.texcoord.y));
+			return lerp(skyCol, _FogColor, 1 - smoothstep(_FogHeight, _FogHeight + _FogOffset, i.texcoord.y))/ gEmissionMult/ gEmissionMult;
 	}
 	half4 skybox_frag_Top(v2f i, sampler2D smp, half4 smpDecode)
 	{
@@ -130,7 +131,7 @@ Shader "Botania/Skybox" {
 		half3 c = DecodeHDR(tex, smpDecode);
 		c = c * _Tint.rgb * unity_ColorSpaceDouble.rgb;
 		c *= _Exposure;
-		return half4(c, 1);
+		return half4(c, 1) / gEmissionMult / gEmissionMult;
 	}
 	half4 skybox_frag_Down(v2f i, sampler2D smp, half4 smpDecode)
 	{
@@ -138,7 +139,7 @@ Shader "Botania/Skybox" {
 		half3 c = DecodeHDR(tex, smpDecode);
 		c = c * _Tint.rgb * unity_ColorSpaceDouble.rgb;
 		c *= _Exposure;
-		return  _FogColor;
+		return  _FogColor / gEmissionMult / gEmissionMult;
 	}
 	ENDCG
 

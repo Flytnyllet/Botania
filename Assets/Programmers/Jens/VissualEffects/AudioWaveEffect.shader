@@ -9,6 +9,8 @@
 		_speed("Effect speed",float) = 1
 		_Color("Color", Color) = (1,1,1,1)
 		_Thickness("Line Thickness", Float) = 0.01
+		_WaveSharpnessIn("Line Sharpness Inner", range(0,1)) = 1
+		_WaveSharpnessOut("Line Sharpness Outer", range(0,1)) = 1
 	}
 		SubShader
 		{
@@ -89,24 +91,29 @@
 				float _Lerp;
 				float _Str;
 				float _speed;
+				float _WaveSharpnessIn;
+				float _WaveSharpnessOut;
 
 				fixed4 frag(v2f i) : SV_Target
 				{
-					float depth = 1 - tex2D(_CameraDepthTexture, i.uv).x * 1;
+					float depth = 1 - clamp(0,1,tex2D(_CameraDepthTexture, i.uv).x);
 					depth += sin(i.uv.x*pi)*-.001;
-					float waves =((depth + _Time.w*_speed*0.0001) % 0.05) * 1000;
-					float wavesA = smoothstep(0.5- _Thickness, 0.5, waves);
-					float wavesB = smoothstep(0.5, 0.5+ _Thickness, waves);
+					float waves = abs((depth + _Time.w*_speed*0.0001) % 0.05) * 1000;
+					waves = waves * step(0.989,depth);
+					float wavesA = smoothstep(25 - _Thickness * _WaveSharpnessIn, 25, waves);
+					float wavesB = smoothstep(25, 25 + _Thickness * _WaveSharpnessOut, waves);
 					waves = (wavesA - wavesB)*clamp(0, 1, tex2D(_CameraDepthTexture, i.uv).x * 10000);
+					//waves = smoothstep(0, 0.05, waves);
+					//return waves;
 					fixed4 col = tex2D(_MainTex, i.uv);
-					float2 uv = i.uv - 0.5;
+					//float2 uv = i.uv - 0.5;
 					//float tanVal = atan2(uv.y, uv.x) + pi;
 					//float centerDist = distance(uv, 0);
 					//float sinVal = sin((sin(depth) - _Time.w * 0.00001)*0.5 + 0.5);
 					//float noiseVal = tex2D(_Noise, float2(0, sinVal));
-					float4 effectCol = col - (1 - (wavesA - wavesB)*clamp(0,1,tex2D(_CameraDepthTexture, i.uv).x * 10000))*_Str;
+					float4 effectCol = col * (1 - waves * _Str);
 					//return col*(1 - waves)+ waves* _Color;
-					return lerp(col, effectCol, _Lerp) + waves * _Color*_Color.a;
+					return lerp(col, effectCol, _Lerp) + waves * _Color*_Color.a* _Str;
 				}
 				ENDCG
 			}

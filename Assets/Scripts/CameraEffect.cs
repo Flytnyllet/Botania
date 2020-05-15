@@ -10,15 +10,21 @@ using UnityEngine.Rendering.PostProcessing;
 //Can be activated by calling "StartCameraEffect" in the eventmanager
 public class CameraEffect : MonoBehaviour
 {
-
+    const int MAX_EFFECTS = 10;
+    RenderTexture[] _tempRenderTextures = new RenderTexture[MAX_EFFECTS];
     public List<Material> _materials = new List<Material>();
-    RenderTexture _tempRenderTexture;
     PostProcessVolume _ppVolume;
     Camera _camera;
 
     //awful static Action which should be faster than the central EventManager,
     //This is only used because when used it's run every frame
     public static Action Renders;
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.I)) EventManager.TriggerEvent(EventNameLibrary.VISSION_POTION, new EventParameter { floatParam = 5, floatParam2 = 20 });
+        if (Input.GetKeyDown(KeyCode.O)) Shader.SetGlobalFloat("gEmissionMult", 1);
+    }
 
     private void OnPreRender()
     {
@@ -37,13 +43,22 @@ public class CameraEffect : MonoBehaviour
         }
         else
         {
-            Graphics.Blit(source, _tempRenderTexture, _materials[0]);
-            for (int i = 1; i < _materials.Count; i++)
+            int i = 0;
+            Debug.Log(i);
+            Graphics.Blit(source, _tempRenderTextures[i], _materials[i]);
+            for (i = 1; i < _materials.Count && i < MAX_EFFECTS; i++)
             {
-                Graphics.Blit(_tempRenderTexture, _tempRenderTexture, _materials[i]);
-
+                Debug.Log(i);
+                Graphics.Blit(_tempRenderTextures[i - 1], _tempRenderTextures[i], _materials[i]);
             }
-            Graphics.Blit(_tempRenderTexture, destination);
+            Debug.Log(i);
+            Graphics.Blit(_tempRenderTextures[i - 1], destination);
+            //Graphics.Blit(source, _tempRenderTextures[0], _materials[0]);
+            //for (int i = 1; i < _materials.Count && i < MAX_EFFECTS; i++)
+            //{
+            //    Graphics.BlitMultiTap(_tempRenderTextures[0], _tempRenderTextures[0], _materials[i]);
+            //}
+            //Graphics.Blit(_tempRenderTextures[0], destination);
         }
     }
     private void Awake()
@@ -51,8 +66,15 @@ public class CameraEffect : MonoBehaviour
         Debug.Log(RenderSettings.ambientLight);
         _ppVolume = GetComponent<PostProcessVolume>();
         _camera = GetComponent<Camera>();
-        _tempRenderTexture = new RenderTexture(_camera.pixelWidth, _camera.pixelHeight, (int)_camera.depth);
         _camera.depthTextureMode = DepthTextureMode.Depth;
+        Shader.SetGlobalFloat("gEmissionMult", 1);
+    }
+    private void Start()
+    {
+        for (int i = 0; i < MAX_EFFECTS; i++)
+        {
+            _tempRenderTextures[i] = new RenderTexture(_camera.pixelWidth, _camera.pixelHeight, (int)_camera.depth);
+        }
     }
     //Some events for activating effects
     private void OnEnable()
@@ -62,6 +84,7 @@ public class CameraEffect : MonoBehaviour
         //EventManager.Subscribe(EventNameLibrary.SUPER_HEARING, HearingEffect);
         EventManager.Subscribe(EventNameLibrary.INVISSIBLE, InvissibilityEffect);
         EventManager.Subscribe(EventNameLibrary.LIGHTNING_STRIKE, LightningStrikeEffect);
+        EventManager.Subscribe(EventNameLibrary.VISSION_POTION, SetGlobalEmissionMult);
     }
     private void OnDisable()
     {
@@ -70,8 +93,9 @@ public class CameraEffect : MonoBehaviour
         //EventManager.UnSubscribe(EventNameLibrary.SUPER_HEARING, HearingEffect);
         EventManager.UnSubscribe(EventNameLibrary.INVISSIBLE, InvissibilityEffect);
         EventManager.UnSubscribe(EventNameLibrary.LIGHTNING_STRIKE, LightningStrikeEffect);
+        EventManager.UnSubscribe(EventNameLibrary.VISSION_POTION, SetGlobalEmissionMult);
     }
-    
+
 
     public void ActivateEffect(Material material)
     {
@@ -117,18 +141,6 @@ public class CameraEffect : MonoBehaviour
             _materials.Remove(mat);
         }
     }
-    //private void Update()
-    //{
-    //    if (Input.GetKeyDown(KeyCode.K))
-    //    {
-    //        Debug.Log("DERP");
-    //                                   //intparam = targetDistortion,  floatParam = distort time to lerp
-    //        EventParameter param = new EventParameter() { intParam = 40, floatParam = 2 };
-    //        EventManager.TriggerEvent(CAMERA_SPEED_DISTORT, param);
-    //        param.intParam = 0;
-    //        ActionDelayer.RunAfterDelay(() => { EventManager.TriggerEvent(CAMERA_SPEED_DISTORT, param); }, 5);
-    //    }
-    //}
 
 
     void InvissibilityEffect(EventParameter param)
@@ -228,6 +240,43 @@ public class CameraEffect : MonoBehaviour
                 yield return null;
             }
             colGrad.postExposure.value = 0;
+        }
+    }
+
+    void SetGlobalEmissionMult(EventParameter param)
+    {
+        StartCoroutine(LerpGlobalEmissionMultiplier(param.floatParam, param.floatParam2));
+        StartCoroutine(LerpCromaShift(param.floatParam));
+        WorldState.Instance.ChangeFogThickness(param.floatParam);
+    }
+    IEnumerator LerpGlobalEmissionMultiplier(float lerpTime, float targetValue)
+    {
+        float time = 0;
+        float startValue = Shader.GetGlobalFloat("gEmissionMult");
+        Debug.Log(startValue);
+        while (time < lerpTime)
+        {
+            Shader.SetGlobalFloat("gEmissionMult", Mathf.Lerp(startValue, targetValue, time / lerpTime));
+            time += Time.deltaTime;
+            yield return null;
+        }
+        Shader.SetGlobalFloat("gEmissionMult", targetValue);
+    }
+    IEnumerator LerpCromaShift(float lerpTime)
+    {
+        ChromaticAberration chroma;
+        if (_ppVolume.profile.TryGetSettings(out chroma))
+        {
+            float time = 0;
+            float startCromaAn = Mathf.Round(chroma.intensity.value);
+            float targetValue = 1 - startCromaAn;
+            while (time < lerpTime)
+            {
+                time += Time.deltaTime;
+                chroma.intensity.value = Mathf.Lerp(startCromaAn, targetValue, time / lerpTime);
+
+                yield return null;
+            }
         }
     }
 }

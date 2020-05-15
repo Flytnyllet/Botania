@@ -21,14 +21,50 @@ public class FlowerTeleportation : MonoBehaviour
     Vector3 _objectAltitudeOffset;
     CapsuleCollider _capCollider;
     SphereCollider _sphereCollider;
+    bool _active = true;
     private void Awake()
     {
-        _pickupScript.SetEnabled = false;
         _capCollider = GetComponent<CapsuleCollider>();
         _sphereCollider = GetComponent<SphereCollider>();
         _objectHeight = new Vector3(0, _capCollider.bounds.size.y, 0);
         _objectAltitudeOffset = new Vector3(0, _capCollider.bounds.center.y, 0);
-        _capCollider.enabled = false;
+
+        if (CharacterState.IsAbilityFlagActive(ABILITY_FLAG.CALM_ALL_FLOWERS))
+        {
+            SetActveState(false);
+        }
+        else
+        {
+            SetActveState(true);
+        }
+    }
+    private void OnEnable()
+    {
+        EventManager.Subscribe(EventNameLibrary.DRINK_POTION, OnPotionUse);
+    }
+    private void OnDisable()
+    {
+        EventManager.UnSubscribe(EventNameLibrary.DRINK_POTION, OnPotionUse);
+    }
+    void OnPotionUse(EventParameter param)
+    {
+        if (CharacterState.IsAbilityFlagActive(ABILITY_FLAG.CALM_ALL_FLOWERS))
+        {
+            SetActveState(false);
+        }
+        else
+        {
+            SetActveState(true);
+        }
+    }
+    //True == Teleports, False == May be picked
+    void SetActveState(bool state)
+    {
+        _active = state;
+        _sphereCollider.enabled = state;
+        _capCollider.enabled = !state;
+        _pickupScript.SetEnabled = !state;
+        _sphereCollider.enabled = state;
     }
 
     void ReleaseTrailObject(Vector3 pos)
@@ -49,23 +85,19 @@ public class FlowerTeleportation : MonoBehaviour
 
         if (_Maxjumps <= _jumps)
         {
-            _sphereCollider.enabled = false;
-            _capCollider.enabled = true;
-            _pickupScript.SetEnabled = true;
-            _sphereCollider.enabled = false;
-            Destroy(this);
+            SetActveState(false);
         }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Player")
+        if (_active && other.tag == "Player")
         {
             RaycastHit hit;
             int i;
             for (i = 0; i < 100; i++)
             {
-                float rand = Random.Range(0, 6.28f);
+                float rand = Random.Range(0, 6.28f); //Pi2
                 Vector2 newPos = _teleportationRange * new Vector2(Mathf.Sin(rand), Mathf.Cos(rand));
                 Vector3 position = transform.position;
                 position.x += newPos.x;
@@ -75,7 +107,7 @@ public class FlowerTeleportation : MonoBehaviour
                 if (HIT && hit.transform.tag != "Flower")
                 {
                     Vector3 hitPos = hit.point;
-                    if (!Physics.CheckCapsule(hitPos + groundOffset, hitPos + _objectHeight * 1.1f, _capCollider.bounds.size.x, 0, QueryTriggerInteraction.Ignore))
+                    if (!Physics.CheckCapsule(hitPos + groundOffset, hitPos + _objectHeight * 1.1f, _capCollider.bounds.size.x * 4, 0, QueryTriggerInteraction.Ignore))
                     {
                         ReleaseTrailObject(hitPos);
                         break;
@@ -86,7 +118,7 @@ public class FlowerTeleportation : MonoBehaviour
                 if (HIT && hit.transform.tag != "Flower")
                 {
                     Vector3 hitPos = hit.point;
-                    if (!Physics.CheckCapsule(hitPos + groundOffset, hitPos + _objectHeight * 1.1f, this.transform.localScale.y, 0, QueryTriggerInteraction.Ignore))
+                    if (!Physics.CheckCapsule(hitPos + groundOffset, hitPos + _objectHeight * 1.1f, this.transform.localScale.x * 4, 0, QueryTriggerInteraction.Ignore))
                     {
                         ReleaseTrailObject(hitPos);
                         break;

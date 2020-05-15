@@ -4,6 +4,12 @@
 		<property name="name">
 			<value>local_forest</value>
 		</property>
+		<property name="maxInstances">
+			<value>20</value>
+		</property>
+		<property name="instanceStealing">
+			<value>1</value>
+		</property>
 		<relationship name="effectChain">
 			<destination>{6ae9318a-e272-4e1c-8300-6d05dbcd47dd}</destination>
 		</relationship>
@@ -24,7 +30,7 @@
 	<object class="MixerBusFader" id="{d2d70444-e97f-418b-9ba1-1cfad93284d3}" />
 	<object class="MixerSend" id="{ca9e5e35-a897-4698-bce5-5e9516768834}">
 		<property name="level">
-			<value>-15.5</value>
+			<value>-26.5</value>
 		</property>
 		<property name="inputFormat">
 			<value>2</value>
