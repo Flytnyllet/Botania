@@ -9,6 +9,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 828993875708349835}
+  - component: {fileID: 2693729259913253266}
+  - component: {fileID: 2301955391644048757}
+  - component: {fileID: 5371095728183527385}
+  - component: {fileID: 721363833301708309}
   m_Layer: 0
   m_Name: Flower_Water_02
   m_TagString: Untagged
@@ -23,7 +27,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 830812004246948726}
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 2.938, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -33,6 +37,85 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &2693729259913253266
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 830812004246948726}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.27, y: 0.38, z: 1.07}
+  m_Center: {x: -0.65, y: 0, z: -0.15}
+--- !u!114 &2301955391644048757
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 830812004246948726}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee66933cb94b3af499283834dca2703c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _dissableTriggerafterPickup: 1
+  _flowerData: {fileID: 11400000, guid: a5c5254a5991d724f8025bd9a4145a59, type: 2}
+  _pickupAlpha: {fileID: 2800000, guid: ecafe7e7e8d4b8947aaf0b4cb7155a46, type: 3}
+  _gameobjectOverload:
+  - {fileID: 4746851463848181647}
+  - {fileID: 2841894868010306648}
+  - {fileID: 4228820905315689036}
+  _pickupAction:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  _pickupAnimationTime: 0.2
+  _pickupAnimationForce: 1
+--- !u!114 &5371095728183527385
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 830812004246948726}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70c2b09e2695b494b8572a2ea101535c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _spawnPartially: 0
+--- !u!205 &721363833301708309
+LODGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 830812004246948726}
+  serializedVersion: 2
+  m_LocalReferencePoint: {x: -0.33178222, y: -4.509518, z: 0.073669314}
+  m_Size: 9.746837
+  m_FadeMode: 0
+  m_AnimateCrossFading: 0
+  m_LastLODIsBillboard: 0
+  m_LODs:
+  - screenRelativeHeight: 0.7989452
+    fadeTransitionWidth: 0
+    renderers:
+    - renderer: {fileID: 7158662745637184826}
+  - screenRelativeHeight: 0.5976224
+    fadeTransitionWidth: 0
+    renderers:
+    - renderer: {fileID: 5688769107853319985}
+  - screenRelativeHeight: 0.1
+    fadeTransitionWidth: 0
+    renderers:
+    - renderer: {fileID: 2288857199439590571}
+  m_Enabled: 1
 --- !u!1 &2841894868010306648
 GameObject:
   m_ObjectHideFlags: 0
@@ -90,7 +173,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 5293670349793569003, guid: bb22c254cc8b65d47834a32777998073, type: 3}
+  - {fileID: 2100000, guid: 8de5447d6fdd741448fc9357ec5f31ab, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -168,7 +251,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 5293670349793569003, guid: bb22c254cc8b65d47834a32777998073, type: 3}
+  - {fileID: 2100000, guid: 8de5447d6fdd741448fc9357ec5f31ab, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -246,7 +329,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 5293670349793569003, guid: bb22c254cc8b65d47834a32777998073, type: 3}
+  - {fileID: 2100000, guid: 8de5447d6fdd741448fc9357ec5f31ab, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

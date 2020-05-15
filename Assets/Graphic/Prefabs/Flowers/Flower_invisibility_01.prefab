@@ -9,6 +9,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4900339818801880003}
+  - component: {fileID: 5697996708467916499}
+  - component: {fileID: 598900750935656401}
+  - component: {fileID: 446984145099543045}
+  - component: {fileID: 4688689593499785003}
   m_Layer: 0
   m_Name: Flower_invisibility_01
   m_TagString: Untagged
@@ -23,7 +27,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3099797202361627142}
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.4849999, y: 0, z: 1.1540003}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -32,6 +36,80 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!205 &5697996708467916499
+LODGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3099797202361627142}
+  serializedVersion: 2
+  m_LocalReferencePoint: {x: -0.055524707, y: 0.28117752, z: 0.07833254}
+  m_Size: 1.1805123
+  m_FadeMode: 0
+  m_AnimateCrossFading: 0
+  m_LastLODIsBillboard: 0
+  m_LODs:
+  - screenRelativeHeight: 0.49870273
+    fadeTransitionWidth: 0
+    renderers:
+    - renderer: {fileID: 8486109138785911885}
+  - screenRelativeHeight: 0.06258223
+    fadeTransitionWidth: 0
+    renderers:
+    - renderer: {fileID: 8236999523444817370}
+  m_Enabled: 1
+--- !u!114 &598900750935656401
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3099797202361627142}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee66933cb94b3af499283834dca2703c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _dissableTriggerafterPickup: 1
+  _flowerData: {fileID: 11400000, guid: edfdc5a62d9d8714c8b46ab474ca287a, type: 2}
+  _pickupAlpha: {fileID: 2800000, guid: 82cc1525c3b9c0246aff426f5ddac89c, type: 3}
+  _gameobjectOverload:
+  - {fileID: 8215604564874248636}
+  - {fileID: 6789691386491916300}
+  _pickupAction:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  _pickupAnimationTime: 0.2
+  _pickupAnimationForce: 1
+--- !u!65 &446984145099543045
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3099797202361627142}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.67, y: 0.91, z: 0.57}
+  m_Center: {x: -0.03, y: 0.18, z: -0.03}
+--- !u!114 &4688689593499785003
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3099797202361627142}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70c2b09e2695b494b8572a2ea101535c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _spawnPartially: 0
 --- !u!1 &6789691386491916300
 GameObject:
   m_ObjectHideFlags: 0
