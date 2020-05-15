@@ -7,7 +7,7 @@
 		_Cutout("Alpha Cutout", float) = 0
 		_CutoutValue("Cutout Value",range(0,1)) = 0.4
 		_EmissionMap("Emission Map", 2D) = "black" {}
-		_EmissionMult("Emission Multiplier", float) =1
+		_EmissionMult("Emission Multiplier", float) = 1
 		_SpecularMap("Metallic", 2D) = "white" {}
 		_RoughMap("Roghness", 2D) = "white" {}
 		_Color("Color", Color) = (1,1,1,1)
