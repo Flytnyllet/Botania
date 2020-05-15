@@ -8,9 +8,7 @@ public class PrefabSpawner : MonoBehaviour
     static readonly int DEGREES_360 = 360;
     static readonly float STANDARD_GRID_OFFSET = 0.5f;
 
-    public bool CompletelySpawnedIn { get; private set; } = false;
     bool _readyToFixNormals = false;
-    bool _tryingToFixNormals = false;
     bool[,] _occupiedGrid;
     List<SpawnInfo> _gameObjectsInChunkWithNoNormals = new List<SpawnInfo>();
 
@@ -221,8 +219,6 @@ public class PrefabSpawner : MonoBehaviour
     }
     public void SpawnSpawnInfo(List<SpawnInfo> spawnInfo, Transform container, bool highestLOD)
     {
-        CompletelySpawnedIn = false;
-
         for (int i = 0; i < spawnInfo.Count - 1; i++)
         {
             StartCoroutine(SpawnWithDelay(spawnInfo[i], container, i % 2 == 0 ? i : spawnInfo.Count - i, spawnInfo.Count - 1, false));
@@ -239,10 +235,6 @@ public class PrefabSpawner : MonoBehaviour
             //This will always be called last and have the longest waiting time, when it is done -> Normals are ready to be set
             StartCoroutine(SpawnWithDelay(spawnInfo[spawnInfo.Count - 1], container, spawnInfo.Count - 1, spawnInfo.Count - 1, highestLOD));
         }
-
-        //For LOD 1 and 2 it is now ok to disable the gameobject. However on LOD 0 it must first fix normals!
-        if (!_tryingToFixNormals)
-            CompletelySpawnedIn = true;
     }
 
     IEnumerator SpawnWithDelay(SpawnInfo spawnInfo, Transform container, int index, int highest, bool last)
@@ -261,8 +253,6 @@ public class PrefabSpawner : MonoBehaviour
 
     public void SetNormals(MeshData meshData, int chunkSize)
     {
-        _tryingToFixNormals = true;
-
         StartCoroutine(WaitToFixNormals(meshData, chunkSize));
     }
 
@@ -297,20 +287,8 @@ public class PrefabSpawner : MonoBehaviour
         for (int i = 0; i < _gameObjectsInChunkWithNoNormals.Count; i++)
             _gameObjectsInChunkWithNoNormals[i].SetNormal(meshData, chunkSize);
 
-        CompletelySpawnedIn = true;
-    }
-
-    public void Disable(GameObject parent)
-    {
-        StartCoroutine(WaitToDisable(parent));
-    }
-
-    IEnumerator WaitToDisable(GameObject parent)
-    {
-        while (!CompletelySpawnedIn)
-            yield return null;
-
-        parent.SetActive(false);
+        //No need for this script anymore
+        //Destroy(this);
     }
 }
 

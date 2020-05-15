@@ -9,14 +9,9 @@ public class SaveSystem : MonoBehaviour
 
     [Header("Settings")]
 
-    [SerializeField] string _animatorTriggerName = "Trigger";
-
     [SerializeField, Range(1, 1200)] float _saveIntervalTime = 300;
     [SerializeField] AnimationCurve _saveIconAlphaCurve;
-    [SerializeField, Range(0.01f, 20)] float _saveIconTime = 2.5f;
-    [SerializeField] bool _intervallSave = false;
-    [SerializeField] bool _menuSave = true;
-    [SerializeField, Range(0.01f, 200)] float _menuSaveIntervall = 30;
+    [SerializeField, Range(0.01f, 5)] float _saveIconTime = 2.5f;
     [SerializeField] bool _save = true;
     [SerializeField] bool _load = true;
 
@@ -24,12 +19,9 @@ public class SaveSystem : MonoBehaviour
 
     [SerializeField] Image _saveIcon;
 
-    Animator _animator;
 
     Timer _saveTimer;
     Timer _saveIconTimer;
-    Timer _menuIntervallTimer;
-    bool _canCurrentlyMenuSave = true;
 
     Color _saveIconStartColor;
 
@@ -37,15 +29,9 @@ public class SaveSystem : MonoBehaviour
     {
         if (_thisSaveSystem == null)
         {
-            _saveIntervalTime = _saveIntervalTime < _saveIconTime ? _saveIconTime : _saveIntervalTime;
-            _menuSaveIntervall = _menuSaveIntervall < _saveIconTime ? _saveIconTime : _menuSaveIntervall;
-
-            _animator = GetComponent<Animator>();
-
             _thisSaveSystem = this;
             _saveTimer = new Timer(_saveIntervalTime);
             _saveIconTimer = new Timer(_saveIconTime);
-            _menuIntervallTimer = new Timer(_menuSaveIntervall);
 
             _saveIconStartColor = _saveIcon.color;
             ResetIconColor();
@@ -61,23 +47,12 @@ public class SaveSystem : MonoBehaviour
 
     private void Update()
     {
-        if (_menuSave)
+        _saveTimer.Time += Time.deltaTime;
+
+        if (_saveTimer.Expired())
         {
-            _menuIntervallTimer.Time += Time.deltaTime;
-
-            if (_menuIntervallTimer.Expired() && !_canCurrentlyMenuSave)
-                _canCurrentlyMenuSave = true;
-        }
-
-        if (_intervallSave)
-        {
-            _saveTimer.Time += Time.deltaTime;
-
-            if (_saveTimer.Expired())
-            {
-                _saveTimer.Reset();
-                Save();
-            }
+            _saveTimer.Reset();
+            Save();
         }
     }
 
@@ -88,16 +63,6 @@ public class SaveSystem : MonoBehaviour
         {
             PrefabSpawnerSaveData.Load();
             MapGenerator.Load();
-        }
-    }
-
-    public static void SaveStatic()
-    {
-        if (_thisSaveSystem._save && _thisSaveSystem._canCurrentlyMenuSave)
-        {
-            _thisSaveSystem._canCurrentlyMenuSave = false;
-            _thisSaveSystem._menuIntervallTimer.Reset();
-            _thisSaveSystem.Save();
         }
     }
 
@@ -114,8 +79,6 @@ public class SaveSystem : MonoBehaviour
 
     IEnumerator SaveIconAlpha()
     {
-        _animator.SetTrigger(_animatorTriggerName);
-
         while (!_saveIconTimer.Expired())
         {
             _saveIconTimer.Time += Time.deltaTime;
