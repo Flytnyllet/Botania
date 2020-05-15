@@ -352,23 +352,35 @@ public class SpawnInfo
 
         _spawnedTransform = newObject.transform;
 
-        PrefabSaveData saveDataScript = newObject.GetComponentInChildren<PrefabSaveData>();
+        PrefabSaveData[] saveDataScripts = newObject.GetComponentsInChildren<PrefabSaveData>();
 
         //Enter this loop only for object dealing with saving
-        if (saveDataScript != null)
+        if (saveDataScripts.Length > 0)
         {
             if (_correctSizeForPickup)
-                saveDataScript.SetSaveData(new StoredSaveData(_chunkCoord, ItemIndex));
+            {
+                for (int i = 0; i < saveDataScripts.Length; i++)
+                {
+                    saveDataScripts[i].SetSaveData(new StoredSaveData(_chunkCoord, ItemIndex));
+                }
+            }
             else
-                Debug.LogError("You are trying to spawn a prefab which should be picked up with the wrong size! Size must not be 0 for pickups!!!");
+            {
+                Debug.LogError("You are trying to spawn a prefab which should be picked up with the wrong size! Size must not be 0 for pickups!!!: " + _prefab.name);
+            }
 
             //This object has already been picked up in saves!
             if (PartialSpawn)
             {
-                InteractableSaving script = newObject.GetComponentInChildren<InteractableSaving>();
+                InteractableSaving[] scripts = newObject.GetComponentsInChildren<InteractableSaving>();
 
-                if (script != null)
-                    script.PickedUpAlready();
+                if (scripts.Length > 0)
+                {
+                    for (int i = 0; i < scripts.Length; i++)
+                    {
+                        scripts[i].PickedUpAlready();
+                    }
+                }
                 else
                     Debug.LogError("This object is saved as to be partially picked but does not have a InteractableSaving script on it!!! : " + newObject.name);
             }

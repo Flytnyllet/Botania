@@ -36,7 +36,9 @@ public static class PrefabSpawnerSaveData
         }
         catch
         {
-            Debug.LogError("There is already a pickup saved at this chunk coord and index!? Probably you have set the size of a pickup to 0, IT MUST BE ABOVE 0!  :  " + saveDataToStore.ChunkCoordIndex.ChunkCoord + "    " + saveDataToStore.ChunkCoordIndex.ItemIndex);
+            //If an object is marked as group spawn it contains multiple pickups with same save index. Picking one will save it as everyone in it has been picked
+            if (!saveDataToStore.GroupSpawn)
+                Debug.LogError("There is already a pickup saved at this chunk coord and index!? Probably you have set the size of a pickup to 0, IT MUST BE ABOVE 0!  :  " + saveDataToStore.ChunkCoordIndex.ChunkCoord + "    " + saveDataToStore.ChunkCoordIndex.ItemIndex);
         }
     }
 
