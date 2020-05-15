@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.Events;
 
 
+
 [System.Serializable]
 public class EventBox
 {
@@ -45,7 +46,7 @@ public class EventHolder : MonoBehaviour
     }
 
 }
-
+#if (UNITY_EDITOR)
 [CustomEditor(typeof(EventHolder))]
 public class EventHolderEditor : Editor
 {
@@ -64,3 +65,5 @@ public class EventHolderEditor : Editor
         }
     }
 }
+
+#endif

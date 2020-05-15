@@ -49,7 +49,9 @@ public class DiggingFlower : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Player" && !CharacterState.IsAbilityFlagActive(ABILITY_FLAG.INVISSIBLE))
+        if (other.tag == "Player" &&
+            !CharacterState.IsAbilityFlagActive(ABILITY_FLAG.INVISSIBLE) &&
+            !CharacterState.IsAbilityFlagActive(ABILITY_FLAG.CALM_ALL_FLOWERS))
         {
             _playerInArea = true; //I hate this
             StartCoroutine(DigAndWait());
@@ -71,14 +73,19 @@ public class DiggingFlower : MonoBehaviour
             _flowerState = FlowerState.Digging;
             _animator.Play(_animationId[0]); //Rör sig lite, kallar på animatorn, och gör sig liten.
 
-            if(event_Digging != null)
-            RuntimeManager.PlayOneShotAttached(event_Digging, gameObject);
+            if (event_Digging != null)
+                RuntimeManager.PlayOneShotAttached(event_Digging, gameObject);
 
             float time = 0.0f;
             while (time < _hideTime)
             {
                 time += Time.deltaTime;
-                if (_playerInArea && !CharacterState.IsAbilityFlagActive(ABILITY_FLAG.INVISSIBLE)) time = 0.0f;
+                if (_playerInArea &&
+                    !CharacterState.IsAbilityFlagActive(ABILITY_FLAG.INVISSIBLE) &&
+                    !CharacterState.IsAbilityFlagActive(ABILITY_FLAG.CALM_ALL_FLOWERS))
+                {
+                    time = 0.0f;
+                }
                 yield return null;
             }
             _animator.Play(_animationId[1]);

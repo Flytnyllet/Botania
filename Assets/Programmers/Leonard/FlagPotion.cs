@@ -14,9 +14,13 @@ public class FlagPotion : Potion_Template
     }
     public override bool PotionEffectStart(FPSMovement p)
     {
-        CharacterState.AddAbilityFlag(effect, duration);
-        AddAdditionalEffects();
-        return true;
+        if (!CharacterState.IsAbilityFlagActive(effect))
+        {
+            CharacterState.AddAbilityFlag(effect, duration);
+            AddAdditionalEffects();
+            return true;
+        }
+        return false;
     }
 
     public override void PotionEffectEnd(FPSMovement p)
@@ -39,13 +43,36 @@ public class FlagPotion : Potion_Template
                 break;
 
             case ABILITY_FLAG.SUPERHEARING:
-                EventParameter param = new EventParameter() { intParam = 2, floatParam = 0.75f, floatParam2 = 1.0f };
-                EventManager.TriggerEvent(EventNameLibrary.SUPER_HEARING, param);
-                param.floatParam = 0.05f;
-                param.floatParam2 = 0.2f;
-                ActionDelayer.RunAfterDelay(() => { EventManager.TriggerEvent(EventNameLibrary.SUPER_HEARING, param); }, duration);
+                //EventParameter param = new EventParameter() { intParam = 2, floatParam = 0.75f, floatParam2 = 1.0f };
+                //EventManager.TriggerEvent(EventNameLibrary.SUPER_HEARING, param);
+                //param.floatParam = 0.05f;
+                //param.floatParam2 = 0.2f;
+                //ActionDelayer.RunAfterDelay(() => {
+                //EventManager.TriggerEvent(EventNameLibrary.SUPER_HEARING, param); }, duration);
                 break;
 
+            case ABILITY_FLAG.LEVITATE:
+
+
+                ActionDelayer.RunAfterDelay(() => { CharacterState.AddAbilityFlag("SLOWFALL", 5f); }, duration);
+                break;
+            case ABILITY_FLAG.NULL:
+                break;
+            case ABILITY_FLAG.STONE:
+                break;
+            case ABILITY_FLAG.SLOWFALL:
+                break;
+            case ABILITY_FLAG.CALM_ALL_FLOWERS:
+                break;
+            case ABILITY_FLAG.VISSION:
+                EventManager.TriggerEvent(EventNameLibrary.VISSION_POTION,
+                    new EventParameter { floatParam = 2, floatParam2 = 50 });
+                ActionDelayer.RunAfterDelay(() =>
+                {
+                    EventManager.TriggerEvent(EventNameLibrary.VISSION_POTION,
+                        new EventParameter { floatParam = 2, floatParam2 = 1 });
+                }, duration);
+                break;
             default:
                 break;
         }

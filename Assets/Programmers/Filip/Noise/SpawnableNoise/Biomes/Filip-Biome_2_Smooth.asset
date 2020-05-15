@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a29f2ff204e9fd47b6aacf16bc19fd1, type: 3}
   m_Name: Filip-Biome_2_Smooth
   m_EditorClassIdentifier: 
-  _autoUpdate: 0
+  _autoUpdate: 1
+  _clampMin: 0
+  _clampMax: 1
   _noiseSettings:
   - _noiseMergeType: 4
     _noiseSettings:
@@ -29,22 +31,5 @@ MonoBehaviour:
       _persistance: 0.455
       _lacunarity: 2.6
       _darken: 0.91
-      _useDarken: 1
-      _normalizeMode: 1
-  - _noiseMergeType: 4
-    _noiseSettings:
-      _allWhite: 0
-      _invert: 0
-      _mask: 0
-      _maskValue: 2
-      _addValue: 0
-      _strength: 1
-      _seed: 50
-      _offset: {x: 0, y: 0}
-      _scale: 1000
-      _octaves: 3
-      _persistance: 0.455
-      _lacunarity: 2.6
-      _darken: 0.81
       _useDarken: 1
       _normalizeMode: 1

@@ -1,0 +1,62 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2ef82269fb17cf43a9f1163b1dfd939, type: 3}
+  m_Name: Biome_2_Trees
+  m_EditorClassIdentifier: 
+  _autoUpdate: 0
+  _noiseMergeType: 2
+  _noiseSettingsData: {fileID: 11400000, guid: fb59472b51817cb4b91a59f615212b77, type: 2}
+  _parentOnly: 0
+  _rotationAmount: 0.146
+  _noiseStartPoint: 0.001
+  _thickness: 0.46
+  _uniformSpreadAmount: 3
+  _randomSpread: 0.144
+  _offsetAmount: 2
+  _spawnFixedHeight: 0
+  _size: 2
+  _spacing: 3
+  _othersCanSpawnInside: 0
+  _spawnDifferencial: 15
+  _hardMinHeight: 10
+  _softMinAmount: 0
+  _hardMaxHeight: 100
+  _softMaxAmount: 0
+  _surfaceNormalAmount: 0.399
+  _pointAlongNormalRandomness: 0.42
+  _softMinSlope: 25
+  _hardMinSlope: 90
+  _softMaxSlope: 0
+  _hardMaxSlope: 0
+  _prefabs:
+  - _prefab: {fileID: 1718687879617828975, guid: e88cbea88b0028d4bb5c10e45c0b39c1,
+      type: 3}
+    _probability: 1
+    _height: -0.1
+    _fixedHeight: 0
+    _scale: 0.5
+    _scaleRandom: 1.1
+  - _prefab: {fileID: 6448300246428568909, guid: 7a7c72f728a0ad64fbe9a8c613a47529,
+      type: 3}
+    _probability: 1
+    _height: -0.1
+    _fixedHeight: 0
+    _scale: 0.5
+    _scaleRandom: 1.1
+  - _prefab: {fileID: 7094897507346265792, guid: 9ce31a510a79fbf4aacfe98c0bce51dd,
+      type: 3}
+    _probability: 1
+    _height: -0.1
+    _fixedHeight: 0
+    _scale: 0.5
+    _scaleRandom: 1.1
+  _subSpawners: []

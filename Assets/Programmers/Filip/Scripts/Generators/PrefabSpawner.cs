@@ -75,7 +75,7 @@ public class PrefabSpawner : MonoBehaviour
                         }
                         if (shouldSpawn)
                         {
-                            bool canObjectSpawnSize = CanObjectSpawnSize(x, y, spawnables[i].Size, meshSettings.ChunkSize, ref localOccupiedGrid) && (CanObjectSpawnSize(x, y, spawnables[i].Size, meshSettings.ChunkSize, ref _occupiedGrid) || spawnables[i].OthersCanSpawnInside);
+                            bool canObjectSpawnSize = CanObjectSpawnSize(x, y, spawnables[i].Size, meshSettings.ChunkSize, ref localOccupiedGrid) && (CanObjectSpawnSize(x, y, spawnables[i].Spacing, meshSettings.ChunkSize, ref _occupiedGrid) || spawnables[i].OthersCanSpawnInside);
                             bool canObjectSpawnDiff = CanObjectSpawnDiff(x, y, spawnables[i].Size, spawnables[i].OthersCanSpawnInside, heightMap.heightMap, spawnables[i].SpawnDifferencial, meshSettings.ChunkSize);
 
                             //No use in checking if it can spawn if that square is occopied
@@ -103,22 +103,33 @@ public class PrefabSpawner : MonoBehaviour
                                 bool minHeight = (heightMap.heightMap[x, y] > spawnables[i].HardMinHeight + spawnables[i].SoftMinAmount * spawnables[i].OffsetNoise[x, y]);
                                 bool maxHeight = (heightMap.heightMap[x, y] <= spawnables[i].HardMaxHeight - spawnables[i].SoftMaxAmount * spawnables[i].OffsetNoise[x, y]);
 
+                                SpawnablePrefab spawnPrefab = spawnables[i].GetPrefab(x, y);
+
+                                bool shouldSpawnIfFixedHeight = true;
+                                if (spawnables[i].SpawnFixedHeight)
+                                    shouldSpawnIfFixedHeight = heightMap.heightMap[x + (int)(STANDARD_GRID_OFFSET * spawnables[i].Size) + 1, y + (int)(STANDARD_GRID_OFFSET * spawnables[i].Size) + 1] + spawnPrefab.Height <= spawnPrefab.FixedHeight + spawnPrefab.Height;
+
                                 //Things inside the if statement only need to be determined if it should spawn
-                                if (insideNoise && gradientSpawn && uniformSpread && noiseSpread && minHeight && maxHeight && minSlope && maxSlope)
+                                if (insideNoise && gradientSpawn && uniformSpread && noiseSpread && minHeight && maxHeight && minSlope && maxSlope && shouldSpawnIfFixedHeight)
                                 {
                                     //Since the object can spawn, mark it's space as occopied
                                     if (!spawnables[i].OthersCanSpawnInside)
                                         OccupyWithObject(x, y, spawnables[i].Size, meshSettings.ChunkSize, ref _occupiedGrid);
 
-                                    OccupyWithObject(x, y, spawnables[i].Size, meshSettings.ChunkSize, ref localOccupiedGrid);
+                                    OccupyWithObject(x, y, spawnables[i].Spacing, meshSettings.ChunkSize, ref localOccupiedGrid);
 
-                                    float scale = spawnables[i].ScaleRandom * spawnables[i].OffsetNoise[x, y] + spawnables[i].Scale;
+                                    float scale = spawnPrefab.ScaleRandom * spawnables[i].OffsetNoise[x, y] + spawnPrefab.Scale;
                                     Vector3 newScale = new Vector3(scale, scale, scale);
 
                                     //Current local positions in x and y in chunk, used only to spawn from
                                     float xPos = x + STANDARD_GRID_OFFSET + (STANDARD_GRID_OFFSET * spawnables[i].Size) - meshSettings.ChunkSize / 2 - 1; //Due to the border around the mesh + STANDARD_GRID_OFFSET corrects it to the right grid position
                                     float zPos = y + STANDARD_GRID_OFFSET + (STANDARD_GRID_OFFSET * spawnables[i].Size) - meshSettings.ChunkSize / 2 - 1; //Due to the border around the mesh + STANDARD_GRID_OFFSET corrects it to the right grid position
-                                    float yPos = heightMap.heightMap[x + (int)(STANDARD_GRID_OFFSET * spawnables[i].Size) + 1, y + (int)(STANDARD_GRID_OFFSET * spawnables[i].Size) + 1] + spawnables[i].Height;
+                                    float yPos = heightMap.heightMap[x + (int)(STANDARD_GRID_OFFSET * spawnables[i].Size) + 1, y + (int)(STANDARD_GRID_OFFSET * spawnables[i].Size) + 1] + spawnPrefab.Height;
+
+                                    //Used if the object should not follow the world geometry and spawn at fixed height -> spawn in water 
+                                    // Only allow it if the object won't spawn under the terrain!
+                                    if (spawnables[i].SpawnFixedHeight)
+                                        yPos = spawnPrefab.FixedHeight + spawnPrefab.Height;
 
                                     //Position from grid in world
                                     Vector3 objectPosition = new Vector3((xPos + chunkPosition.x) * meshSettings.MeshScale, yPos, -(zPos + chunkPosition.y) * meshSettings.MeshScale);
@@ -130,11 +141,10 @@ public class PrefabSpawner : MonoBehaviour
                                     //How much along the normal should the object point?
                                     float tiltAmount = spawnables[i].SurfaceNormalAmount + (spawnables[i].SpreadNoise[x, y] * 2 - 1) * spawnables[i].PointAlongNormalRandomness;
 
-                                    GameObject spawnObject = spawnables[i].GetPrefab(x, y);
                                     float localRotationAmount = spawnables[i].OffsetNoise[x, y] * DEGREES_360 * spawnables[i].RotationAmount;
 
 
-                                    spawnInfo.Add(new SpawnInfo(spawnObject, detailType, objectPosition, normal, tiltAmount, localRotationAmount, chunkCoord, itemIndex, spawnables[i].Size != 0, newScale, partialSpawn));
+                                    spawnInfo.Add(new SpawnInfo(spawnPrefab.Prefab, detailType, objectPosition, normal, tiltAmount, localRotationAmount, chunkCoord, itemIndex, spawnables[i].Size != 0, newScale, partialSpawn));
                                 }
                             }
                         }
@@ -207,7 +217,6 @@ public class PrefabSpawner : MonoBehaviour
             }
         }
     }
-
     public void SpawnSpawnInfo(List<SpawnInfo> spawnInfo, Transform container, bool highestLOD)
     {
         for (int i = 0; i < spawnInfo.Count - 1; i++)
@@ -218,11 +227,14 @@ public class PrefabSpawner : MonoBehaviour
                 _gameObjectsInChunkWithNoNormals.Add(spawnInfo[i]);
         }
 
-        //This will always be called last and have the longest waiting time, when it is done -> Normals are ready to be set
-        StartCoroutine(SpawnWithDelay(spawnInfo[spawnInfo.Count - 1], container, spawnInfo.Count - 1, spawnInfo.Count - 1, highestLOD));
+        if (spawnInfo.Count > 0)
+        {
+            if (spawnInfo[spawnInfo.Count - 1].DetailType != 0)
+                _gameObjectsInChunkWithNoNormals.Add(spawnInfo[spawnInfo.Count - 1]);
 
-        if (spawnInfo[spawnInfo.Count - 1].DetailType != 0)
-            _gameObjectsInChunkWithNoNormals.Add(spawnInfo[spawnInfo.Count - 1]);
+            //This will always be called last and have the longest waiting time, when it is done -> Normals are ready to be set
+            StartCoroutine(SpawnWithDelay(spawnInfo[spawnInfo.Count - 1], container, spawnInfo.Count - 1, spawnInfo.Count - 1, highestLOD));
+        }
     }
 
     IEnumerator SpawnWithDelay(SpawnInfo spawnInfo, Transform container, int index, int highest, bool last)
@@ -247,8 +259,30 @@ public class PrefabSpawner : MonoBehaviour
     IEnumerator WaitToFixNormals(MeshData meshData, int chunkSize)
     {
         //Wait until everyspawnable is spawned until actually fixing their normals (to avoid fixing a null instance)
+        //This works 99 % of the time
         while (!_readyToFixNormals)
             yield return null;
+
+        //Hard check for the 1 % time
+        bool valid = false;
+        
+        while (!valid)
+        {
+            bool moveOut = true;
+
+            for (int i = 0; i < _gameObjectsInChunkWithNoNormals.Count; i++)
+            {
+                if (!_gameObjectsInChunkWithNoNormals[i].ReadyToSetNormal())
+                {
+                    moveOut = false;
+                    break;
+                }
+            }
+
+            valid = moveOut;
+
+            yield return null;
+        }
 
         for (int i = 0; i < _gameObjectsInChunkWithNoNormals.Count; i++)
             _gameObjectsInChunkWithNoNormals[i].SetNormal(meshData, chunkSize);
@@ -303,6 +337,11 @@ public class SpawnInfo
 
         _spawnedTransform.rotation = newRotation;
         _spawnedTransform.RotateAround(_spawnPosition, _spawnedTransform.up, _localRotationAmount);
+    }
+
+    public bool ReadyToSetNormal()
+    {
+        return _spawnedTransform != null;
     }
 
     public void Spawn(Transform container)

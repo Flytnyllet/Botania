@@ -24,6 +24,7 @@ public class Player : MonoBehaviour
             _playerTransform = GetComponent<Transform>();
             _updateBiomeTableTimer = new Timer(_updateBiomeTime);
             _biomeInfo = _biomeInfoInstance;
+            UpdateBiomeInfo();
         }
         else
             Destroy(this);
@@ -53,15 +54,18 @@ public class Player : MonoBehaviour
         return _playerTransform;
     }
 
-    public static List<BiomeInfoInstance> GetBiomeInfo()
+    public static BiomeTypes GetCurrentBiome()
     {
-        return _biomeInfo.GetValues();
+        return _biomeInfo.GetCurrentBiome();
     }
 }
 
 public enum BiomeTypes
 {
-    FOREST
+    FOREST,
+    BIRCH,
+    WEIRD,
+    PLANES
 }
 
 [System.Serializable]
@@ -69,9 +73,15 @@ public struct BiomeInfo
 {
     [SerializeField] List<BiomeInfoInstance> _biomeTypes;
 
-    public List<BiomeInfoInstance> GetValues()
+    public BiomeTypes GetCurrentBiome()
     {
-        return new List<BiomeInfoInstance>(_biomeTypes);
+        for (int i = 0; i < _biomeTypes.Count; i++)
+        {
+            if (_biomeTypes[i].GetValue() > 0)
+                return _biomeTypes[i].GetBiomeType();
+        }
+
+        throw new System.Exception("There is no biome here!? Should not be possible!?");
     }
 
     public void Update(Vector2 samplePoint)
@@ -99,12 +109,13 @@ public class BiomeInfoInstance
     [SerializeField] BiomeTypes _biomeType;
     float _value;
 
-    public BiomeTypes GetBiomeType() { return _biomeType; }
     public float GetValue() { return _value; }
+    public BiomeTypes GetBiomeType() { return _biomeType; }
 
     public float GetAndSetPointInNoise(Vector2 samplePoint)
     {
         float[,] noise = Noise.GenerateNoiseMap(1, 1, 1, _noiseSettings.NoiseSettingsDataMerge, samplePoint);
+        noise = Noise.Clamp(noise, _noiseSettings);
         _value = noise[0, 0] > _noiseStartPoint ? noise[0, 0] : 0;
 
         return _value;

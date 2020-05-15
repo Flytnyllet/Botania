@@ -10,16 +10,26 @@ using UnityEngine.Rendering.PostProcessing;
 //Can be activated by calling "StartCameraEffect" in the eventmanager
 public class CameraEffect : MonoBehaviour
 {
-
-    public Material _material = null;
+    const int MAX_EFFECTS = 10;
+    RenderTexture[] _tempRenderTextures = new RenderTexture[MAX_EFFECTS];
+    public List<Material> _materials = new List<Material>();
     PostProcessVolume _ppVolume;
+    Camera _camera;
 
     //awful static Action which should be faster than the central EventManager,
     //This is only used because when used it's run every frame
     public static Action Renders;
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.I)) EventManager.TriggerEvent(EventNameLibrary.VISSION_POTION, new EventParameter { floatParam = 5, floatParam2 = 20 });
+        if (Input.GetKeyDown(KeyCode.O)) Shader.SetGlobalFloat("gEmissionMult", 1);
+    }
+
     private void OnPreRender()
     {
+        Matrix4x4 screenToWorld = (_camera.projectionMatrix * _camera.worldToCameraMatrix).inverse;
+        Shader.SetGlobalMatrix("gScreenToWorld", screenToWorld);
         //Controlling the rendering of portals which are subscribed to Renderers from PortalCameraController
         if (Renders != null)
             Renders.Invoke();
@@ -27,73 +37,110 @@ public class CameraEffect : MonoBehaviour
 
     void OnRenderImage(RenderTexture source, RenderTexture destination)
     {
-        if (_material == null)
+        if (_materials.Count == 0)
         {
             Graphics.Blit(source, destination);
         }
         else
         {
-            Graphics.Blit(source, destination, _material);
+            int i = 0;
+            Debug.Log(i);
+            Graphics.Blit(source, _tempRenderTextures[i], _materials[i]);
+            for (i = 1; i < _materials.Count && i < MAX_EFFECTS; i++)
+            {
+                Debug.Log(i);
+                Graphics.Blit(_tempRenderTextures[i - 1], _tempRenderTextures[i], _materials[i]);
+            }
+            Debug.Log(i);
+            Graphics.Blit(_tempRenderTextures[i - 1], destination);
+            //Graphics.Blit(source, _tempRenderTextures[0], _materials[0]);
+            //for (int i = 1; i < _materials.Count && i < MAX_EFFECTS; i++)
+            //{
+            //    Graphics.BlitMultiTap(_tempRenderTextures[0], _tempRenderTextures[0], _materials[i]);
+            //}
+            //Graphics.Blit(_tempRenderTextures[0], destination);
         }
     }
     private void Awake()
     {
         Debug.Log(RenderSettings.ambientLight);
         _ppVolume = GetComponent<PostProcessVolume>();
-        Camera cam = GetComponent<Camera>();
-        cam.depthTextureMode = DepthTextureMode.Depth;
-        
+        _camera = GetComponent<Camera>();
+        _camera.depthTextureMode = DepthTextureMode.Depth;
+        Shader.SetGlobalFloat("gEmissionMult", 1);
+    }
+    private void Start()
+    {
+        for (int i = 0; i < MAX_EFFECTS; i++)
+        {
+            _tempRenderTextures[i] = new RenderTexture(_camera.pixelWidth, _camera.pixelHeight, (int)_camera.depth);
+        }
     }
     //Some events for activating effects
     private void OnEnable()
     {
-        EventManager.Subscribe(EventNameLibrary.CAMERA_EFFECT_EVENT_NAME, ActivateEffect);
+        EventManager.Subscribe(EventNameLibrary.DRINK_POTION, ActivateEffect);
         EventManager.Subscribe(EventNameLibrary.SPEED_INCREASE, SpeedDistortion);
-        EventManager.Subscribe(EventNameLibrary.SUPER_HEARING, HearingEffect);
+        //EventManager.Subscribe(EventNameLibrary.SUPER_HEARING, HearingEffect);
         EventManager.Subscribe(EventNameLibrary.INVISSIBLE, InvissibilityEffect);
+        EventManager.Subscribe(EventNameLibrary.LIGHTNING_STRIKE, LightningStrikeEffect);
+        EventManager.Subscribe(EventNameLibrary.VISSION_POTION, SetGlobalEmissionMult);
     }
     private void OnDisable()
     {
-        EventManager.UnSubscribe(EventNameLibrary.CAMERA_EFFECT_EVENT_NAME, ActivateEffect);
+        EventManager.UnSubscribe(EventNameLibrary.DRINK_POTION, ActivateEffect);
         EventManager.UnSubscribe(EventNameLibrary.SPEED_INCREASE, SpeedDistortion);
-        EventManager.UnSubscribe(EventNameLibrary.SUPER_HEARING, HearingEffect);
+        //EventManager.UnSubscribe(EventNameLibrary.SUPER_HEARING, HearingEffect);
         EventManager.UnSubscribe(EventNameLibrary.INVISSIBLE, InvissibilityEffect);
+        EventManager.UnSubscribe(EventNameLibrary.LIGHTNING_STRIKE, LightningStrikeEffect);
+        EventManager.UnSubscribe(EventNameLibrary.VISSION_POTION, SetGlobalEmissionMult);
     }
 
-
-    public void DeactivateEffect()
-    {
-        _material = null;
-    }
 
     public void ActivateEffect(Material material)
     {
-        _material = material;
+        _materials.Add(material);
     }
     //Set an effect for a certain amount of time
     public void ActivateEffect(Material material, float time)
     {
-        _material = material;
-        ActionDelayer.RunAfterDelayAsync(() => { _material = null; }, time);
+        _materials.Add(material);
+        ActionDelayer.RunAfterDelayAsync(() => { _materials.Remove(material); }, time);
     }
     void ActivateEffect(EventParameter eventParam)
     {
-        _material = eventParam.materialParam;
-        ActionDelayer.RunAfterDelayAsync(() => { _material = null; }, eventParam.floatParam);
+        if (eventParam.materialParam != null)
+        {
+            Material material = eventParam.materialParam;
+            material.SetFloat("_Lerp", 0);
+            _materials.Add(material);
+            StartCoroutine(LerpInCameraEffect(material, eventParam.floatParam2, false));
+            ActionDelayer.RunAfterDelay(() => { StartCoroutine(LerpInCameraEffect(material, eventParam.floatParam2, true)); }, eventParam.floatParam);
+        }
     }
-
-    //private void Update()
-    //{
-    //    if (Input.GetKeyDown(KeyCode.K))
-    //    {
-    //        Debug.Log("DERP");
-    //                                   //intparam = targetDistortion,  floatParam = distort time to lerp
-    //        EventParameter param = new EventParameter() { intParam = 40, floatParam = 2 };
-    //        EventManager.TriggerEvent(CAMERA_SPEED_DISTORT, param);
-    //        param.intParam = 0;
-    //        ActionDelayer.RunAfterDelay(() => { EventManager.TriggerEvent(CAMERA_SPEED_DISTORT, param); }, 5);
-    //    }
-    //}
+    //floatParam = _potionDuration,
+    //floatParam2 = _potionCameraEffectFadeTime
+    IEnumerator LerpInCameraEffect(Material mat, float lerpTime, bool remove)
+    {
+        float time = 0;
+        while (time < lerpTime)
+        {
+            if (remove)
+            {
+                mat.SetFloat("_Lerp", 1 - time / lerpTime);
+            }
+            else
+            {
+                mat.SetFloat("_Lerp", time / lerpTime);
+            }
+            time += Time.deltaTime;
+            yield return null;
+        }
+        if (remove)
+        {
+            _materials.Remove(mat);
+        }
+    }
 
 
     void InvissibilityEffect(EventParameter param)
@@ -171,6 +218,67 @@ public class CameraEffect : MonoBehaviour
                 yield return null;
             }
             distortionLayer.intensity.value = targetDistort;
+        }
+    }
+
+    void LightningStrikeEffect(EventParameter param)
+    {
+        StartCoroutine(LightningFlash(param.floatParam, param.floatParam2));
+    }
+    IEnumerator LightningFlash(float flashTime, float flashStrenght)
+    {
+        Debug.Log("lightning Strike");
+        ColorGrading colGrad;
+        if (_ppVolume.profile.TryGetSettings(out colGrad))
+        {
+            colGrad.postExposure.value = flashStrenght;
+            float time = 0;
+            while (time < flashTime && WorldState.Instance.IsRaining)
+            {
+                colGrad.postExposure.value = Mathf.Lerp(flashStrenght, 0, time / flashTime);
+                time += Time.deltaTime;
+                yield return null;
+            }
+            colGrad.postExposure.value = 0;
+        }
+    }
+
+    void SetGlobalEmissionMult(EventParameter param)
+    {
+        StartCoroutine(LerpGlobalEmissionMultiplier(param.floatParam, param.floatParam2));
+        StartCoroutine(LerpCromaShift(param.floatParam));
+        WorldState.Instance.ChangeFogThickness(param.floatParam);
+    }
+    IEnumerator LerpGlobalEmissionMultiplier(float lerpTime, float targetValue)
+    {
+        float time = 0;
+        float startValue = Shader.GetGlobalFloat("gEmissionMult");
+        Debug.Log(startValue);
+        while (time < lerpTime)
+        {
+            Debug.Log(time / lerpTime);
+            Debug.Log(Shader.GetGlobalFloat("gEmissionMult"));
+            Shader.SetGlobalFloat("gEmissionMult", Mathf.Lerp(startValue, targetValue, time / lerpTime));
+            time += Time.deltaTime;
+            yield return null;
+        }
+        Shader.SetGlobalFloat("gEmissionMult", targetValue);
+    }
+    IEnumerator LerpCromaShift(float lerpTime)
+    {
+        ChromaticAberration chroma;
+        if (_ppVolume.profile.TryGetSettings(out chroma))
+        {
+            float time = 0;
+            float startCromaAn = Mathf.Round(chroma.intensity.value);
+            float targetValue = 1 - startCromaAn;
+            while (time < lerpTime)
+            {
+                time += Time.deltaTime;
+                chroma.intensity.value = Mathf.Lerp(startCromaAn, targetValue, time / lerpTime);
+
+                yield return null;
+            }
         }
     }
 }
