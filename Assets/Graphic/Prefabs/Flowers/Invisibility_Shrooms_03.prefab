@@ -165,6 +165,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2648541322462857021}
+  - component: {fileID: 7658180062226217810}
   m_Layer: 0
   m_Name: Invisibility_Shrooms_03
   m_TagString: Untagged
@@ -179,7 +180,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7445312936231571382}
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -188,3 +189,26 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!205 &7658180062226217810
+LODGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7445312936231571382}
+  serializedVersion: 2
+  m_LocalReferencePoint: {x: 0.10066354, y: 0.0838657, z: 0.019605458}
+  m_Size: 1.902043
+  m_FadeMode: 0
+  m_AnimateCrossFading: 0
+  m_LastLODIsBillboard: 0
+  m_LODs:
+  - screenRelativeHeight: 0.49870273
+    fadeTransitionWidth: 0
+    renderers:
+    - renderer: {fileID: 2509214248491971421}
+  - screenRelativeHeight: 0.06258223
+    fadeTransitionWidth: 0
+    renderers:
+    - renderer: {fileID: 5907366367811376697}
+  m_Enabled: 1
