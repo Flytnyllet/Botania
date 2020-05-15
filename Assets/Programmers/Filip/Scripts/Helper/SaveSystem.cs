@@ -9,9 +9,11 @@ public class SaveSystem : MonoBehaviour
 
     [Header("Settings")]
 
+    [SerializeField] string _animatorTriggerName = "Trigger";
+
     [SerializeField, Range(1, 1200)] float _saveIntervalTime = 300;
     [SerializeField] AnimationCurve _saveIconAlphaCurve;
-    [SerializeField, Range(0.01f, 5)] float _saveIconTime = 2.5f;
+    [SerializeField, Range(0.01f, 20)] float _saveIconTime = 2.5f;
     [SerializeField] bool _intervallSave = false;
     [SerializeField] bool _menuSave = true;
     [SerializeField, Range(0.01f, 200)] float _menuSaveIntervall = 30;
@@ -22,6 +24,7 @@ public class SaveSystem : MonoBehaviour
 
     [SerializeField] Image _saveIcon;
 
+    Animator _animator;
 
     Timer _saveTimer;
     Timer _saveIconTimer;
@@ -34,7 +37,10 @@ public class SaveSystem : MonoBehaviour
     {
         if (_thisSaveSystem == null)
         {
+            _saveIntervalTime = _saveIntervalTime < _saveIconTime ? _saveIconTime : _saveIntervalTime;
             _menuSaveIntervall = _menuSaveIntervall < _saveIconTime ? _saveIconTime : _menuSaveIntervall;
+
+            _animator = GetComponent<Animator>();
 
             _thisSaveSystem = this;
             _saveTimer = new Timer(_saveIntervalTime);
@@ -108,6 +114,8 @@ public class SaveSystem : MonoBehaviour
 
     IEnumerator SaveIconAlpha()
     {
+        _animator.SetTrigger(_animatorTriggerName);
+
         while (!_saveIconTimer.Expired())
         {
             _saveIconTimer.Time += Time.deltaTime;
