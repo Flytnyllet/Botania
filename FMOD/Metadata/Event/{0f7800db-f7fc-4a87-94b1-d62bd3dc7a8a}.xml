@@ -39,7 +39,7 @@
 			<destination>{3f1375a1-2525-47ac-8a8e-44b63b718a5f}</destination>
 		</relationship>
 		<relationship name="banks">
-			<destination>{01714977-9472-4f6d-a8d6-ee6e0f884b40}</destination>
+			<destination>{c04dcdcc-5b85-493f-96ae-07bbbbb16d65}</destination>
 		</relationship>
 	</object>
 	<object class="EventMixer" id="{3ce34c48-f69d-48b1-be8d-3f37e5644085}">
@@ -330,23 +330,42 @@
 	<object class="MixerBusPanner" id="{30545203-36d5-40ae-a7ca-eab26f919543}" />
 	<object class="ThreeEQEffect" id="{e9ff7295-eb34-4f1a-9259-9f1364e60d99}">
 		<property name="lowGain">
-			<value>-5</value>
+			<value>-11.5</value>
 		</property>
 		<property name="midGain">
-			<value>3</value>
+			<value>2.5</value>
 		</property>
 		<property name="highGain">
 			<value>-3</value>
 		</property>
+		<property name="lowCrossover">
+			<value>700</value>
+		</property>
 		<property name="highCrossover">
-			<value>3100</value>
+			<value>5200</value>
 		</property>
 		<property name="crossoverSlope">
 			<value>2</value>
 		</property>
 	</object>
 	<object class="MixerBusFader" id="{a1d4428c-e07a-4b96-a180-848f3f1fcced}" />
-	<object class="SpatialiserEffect" id="{dd1b4ca2-83bc-40d3-b666-5b395f51fd4a}" />
+	<object class="SpatialiserEffect" id="{dd1b4ca2-83bc-40d3-b666-5b395f51fd4a}">
+		<property name="minimumDistance">
+			<value>0</value>
+		</property>
+		<property name="maximumDistance">
+			<value>8</value>
+		</property>
+		<property name="extentMode">
+			<value>1</value>
+		</property>
+		<property name="soundSize">
+			<value>5.5</value>
+		</property>
+		<property name="minimumExtent">
+			<value>276</value>
+		</property>
+	</object>
 	<object class="AutomationPoint" id="{ed5dd73d-7903-4cdc-a3c2-18763308deec}">
 		<property name="position">
 			<value>0.41939655172413803</value>

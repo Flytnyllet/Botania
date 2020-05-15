@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.00.00">
 	<object class="Event" id="{9a81becd-ffbe-460d-b60f-d4a9ffc31154}">
 		<property name="name">
-			<value>p___002_inv___book_close</value>
+			<value>p___02_inv___book_close</value>
 		</property>
 		<property name="outputFormat">
 			<value>1</value>
@@ -32,7 +32,7 @@
 			<destination>{f5251582-2aba-4f31-a111-63dd4238532d}</destination>
 		</relationship>
 		<relationship name="banks">
-			<destination>{01714977-9472-4f6d-a8d6-ee6e0f884b40}</destination>
+			<destination>{a3f91e27-e044-4924-a5fc-64ef3dfb5cc1}</destination>
 		</relationship>
 	</object>
 	<object class="EventMixer" id="{f333ac43-a2b1-4b0d-ad0d-4a8b8476619f}">
@@ -53,14 +53,14 @@
 			<destination>{83044b96-90a2-44af-91c1-4519b053f95d}</destination>
 		</relationship>
 		<relationship name="output">
-			<destination>{188885a1-6692-44d3-89fa-7ea6a74a4f08}</destination>
+			<destination>{89477f58-1cae-4ae1-b15b-d4713b4eb5ce}</destination>
 		</relationship>
 	</object>
 	<object class="EventAutomatableProperties" id="{74b0577f-92a0-49f0-a63b-c78d9b1e01d6}" />
 	<object class="MarkerTrack" id="{5360845e-596e-4729-97e5-d1129d36f224}" />
 	<object class="GroupTrack" id="{f1563358-fd39-4120-a12f-12efbeecbf55}">
 		<relationship name="modules">
-			<destination>{dab30f18-8cd9-440b-9e26-1da53db4af24}</destination>
+			<destination>{b4c24478-3b0b-47e5-96ea-ed9b9ffd2e6f}</destination>
 		</relationship>
 		<relationship name="mixerGroup">
 			<destination>{4d691211-7e21-4b38-ac67-113442da5e5d}</destination>
@@ -68,12 +68,12 @@
 	</object>
 	<object class="Timeline" id="{f5251582-2aba-4f31-a111-63dd4238532d}">
 		<relationship name="modules">
-			<destination>{dab30f18-8cd9-440b-9e26-1da53db4af24}</destination>
+			<destination>{b4c24478-3b0b-47e5-96ea-ed9b9ffd2e6f}</destination>
 		</relationship>
 	</object>
 	<object class="EventMixerMaster" id="{8a075361-d291-4a32-8c9f-0b7f226f9fcb}">
 		<property name="volume">
-			<value>-8.5</value>
+			<value>-13</value>
 		</property>
 		<relationship name="effectChain">
 			<destination>{3f97577d-f8c4-49cc-b164-d4b3bb533b2e}</destination>
@@ -91,18 +91,15 @@
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{83044b96-90a2-44af-91c1-4519b053f95d}" />
-	<object class="SingleSound" id="{dab30f18-8cd9-440b-9e26-1da53db4af24}">
+	<object class="SingleSound" id="{b4c24478-3b0b-47e5-96ea-ed9b9ffd2e6f}">
 		<property name="length">
-			<value>0.59168750000000003</value>
+			<value>1.0044375000000001</value>
 		</property>
 		<relationship name="audioFile">
-			<destination>{62cfe385-dfaf-4d82-a522-87b66fd9d264}</destination>
+			<destination>{82e56b8f-99a2-4676-a567-c8c7d698c970}</destination>
 		</relationship>
 	</object>
 	<object class="EventMixerGroup" id="{4d691211-7e21-4b38-ac67-113442da5e5d}">
-		<property name="volume">
-			<value>-3.5</value>
-		</property>
 		<property name="name">
 			<value>Audio 1</value>
 		</property>

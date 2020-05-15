@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Audio/Data/Amb_Data", fileName = "Amb_Data_Asset")]
-public class Amb_Data : UnityEngine.ScriptableObject
+[CreateAssetMenu(menuName = "Audio/Amb_Data", fileName = "Amb_Data_Asset")]
+public class Amb_Data : ScriptableObject
 {
     [Header("Amb_Local_Wind")]
     [FMODUnity.EventRef]
-    public string amb_forest_wind = null;
+    public string amb_tree1_wind = null;
 
     [Space(10)]
 
@@ -28,16 +28,10 @@ public class Amb_Data : UnityEngine.ScriptableObject
     [Space(10)]
 
     [FMODUnity.EventRef]
-    public string tree_rnd_woodcreak1 = null;
+    public string tree_rnd_woodcreak = null;
 
     [FMODUnity.EventRef]
-    public string tree_rnd_woodcreak2 = null;
-
-    [FMODUnity.EventRef]
-    public string tree_rnd_woodsnap1 = null;
-
-    [FMODUnity.EventRef]
-    public string tree_rnd_woodsnap2 = null;
+    public string tree_rnd_woodsnap = null;
 
     [Space(10)]
 
