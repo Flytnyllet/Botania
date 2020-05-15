@@ -18,14 +18,16 @@ public class PickupFlower : InteractableSaving, IInteractable
     [Tooltip("Används i fall ett annat objekt än det lokala skall tas bort vid upplockning")]
     [SerializeField] GameObject[] _gameobjectOverload;
     [SerializeField] UnityEvent _pickupAction;
+    [SerializeField] float _pickupAnimationTime = 0.2f;
+    [SerializeField] float _pickupAnimationForce = 1.0f;
 
-    public bool Interact()
+    public bool Interact(Transform interactor)
     {
         if (_enabled)
         {
             //Pickup save system
             PickUp();
-
+            //transform.LookAt(interactor, Vector3.up);
             string debugFlowerNames = "Trying to pick up a " + _flowerData.itemName
                 + ". Accepted flower types are: [";
             string[] flowerTypes = FlowerLibrary.GetAllFlowerNames();
@@ -61,17 +63,23 @@ public class PickupFlower : InteractableSaving, IInteractable
 
             }
             if (_dissableTriggerafterPickup) GetComponent<Collider>().enabled = false;
+            StartCoroutine(ShakeFlower(interactor, _pickupAnimationTime, _pickupAnimationForce));
             _pickupAction.Invoke();
             return true; //Doesn't really have a purpose for this
         }
         return false;
     }
-    IEnumerator ShakeFlower(float force, float duration)
+    IEnumerator ShakeFlower(Transform interactor, float duration, float force = 1)
     {
+        Vector3 direction = new Vector3();
+        Vector3 baseRotation = transform.eulerAngles;
+        direction.x = interactor.position.z - this.transform.position.z;
+        direction.z = this.transform.position.x - interactor.position.x;
         float time = 0;
+        float radianMultiplier = Mathf.PI * 2 / duration;
         while (time < duration)
         {
-
+            this.transform.eulerAngles = baseRotation + direction * Mathf.Sin(time * radianMultiplier) * force;
             time += Time.deltaTime;
             yield return null;
         }

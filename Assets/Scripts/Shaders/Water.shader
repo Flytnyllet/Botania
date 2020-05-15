@@ -9,7 +9,7 @@
 		_Metallic("Metallic", Range(0,1)) = 0.0
 		_FresnelLow("Fresnel Low", Range(-1,0.9)) = 0.0
 		_FresnelHigh("Fresnel High", Range(0,1)) = 0.0
-		_Alpha("Alpha", Range(0,1)) = 0.0
+		_Alpha("Alpha (THIS DOES NOTHING!)", Range(0,1)) = 0.0
 		_Delta("Delta", Range(0,1)) = 0.01
 		_DepthGradientShallow("Depth Gradient Shallow", Color) = (0.325, 0.807, 0.971, 0.725)
 		_DepthGradientDeep("Depth Gradient Deep", Color) = (0.086, 0.407, 1, 0.749)
@@ -182,7 +182,7 @@
 				o.Albedo = waterColor * VissionPotionEffectMultiplier;
 				o.Metallic = 1 * VissionPotionEffectMultiplier;
 				o.Smoothness = _Glossiness * waterColor.a*fresnelfactor*VissionPotionEffectMultiplier;
-				o.Alpha = _Alpha * waterColor.a;
+				o.Alpha = fresnelfactor;
 			}
 			ENDCG
 		}

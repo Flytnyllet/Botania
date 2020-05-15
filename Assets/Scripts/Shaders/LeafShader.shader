@@ -26,7 +26,6 @@
 
 		CGPROGRAM
 			#pragma shader_feature ALPHA_CUTOUT 
-
 			#pragma surface surf Lambert vertex:vert dithercrossfade addshadow
 			#pragma target 3.0
 

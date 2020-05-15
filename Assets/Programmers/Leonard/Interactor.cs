@@ -70,7 +70,7 @@ public class Interactor : MonoBehaviour
 
             //Currently looking at an interactable
             bool lookingAtFlower = false;
-            for (int i = 0; i <  pickupFlowers.Length; i++)
+            for (int i = 0; i < pickupFlowers.Length; i++)
             {
                 if (pickupFlowers[i].SetEnabled)
                 {
@@ -88,7 +88,7 @@ public class Interactor : MonoBehaviour
 
                 for (int i = 0; i < interactables.Length; i++)
                 {
-                    interactables[i].Interact();
+                    interactables[i].Interact(this.transform);
                 }
             }
         }

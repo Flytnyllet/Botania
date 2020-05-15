@@ -6,7 +6,7 @@ public class IceInteraction : MonoBehaviour, IInteractable
 {
     bool _activated = false;
     [SerializeField] float _meltTime = 1.0f;
-    public bool Interact()
+    public bool Interact(Transform transform)
     {
         if (!_activated)
         {
@@ -22,7 +22,7 @@ public class IceInteraction : MonoBehaviour, IInteractable
         Vector3 startSize = transform.localScale;
         while (time > 0)
         {
-            transform.localScale = Vector3.Lerp(Vector3.zero, startSize, time/ _meltTime);
+            transform.localScale = Vector3.Lerp(Vector3.zero, startSize, time / _meltTime);
             time -= Time.deltaTime;
             yield return null;
         }
