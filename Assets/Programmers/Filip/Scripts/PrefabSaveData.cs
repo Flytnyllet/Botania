@@ -5,6 +5,7 @@ using UnityEngine;
 public class PrefabSaveData : MonoBehaviour
 {
     [SerializeField, Tooltip("With this true it will still spawn it but only partially! Make sure this prefab support that!")] bool _spawnPartially = false;
+    [SerializeField] bool _groupSpawn = false;
 
     StoredSaveData _saveData;
 
@@ -15,6 +16,7 @@ public class PrefabSaveData : MonoBehaviour
     {
         this._saveData = saveData;
         _saveData.SetPartialSpawn(_spawnPartially);
+        _saveData.SetGroupSpawn(_groupSpawn);
     }
 
     //Call this function on pickup
@@ -31,19 +33,27 @@ public struct StoredSaveData
     ChunkCoordIndex _chunkCoordIndex;
 
     bool _partialSpawn;
+    bool _groupSpawn;
 
     public ChunkCoordIndex ChunkCoordIndex { get { return _chunkCoordIndex; } private set { _chunkCoordIndex = value; } } //Identify this specific object!
     public bool PartialSpawn { get { return _partialSpawn; } private set { _partialSpawn = value; } }
+    public bool GroupSpawn { get { return _groupSpawn; } private set { _groupSpawn = value; } }
 
     public void SetPartialSpawn(bool partialSpawn)
     {
         this._partialSpawn = partialSpawn;
     }
 
+    public void SetGroupSpawn(bool groupSpawn)
+    {
+        this._groupSpawn = groupSpawn;
+    }
+
     //Is only created in the prefab spawner and set only there
     public StoredSaveData(Vector2 chunkCoord, Vector2 itemIndex)
     {
         this._partialSpawn = false;
+        this._groupSpawn = false;
         this._chunkCoordIndex = new ChunkCoordIndex(chunkCoord, itemIndex);
     }
 }

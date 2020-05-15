@@ -8,7 +8,7 @@
 		_CutoutValue("Alpha Cutout Value", float) = 0
 
 		_EmissionMap("Emission Map", 2D) = "black" {}
-		_EmissionMult("Emission Multiplier", range(0,1)) = 1.0
+		_EmissionMult("Emission Multiplier", float) = 1.0
 			//_Metal("Metallness Map", 2D) = "black" {}
 	//		_Rough("Roughness Map", 2D) = "black" {}
 			_Metallic("Metallic", Range(0,1)) = 0.0
