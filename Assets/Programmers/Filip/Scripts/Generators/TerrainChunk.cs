@@ -62,7 +62,7 @@ public class TerrainChunk
 
         _meshObject.transform.position = new Vector3(position.x, 0, position.y);
         _meshObject.transform.parent = parent;
-        SetVisable(false);
+        _meshObject.SetActive(false);
 
         _lodMeshes = new LODMesh[detailLevels.Length];
         for (int i = 0; i < _detailLevels.Length; i++)
@@ -180,7 +180,10 @@ public class TerrainChunk
 
     public void SetVisable(bool visable)
     {
-        _meshObject.SetActive(visable);
+        if (visable || _spawnInfoRequester.CompletelySpawnedIn)
+            _meshObject.SetActive(visable);
+        else if (!_spawnInfoRequester.CompletelySpawnedIn)
+            _spawnInfoRequester.Disable(_meshObject);
     }
 
     public bool IsVisable()
@@ -239,7 +242,7 @@ class SpawnInfoRequester
 
     public event System.Action _updateCallback;
 
-
+    public bool CompletelySpawnedIn { get { return _prefabSpawner.CompletelySpawnedIn; } }
     public bool IsSet(int index) { return _isSet[index]; }
     public bool HasSpawnInfo(int index) { return _hasSpawnInfo[index]; }
 
@@ -254,6 +257,11 @@ class SpawnInfoRequester
     public void Set(int index)
     {
         _isSet[index] = true;
+    }
+
+    public void Disable(GameObject parent)
+    {
+        _prefabSpawner.Disable(parent);
     }
 
     public List<SpawnInfo> GetSpawnInfo(int index)
