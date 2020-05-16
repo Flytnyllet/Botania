@@ -44,14 +44,12 @@ public class CameraEffect : MonoBehaviour
         else
         {
             int i = 0;
-            Debug.Log(i);
             Graphics.Blit(source, _tempRenderTextures[i], _materials[i]);
             for (i = 1; i < _materials.Count && i < MAX_EFFECTS; i++)
             {
                 Debug.Log(i);
                 Graphics.Blit(_tempRenderTextures[i - 1], _tempRenderTextures[i], _materials[i]);
             }
-            Debug.Log(i);
             Graphics.Blit(_tempRenderTextures[i - 1], destination);
             //Graphics.Blit(source, _tempRenderTextures[0], _materials[0]);
             //for (int i = 1; i < _materials.Count && i < MAX_EFFECTS; i++)

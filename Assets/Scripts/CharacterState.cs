@@ -15,6 +15,10 @@ public static class CharacterState
     public static CHARACTER_CONTROL_STATE Control_State { get => _controlState; }
     static List<ABILITY_FLAG> _abilityFlags = new List<ABILITY_FLAG>();
     public static float PositionType { get; set; }
+    static CharacterState()
+    {
+        Debug.Log(_abilityFlags.Count);
+    }
 
     //Förenkla läslighet i tillkopplad kod
     public static bool MayMove
@@ -41,11 +45,13 @@ public static class CharacterState
     }
     public static void AddAbilityFlag(ABILITY_FLAG flag, float time)
     {
+        Debug.Log("adding flag");
         _abilityFlags.Add(flag);
         ActionDelayer.RunAfterDelay(() => { _abilityFlags.Remove(flag); }, time);
     }
     public static void AddAbilityFlag(string s, float time)
     {
+        Debug.Log("adding flag");
         //Debug.Log(s + " added");
         ABILITY_FLAG flag = GetFlagFromString(s);
         _abilityFlags.Add(flag);
@@ -56,19 +62,24 @@ public static class CharacterState
         }, time);
     }
 
-    public static bool RemoveAbilityFlag(string name)
+    public static void RemoveAbilityFlag(ABILITY_FLAG flag)
     {
-        ABILITY_FLAG flag = GetFlagFromString(name);
-        if (IsAbilityFlagActive(flag))
-        {
-            _abilityFlags.Remove(flag);
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        _abilityFlags.Remove(flag);
     }
+
+    //public static bool RemoveAbilityFlag(string name)
+    //{
+    //    ABILITY_FLAG flag = GetFlagFromString(name);
+    //    if (IsAbilityFlagActive(flag))
+    //    {
+    //        _abilityFlags.Remove(flag);
+    //        return true;
+    //    }
+    //    else
+    //    {
+    //        return false;
+    //    }
+    //}
 
     public static bool IsAbilityFlagActive(ABILITY_FLAG flag)
     {
@@ -125,6 +136,8 @@ public static class CharacterState
                 return ABILITY_FLAG.SLOWFALL;
             case "CALM":
                 return ABILITY_FLAG.CALM_ALL_FLOWERS;
+            case "VISION":
+                return ABILITY_FLAG.VISSION;
             default:
                 return ABILITY_FLAG.NULL;
         }
