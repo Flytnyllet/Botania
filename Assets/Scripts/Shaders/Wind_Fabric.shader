@@ -1,8 +1,9 @@
-﻿Shader "__Lab/WindMovement_Fabric" {
+﻿Shader "Botania/WindMovement_Fabric_PhysicsMapSupport" {
 	Properties{
 		_Color("Colour", Color) = (1,1,1,1)
 		_MainTex("Texture", 2D) = "white" {}
 		_EmissionMap("Emission Map", 2D) = "black" {}
+		_EmissionMult("Emision Multiplier", float) = 1
 		_PhysicsMap("Physics Map", 2D) = "black" {}
 		_Alpha("Alpha Map", 2D) = "white" {}
 		[Toggle(ALPHA_CUTOUT)]
@@ -44,6 +45,7 @@
 		float _WindSize;
 		float _Strenght;
 		float _CutoutValue;
+		float _EmissionMult;
 		float gEmissionMult;
 
 
@@ -103,17 +105,17 @@
 		  float3 worldPos = mul(unity_ObjectToWorld, float4(v.vertex.xyz, 1)).xyz;
 
 		  float tex = tex2Dlod(_PhysicsMap, float4(v.texcoord.xy, 0, 0)).r;
-		  float sinW= sin((worldPos.x + worldPos.z + worldPos.y + _Time.y*_Speed)*4);
+		  float sinW = sin((worldPos.x + worldPos.z + worldPos.y + _Time.y*_Speed) * 4);
 		  float noise = fBm(worldPos.xz + _Time.w*_Speed*0.5);
 
-		  v.vertex.x += tex * ( noise)*_Strenght;
+		  v.vertex.x += tex * (noise)*_Strenght;
 		  v.vertex.y += tex * (sinW)*_Strenght;
 	  }
 
 
 	  void surf(Input IN, inout SurfaceOutput o) {
 		  fixed4 c = tex2D(_MainTex, IN.uv_MainTex)*_Color;
-		  o.Albedo = c.rgb/ gEmissionMult;
+		  o.Albedo = c.rgb / gEmissionMult;
 		  o.Alpha = tex2D(_Alpha, IN.uv_MainTex)*_Color;
 		  float2 pos = IN.screenPos.xy / IN.screenPos.w;
 		  pos *= _ScreenParams.xy; // pixel position
@@ -129,7 +131,7 @@
 #else
 		  clip(o.Alpha - thresholdMatrix[fmod(pos.x, 4)][pos.y % 4]);
 #endif
-		  o.Emission = tex2D(_EmissionMap, IN.uv_MainTex)*gEmissionMult;
+		  o.Emission = tex2D(_EmissionMap, IN.uv_MainTex)*_EmissionMult*gEmissionMult;
 	  }
 	ENDCG
 		}

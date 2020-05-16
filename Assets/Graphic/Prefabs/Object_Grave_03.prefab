@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3785633609776983942}
   - component: {fileID: 5319387816185451952}
   - component: {fileID: 1940711013218101577}
+  - component: {fileID: 1569739724154697691}
   m_Layer: 0
   m_Name: Object_Grave_03
   m_TagString: Untagged
@@ -25,7 +26,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 203256195968900501}
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -1.686, y: -5.851622e-18, z: 20.730602}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -78,3 +79,16 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!65 &1569739724154697691
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 203256195968900501}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.4545581, y: 1.066183, z: 0.17855465}
+  m_Center: {x: 0, y: 0.44815406, z: 0.000000011175871}

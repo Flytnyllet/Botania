@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2668017581494730855}
   - component: {fileID: 6367444897086224977}
   - component: {fileID: 820002640627320488}
+  - component: {fileID: 3140507816308343592}
   m_Layer: 0
   m_Name: Object_Pot
   m_TagString: Untagged
@@ -25,7 +26,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1395528754552074868}
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 4.3183837, y: 8.7066854e-17, z: 8.176573}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -78,3 +79,17 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!136 &3140507816308343592
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1395528754552074868}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.29922375
+  m_Height: 0.91535836
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.4518768, z: 0}

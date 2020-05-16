@@ -238,7 +238,7 @@ public class FPSMovement : MonoBehaviour
 		Vector3 move =
 			_playerCam.right.normalized * horizontal +
 			lookDir.normalized * vertical;
-		charCon.Move(move * _speed.Value * modifier * Time.deltaTime);
+		charCon.Move(move.normalized * _speed.Value * modifier * Time.deltaTime);
 
 		//Post move distance to ground check
 		/*if (ground.distance <= _slopeWalkCorrection && !_inAir)
