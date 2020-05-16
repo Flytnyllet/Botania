@@ -4,36 +4,47 @@ using UnityEngine;
 
 public class LevitationMovement : MonoBehaviour
 {
-    [SerializeField] Shader _shader;
-    //CharacterController _charCon;
-    //float _randomStartValue;
-
-    //[SerializeField] float _rotationSpeed = 10;
-    //[SerializeField] float _verticalRangeRadious = 0.1f;
-    //[SerializeField] float _verticalTimeMultiplier = 0.4f;
-    //[SerializeField] float _hoptizontalXRangeRadious = 0.05f;
-    //[SerializeField] float _hoptizontalXTimeMultiplier = 0.12f;
-    //[SerializeField] float _hoptizontalZRangeRadious = 0.12f;
-    //[SerializeField] float _hoptizontalZTimeMultiplier = 0.07f;
-
+    [SerializeField] Vector3 _movementDirection;
+    [SerializeField, Range(0, 1.57f)] float _randomDirectionOffset;
+    [SerializeField] MeshRenderer _renderer;
+    Velocity _velocity;
+    Vector3 _position;
     private void Awake()
     {
-        MeshRenderer renderer = GetComponent<MeshRenderer>();
-        renderer.material = new Material(_shader);
-        //float f = Random.Range(0.0f, 6.28f);
-        renderer.material.SetFloat("_Random", Random.Range(0.0f, 6.28f));
-
-        //_charCon = GetComponent<CharacterController>();
-        //_randomStartValue = +Random.Range(0, 3.14f);
+        _position = transform.localPosition;
+        AddRandomDirectionOffset();
+        if (_renderer != null)
+        {
+            _renderer.material.SetFloat("_Random", Random.Range(0.0f, 6.28f));
+        }
+        _velocity = new Velocity { transform = this.transform, direction = _movementDirection };
     }
 
-    //void Update()
-    //{
-    //    This shit is slow as fuck and either needs some good culling or complete replacement
-    //    float vertical = Mathf.Sin(Time.time * _verticalTimeMultiplier + _randomStartValue) * Time.deltaTime * _verticalRangeRadious;
-    //    float horizontalX = Mathf.Cos(Time.time * _hoptizontalXTimeMultiplier + _randomStartValue) * Time.deltaTime * _hoptizontalXRangeRadious;
-    //    float horizontalZ = Mathf.Cos(Time.time * _hoptizontalZTimeMultiplier + _randomStartValue) * Time.deltaTime * _hoptizontalZRangeRadious;
-    //    _charCon.Move(new Vector3(horizontalX, vertical, horizontalZ));
-    //    this.transform.Rotate(new Vector3(0, _rotationSpeed * Time.deltaTime, 0));
-    //}
+    void AddRandomDirectionOffset()
+    {
+        float sincosVal = Random.Range(-_randomDirectionOffset, _randomDirectionOffset);
+        float sin = Mathf.Sin(sincosVal);
+        float cos = Mathf.Cos(sincosVal);
+        float x = _movementDirection.x * cos - _movementDirection.y * sin;
+        float z = _movementDirection.x * sin + _movementDirection.y * cos;
+        _movementDirection.x = x;
+        _movementDirection.z = z;
+    }
+    void Move(float f)
+    {
+        _position += _movementDirection * f;
+    }
+    private void OnEnable()
+    {
+        TrashMultiMoverScript.Instance.Subscribe(Move);
+    }
+    private void OnDisable()
+    {
+        TrashMultiMoverScript.Instance.UnSubscribe(Move);
+    }
+
+    private void FixedUpdate()
+    {
+        //transform.position += _movementDirection * Time.deltaTime;
+    }
 }

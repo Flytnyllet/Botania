@@ -20,11 +20,11 @@ public class CameraEffect : MonoBehaviour
     //This is only used because when used it's run every frame
     public static Action Renders;
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.I)) EventManager.TriggerEvent(EventNameLibrary.VISSION_POTION, new EventParameter { floatParam = 5, floatParam2 = 20 });
-        if (Input.GetKeyDown(KeyCode.O)) Shader.SetGlobalFloat("gEmissionMult", 1);
-    }
+    //private void Update()
+    //{
+    //    if (Input.GetKeyDown(KeyCode.I)) EventManager.TriggerEvent(EventNameLibrary.VISSION_POTION, new EventParameter { floatParam = 5, floatParam2 = 20 });
+    //    if (Input.GetKeyDown(KeyCode.O)) Shader.SetGlobalFloat("gEmissionMult", 1);
+    //}
 
     private void OnPreRender()
     {

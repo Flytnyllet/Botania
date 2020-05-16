@@ -165,6 +165,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6133001004829737759}
+  - component: {fileID: 5823042477866296614}
+  - component: {fileID: 7109531458385909464}
+  - component: {fileID: 1033896769804766868}
+  - component: {fileID: 5887058312716319968}
+  - component: {fileID: 6106770268260866394}
   m_Layer: 0
   m_Name: Flower_invisibility_02
   m_TagString: Untagged
@@ -179,7 +184,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3332074974613117293}
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -188,3 +193,94 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!205 &5823042477866296614
+LODGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3332074974613117293}
+  serializedVersion: 2
+  m_LocalReferencePoint: {x: -0.09719086, y: 0.279729, z: -0.11894822}
+  m_Size: 1.4172907
+  m_FadeMode: 0
+  m_AnimateCrossFading: 0
+  m_LastLODIsBillboard: 0
+  m_LODs:
+  - screenRelativeHeight: 0.49870273
+    fadeTransitionWidth: 0
+    renderers:
+    - renderer: {fileID: 6239770097314137819}
+  - screenRelativeHeight: 0.06258223
+    fadeTransitionWidth: 0
+    renderers:
+    - renderer: {fileID: 3774504174872922543}
+  m_Enabled: 1
+--- !u!65 &7109531458385909464
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3332074974613117293}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.67, y: 0.91, z: 0.57}
+  m_Center: {x: 0.12, y: 0.18, z: -0.26}
+--- !u!114 &1033896769804766868
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3332074974613117293}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee66933cb94b3af499283834dca2703c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _dissableTriggerafterPickup: 1
+  _flowerData: {fileID: 11400000, guid: edfdc5a62d9d8714c8b46ab474ca287a, type: 2}
+  _pickupAlpha: {fileID: 2800000, guid: 82cc1525c3b9c0246aff426f5ddac89c, type: 3}
+  _gameobjectOverload:
+  - {fileID: 455743568526610367}
+  - {fileID: 54942463292100471}
+  _pickupAction:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  _pickupAnimationTime: 0.2
+  _pickupAnimationForce: 1
+--- !u!114 &5887058312716319968
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3332074974613117293}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70c2b09e2695b494b8572a2ea101535c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _spawnPartially: 0
+--- !u!114 &6106770268260866394
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3332074974613117293}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef70da52aeca2474cb021927f54dffe6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _renderer:
+  - {fileID: 6239770097314137819}
+  - {fileID: 3774504174872922543}
+  _visibleTex: {fileID: 2800000, guid: 18c38d7571f6bac4da1ffa82c9b85581, type: 3}
+  _invisibleTex: {fileID: 2800000, guid: 82cc1525c3b9c0246aff426f5ddac89c, type: 3}

@@ -126,7 +126,7 @@ public class FPSMovement : MonoBehaviour
 			// == Variables ==
 			//Input
 			Vector2 moveInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
-			if (moveInput.magnitude < 1)
+			if (moveInput.magnitude > 1)
 			{
 				moveInput.Normalize();
 			}
@@ -277,7 +277,7 @@ public class FPSMovement : MonoBehaviour
 		Vector3 move =
 			_playerCam.right.normalized * horizontal +
 			lookDir.normalized * vertical;
-		charCon.Move(move * _speed.Value * modifier * Time.deltaTime);
+		charCon.Move(move.normalized * _speed.Value * modifier * Time.deltaTime);
 
 		//Post move distance to ground check
 		/*if (ground.distance <= _slopeWalkCorrection && !_inAir)
