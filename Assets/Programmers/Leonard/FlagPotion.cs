@@ -59,7 +59,9 @@ public class FlagPotion : Potion_Template
             case ABILITY_FLAG.NULL:
                 break;
             case ABILITY_FLAG.STONE:
-                break;
+				EventManager.TriggerEvent(EventNameLibrary.STONED,
+					new EventParameter { });
+				break;
             case ABILITY_FLAG.SLOWFALL:
                 break;
             case ABILITY_FLAG.CALM_ALL_FLOWERS:

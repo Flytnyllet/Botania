@@ -8,7 +8,8 @@ public static class EventNameLibrary
     public static readonly string SPEED_INCREASE = "SpeedDistort";
     public static readonly string SUPER_HEARING = "SuperHearing";
     public static readonly string DRINK_POTION = "DrinkPotion";
-    public static readonly string VISSION_POTION = "VissionPotion";
+	public static readonly string STONED = "Stoned";
+	public static readonly string VISSION_POTION = "VissionPotion";
     public static readonly string INVISSIBLE = "Invissible";     //This is used both for starting and ending right now
     public static readonly string OPEN_BOOK = "OPEN_BOOK";
     public static readonly string CLOSE_BOOK = "CLOSE_BOOK";

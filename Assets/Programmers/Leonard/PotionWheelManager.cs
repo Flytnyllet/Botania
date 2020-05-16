@@ -64,6 +64,20 @@ public class PotionWheelManager : MonoBehaviour
 		}
 	}
 
+	void UpdateUI()
+	{
+		for (int i = 0; i < transform.childCount; i++)
+		{
+			PotionLoader potion = _allPotions[i];
+			string potionName = potion.GetPotionItemData().itemName;
+
+			Transform child = transform.GetChild(i);
+			child.GetComponentInChildren<Text>().text = potionName + "\n x" + FlowerLibrary.GetPotionAmount(potionName);
+
+			//go.GetComponent<Button>().onClick.AddListener( delegate { ActivateSelectedRegion(MENU_ACTIVATE_BUTTON); });
+		}
+	}
+
 	void SetUpRegions()
 	{
 		if(regionPositions.Length != _allPotions.Count)
