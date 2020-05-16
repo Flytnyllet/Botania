@@ -40,7 +40,7 @@ public static class Noise
 
     public static float[,] GenerateNoiseMap(int mapWidth, int mapHeight, int detailLevel, NoiseSettings settings, Vector2 sampleCenter)
     {
-        SetSeed("RÖV");
+        SetSeed("SPIK");
 
         if (detailLevel <= 0)
         {
