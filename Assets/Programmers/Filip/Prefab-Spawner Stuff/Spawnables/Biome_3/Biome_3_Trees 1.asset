@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a2ef82269fb17cf43a9f1163b1dfd939, type: 3}
-  m_Name: Biome_1_Trees
+  m_Name: Biome_3_Trees 1
   m_EditorClassIdentifier: 
   _autoUpdate: 0
   _noiseMergeType: 2
@@ -18,9 +18,9 @@ MonoBehaviour:
   _parentOnly: 0
   _rotationAmount: 1
   _noiseStartPoint: 0.001
-  _thickness: 0.85
+  _thickness: 0.7
   _uniformSpreadAmount: 3
-  _randomSpread: 0.623
+  _randomSpread: 0.485
   _offsetAmount: 2
   _spawnFixedHeight: 0
   _size: 2
@@ -38,18 +38,32 @@ MonoBehaviour:
   _softMaxSlope: 0
   _hardMaxSlope: 0
   _prefabs:
-  - _prefab: {fileID: 7663610663540555332, guid: 0e5ede7843a172e42873344c94a42fab,
+  - _prefab: {fileID: 6718021553869830053, guid: b53ce6b48c8c913488bfc4b942dc1102,
       type: 3}
-    _probability: 1
-    _height: 0.35
+    _probability: 2
+    _height: 0
     _fixedHeight: 0
     _scale: 1
-    _scaleRandom: 0.8
-  - _prefab: {fileID: 9026743611377562225, guid: 57f37c86b063a3e4ab8e2ccfeaac9d4e,
+    _scaleRandom: 0.75
+  - _prefab: {fileID: 2893592275202953246, guid: 76d31b87b48ede843a9b0aa083b4151f,
       type: 3}
-    _probability: 1
-    _height: 0.35
+    _probability: 2
+    _height: 0
     _fixedHeight: 0
     _scale: 1
-    _scaleRandom: 0.8
+    _scaleRandom: 0.75
+  - _prefab: {fileID: 584600736148512849, guid: 52c79e0f8782f9946baffe58cbcbffc1,
+      type: 3}
+    _probability: 1
+    _height: 0
+    _fixedHeight: 0
+    _scale: 1
+    _scaleRandom: 0.75
+  - _prefab: {fileID: 2288529959361626765, guid: 96964b04fc0f18f498c260f8ec357a4d,
+      type: 3}
+    _probability: 1
+    _height: 0
+    _fixedHeight: 0
+    _scale: 1
+    _scaleRandom: 0.75
   _subSpawners: []
