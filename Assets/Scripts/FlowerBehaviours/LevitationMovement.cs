@@ -8,15 +8,18 @@ public class LevitationMovement : MonoBehaviour
     [SerializeField, Range(0, 1.57f)] float _randomDirectionOffset;
     [SerializeField] MeshRenderer _renderer;
     Velocity _velocity;
+    Vector3 _position;
     private void Awake()
     {
+        _position = transform.localPosition;
         AddRandomDirectionOffset();
         if (_renderer != null)
         {
             _renderer.material.SetFloat("_Random", Random.Range(0.0f, 6.28f));
         }
-        _velocity = new Velocity { tran = this.transform, direction = _movementDirection };
+        _velocity = new Velocity { transform = this.transform, direction = _movementDirection };
     }
+
     void AddRandomDirectionOffset()
     {
         float sincosVal = Random.Range(-_randomDirectionOffset, _randomDirectionOffset);
@@ -27,18 +30,21 @@ public class LevitationMovement : MonoBehaviour
         _movementDirection.x = x;
         _movementDirection.z = z;
     }
-
+    void Move(float f)
+    {
+        _position += _movementDirection * f;
+    }
     private void OnEnable()
     {
-        TrashMultiMoverScript.Instance.Subscribe(_velocity);
+        TrashMultiMoverScript.Instance.Subscribe(Move);
     }
     private void OnDisable()
     {
-        TrashMultiMoverScript.Instance.UnSubscribe(_velocity);
+        TrashMultiMoverScript.Instance.UnSubscribe(Move);
     }
 
     private void FixedUpdate()
     {
-        //System.Threading.Tasks.Task.Run(() => { transform.position += _movementDirection * Time.deltaTime; });
+        //transform.position += _movementDirection * Time.deltaTime;
     }
 }

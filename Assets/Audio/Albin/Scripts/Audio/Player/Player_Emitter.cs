@@ -33,7 +33,7 @@ public class Player_Emitter : MonoBehaviour
     private void Start()
     {   
         _movement = GetComponentInParent<FPSMovement>();
-        event_P_Mov_Footsteps = RuntimeManager.CreateInstance(player_Data.p_mov_rnd_footsteps);
+        //event_P_Mov_Footsteps = RuntimeManager.CreateInstance(player_Data.p_mov_rnd_footsteps);
         EventDescription groundMaterialEventDescription;
         event_P_Mov_Footsteps.getDescription(out groundMaterialEventDescription);
         PARAMETER_DESCRIPTION groundMaterialParameterDescription;

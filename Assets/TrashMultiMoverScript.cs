@@ -2,9 +2,11 @@
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
+
 public struct Velocity
 {
-    public Transform tran;
+    public Transform transform;
     public Vector3 direction;
 }
 public class TrashMultiMoverScript : MonoBehaviour
@@ -22,23 +24,34 @@ public class TrashMultiMoverScript : MonoBehaviour
         }
     }
     static List<Velocity> _gObjects = new List<Velocity>();
+    static List<Action<float>> tasks = new List<Action<float>>();
 
-    public void Subscribe(Velocity tran)
+    //public void Subscribe(Velocity tran)
+    //{
+    //    _gObjects.Add(tran);
+    //}
+    //public void UnSubscribe(Velocity tran)
+    //{
+    //    _gObjects.Remove(tran);
+    //}
+
+    public void Subscribe(Action<float> task)
     {
-        _gObjects.Add(tran);
+        tasks.Add(task);
     }
-    public void UnSubscribe(Velocity tran)
+    public void UnSubscribe(Action<float> task)
     {
-        _gObjects.Remove(tran);
+        tasks.Remove(task);
     }
-    object obj = new object();
-    private void Update()
+
+    private void FixedUpdate()
     {
         float f = Time.deltaTime;
-        for (int i = 0; i < _gObjects.Count; i++)
-        {
-            _gObjects[i].tran.position += _gObjects[i].direction * f;
-        }
+        Parallel.For(0, tasks.Count, (int i) => { tasks[i].Invoke(f); });
+        //for (int i = 0; i < _gObjects.Count; i++)
+        //{
+        //    //_gObjects[i].transform.position += _gObjects[i].direction * Time.deltaTime;
+        //}
     }
 
 
