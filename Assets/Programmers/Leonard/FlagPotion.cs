@@ -59,8 +59,7 @@ public class FlagPotion : Potion_Template
             case ABILITY_FLAG.NULL:
                 break;
             case ABILITY_FLAG.STONE:
-				EventManager.TriggerEvent(EventNameLibrary.STONED,
-					new EventParameter { });
+				//EventManager.TriggerEvent(EventNameLibrary.STONED, new EventParameter { });
 				break;
             case ABILITY_FLAG.SLOWFALL:
                 break;
@@ -68,7 +67,7 @@ public class FlagPotion : Potion_Template
                 break;
             case ABILITY_FLAG.VISSION:
                 EventManager.TriggerEvent(EventNameLibrary.VISSION_POTION,
-                    new EventParameter { floatParam = 2, floatParam2 = 50 });
+                    new EventParameter { floatParam = 8, floatParam2 = 20 });
                 ActionDelayer.RunAfterDelay(() =>
                 {
                     EventManager.TriggerEvent(EventNameLibrary.VISSION_POTION,

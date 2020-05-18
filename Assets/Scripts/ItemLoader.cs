@@ -38,7 +38,6 @@ public class ItemLoader : MonoBehaviour
     public void UpdateUI()
     {
         itemAmount = FlowerLibrary.GetFlowerAmount(_item.itemName);
-        Debug.Log(itemAmount);
         textObject.text = _item.itemName + "\n x" + itemAmount;
     }
 }

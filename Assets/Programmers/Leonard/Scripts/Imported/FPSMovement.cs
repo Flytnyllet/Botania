@@ -122,7 +122,7 @@ public class FPSMovement : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (CharacterState.Control_State == CHARACTER_CONTROL_STATE.PLAYERCONTROLLED || CharacterState.Control_State == CHARACTER_CONTROL_STATE.MENU)
+        if (CharacterState.MayMove)
         {
             // == Variables ==
             //Input
@@ -138,7 +138,9 @@ public class FPSMovement : MonoBehaviour
             //Ground Detection
             //float terrainAngle;
             RaycastHit groundDetection;
-            bool grounded = GroundRay(transform.position, Vector3.down, charCon.bounds.size.y / 2 + _groundRayExtraDist, out groundDetection);
+            bool grounded =
+                (GroundRay(transform.position, Vector3.down, charCon.bounds.size.y / 2 + _groundRayExtraDist, out groundDetection)
+                && true);
 
             RaycastHit waterDetection;
             _inWater = Physics.Raycast(_playerCam.position + 0.01f * Vector3.up, Vector3.down, out waterDetection, _waterRayDist, _waterLayer);
@@ -146,7 +148,7 @@ public class FPSMovement : MonoBehaviour
             bool isStoned = CharacterState.IsAbilityFlagActive(ABILITY_FLAG.STONE);
             bool isLevitating = CharacterState.IsAbilityFlagActive(ABILITY_FLAG.LEVITATE);
             float gravityFactor = 1.0f;
-            
+
             // == Functions ==
             if (charCon.isGrounded)
             {
@@ -174,14 +176,13 @@ public class FPSMovement : MonoBehaviour
             }
             else if (_inWater && !isStoned)
             {
-
                 transform.localPosition = Vector3.MoveTowards(transform.position, _lastWaterChunk.ClosestPoint(transform.position), _swimCorrection);
                 _swimming = true;
                 _inAir = true;
                 Swimming(moveInput);
             }
             // Everything that can be done while grounded
-            else if (grounded)
+            if (grounded)
             {
                 if (Input.GetButton(SPRINT_BUTTON))
                 {
@@ -232,7 +233,7 @@ public class FPSMovement : MonoBehaviour
                 Strafing(moveInput.x, moveInput.y);
             }
 
-            transform.position = new Vector3(transform.position.x, 9.5f, transform.position.z);
+            //transform.position = new Vector3(transform.position.x, 9.5f, transform.position.z);
 
             if (!_inWater && !isStoned && _lastWaterChunk != null)
             {
