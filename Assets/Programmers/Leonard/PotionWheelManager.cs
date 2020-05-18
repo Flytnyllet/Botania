@@ -8,18 +8,21 @@ public class PotionWheelManager : MonoBehaviour
 	const string MENU_ACTIVATE_BUTTON = "Use Wheel";
 	[SerializeField] BookManager _bookManager = null;
 	[SerializeField] GameObject _wheelRegion = null;
-	[SerializeField] [Range(3, 8)] int _nrOfRegions = 4;
+	//[SerializeField] [Range(3, 8)] int _nrOfRegions = 4;
 	List<PotionLoader> _allPotions = null;
-	[SerializeField] [Range(50f, 200f)] float regionDistanceFromCenter = 100f;
+	[SerializeField] [Range(0f, 1f)] float regionDistanceFromCenter = 0.8f;
 	int selectedRegion = -1;
 	RectTransform rect = null;
 	[SerializeField] float selectedScale = 1.2f;
 	[SerializeField] [Range(0.05f, 0.8f)] float selectionDistance = 0.46f;
     Camera _mainCam;
 	//Color selectedColor = Color.green;
-	Vector3[] regionPositions = new Vector3[5] 
-		{ Vector3.up, new Vector3(1, 1, 0).normalized, Vector3.right, new Vector3(1, -1, 0).normalized, Vector3.down }; 
+	/*
+	 Vector3[] regionPositions = new Vector3[6] 
+		{ Vector3.up, new Vector3(1, 1, 0).normalized, Vector3.right, new Vector3(1, -1, 0).normalized, Vector3.down, new Vector3(-1, -1).normalized }; 
+	*/
 
+	Vector3[] regionPositions;
 
 	// Start is called before the first frame update
 	void Start()
@@ -27,7 +30,13 @@ public class PotionWheelManager : MonoBehaviour
         _mainCam = Camera.main; //slow
         rect = GetComponent<RectTransform>();
 		_allPotions = _bookManager.GetBookmark(1).GetComponent<AlchemyOrganizer>().GetAllPotions();
+
 		SetUpRegions();
+	}
+
+	void OnEnable()
+	{
+		UpdateUI();
 	}
 
 	// Update is called once per frame
@@ -80,9 +89,18 @@ public class PotionWheelManager : MonoBehaviour
 
 	void SetUpRegions()
 	{
-		if(regionPositions.Length != _allPotions.Count)
+		regionPositions = new Vector3[8];
+		for (int i = 0; i < regionPositions.Length; i++)
 		{
-			Debug.LogWarning("Either all potions don't have regions or all regions don't have a potion in PotionWheelManager");
+			float sinValue = Mathf.Sin((6.28f / 8) * i);
+			float cosValue = Mathf.Cos((6.28f / 8) * i);
+
+			regionPositions[i] = new Vector3(sinValue, cosValue, 0);
+		}
+
+		if (8 < _allPotions.Count)
+		{
+			Debug.LogError("Either all potions don't have regions or all regions don't have a potion in PotionWheelManager");
 		}
 		else
 		{
@@ -93,7 +111,8 @@ public class PotionWheelManager : MonoBehaviour
 				//int ind = i;
 
 				GameObject go = Instantiate(_wheelRegion, transform);
-				go.transform.position = transform.position + regionPositions[i] * regionDistanceFromCenter;
+				go.transform.position = transform.position + regionPositions[i] * regionDistanceFromCenter * Camera.main.pixelHeight / 2;
+				Debug.Log("Potion wheel region distance: " + regionDistanceFromCenter * Camera.main.pixelHeight);
 				//GameObject image = Instantiate(_wheelRegion, go.transform);
 				
 				go.GetComponentInChildren<Text>().text = potionName + "\n x" + FlowerLibrary.GetPotionAmount(potionName);
@@ -157,6 +176,7 @@ public class PotionWheelManager : MonoBehaviour
 		{
 			Debug.LogWarning("Region Activated");
 			_allPotions[selectedRegion].ActivatePotion();
+			UpdateUI();
 		}
 	}
 

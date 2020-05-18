@@ -34,6 +34,7 @@ public class FPSMovement : MonoBehaviour
     [SerializeField] float _strafingSpeedFactor = 0.8f;
     [SerializeField] LayerMask layerMask = 0;
     Vector3 _cameraStartPosition = Vector3.zero;
+	Vector3 _ducking = Vector3.zero;
     bool _inAir = false;
 
     [Header("Bobbing")]
@@ -41,8 +42,6 @@ public class FPSMovement : MonoBehaviour
     [SerializeField] float _bobbingSpeed = 1f;
     float _bobTimer = 0;
     float _swimBobTimer = 0;
-    float _defPosX = 0;
-    float _defPosY = 0;
 
     Transform _playerCam = null;
 
@@ -115,8 +114,6 @@ public class FPSMovement : MonoBehaviour
         charCon = GetComponent<CharacterController>();
         _playerCam = transform.Find("PlayerCam");
         _cameraStartPosition = _playerCam.localPosition;
-        _defPosX = _cameraStartPosition.x;
-        _defPosY = _cameraStartPosition.y;
         CharacterState.SetControlState(CHARACTER_CONTROL_STATE.PLAYERCONTROLLED);
     }
 
@@ -143,7 +140,7 @@ public class FPSMovement : MonoBehaviour
                 && true);
 
             RaycastHit waterDetection;
-            _inWater = Physics.Raycast(_playerCam.position + 0.01f * Vector3.up, Vector3.down, out waterDetection, _waterRayDist, _waterLayer);
+            _inWater = Physics.Raycast(transform.TransformPoint(_cameraStartPosition) + 0.01f * Vector3.up, Vector3.down, out waterDetection, _waterRayDist, _waterLayer);
             Debug.DrawRay(_playerCam.position + 0.45f * Vector3.up, Vector3.down * _waterRayDist, Color.red, 2f);
             bool isStoned = CharacterState.IsAbilityFlagActive(ABILITY_FLAG.STONE);
             bool isLevitating = CharacterState.IsAbilityFlagActive(ABILITY_FLAG.LEVITATE);
@@ -290,9 +287,8 @@ public class FPSMovement : MonoBehaviour
 
     void Ducking(float duckDirection)
     {
-        Vector3 ducking = new Vector3(0, duckDirection, 0);
-        _playerCam.localPosition = _cameraStartPosition + ducking;
-        _defPosY = _cameraStartPosition.y + duckDirection;
+        _ducking = new Vector3(0, duckDirection, 0);
+        _playerCam.localPosition = _cameraStartPosition + _ducking;
     }
 
     /*
@@ -335,12 +331,12 @@ public class FPSMovement : MonoBehaviour
 
     void Swimming(Vector2 inputs)
     {
-        //Stabilize Position
-        /*float traPosY = transform.position.y;
+		//Stabilize Position
+		/*float traPosY = transform.position.y;
 		transform.position -= traPosY * Vector3.up;
 		transform.position += _lastWaterChunk.transform.position.y * Vector3.up; //Mathf.Abs(traPosY - _lastWaterChunk.transform.position.y)*/
-        //transform.position = Vector3.MoveTowards(transform.position, _lastWaterChunk.ClosestPoint(transform.position), _swimCorrection);
-
+		//transform.position = Vector3.MoveTowards(transform.position, _lastWaterChunk.ClosestPoint(transform.position), _swimCorrection);
+		charCon.Move(new Vector3(0f, _lastWaterChunk.transform.position.y - transform.position.y, 0f));
 
         Debug.Log("Water CHunk Position: " + _lastWaterChunk.transform.position.y);
 
@@ -383,19 +379,22 @@ public class FPSMovement : MonoBehaviour
     //Head Bobbing !Stolen from the internet
     void HeadBob(float x, float z, float modifier = 1.0f)
     {
-        //_timeSinceLastStep += Time.deltaTime;
-        //_travelledDist += (transform.position - _prevPos).magnitude;
+		//_timeSinceLastStep += Time.deltaTime;
+		//_travelledDist += (transform.position - _prevPos).magnitude;
+		Vector3 cameraLocalPosition = _cameraStartPosition + _ducking;
 
         if (Mathf.Abs(x) > 0.1f || Mathf.Abs(z) > 0.1f)
         {
             //Player is moving
             _bobTimer += Time.deltaTime * _bobbingSpeed;
             float sinVal = Mathf.Sin(_bobTimer * modifier);
-            _playerCam.localPosition = new Vector3(_defPosX + sinVal * _bobbingAmount.x * modifier,
-                Mathf.Lerp(_playerCam.localPosition.y, _defPosY - Mathf.Abs(sinVal) * _bobbingAmount.y * modifier,
-                Time.deltaTime * _swimBobSpeed),
-                _playerCam.localPosition.z);
-            if (!_inAir && Mathf.Abs(sinVal) > 0.9 && _allowStepSound)
+            float yDirectional = Mathf.Lerp(_playerCam.localPosition.y, cameraLocalPosition.y - Mathf.Abs(sinVal)
+				* _bobbingAmount.y * modifier, Time.deltaTime * _swimBobSpeed);
+			Vector3 xDirectional = _playerCam.transform.right.normalized * (cameraLocalPosition.x + sinVal * _bobbingAmount.x * modifier);
+
+			_playerCam.localPosition = new Vector3(xDirectional.x, yDirectional, xDirectional.z);
+
+			if (!_inAir && Mathf.Abs(sinVal) > 0.9 && _allowStepSound)
             {
                 _allowStepSound = false;
                 FootstepsSound();
@@ -410,25 +409,26 @@ public class FPSMovement : MonoBehaviour
             //Idle
             _bobTimer = 0;
             _playerCam.localPosition = new Vector3(_playerCam.localPosition.x,
-                Mathf.Lerp(_playerCam.localPosition.y, _defPosY, Time.deltaTime * _bobbingSpeed), _playerCam.localPosition.z);
+                Mathf.Lerp(_playerCam.localPosition.y, cameraLocalPosition.y, Time.deltaTime * _bobbingSpeed), _playerCam.localPosition.z);
         }
     }
     void SwimBob(float x, float z)
     {
+		Vector3 cameraLocalPosition = _cameraStartPosition + _ducking;
 
-        if (Mathf.Abs(x) > 0.1f || Mathf.Abs(z) > 0.1f)
+		if (Mathf.Abs(x) > 0.1f || Mathf.Abs(z) > 0.1f)
         {
             //Player is moving
             _swimBobTimer += Time.deltaTime * _swimBobSpeed;
             _playerCam.localPosition = new Vector3(_playerCam.localPosition.x,
-                Mathf.Lerp(_playerCam.localPosition.y, _defPosY + Mathf.Sin(_swimBobTimer) * _swimBobAmount, Time.deltaTime * _swimBobSpeed), _playerCam.localPosition.z);
+                Mathf.Lerp(_playerCam.localPosition.y, cameraLocalPosition.y + Mathf.Sin(_swimBobTimer) * _swimBobAmount, Time.deltaTime * _swimBobSpeed), _playerCam.localPosition.z);
         }
         else
         {
             //Idle
             _swimBobTimer = 0;
             _playerCam.localPosition = new Vector3(_playerCam.localPosition.x,
-                Mathf.Lerp(_playerCam.localPosition.y, _defPosY, Time.deltaTime * _swimBobSpeed), _playerCam.localPosition.z);
+                Mathf.Lerp(_playerCam.localPosition.y, cameraLocalPosition.y, Time.deltaTime * _swimBobSpeed), _playerCam.localPosition.z);
         }
     }
 
