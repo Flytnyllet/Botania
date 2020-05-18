@@ -23,7 +23,7 @@ public class Amb_Global_Wind : MonoBehaviour
 
     [SerializeField]
     [Range(0f, 1f)]
-    public float wind_IntensityValue;
+    public float wind_IntensityValue;           // kommentera ut ifall WorldState-värde används, kan användas i Debug-syfte
 
     private void Awake()
     {
@@ -63,7 +63,7 @@ public class Amb_Global_Wind : MonoBehaviour
 
     private void Update()
     {
-        RuntimeManager.StudioSystem.setParameterByID(windIntensityDescription.id, wind_IntensityValue);
+        RuntimeManager.StudioSystem.setParameterByID(windIntensityDescription.id, wind_IntensityValue);     //WorldState.Instance.WindSpeed
     }
 
     public void Set_Parameter(PARAMETER_ID id, float value)

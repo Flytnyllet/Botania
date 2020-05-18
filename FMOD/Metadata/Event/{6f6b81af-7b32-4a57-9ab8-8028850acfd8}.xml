@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.00.00">
 	<object class="Event" id="{6f6b81af-7b32-4a57-9ab8-8028850acfd8}">
 		<property name="name">
-			<value>amb___05___underwater_loop</value>
+			<value>amb___water_underwater_loop</value>
 		</property>
 		<property name="outputFormat">
 			<value>5</value>
@@ -122,6 +122,9 @@
 		</relationship>
 	</object>
 	<object class="EventMixerGroup" id="{380c9603-6d26-4865-b771-cc7b8d128940}">
+		<property name="volume">
+			<value>-0.5</value>
+		</property>
 		<property name="name">
 			<value>Audio 1</value>
 		</property>
@@ -146,13 +149,13 @@
 			<value>7000</value>
 		</property>
 		<property name="minimumScatterDistance">
-			<value>6.4000001</value>
+			<value>5.5999999</value>
 		</property>
 		<property name="maximumScatterDistance">
 			<value>7.5999999</value>
 		</property>
 		<property name="volumeRandomization">
-			<value>-10</value>
+			<value>-3.5</value>
 		</property>
 		<property name="pitchRandomization">
 			<value>0.449999988</value>
@@ -163,7 +166,7 @@
 	</object>
 	<object class="EventMixerGroup" id="{f21cca50-8e66-4323-ac19-1fef4d7b68e9}">
 		<property name="volume">
-			<value>-3</value>
+			<value>-2</value>
 		</property>
 		<property name="name">
 			<value>Audio 2</value>
@@ -244,22 +247,22 @@
 			<value>92</value>
 		</property>
 		<property name="wetLevel">
-			<value>-5.5</value>
+			<value>-16</value>
 		</property>
 	</object>
 	<object class="MixerBusFader" id="{557d94d5-904e-4c94-9135-b80c5610b1a2}" />
 	<object class="ThreeEQEffect" id="{42172cd8-6074-438d-97c8-b850d392b824}">
 		<property name="lowGain">
-			<value>-8.5</value>
+			<value>-19</value>
 		</property>
 		<property name="highGain">
 			<value>-80</value>
 		</property>
 		<property name="lowCrossover">
-			<value>340</value>
+			<value>580</value>
 		</property>
 		<property name="highCrossover">
-			<value>1450</value>
+			<value>740</value>
 		</property>
 	</object>
 	<object class="MixerBusFader" id="{3cef27ab-3241-465e-acab-0d85b3cb1048}" />
@@ -301,16 +304,16 @@
 			<value>-78</value>
 		</property>
 		<property name="midGain">
-			<value>-0.5</value>
+			<value>6.5</value>
 		</property>
 		<property name="highGain">
-			<value>10</value>
+			<value>4</value>
 		</property>
 		<property name="lowCrossover">
 			<value>620</value>
 		</property>
 		<property name="highCrossover">
-			<value>750</value>
+			<value>1050</value>
 		</property>
 		<property name="crossoverSlope">
 			<value>0</value>
@@ -339,10 +342,7 @@
 			<value>92</value>
 		</property>
 		<property name="wetLevel">
-			<value>-13</value>
-		</property>
-		<property name="dryLevel">
-			<value>-1</value>
+			<value>-11</value>
 		</property>
 	</object>
 	<object class="MixerBusFader" id="{546af428-2f4f-42b0-912e-6529c758c83f}" />
