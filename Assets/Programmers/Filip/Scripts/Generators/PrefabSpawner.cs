@@ -208,8 +208,8 @@ public class PrefabSpawner : MonoBehaviour
     //Tells other objects this spot it taken lol
     public void OccupyWithObject(int x, int y, int size, int chunkSize, ref bool[,] grid)
     {
-        int maxX = x + size < chunkSize ? x + size : chunkSize;
-        int maxY = y + size < chunkSize ? y + size : chunkSize;
+        int maxX = x + size < chunkSize ? x + size : chunkSize - 1;
+        int maxY = y + size < chunkSize ? y + size : chunkSize - 1;
 
         for (int checkX = x; checkX < maxX; checkX++)
         {
