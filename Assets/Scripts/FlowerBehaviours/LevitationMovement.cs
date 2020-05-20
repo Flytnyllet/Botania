@@ -36,9 +36,9 @@ public class LevitationMovement : MonoBehaviour
     }
     private void OnEnable()
     {
+        BatchMovement.Instance.Subscribe(_velocity);
         try
         {
-            BatchMovement.Instance.Subscribe(Move);
         }
         catch
         {
@@ -47,7 +47,7 @@ public class LevitationMovement : MonoBehaviour
     }
     private void OnDisable()
     {
-        BatchMovement.Instance.UnSubscribe(Move);
+        BatchMovement.Instance.UnSubscribe(_velocity);
     }
 
     private void FixedUpdate()
