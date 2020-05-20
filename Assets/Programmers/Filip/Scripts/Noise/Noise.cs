@@ -18,6 +18,7 @@ public static class Noise
     public static void SetSeed(string stringSeed)
     {
         _seed = stringSeed.GetHashCode();
+        _seed = 0;
     }
 
     static int GetSeed(int noiseSeed)
