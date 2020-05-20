@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Threading.Tasks;
+using System.Timers;
 
 public class LevitationMovement : MonoBehaviour
 {
@@ -13,6 +15,7 @@ public class LevitationMovement : MonoBehaviour
     [SerializeField] LayerMask _mask;
     Velocity _velocity;
     Vector3 _position;
+    private System.Timers.Timer _timer;
     private void Awake()
     {
         if (_childTran == null)
@@ -26,26 +29,22 @@ public class LevitationMovement : MonoBehaviour
             _renderer.material.SetFloat("_Random", Random.Range(0.0f, 6.28f));
         }
         _velocity = new Velocity { transform = this.transform, direction = _movementDirection };
+
+        _timer = new System.Timers.Timer();
+        _timer.Interval = 20000;
+        _timer.Elapsed += _timer_Elapsed;
+        _timer.AutoReset = true;
+        _timer.Enabled = true;
+    }
+    private void _timer_Elapsed(object sender, ElapsedEventArgs e)
+    {
+        AdjustHeight();
     }
 
-    void AddRandomDirectionOffset()
-    {
-        float sincosVal = Random.Range(-_randomDirectionOffset, _randomDirectionOffset);
-        float sin = Mathf.Sin(sincosVal);
-        float cos = Mathf.Cos(sincosVal);
-        float x = _movementDirection.x * cos - _movementDirection.y * sin;
-        float z = _movementDirection.x * sin + _movementDirection.y * cos;
-        _movementDirection.x = x;
-        _movementDirection.z = z;
-    }
-    void Move(float f)
-    {
-        _position += _movementDirection * f;
-    }
-    private void Start()
-    {
-        
-    }
+
+
+
+
     private void OnEnable()
     {
         try
@@ -60,9 +59,29 @@ public class LevitationMovement : MonoBehaviour
     private void OnDisable()
     {
         BatchMovement.Instance.UnSubscribe(_velocity);
+        _timer.Dispose();
     }
 
-    void CheckHeight()
+
+
+
+
+    void AddRandomDirectionOffset()
+    {
+        float sincosVal = Random.Range(-_randomDirectionOffset, _randomDirectionOffset);
+        float sin = Mathf.Sin(sincosVal);
+        float cos = Mathf.Cos(sincosVal);
+        float x = _movementDirection.x * cos - _movementDirection.y * sin;
+        float z = _movementDirection.x * sin + _movementDirection.y * cos;
+        _movementDirection.x = x;
+        _movementDirection.z = z;
+    }
+
+
+
+
+
+    void AdjustHeight()
     {
         RaycastHit hit;
         if (Physics.Raycast(_childTran.position, -Vector3.up, out hit, _mask))
@@ -84,10 +103,5 @@ public class LevitationMovement : MonoBehaviour
             time += Time.deltaTime;
             yield return null;
         }
-    }
-
-    private void FixedUpdate()
-    {
-        //transform.position += _movementDirection * Time.deltaTime;
     }
 }
