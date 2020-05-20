@@ -42,11 +42,6 @@ public class Amb_Wind_Emitter : MonoBehaviour
     {
         if (_isPlaying)
         {
-            Set_Parameter(Amb_Local_Manager.Instance.Biome_1);
-            Set_Parameter(Amb_Local_Manager.Instance.Biome_2);
-            Set_Parameter(Amb_Local_Manager.Instance.Biome_3);
-            Set_Parameter(Amb_Local_Manager.Instance.Biome_4);
-
             event_Instance.isVirtual(out _isVirtual);
             event_Instance.getPlaybackState(out _playbackState);
 
