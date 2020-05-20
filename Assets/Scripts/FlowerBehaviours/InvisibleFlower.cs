@@ -28,9 +28,11 @@ public class InvisibleFlower : MonoBehaviour
     {
         SetVissibility();
         EventManager.Subscribe(EventNameLibrary.VISSION_POTION, SetVissibility);
+        EventManager.Subscribe(EventNameLibrary.CALMING_POTION, SetVissibility);
     }
     private void OnDisable()
     {
         EventManager.UnSubscribe(EventNameLibrary.VISSION_POTION, SetVissibility);
+        EventManager.UnSubscribe(EventNameLibrary.CALMING_POTION, SetVissibility);
     }
 }

@@ -26,31 +26,30 @@ public class BatchMovement : MonoBehaviour
     static List<Velocity> _gObjects = new List<Velocity>();
     static List<Action<float>> tasks = new List<Action<float>>();
 
-    //public void Subscribe(Velocity tran)
-    //{
-    //    _gObjects.Add(tran);
-    //}
-    //public void UnSubscribe(Velocity tran)
-    //{
-    //    _gObjects.Remove(tran);
-    //}
+    public void Subscribe(Velocity tran)
+    {
+        _gObjects.Add(tran);
+    }
+    public void UnSubscribe(Velocity tran)
+    {
+        _gObjects.Remove(tran);
+    }
 
-    public void Subscribe(Action<float> task)
-    {
-        tasks.Add(task);
-    }
-    public void UnSubscribe(Action<float> task)
-    {
-        tasks.Remove(task);
-    }
+    //public void Subscribe(Action<float> task)
+    //{
+    //    tasks.Add(task);
+    //}
+    //public void UnSubscribe(Action<float> task)
+    //{
+    //    tasks.Remove(task);
+    //}
 
     private void FixedUpdate()
     {
         float f = Time.deltaTime;
-        Parallel.For(0, tasks.Count, (int i) => { tasks[i].Invoke(f); });
-        //for (int i = 0; i < _gObjects.Count; i++)
-        //{
-        //    //_gObjects[i].transform.position += _gObjects[i].direction * Time.deltaTime;
-        //}
+        for (int i = 0; i < _gObjects.Count; i++)
+        {
+            _gObjects[i].transform.position += _gObjects[i].direction * Time.deltaTime;
+        }
     }
 }
