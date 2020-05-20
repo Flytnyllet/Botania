@@ -36,7 +36,14 @@ public class LevitationMovement : MonoBehaviour
     }
     private void OnEnable()
     {
-        TrashMultiMoverScript.Instance.Subscribe(Move);
+        try
+        {
+            TrashMultiMoverScript.Instance.Subscribe(Move);
+        }
+        catch
+        {
+            Debug.LogError("TrashMultiMoverScript.cs not found on scene, simply add that script to any singleton purpuse object");
+        }
     }
     private void OnDisable()
     {
