@@ -10,9 +10,8 @@ using UnityEngine.Rendering.PostProcessing;
 //Can be activated by calling "StartCameraEffect" in the eventmanager
 public class CameraEffect : MonoBehaviour
 {
-    const int MAX_EFFECTS = 10;
-    RenderTexture[] _tempRenderTextures = new RenderTexture[MAX_EFFECTS];
-    public List<Material> _materials = new List<Material>();
+    RenderTexture[] _tempRenderTextures = new RenderTexture[2];
+    public List<Material> _effectMaterials = new List<Material>();
     PostProcessVolume _ppVolume;
     Camera _camera;
 
@@ -37,26 +36,20 @@ public class CameraEffect : MonoBehaviour
 
     void OnRenderImage(RenderTexture source, RenderTexture destination)
     {
-        if (_materials.Count == 0)
+        if (_effectMaterials.Count == 0)
         {
             Graphics.Blit(source, destination);
         }
         else
         {
             int i = 0;
-            Graphics.Blit(source, _tempRenderTextures[i], _materials[i]);
-            for (i = 1; i < _materials.Count && i < MAX_EFFECTS; i++)
+            Graphics.Blit(source, _tempRenderTextures[i], _effectMaterials[i]);
+            for (i = 1; i < _effectMaterials.Count; i++)
             {
                 Debug.Log(i);
-                Graphics.Blit(_tempRenderTextures[i - 1], _tempRenderTextures[i], _materials[i]);
+                Graphics.Blit(_tempRenderTextures[(i - 1) % 2], _tempRenderTextures[i % 2], _effectMaterials[i]);
             }
-            Graphics.Blit(_tempRenderTextures[i - 1], destination);
-            //Graphics.Blit(source, _tempRenderTextures[0], _materials[0]);
-            //for (int i = 1; i < _materials.Count && i < MAX_EFFECTS; i++)
-            //{
-            //    Graphics.BlitMultiTap(_tempRenderTextures[0], _tempRenderTextures[0], _materials[i]);
-            //}
-            //Graphics.Blit(_tempRenderTextures[0], destination);
+            Graphics.Blit(_tempRenderTextures[(i - 1) % 2], destination);
         }
     }
     private void Awake()
@@ -69,7 +62,7 @@ public class CameraEffect : MonoBehaviour
     }
     private void Start()
     {
-        for (int i = 0; i < MAX_EFFECTS; i++)
+        for (int i = 0; i < 2; i++)
         {
             _tempRenderTextures[i] = new RenderTexture(_camera.pixelWidth, _camera.pixelHeight, (int)_camera.depth);
         }
@@ -95,15 +88,15 @@ public class CameraEffect : MonoBehaviour
     }
 
 
-    public void ActivateEffect(Material material)
+    public void ActivateImageEffect(Material material)
     {
-        _materials.Add(material);
+        _effectMaterials.Add(material);
     }
     //Set an effect for a certain amount of time
-    public void ActivateEffect(Material material, float time)
+    public void ActivateImageEffect(Material material, float time)
     {
-        _materials.Add(material);
-        ActionDelayer.RunAfterDelayAsync(() => { _materials.Remove(material); }, time);
+        _effectMaterials.Add(material);
+        ActionDelayer.RunAfterDelay(() => { _effectMaterials.Remove(material); }, time);
     }
     void ActivateEffect(EventParameter eventParam)
     {
@@ -111,7 +104,7 @@ public class CameraEffect : MonoBehaviour
         {
             Material material = eventParam.materialParam;
             material.SetFloat("_Lerp", 0);
-            _materials.Add(material);
+            _effectMaterials.Add(material);
             StartCoroutine(LerpInCameraEffect(material, eventParam.floatParam2, false));
             ActionDelayer.RunAfterDelay(() => { StartCoroutine(LerpInCameraEffect(material, eventParam.floatParam2, true)); }, eventParam.floatParam);
         }
@@ -136,7 +129,7 @@ public class CameraEffect : MonoBehaviour
         }
         if (remove)
         {
-            _materials.Remove(mat);
+            _effectMaterials.Remove(mat);
         }
     }
 
