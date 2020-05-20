@@ -1,18 +1,21 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using FMODUnity;
 
 public class Amb_Local_Wind : MonoBehaviour
 {
     public static Amb_Local_Wind Instance;
 
-    [SerializeField]
-    private Amb_Data _amb_Data;
+    [EventRef]
+    public string event_Ref;
 
-    public Dictionary<int, Amb_Wind_Emitter> _amb_Wind_List = new Dictionary<int, Amb_Wind_Emitter>();
-    //public List<Amb_Wind_Emitter> _active_Wind_List = new List<Amb_Wind_Emitter>();
-    public string[] Amb_Wind_Data { get { return _amb_Wind_Data; } }
-    private string[] _amb_Wind_Data;
+    [SerializeField]
+    private Amb_Wind_Emitter windEmitterL;
+    [SerializeField]
+    private Amb_Wind_Emitter windEmitterR;
+    [SerializeField]
+    private Amb_Wind_Emitter windEmitterB;
 
     private void Awake()
     {
@@ -24,20 +27,13 @@ public class Amb_Local_Wind : MonoBehaviour
         {
             Instance = this;
         }
-
-        _amb_Wind_Data = new string[]
-        {
-            _amb_Data.amb_tree1_wind
-        };
-
-        Amb_Wind_Emitter amb_tree1_wind = gameObject.AddComponent<Amb_Wind_Emitter>();
-        _amb_Wind_List.Add(0, amb_tree1_wind);
-
-        Init_Amb_Wind_List();
+        Init_Local_Wind();
     }
 
-    private void Init_Amb_Wind_List()
+    public void Init_Local_Wind()
     {
-        _amb_Wind_List[0].Init_Event(_amb_Wind_Data[0]);
+        windEmitterL.Init_Event(event_Ref);
+        windEmitterR.Init_Event(event_Ref);
+        windEmitterB.Init_Event(event_Ref);
     }
 }

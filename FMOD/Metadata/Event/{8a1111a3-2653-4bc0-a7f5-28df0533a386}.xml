@@ -58,7 +58,7 @@
 	</object>
 	<object class="EventAutomatableProperties" id="{d6c9916b-83e9-43a8-8671-43307ffb8457}">
 		<property name="triggerCooldown">
-			<value>20</value>
+			<value>80</value>
 		</property>
 	</object>
 	<object class="MarkerTrack" id="{12dcd4bf-0f3a-472e-bbc1-516fadfc59a0}" />
@@ -103,7 +103,7 @@
 			<value>0.84748299319727893</value>
 		</property>
 		<property name="pitch">
-			<value>-2.79999995</value>
+			<value>-1.39999998</value>
 		</property>
 		<relationship name="modulators">
 			<destination>{7e3c9147-f1ad-46e9-8c4f-a8eb7f4f8f10}</destination>
@@ -139,12 +139,11 @@
 			<value>pitch</value>
 		</property>
 		<property name="amount">
-			<value>10.5</value>
+			<value>5.5</value>
 		</property>
 	</object>
 	<object class="MixerBusEffectChain" id="{dc54a6f2-53bd-4ded-9251-0c108ebef722}">
 		<relationship name="effects">
-			<destination>{f9fb8eef-1cf8-4d50-abe4-84ab32239850}</destination>
 			<destination>{89cfdf42-caf0-4408-8cc3-2966ae7e37c1}</destination>
 		</relationship>
 	</object>
@@ -159,20 +158,6 @@
 		</property>
 		<property name="minimumExtent">
 			<value>210</value>
-		</property>
-	</object>
-	<object class="ThreeEQEffect" id="{f9fb8eef-1cf8-4d50-abe4-84ab32239850}">
-		<property name="lowGain">
-			<value>-0.5</value>
-		</property>
-		<property name="midGain">
-			<value>-2</value>
-		</property>
-		<property name="highGain">
-			<value>1</value>
-		</property>
-		<property name="crossoverSlope">
-			<value>2</value>
 		</property>
 	</object>
 	<object class="MixerBusFader" id="{89cfdf42-caf0-4408-8cc3-2966ae7e37c1}" />

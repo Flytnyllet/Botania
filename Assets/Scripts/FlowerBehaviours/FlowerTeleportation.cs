@@ -69,7 +69,7 @@ public class FlowerTeleportation : MonoBehaviour
 
     void ReleaseTrailObject(Vector3 pos)
     {
-        FMODUnity.RuntimeManager.PlayOneShotAttached(event_Teleportation, gameObject);
+        FMODUnity.RuntimeManager.PlayOneShotAttached(event_Teleportation, Player.GetPlayerTransform().gameObject);
         _particles.gameObject.SetActive(true);
         _particles.Emit(20);
         bool trailActive = _trailObject.gameObject.activeSelf;

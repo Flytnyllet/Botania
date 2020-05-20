@@ -12,30 +12,30 @@ public class Amb_Wind_Emitter : MonoBehaviour
     private float _maxDistance;
     private PLAYBACK_STATE _playbackState;
     private int _timelinePosition;
+    public bool IsPlaying { get { return _isPlaying; } }
     private bool _isPlaying;
     private bool _isVirtual;
-    private PARAMETER_DESCRIPTION windIntensityDescription;
 
 
     private void Awake()
     {
-        RuntimeManager.StudioSystem.getParameterDescriptionByName("wind_intensity", out windIntensityDescription);
     }
 
     public void Init_Event(string event_Ref)
     {
+        if (event_Ref == null) { return; }
         event_Description = RuntimeManager.GetEventDescription(event_Ref);
         event_Description.getMaximumDistance(out _maxDistance);
+        Attach_Wind_Emitter();
     }
 
-    public void Attach_Wind_Emitter(Transform transform, Rigidbody rigidbody)
+    public void Attach_Wind_Emitter()
     {
         event_Description.createInstance(out event_Instance);
-        RuntimeManager.AttachInstanceToGameObject(event_Instance, transform, rigidbody);
+        RuntimeManager.AttachInstanceToGameObject(event_Instance, transform, GetComponent<Rigidbody>());
         event_Instance.start();
         event_Instance.release();
         _isPlaying = true;
-        //WaitBeforeStart();
     }
 
     private void Update()
@@ -50,20 +50,8 @@ public class Amb_Wind_Emitter : MonoBehaviour
         }
     }
 
-    public void Set_Parameter(float wind_IntensityValue)
-    {
-        RuntimeManager.StudioSystem.setParameterByID(windIntensityDescription.id, wind_IntensityValue);
-    }
-
     public void Stop_Wind_Emitter()
     {
         event_Instance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
     }
-
-    //private IEnumerator WaitBeforeStart()
-    //{
-    //    yield return new WaitForSeconds(1f);
-        
-
-    //}
 }

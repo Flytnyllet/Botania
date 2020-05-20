@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.00.00">
 	<object class="Event" id="{eccd76e5-5168-4195-86eb-0ec303ca89e8}">
 		<property name="name">
-			<value>amb___02____bird_rnd_birdsong1</value>
+			<value>amb___bird_rnd_birdsong1</value>
 		</property>
 		<property name="outputFormat">
 			<value>2</value>
@@ -63,9 +63,6 @@
 		<property name="maxVoices">
 			<value>2</value>
 		</property>
-		<property name="voiceStealing">
-			<value>1</value>
-		</property>
 	</object>
 	<object class="MarkerTrack" id="{4f5ed396-89f8-4d54-968e-24b1be3ac556}" />
 	<object class="GroupTrack" id="{76ac7f44-b8b1-4ed6-98c5-637af041cc9f}">
@@ -123,16 +120,13 @@
 			<value>9250</value>
 		</property>
 		<property name="minimumScatterDistance">
-			<value>4.20000029</value>
+			<value>2.60000014</value>
 		</property>
 		<property name="maximumScatterDistance">
-			<value>8.19999981</value>
-		</property>
-		<property name="volumeRandomization">
-			<value>-2.5</value>
+			<value>4.4000001</value>
 		</property>
 		<property name="pitchRandomization">
-			<value>0.649999976</value>
+			<value>0.249999985</value>
 		</property>
 		<relationship name="modulators">
 			<destination>{9ad45f9f-04a3-4c3a-b6fb-99401a8ad9ac}</destination>
@@ -177,10 +171,13 @@
 			<value>-80</value>
 		</property>
 		<property name="attackTime">
-			<value>320</value>
+			<value>3200</value>
+		</property>
+		<property name="attackShape">
+			<value>-0.0316918902</value>
 		</property>
 		<property name="releaseTime">
-			<value>1400</value>
+			<value>2400</value>
 		</property>
 		<property name="finalValue">
 			<value>-80</value>
