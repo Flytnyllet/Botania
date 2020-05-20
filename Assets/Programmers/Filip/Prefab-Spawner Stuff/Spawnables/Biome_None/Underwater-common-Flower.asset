@@ -10,27 +10,27 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a2ef82269fb17cf43a9f1163b1dfd939, type: 3}
-  m_Name: Levitation-Flower
+  m_Name: Underwater-common-Flower
   m_EditorClassIdentifier: 
   _autoUpdate: 0
   _noiseMergeType: 2
-  _noiseSettingsData: {fileID: 11400000, guid: c14c629b2e822bd409bd4cb3eabb0107, type: 2}
+  _noiseSettingsData: {fileID: 11400000, guid: 62b8a14286d30904288ea85b8b5269be, type: 2}
   _parentOnly: 0
   _rotationAmount: 1
   _noiseStartPoint: 0
-  _thickness: 0
-  _uniformSpreadAmount: 12
-  _randomSpread: 0
-  _offsetAmount: 0.72
+  _thickness: 0.73
+  _uniformSpreadAmount: 1
+  _randomSpread: 0.285
+  _offsetAmount: 1.46
   _spawnFixedHeight: 0
-  _size: 2
-  _spacing: 0
+  _size: 1
+  _spacing: 1
   _othersCanSpawnInside: 0
   _spawnDifferencial: 15
-  _hardMinHeight: 10
+  _hardMinHeight: 0
   _softMinAmount: 0
-  _hardMaxHeight: 100
-  _softMaxAmount: 100
+  _hardMaxHeight: 7
+  _softMaxAmount: 0
   _surfaceNormalAmount: 1
   _pointAlongNormalRandomness: 0
   _softMinSlope: 90
@@ -38,11 +38,11 @@ MonoBehaviour:
   _softMaxSlope: 0
   _hardMaxSlope: 0
   _prefabs:
-  - _prefab: {fileID: 5167158702135448164, guid: cd78f3e89b7483444ab8500a2d2c16e1,
+  - _prefab: {fileID: 7433623528612892234, guid: 99fdbc5d2b8eaed45aecef85e8890f0e,
       type: 3}
     _probability: 1
-    _height: 4
+    _height: -0.2
     _fixedHeight: 0
-    _scale: 0.75
-    _scaleRandom: 0.25
+    _scale: 0.5
+    _scaleRandom: 1
   _subSpawners: []
