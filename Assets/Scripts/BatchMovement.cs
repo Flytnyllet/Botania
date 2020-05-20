@@ -9,9 +9,9 @@ public struct Velocity
     public Transform transform;
     public Vector3 direction;
 }
-public class TrashMultiMoverScript : MonoBehaviour
+public class BatchMovement : MonoBehaviour
 {
-    public static TrashMultiMoverScript Instance;
+    public static BatchMovement Instance;
     private void Awake()
     {
         if (Instance == null)
@@ -53,7 +53,4 @@ public class TrashMultiMoverScript : MonoBehaviour
         //    //_gObjects[i].transform.position += _gObjects[i].direction * Time.deltaTime;
         //}
     }
-
-
-
 }
