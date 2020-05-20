@@ -7,10 +7,18 @@ public class LevitationMovement : MonoBehaviour
     [SerializeField] Vector3 _movementDirection;
     [SerializeField, Range(0, 1.57f)] float _randomDirectionOffset;
     [SerializeField] MeshRenderer _renderer;
+    [SerializeField] Transform _childTran;
+    [SerializeField] float _heightChangeSpeed = 1;
+    [SerializeField] float _heighToGroundDifference = 20;
+    [SerializeField] LayerMask _mask;
     Velocity _velocity;
     Vector3 _position;
     private void Awake()
     {
+        if (_childTran == null)
+        {
+            _childTran = transform.GetChild(0);
+        }
         _position = transform.localPosition;
         AddRandomDirectionOffset();
         if (_renderer != null)
@@ -34,11 +42,15 @@ public class LevitationMovement : MonoBehaviour
     {
         _position += _movementDirection * f;
     }
+    private void Start()
+    {
+        
+    }
     private void OnEnable()
     {
-        BatchMovement.Instance.Subscribe(_velocity);
         try
         {
+            BatchMovement.Instance.Subscribe(_velocity);
         }
         catch
         {
@@ -48,6 +60,30 @@ public class LevitationMovement : MonoBehaviour
     private void OnDisable()
     {
         BatchMovement.Instance.UnSubscribe(_velocity);
+    }
+
+    void CheckHeight()
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(_childTran.position, -Vector3.up, out hit, _mask))
+        {
+            Debug.Log("Changing Height");
+            float targetHeight = hit.point.y + _heighToGroundDifference;
+            StartCoroutine(LerpToHeight(_heightChangeSpeed, targetHeight));
+        }
+    }
+    IEnumerator LerpToHeight(float lerpTime, float targetHeight)
+    {
+        float startHeight = _childTran.position.y;
+        float time = 0;
+        while (time < lerpTime)
+        {
+            Vector3 currentPos = _childTran.position;
+            currentPos.y = Mathf.Lerp(startHeight, targetHeight, time / lerpTime);
+            _childTran.position = currentPos;
+            time += Time.deltaTime;
+            yield return null;
+        }
     }
 
     private void FixedUpdate()
