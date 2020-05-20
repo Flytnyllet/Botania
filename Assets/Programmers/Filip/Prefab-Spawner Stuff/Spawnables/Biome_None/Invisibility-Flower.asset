@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a2ef82269fb17cf43a9f1163b1dfd939, type: 3}
-  m_Name: Teleport Flower
+  m_Name: Invisibility-Flower
   m_EditorClassIdentifier: 
   _autoUpdate: 0
   _noiseMergeType: 2
-  _noiseSettingsData: {fileID: 11400000, guid: 0d4a10ce26900c4439f7ec9cdc374b1f, type: 2}
+  _noiseSettingsData: {fileID: 11400000, guid: 564fedd1858f8754fa50a6fae8c75392, type: 2}
   _parentOnly: 0
   _rotationAmount: 1
   _noiseStartPoint: 0
@@ -38,7 +38,21 @@ MonoBehaviour:
   _softMaxSlope: 0
   _hardMaxSlope: 0
   _prefabs:
-  - _prefab: {fileID: 1489903674293172817, guid: 9dae8e7a82de95948873cb0ae9216ed9,
+  - _prefab: {fileID: 2990825793708006342, guid: f76e7c2573039434db288e57bf6ce8ee,
+      type: 3}
+    _probability: 1
+    _height: 0
+    _fixedHeight: 0
+    _scale: 1
+    _scaleRandom: 0.25
+  - _prefab: {fileID: 8079993216282995533, guid: 34674a4f8f25f244ca2c3602fffc09d1,
+      type: 3}
+    _probability: 1
+    _height: 0
+    _fixedHeight: 0
+    _scale: 1
+    _scaleRandom: 0.25
+  - _prefab: {fileID: 7445312936231571382, guid: 15019ba2ae50d6647a0aedcc58e15d3c,
       type: 3}
     _probability: 1
     _height: 0
