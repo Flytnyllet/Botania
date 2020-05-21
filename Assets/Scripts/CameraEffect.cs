@@ -88,6 +88,9 @@ public class CameraEffect : MonoBehaviour
     }
 
 
+
+
+
     public void ActivateImageEffect(Material material)
     {
         _effectMaterials.Add(material);
@@ -109,6 +112,11 @@ public class CameraEffect : MonoBehaviour
             ActionDelayer.RunAfterDelay(() => { StartCoroutine(LerpInCameraEffect(material, eventParam.floatParam2, true)); }, eventParam.floatParam);
         }
     }
+
+
+
+
+
     //floatParam = _potionDuration,
     //floatParam2 = _potionCameraEffectFadeTime
     IEnumerator LerpInCameraEffect(Material mat, float lerpTime, bool remove)
@@ -132,6 +140,8 @@ public class CameraEffect : MonoBehaviour
             _effectMaterials.Remove(mat);
         }
     }
+
+
 
 
     void InvissibilityEffect(EventParameter param)
@@ -161,6 +171,10 @@ public class CameraEffect : MonoBehaviour
         }
     }
 
+
+
+
+
     void HearingEffect(EventParameter param)
     {
         StartCoroutine(HearingEffectRoutine((float)param.intParam, param.floatParam, param.floatParam2));
@@ -187,6 +201,10 @@ public class CameraEffect : MonoBehaviour
         }
     }
 
+
+
+
+
     /// <summary>
     /// intparam = targetDistortion,  floatParam = distort time to lerp
     /// </summary>
@@ -212,6 +230,8 @@ public class CameraEffect : MonoBehaviour
         }
     }
 
+
+
     void LightningStrikeEffect(EventParameter param)
     {
         StartCoroutine(LightningFlash(param.floatParam, param.floatParam2));
@@ -233,6 +253,12 @@ public class CameraEffect : MonoBehaviour
             colGrad.postExposure.value = 0;
         }
     }
+
+
+
+
+
+
 
     void SetGlobalEmissionMult(EventParameter param)
     {
@@ -269,5 +295,24 @@ public class CameraEffect : MonoBehaviour
                 yield return null;
             }
         }
+    }
+
+
+
+
+
+
+    IEnumerator LerpWaterEffect(float lerpTime)
+    {
+        //if (_ppVolume.profile.TryGetSettings(out lift)) { 
+
+        float time = 0;
+        while (time < lerpTime)
+        {
+
+            time += Time.deltaTime;
+            yield return null;
+        }
+        //}
     }
 }
