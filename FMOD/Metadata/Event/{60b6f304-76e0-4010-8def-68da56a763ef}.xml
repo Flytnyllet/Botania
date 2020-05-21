@@ -199,11 +199,7 @@
 	</object>
 	<object class="MixerBusPanner" id="{96a1166f-09dd-4b1f-8941-800d7d4a1a68}" />
 	<object class="MixerBusFader" id="{0fad088b-3b22-4335-b26b-7d113090f85b}" />
-	<object class="MultiSound" id="{5daddd79-5068-4cd4-83eb-685de02efadd}">
-		<relationship name="sounds">
-			<destination>{a24a60d1-35a9-4cf7-93bf-1cceaaa60722}</destination>
-		</relationship>
-	</object>
+	<object class="MultiSound" id="{5daddd79-5068-4cd4-83eb-685de02efadd}" />
 	<object class="Automator" id="{0de27f01-fbb7-47c1-87e9-7826cfad587b}">
 		<property name="nameOfPropertyBeingAutomated">
 			<value>volume</value>
@@ -234,17 +230,6 @@
 			<value>280</value>
 		</property>
 	</object>
-	<object class="SingleSound" id="{a24a60d1-35a9-4cf7-93bf-1cceaaa60722}">
-		<property name="startOffset">
-			<value>41</value>
-		</property>
-		<relationship name="modulators">
-			<destination>{9df5d593-5578-494e-a9f3-1c8e441c34d8}</destination>
-		</relationship>
-		<relationship name="audioFile">
-			<destination>{31273099-4859-4e8d-8049-09b9829899d8}</destination>
-		</relationship>
-	</object>
 	<object class="AutomationCurve" id="{5568e9ac-415f-43bf-bda2-05f2691acf2f}">
 		<relationship name="parameter">
 			<destination>{48188020-fe17-407e-837f-2362996c3294}</destination>
@@ -264,14 +249,6 @@
 		</property>
 	</object>
 	<object class="MixerBusFader" id="{b792d401-ef8a-4e78-9897-5e53b38a376b}" />
-	<object class="RandomizerModulator" id="{9df5d593-5578-494e-a9f3-1c8e441c34d8}">
-		<property name="nameOfPropertyBeingModulated">
-			<value>startOffset</value>
-		</property>
-		<property name="amount">
-			<value>69.5</value>
-		</property>
-	</object>
 	<object class="AutomationPoint" id="{ceadff70-85e0-4ee7-b194-28ea495d4a84}">
 		<property name="position">
 			<value>0.4605911330049261</value>

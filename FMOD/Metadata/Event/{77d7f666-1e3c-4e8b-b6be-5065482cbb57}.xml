@@ -121,9 +121,6 @@
 		</relationship>
 	</object>
 	<object class="MultiSound" id="{31a340db-14ac-45c7-9d93-b84008ee648f}">
-		<property name="triggerProbabilityEnabled">
-			<value>true</value>
-		</property>
 		<property name="isAsync">
 			<value>true</value>
 		</property>
@@ -145,11 +142,13 @@
 			<destination>{9cb1d9a7-d54d-4c72-a5e7-47aad0907ca1}</destination>
 		</relationship>
 		<relationship name="sounds">
+			<destination>{e60a3b4f-3ef8-406a-9461-0e45a7f919c3}</destination>
 			<destination>{3142e327-632e-4cf8-a79e-f42fbb896204}</destination>
 			<destination>{693d7a19-a69b-4f0e-8abd-c83790d3b7e1}</destination>
 		</relationship>
 		<relationship name="playPercentages">
 			<destination>{c2587d45-7d6a-446c-aef8-69d054d2ecd9}</destination>
+			<destination>{3745c576-7135-41e2-bc32-71f560dbd7f5}</destination>
 		</relationship>
 	</object>
 	<object class="EventMixerGroup" id="{cfee757b-ccf8-4c65-ba66-d68ee6ea173c}">
@@ -220,6 +219,14 @@
 			<value>100</value>
 		</property>
 	</object>
+	<object class="SingleSound" id="{e60a3b4f-3ef8-406a-9461-0e45a7f919c3}">
+		<property name="looping">
+			<value>true</value>
+		</property>
+		<relationship name="audioFile">
+			<destination>{034f7523-9b71-405b-9839-fcaa04ece6a1}</destination>
+		</relationship>
+	</object>
 	<object class="SingleSound" id="{3142e327-632e-4cf8-a79e-f42fbb896204}">
 		<property name="looping">
 			<value>true</value>
@@ -238,10 +245,18 @@
 	</object>
 	<object class="PlayPercentage" id="{c2587d45-7d6a-446c-aef8-69d054d2ecd9}">
 		<property name="percentage">
-			<value>37</value>
+			<value>35</value>
 		</property>
 		<relationship name="sound">
 			<destination>{693d7a19-a69b-4f0e-8abd-c83790d3b7e1}</destination>
+		</relationship>
+	</object>
+	<object class="PlayPercentage" id="{3745c576-7135-41e2-bc32-71f560dbd7f5}">
+		<property name="percentage">
+			<value>35</value>
+		</property>
+		<relationship name="sound">
+			<destination>{e60a3b4f-3ef8-406a-9461-0e45a7f919c3}</destination>
 		</relationship>
 	</object>
 	<object class="Automator" id="{e6565a59-3cf5-49cf-9797-209f5fd06793}">
