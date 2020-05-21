@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 5841517419081503884}
   - component: {fileID: 156979817002559605}
   - component: {fileID: 2941169685239680044}
+  - component: {fileID: 690314116}
+  - component: {fileID: 690314120}
   m_Layer: 0
   m_Name: EXP_Flower_Levitation
   m_TagString: Untagged
@@ -92,6 +94,44 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.5, y: 0.90002525, z: 0.5}
   m_Center: {x: 0, y: 0.0038169024, z: -0.0000019073486}
+--- !u!114 &690314116
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1878390561116118185}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70c2b09e2695b494b8572a2ea101535c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _spawnPartially: 0
+  _groupSpawn: 0
+--- !u!114 &690314120
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1878390561116118185}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee66933cb94b3af499283834dca2703c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _dissableTriggerafterPickup: 1
+  _flowerData: {fileID: 11400000, guid: 59d0c1cda930f5042ba72e2dbb195868, type: 2}
+  _pickupAlpha: {fileID: 0}
+  _gameobjectOverload:
+  - {fileID: 5167158702135448164}
+  _pickupAction:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  _pickupAnimationTime: 0
+  _pickupAnimationForce: 0
 --- !u!1 &5167158702135448164
 GameObject:
   m_ObjectHideFlags: 0
@@ -102,6 +142,8 @@ GameObject:
   m_Component:
   - component: {fileID: 8514162632322935081}
   - component: {fileID: 4008595028418109010}
+  - component: {fileID: 1791142920}
+  - component: {fileID: 1791142919}
   m_Layer: 9
   m_Name: Flower_Levitation
   m_TagString: Untagged
@@ -131,12 +173,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5167158702135448164}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3ac652232fd27cc4da13d852177e9e85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _movementDirection: {x: 1, y: 0, z: 0}
+  _movementDirection: {x: 0, y: 0, z: 0}
   _randomDirectionOffset: 0.1
   _renderer: {fileID: 156979817002559605}
   _childTran: {fileID: 0}
@@ -145,3 +187,32 @@ MonoBehaviour:
   _mask:
     serializedVersion: 2
     m_Bits: 1
+--- !u!114 &1791142920
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5167158702135448164}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54fb2706b99311e47afdbe89491c63b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _targetTransform: {fileID: 3191428825255980730}
+  _direction: {x: 0, y: 0, z: 0}
+  _fleeSpeed: 0
+  _playerDistanceTarget: 10
+--- !u!135 &1791142919
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5167158702135448164}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 3
+  m_Center: {x: 0, y: 0, z: 0}

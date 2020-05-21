@@ -74,7 +74,7 @@ public class FlagPotion : Potion_Template
                 break;
             case ABILITY_FLAG.VISSION:
                 EventManager.TriggerEvent(EventNameLibrary.VISSION_POTION,
-                    new EventParameter { floatParam = 8, floatParam2 = 20 });
+                    new EventParameter { floatParam = 8, floatParam2 = 6 });
                 ActionDelayer.RunAfterDelay(() =>
                 {
                     EventManager.TriggerEvent(EventNameLibrary.VISSION_POTION,

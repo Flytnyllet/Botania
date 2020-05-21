@@ -65,7 +65,7 @@ public class TerrainGenerator : MonoBehaviour
         {
             for (int i = 0; i < _visibleTerrainChunks.Count; i++)
             {
-                _visibleTerrainChunks[i].UpdateCollisionMesh();
+                    _visibleTerrainChunks[i].UpdateCollisionMesh();
             }
         }
 
@@ -80,7 +80,7 @@ public class TerrainGenerator : MonoBehaviour
     {
         HashSet<Vector2> alreadyUpdatedChunkCoords = new HashSet<Vector2>();
         for (int i = _visibleTerrainChunks.Count - 1; i >= 0; i--)
-        {        
+        {
             alreadyUpdatedChunkCoords.Add(_visibleTerrainChunks[i].Coord);
             _visibleTerrainChunks[i].UpdateTerrainChunk();
         }
