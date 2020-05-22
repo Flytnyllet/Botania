@@ -21,6 +21,10 @@ public class PickupFlower : InteractableSaving, IInteractable
     [SerializeField] float _pickupAnimationTime = 0.2f;
     [SerializeField] float _pickupAnimationForce = 1.0f;
 
+    private string _flowerPickupSound;
+    [SerializeField] private Player_Data _player_Data;
+    private Player_Emitter _player_Emitter;
+
     public bool Interact(Transform interactor)
     {
         if (_enabled)
@@ -65,6 +69,7 @@ public class PickupFlower : InteractableSaving, IInteractable
             if (_dissableTriggerafterPickup) GetComponent<Collider>().enabled = false;
             StartCoroutine(ShakeFlower(interactor, _pickupAnimationTime, _pickupAnimationForce));
             _pickupAction.Invoke();
+            Play_PickupSound(_flowerData.itemName);
             return true; //Doesn't really have a purpose for this
         }
         return false;
@@ -83,5 +88,34 @@ public class PickupFlower : InteractableSaving, IInteractable
             time += Time.deltaTime;
             yield return null;
         }
+    }
+
+    private void Play_PickupSound(string flowerName)
+    {
+        switch (flowerName)
+        {
+            case "Calm":
+                break;
+            case "Earth Flower":
+               _flowerPickupSound = _player_Data.p_pickup_01_earth;
+                break;
+            case "Home":
+                break;
+            case "Magic":
+                break;
+            case "Mole":
+                _flowerPickupSound = _player_Data.p_pickup_05_mole;
+                break;
+            case "Soul":
+                _flowerPickupSound = _player_Data.p_pickup_06_soul;
+                break;
+            case "Teleporter":
+                _flowerPickupSound = _player_Data.p_pickup_03_tp;
+                break;
+            case "":
+                break;
+        }
+        _player_Emitter = Player.FindObjectOfType<Player_Emitter>();
+        _player_Emitter.Init_Pickup(_flowerPickupSound);
     }
 }
