@@ -28,6 +28,13 @@ public static class PrefabSpawnerSaveData
         }
     }
 
+    public static void Wipe()
+    {
+        List<StoredSaveData> saveData = new List<StoredSaveData>();
+
+        Serialization.Save(Saving.FileNames.PREFAB_SPAWNING, saveData);
+    }
+
     public static void AddPickup(StoredSaveData saveDataToStore)
     {
         try

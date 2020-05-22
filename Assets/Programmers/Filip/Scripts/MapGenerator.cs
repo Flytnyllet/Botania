@@ -239,6 +239,15 @@ public class MapGenerator : MonoBehaviour, IDragHandler, IScrollHandler, IPointe
             }
         }
     }
+
+    public static void Wipe()
+    {
+        List<TextureSave> textureSaves = new List<TextureSave>();
+        List<WorldMarker> markerSaves = new List<WorldMarker>();
+
+        Serialization.Save(Saving.FileNames.MAP_TEXTURES, textureSaves);
+        Serialization.Save(Saving.FileNames.MAP_MARKERS, markerSaves);
+    }
     #endregion
 
     #region Map Manipulation

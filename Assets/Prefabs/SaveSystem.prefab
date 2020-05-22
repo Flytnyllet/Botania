@@ -44,6 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc81a7f997e69cb4ca3b8736a77ab11a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _animatorTriggerName: Trigger
   _saveIntervalTime: 5
   _saveIconAlphaCurve:
     serializedVersion: 2
@@ -79,8 +80,11 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   _saveIconTime: 2.5
-  _save: 0
-  _load: 0
+  _intervallSave: 0
+  _menuSave: 1
+  _menuSaveIntervall: 30
+  _save: 1
+  _load: 1
   _saveIcon: {fileID: 140128496697346228}
 --- !u!1 &1405914039987470308
 GameObject:
