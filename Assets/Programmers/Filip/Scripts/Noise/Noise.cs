@@ -15,15 +15,19 @@ public static class Noise
         GLOBAL
     }
 
-    public static void SetSeed(string stringSeed)
+    public static void SetSeed(int seed)
     {
-        _seed = stringSeed.GetHashCode();
-        _seed = 0;
+        _seed = seed;
     }
 
     static int GetSeed(int noiseSeed)
     {
         return (noiseSeed + _seed) % MAX_SEED_SIZE;
+    }
+
+    public static void Save()
+    {
+        Serialization.Save(Saving.FileNames.SEED, _seed);
     }
 
     //Combines different noises of one noise object into one final noise
@@ -41,8 +45,6 @@ public static class Noise
 
     public static float[,] GenerateNoiseMap(int mapWidth, int mapHeight, int detailLevel, NoiseSettings settings, Vector2 sampleCenter)
     {
-        SetSeed("ASDss");
-
         if (detailLevel <= 0)
         {
             Debug.LogError("Detail level of noise may not be lower than 1!!");
