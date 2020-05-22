@@ -57,7 +57,7 @@ public class CameraEffect : MonoBehaviour
         Debug.Log(RenderSettings.ambientLight);
         _ppVolume = GetComponent<PostProcessVolume>();
         _camera = GetComponent<Camera>();
-        _camera.depthTextureMode = DepthTextureMode.Depth;
+        _camera.depthTextureMode = DepthTextureMode.DepthNormals;
         Shader.SetGlobalFloat("gEmissionMult", 1);
     }
     private void Start()

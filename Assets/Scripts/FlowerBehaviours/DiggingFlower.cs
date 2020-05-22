@@ -49,9 +49,6 @@ public class DiggingFlower : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log(other.transform.tag);
-        Debug.Log(CharacterState.IsAbilityFlagActive(ABILITY_FLAG.INVISSIBLE));
-        Debug.Log(CharacterState.IsAbilityFlagActive(ABILITY_FLAG.CALM_ALL_FLOWERS));
         if (other.tag == "Player" &&
             !CharacterState.IsAbilityFlagActive(ABILITY_FLAG.INVISSIBLE) &&
             !CharacterState.IsAbilityFlagActive(ABILITY_FLAG.CALM_ALL_FLOWERS))
