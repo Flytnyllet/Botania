@@ -22,22 +22,29 @@ public class LevitationBehaviour : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        _collider.radius = _playerDistanceTarget;
-        _targetTransform = other.transform;
-        _playerInside = true;
+        if (other.tag == "Player")
+        {
+            _collider.radius = _playerDistanceTarget;
+            _targetTransform = other.transform;
+            _playerInside = true;
+        }
     }
     private void OnTriggerExit(Collider other)
     {
-        _collider.radius = _colliderStartRadius;
-        _playerInside = false;
+        if (other.tag == "Player")
+        {
+
+            _collider.radius = _colliderStartRadius;
+            _playerInside = false;
+        }
     }
     private void Update()
     {
         if (_playerInside)
         {
-            Vector3 direction = _targetTransform.position - transform.position;
-            direction.y = 0;
-            _charCon.Move(direction.normalized * _fleeSpeed * Time.deltaTime);
+            Vector3 direction = (transform.position - _targetTransform.position).normalized;
+            direction.y = -1;
+            _charCon.Move(direction * _fleeSpeed * Time.deltaTime);
         }
         else
         {

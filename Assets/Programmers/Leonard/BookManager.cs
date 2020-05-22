@@ -107,9 +107,13 @@ public class BookManager : MonoBehaviour
     {
         if (Input.GetButtonDown(input) && !_potionWheel.activeSelf)
         {
-            if (_book.activeSelf)
+            if (_book.activeSelf && _currentBookmark == index)
             {
                 CloseBook(new EventParameter());
+            }
+            else if (_book.activeSelf)
+            {
+                ToBookmark(index, true);
             }
             else if (CharacterState.Control_State == CHARACTER_CONTROL_STATE.PLAYERCONTROLLED)
             {
@@ -269,8 +273,12 @@ public class BookManager : MonoBehaviour
         }
     }
 
-    void ToBookmark(int index)
+    void ToBookmark(int index, bool playSounds = false)
     {
+        if (index != _currentBookmark && playSounds)
+        {
+            FlipPageSoundEffect();
+        }
         if (_currentBookmark != _bookmarks.Count - 1)
         {
             _bookmarks[_currentBookmark].SetActive(false);
@@ -289,7 +297,7 @@ public class BookManager : MonoBehaviour
         }
         _book.GetComponent<Image>().sprite = _BookSprites[index];
     }
-    public void FlipPage()
+    public void FlipPageSoundEffect()
     {
         EventManager.TriggerEvent(EventNameLibrary.FLIP_PAGE, new EventParameter());
     }
