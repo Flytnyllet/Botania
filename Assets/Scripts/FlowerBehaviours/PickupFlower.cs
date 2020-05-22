@@ -76,10 +76,11 @@ public class PickupFlower : InteractableSaving, IInteractable
         direction.x = interactor.position.z - this.transform.position.z;
         direction.z = this.transform.position.x - interactor.position.x;
         float time = 0;
-        float radianMultiplier = Mathf.PI * 2 / duration;
+        float radianMultiplier = Mathf.PI * 2 / duration*0.1f;
         while (time < duration)
         {
-            this.transform.eulerAngles = baseRotation + direction * Mathf.Sin(time * radianMultiplier) * force;
+            float tTime = Mathf.SmoothStep(0, Mathf.PI * 2, time * radianMultiplier);
+            this.transform.eulerAngles = baseRotation + direction.normalized * Mathf.Sin(tTime) * force;
             time += Time.deltaTime;
             yield return null;
         }

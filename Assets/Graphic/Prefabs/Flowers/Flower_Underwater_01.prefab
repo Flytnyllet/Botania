@@ -89,8 +89,8 @@ GameObject:
   - component: {fileID: 5078195141466658824}
   - component: {fileID: 5653351522889682231}
   - component: {fileID: 5880843340910523311}
-  - component: {fileID: 4275310771788363978}
   - component: {fileID: 7416499628457166951}
+  - component: {fileID: 3612143259463909404}
   m_Layer: 0
   m_Name: Flower_Underwater_01
   m_TagString: Untagged
@@ -160,7 +160,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _dissableTriggerafterPickup: 0
-  _flowerData: {fileID: 0}
+  _flowerData: {fileID: 11400000, guid: bc66d02d334969247ab11ca7a21d6855, type: 2}
   _pickupAlpha: {fileID: 0}
   _gameobjectOverload: []
   _pickupAction:
@@ -170,33 +170,6 @@ MonoBehaviour:
       Culture=neutral, PublicKeyToken=null
   _pickupAnimationTime: 0.2
   _pickupAnimationForce: 1
---- !u!114 &4275310771788363978
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5653351522889682230}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cc81a7f997e69cb4ca3b8736a77ab11a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _animatorTriggerName: Trigger
-  _saveIntervalTime: 300
-  _saveIconAlphaCurve:
-    serializedVersion: 2
-    m_Curve: []
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  _saveIconTime: 2.5
-  _intervallSave: 0
-  _menuSave: 1
-  _menuSaveIntervall: 30
-  _save: 1
-  _load: 1
-  _saveIcon: {fileID: 0}
 --- !u!65 &7416499628457166951
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -210,6 +183,20 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0.66, z: 0}
+--- !u!114 &3612143259463909404
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5653351522889682230}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70c2b09e2695b494b8572a2ea101535c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _spawnPartially: 0
+  _groupSpawn: 0
 --- !u!1 &7274581096340032237
 GameObject:
   m_ObjectHideFlags: 0
