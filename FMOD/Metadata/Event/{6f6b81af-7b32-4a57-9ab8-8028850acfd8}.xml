@@ -85,6 +85,9 @@
 		</relationship>
 	</object>
 	<object class="EventMixerMaster" id="{6716c599-56e3-4364-8e95-aa77766850e0}">
+		<relationship name="modulators">
+			<destination>{ef2c1e24-5478-4265-b824-16d39d56decc}</destination>
+		</relationship>
 		<relationship name="effectChain">
 			<destination>{db60b799-c8e8-474a-a3aa-3135e00c8efe}</destination>
 		</relationship>
@@ -111,6 +114,9 @@
 		<property name="startOffset">
 			<value>57</value>
 		</property>
+		<property name="volume">
+			<value>5</value>
+		</property>
 		<property name="looping">
 			<value>true</value>
 		</property>
@@ -118,7 +124,7 @@
 			<destination>{71f4f7ef-1151-4cdc-8178-8b474b83daea}</destination>
 		</relationship>
 		<relationship name="audioFile">
-			<destination>{defbd0ee-b8ff-4216-ad7c-13af93be0b30}</destination>
+			<destination>{9d47dba6-1a3b-4ecb-bcb1-350c0b8a90e4}</destination>
 		</relationship>
 	</object>
 	<object class="EventMixerGroup" id="{380c9603-6d26-4865-b771-cc7b8d128940}">
@@ -192,6 +198,20 @@
 			<destination>{feb39129-3b61-4f7a-8878-2863f7736e13}</destination>
 		</relationship>
 	</object>
+	<object class="ADSRModulator" id="{ef2c1e24-5478-4265-b824-16d39d56decc}">
+		<property name="nameOfPropertyBeingModulated">
+			<value>volume</value>
+		</property>
+		<property name="initialValue">
+			<value>-80</value>
+		</property>
+		<property name="attackTime">
+			<value>880</value>
+		</property>
+		<property name="finalValue">
+			<value>-80</value>
+		</property>
+	</object>
 	<object class="MixerBusEffectChain" id="{db60b799-c8e8-474a-a3aa-3135e00c8efe}">
 		<relationship name="effects">
 			<destination>{95bbc73d-e662-4354-b1b3-f70d436e04a5}</destination>
@@ -247,22 +267,28 @@
 			<value>92</value>
 		</property>
 		<property name="wetLevel">
-			<value>-16</value>
+			<value>-8.5</value>
+		</property>
+		<property name="dryLevel">
+			<value>5.5</value>
 		</property>
 	</object>
 	<object class="MixerBusFader" id="{557d94d5-904e-4c94-9135-b80c5610b1a2}" />
 	<object class="ThreeEQEffect" id="{42172cd8-6074-438d-97c8-b850d392b824}">
 		<property name="lowGain">
-			<value>-19</value>
+			<value>-21</value>
+		</property>
+		<property name="midGain">
+			<value>-3</value>
 		</property>
 		<property name="highGain">
 			<value>-80</value>
 		</property>
 		<property name="lowCrossover">
-			<value>580</value>
+			<value>560</value>
 		</property>
 		<property name="highCrossover">
-			<value>740</value>
+			<value>580</value>
 		</property>
 	</object>
 	<object class="MixerBusFader" id="{3cef27ab-3241-465e-acab-0d85b3cb1048}" />
