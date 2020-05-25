@@ -1,5 +1,50 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2137465239964256935
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2304695800156324472}
+  - component: {fileID: 4627280352647137765}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2304695800156324472
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2137465239964256935}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 49533053283010316}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &4627280352647137765
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2137465239964256935}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.15
+  m_Height: 5.0011396
+  m_Direction: 1
+  m_Center: {x: 0, y: 2.2727294, z: 0}
 --- !u!1 &2288529959361626765
 GameObject:
   m_ObjectHideFlags: 0
@@ -49,19 +94,19 @@ LODGroup:
   m_AnimateCrossFading: 0
   m_LastLODIsBillboard: 0
   m_LODs:
-  - screenRelativeHeight: 0.79992056
+  - screenRelativeHeight: 0.5038476
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 3404248559550590382}
-  - screenRelativeHeight: 0.5455639
+  - screenRelativeHeight: 0.30077675
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 5083858314724555706}
-  - screenRelativeHeight: 0.3000038
+  - screenRelativeHeight: 0.10081138
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 2300078047130544840}
-  - screenRelativeHeight: 0.1
+  - screenRelativeHeight: 0.013023546
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 5003892358409380990}
@@ -233,6 +278,8 @@ GameObject:
   - component: {fileID: 49533053283010316}
   - component: {fileID: 7184911705116159567}
   - component: {fileID: 3404248559550590382}
+  - component: {fileID: 7928299061245938662}
+  - component: {fileID: 6645926124599188772}
   m_Layer: 0
   m_Name: OBJ_Tree_Pine_Bloom_02_lod0
   m_TagString: Untagged
@@ -250,7 +297,8 @@ Transform:
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 2304695800156324472}
   m_Father: {fileID: 5427917892923515281}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -300,6 +348,47 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!114 &7928299061245938662
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6688480867533863107}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee66933cb94b3af499283834dca2703c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _dissableTriggerafterPickup: 1
+  _flowerData: {fileID: 11400000, guid: e6bb78b0aee72a942b9c16c4773de5ea, type: 2}
+  _pickupAlpha: {fileID: 2800000, guid: f73cebb52b927164ca183377385bf29e, type: 3}
+  _gameobjectOverload:
+  - {fileID: 6688480867533863107}
+  - {fileID: 4755004300588889981}
+  - {fileID: 9191855086197462335}
+  - {fileID: 2471338286682859560}
+  _pickupAction:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  _pickupAnimationTime: 2
+  _pickupAnimationForce: 1
+  _player_Data: {fileID: 11400000, guid: d0d6668ab68191b44ac744e3648e5fb3, type: 2}
+--- !u!65 &6645926124599188772
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6688480867533863107}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: -0.022773564, y: 3.8, z: 0.13332874}
 --- !u!1 &9191855086197462335
 GameObject:
   m_ObjectHideFlags: 0

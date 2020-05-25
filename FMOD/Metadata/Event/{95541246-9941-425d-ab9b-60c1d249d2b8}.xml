@@ -2,10 +2,10 @@
 <objects serializationModel="Studio.02.00.00">
 	<object class="Event" id="{95541246-9941-425d-ab9b-60c1d249d2b8}">
 		<property name="name">
-			<value>amb___05___waves</value>
+			<value>amb___water_waves1</value>
 		</property>
 		<property name="outputFormat">
-			<value>2</value>
+			<value>5</value>
 		</property>
 		<relationship name="folder">
 			<destination>{2460a117-b015-43c0-82d0-bcc904368fef}</destination>
@@ -180,7 +180,6 @@
 	<object class="MixerBusEffectChain" id="{97b6405f-fcc0-4ea5-a495-d9ff59353790}">
 		<relationship name="effects">
 			<destination>{0388af51-1280-45bd-bf1d-fccfcd90f054}</destination>
-			<destination>{1b28c366-3c2d-4635-9672-dae1636ac3dd}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{939d9dc0-fb51-490d-9d0f-32aaa0d77dfd}" />
@@ -214,17 +213,6 @@
 	</object>
 	<object class="MixerBusPanner" id="{432cc6a5-8834-4c97-8347-6f1f227a6062}" />
 	<object class="MixerBusFader" id="{0388af51-1280-45bd-bf1d-fccfcd90f054}" />
-	<object class="SpatialiserEffect" id="{1b28c366-3c2d-4635-9672-dae1636ac3dd}">
-		<property name="extentMode">
-			<value>1</value>
-		</property>
-		<property name="soundSize">
-			<value>1</value>
-		</property>
-		<property name="minimumExtent">
-			<value>304</value>
-		</property>
-	</object>
 	<object class="SingleSound" id="{dd0253c7-0fe4-49b1-a8bc-0c611dc6d6b3}">
 		<relationship name="audioFile">
 			<destination>{03372e3a-ca3c-45c4-b00f-517c802ebee7}</destination>
@@ -270,7 +258,7 @@
 			<value>0.085385878489326758</value>
 		</property>
 		<property name="value">
-			<value>-8</value>
+			<value>-3.5</value>
 		</property>
 	</object>
 	<object class="AutomationPoint" id="{26046aed-6fe0-4881-b3ba-db7851bca90b}">
@@ -278,7 +266,7 @@
 			<value>0.41000000000000003</value>
 		</property>
 		<property name="value">
-			<value>-5</value>
+			<value>-0.5</value>
 		</property>
 	</object>
 </objects>

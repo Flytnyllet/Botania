@@ -6,6 +6,7 @@ namespace Saving
 {
     public static class FileNames
     {
+        public static readonly string SEED = "Seed"; 
         public static readonly string MAP_TEXTURES = "Map_Textures";
         public static readonly string MAP_MARKERS = "Map_Markers";
         public static readonly string PREFAB_SPAWNING = "Prefab_Spawning";

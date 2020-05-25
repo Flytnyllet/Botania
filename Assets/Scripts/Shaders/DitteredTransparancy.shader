@@ -42,7 +42,7 @@
 		}; 
 		void surf(Input IN, inout SurfaceOutputStandard  o) {
 			fixed4 c = tex2D(_MainTex, IN.uv_MainTex);
-			o.Albedo = c.rgb*_Color;
+			o.Albedo = c.rgb*_Color/ gEmissionMult/ gEmissionMult;
 			o.Alpha = tex2D(_Alpha, IN.uv_MainTex);
 			float2 pos = IN.screenPos.xy / IN.screenPos.w;
 			pos *= _ScreenParams.xy; // pixel position

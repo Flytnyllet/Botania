@@ -16,20 +16,30 @@ public class Amb_Local_Emitter : MonoBehaviour
     private bool _isVirtual;
     public bool IsPlaying { get { return _isPlaying; } }
     private bool _isPlaying = false;
+    private PLAYBACK_STATE _playbackState;
 
     private int _parameterCount;
     public bool IsShy { get { return _isShy; } }
     private bool _isShy = false;
-    public PARAMETER_ID IsShyParameterId { get { return _isShyParameterId; } }
     private PARAMETER_ID _isShyParameterId;
 
-    public void Init_Event(string event_Ref)
+    public void Init_Event()
     {
         event_Description = RuntimeManager.GetEventDescription(event_Ref);
         event_Description.loadSampleData();
-        event_Description.createInstance(out event_Instance);
         event_Description.getMaximumDistance(out _maxDistance);
         event_Description.is3D(out _is3D);
+    }
+
+    public void Attach_Local_Emitter(Transform transform, Rigidbody rigidbody)
+    {
+        if (!_is3D) { return; }
+
+        event_Description.createInstance(out event_Instance);
+        RuntimeManager.AttachInstanceToGameObject(event_Instance, transform, rigidbody);
+        event_Instance.start();
+        _isPlaying = true;
+
         event_Description.getParameterDescriptionCount(out int _parameterCount);
         if (_parameterCount > 0)
         {
@@ -38,16 +48,30 @@ public class Amb_Local_Emitter : MonoBehaviour
             PARAMETER_DESCRIPTION isShyParameterDescription;
             isShyEventDescription.getParameterDescriptionByName("is_shy", out isShyParameterDescription);
             _isShyParameterId = isShyParameterDescription.id;
-
             _isShy = true;
         }
     }
 
-    public void Attach_Local_Emitter(Transform transform, Rigidbody rigidbody)
+    private void OnTriggerEnter(Collider other)
     {
-        if (!_is3D) { return; }
-        RuntimeManager.AttachInstanceToGameObject(event_Instance, transform, rigidbody);
-        event_Instance.start();
+        if (other.CompareTag("Player"))
+        {
+            Set_Parameter(_isShyParameterId, 1);
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            StartCoroutine(WaitBeforeNotShy(Random.Range(1, 5)));
+        }
+    }
+
+    IEnumerator WaitBeforeNotShy(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+        Set_Parameter(_isShyParameterId, 0);
     }
 
     public void Set_Parameter(PARAMETER_ID parameterID, float value)
@@ -55,23 +79,20 @@ public class Amb_Local_Emitter : MonoBehaviour
         event_Instance.setParameterByID(parameterID, value);
     }
 
-    public void Set_Parameter_Name(string name, float value)
+    private void Update()
     {
-        event_Instance.setParameterByName(name, value);
-    }
+        if (_isPlaying)
+        {
+            event_Instance.isVirtual(out _isVirtual);
+            event_Instance.getPlaybackState(out _playbackState);
 
-    public void Start_Local_Emitter()
-    {
-        
-        _isPlaying = true;
+            if (_playbackState != PLAYBACK_STATE.STOPPED) { return; }
+            else { _isPlaying = false; }
+        }
     }
 
     public void Stop_Local_Emitter()
     {
-        event_Description.releaseAllInstances();
         event_Instance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
-        RuntimeManager.DetachInstanceFromGameObject(event_Instance);
-        event_Instance.clearHandle();
-        _isPlaying = false;
     }
 }

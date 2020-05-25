@@ -8,9 +8,12 @@
 		_Str("Effect Ammount",range(0,1)) = 0
 		_speed("Effect speed",float) = 1
 		_Color("Color", Color) = (1,1,1,1)
-		_Thickness("Line Thickness", Float) = 0.01
+		_Thickness("Line Thickness", range(0,1)) = 1
+		_LineA("Line Position", range(0,1)) = 0.25
+		_LineB("Line Position", range(0,1)) = 0.5
 		_WaveSharpnessIn("Line Sharpness Inner", range(0,1)) = 1
 		_WaveSharpnessOut("Line Sharpness Outer", range(0,1)) = 1
+		_DephMask("Wave Visual Length", float) = 10
 	}
 		SubShader
 		{
@@ -93,16 +96,26 @@
 				float _speed;
 				float _WaveSharpnessIn;
 				float _WaveSharpnessOut;
+				float _Test;
+				float _LineA;
+				float _LineB;
+				float _DephMask;
 
 				fixed4 frag(v2f i) : SV_Target
 				{
-					float depth = 1 - clamp(0,1,tex2D(_CameraDepthTexture, i.uv).x);
-					depth += sin(i.uv.x*pi)*-.001;
-					float waves = abs((depth + _Time.w*_speed*0.0001) % 0.05) * 1000;
-					waves = waves * step(0.989,depth);
-					float wavesA = smoothstep(25 - _Thickness * _WaveSharpnessIn, 25, waves);
-					float wavesB = smoothstep(25, 25 + _Thickness * _WaveSharpnessOut, waves);
-					waves = (wavesA - wavesB)*clamp(0, 1, tex2D(_CameraDepthTexture, i.uv).x * 10000);
+					float unFilteredDepth = LinearEyeDepth(tex2D(_CameraDepthTexture, i.uv).x);
+					float depth = unFilteredDepth * 0.001;
+					depth += sin(i.uv.x*pi)*-0.001;
+					float depthMask = 1 - smoothstep(0,_DephMask, unFilteredDepth);
+					float waves = abs((depth + _Time.w*_speed*0.01) % 0.05) * 20;
+					//waves = waves * step(0.989,depth);
+					float wavesA = smoothstep(_LineA - _Thickness * _WaveSharpnessIn, _LineA, waves);
+					float wavesB = smoothstep(_LineA, _LineA + _Thickness * _WaveSharpnessOut, waves);
+					float A = (wavesA - wavesB)*clamp(0, 1, tex2D(_CameraDepthTexture, i.uv).x * 10000);
+					wavesA = smoothstep(_LineB - _Thickness * _WaveSharpnessIn, _LineB, waves);
+					wavesB = smoothstep(_LineB, _LineB + _Thickness * _WaveSharpnessOut, waves);
+					waves = (wavesA - wavesB)*clamp(0, 1, tex2D(_CameraDepthTexture, i.uv).x * 10000) + A;
+					waves *= depthMask;
 					//waves = smoothstep(0, 0.05, waves);
 					//return waves;
 					fixed4 col = tex2D(_MainTex, i.uv);

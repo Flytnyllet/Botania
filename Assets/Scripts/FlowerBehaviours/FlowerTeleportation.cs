@@ -13,7 +13,9 @@ public class FlowerTeleportation : MonoBehaviour
     [SerializeField] float _heighCheck;
     [SerializeField] FlowerTeleportationTrailMovement _trailObject;
     [SerializeField] ParticleSystem _particles;
+    [SerializeField] int _MinJumps = 3;
     [SerializeField] int _Maxjumps = 3;
+    int jumpGoal;
     int _jumps = 0;
 
     Vector3 groundOffset = new Vector3(0, 0.05f, 0);
@@ -24,6 +26,7 @@ public class FlowerTeleportation : MonoBehaviour
     bool _active = true;
     private void Awake()
     {
+        jumpGoal = Random.Range(_MinJumps, _Maxjumps + 1);
         _capCollider = GetComponent<CapsuleCollider>();
         _sphereCollider = GetComponent<SphereCollider>();
         _objectHeight = new Vector3(0, _capCollider.bounds.size.y, 0);
@@ -69,7 +72,7 @@ public class FlowerTeleportation : MonoBehaviour
 
     void ReleaseTrailObject(Vector3 pos)
     {
-        FMODUnity.RuntimeManager.PlayOneShotAttached(event_Teleportation, gameObject);
+        FMODUnity.RuntimeManager.PlayOneShotAttached(event_Teleportation, Player.GetPlayerTransform().gameObject);
         _particles.gameObject.SetActive(true);
         _particles.Emit(20);
         bool trailActive = _trailObject.gameObject.activeSelf;
@@ -83,7 +86,7 @@ public class FlowerTeleportation : MonoBehaviour
         if (!trailActive)
             _trailObject.StartMovement(this.transform);
 
-        if (_Maxjumps <= _jumps)
+        if (jumpGoal <= _jumps)
         {
             SetActveState(false);
         }

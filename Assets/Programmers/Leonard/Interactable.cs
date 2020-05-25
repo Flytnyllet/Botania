@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public interface IInteractable //No it's not a typo
+public interface IInteractable 
 {
     //Gör så att saker kan plockas upp från Interactor.cs
     //Behöver en collider för att bli tillgänglig

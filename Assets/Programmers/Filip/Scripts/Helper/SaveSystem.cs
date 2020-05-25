@@ -7,6 +7,8 @@ public class SaveSystem : MonoBehaviour
 {
     static SaveSystem _thisSaveSystem;
 
+    public static bool Ready { get; private set; } = false;
+
     [Header("Settings")]
 
     [SerializeField] string _animatorTriggerName = "Trigger";
@@ -86,9 +88,35 @@ public class SaveSystem : MonoBehaviour
     {
         if (_load)
         {
+            ValidateSave();
+            Noise.SetSeed(GetWorldSeed());
+
             PrefabSpawnerSaveData.Load();
             MapGenerator.Load();
         }
+
+        Ready = true;
+    }
+
+    void ValidateSave()
+    {
+        object seed = Serialization.Load(Saving.FileNames.SEED);
+
+        if (seed == null)
+        {
+            PrefabSpawnerSaveData.Wipe();
+            MapGenerator.Wipe();
+        }
+    }
+
+    int GetWorldSeed()
+    {
+        object seed = Serialization.Load(Saving.FileNames.SEED);
+
+        if (seed == null)
+            return UnityEngine.Random.Range(int.MinValue, int.MaxValue);
+        else
+            return (int)seed;
     }
 
     public static void SaveStatic()
@@ -107,6 +135,7 @@ public class SaveSystem : MonoBehaviour
         if (_save)
         {
             StartCoroutine(SaveIconAlpha());
+            Noise.Save();
             PrefabSpawnerSaveData.Save();
             MapGenerator.Save();
         }

@@ -35,7 +35,7 @@ public class TerrainGenerator : MonoBehaviour
 
     private void Awake()
     {
-        _spawnTimer = new Timer(0.25f);
+        _spawnTimer = new Timer(0.5f);
     }
 
     private void Start()
@@ -53,26 +53,36 @@ public class TerrainGenerator : MonoBehaviour
         _meshWorldSize = _meshSettings.MeshWorldSize;
         _chunksVisableInViewDist = Mathf.RoundToInt(maxViewDistance / _meshWorldSize);
 
+        StartCoroutine(OnStart());
+    }
+
+    IEnumerator OnStart()
+    {
+        while (!SaveSystem.Ready)
+            yield return null;
         UpdateVisableChunks();
     }
 
     private void Update()
     {
-        _spawnTimer.Time += Time.deltaTime;
-        _viewerPosition = new Vector2(_viewer.position.x, _viewer.position.z);
-
-        if (_viewerPosition != _viewerPositionOld || !_spawnTimer.Expired())
+        if (SaveSystem.Ready)
         {
-            for (int i = 0; i < _visibleTerrainChunks.Count; i++)
+            _spawnTimer.Time += Time.deltaTime;
+            _viewerPosition = new Vector2(_viewer.position.x, _viewer.position.z);
+
+            if (_viewerPosition != _viewerPositionOld || !_spawnTimer.Expired())
             {
-                _visibleTerrainChunks[i].UpdateCollisionMesh();
+                for (int i = 0; i < _visibleTerrainChunks.Count; i++)
+                {
+                    _visibleTerrainChunks[i].UpdateCollisionMesh();
+                }
             }
-        }
 
-        if ((_viewerPositionOld - _viewerPosition).sqrMagnitude > SQR_VIEWER_MOVE_THRESHOLD_FOR_CHUNK_UPDATE)
-        {
-            _viewerPositionOld = _viewerPosition;
-            UpdateVisableChunks();
+            if ((_viewerPositionOld - _viewerPosition).sqrMagnitude > SQR_VIEWER_MOVE_THRESHOLD_FOR_CHUNK_UPDATE)
+            {
+                _viewerPositionOld = _viewerPosition;
+                UpdateVisableChunks();
+            }
         }
     }
 
@@ -80,7 +90,7 @@ public class TerrainGenerator : MonoBehaviour
     {
         HashSet<Vector2> alreadyUpdatedChunkCoords = new HashSet<Vector2>();
         for (int i = _visibleTerrainChunks.Count - 1; i >= 0; i--)
-        {        
+        {
             alreadyUpdatedChunkCoords.Add(_visibleTerrainChunks[i].Coord);
             _visibleTerrainChunks[i].UpdateTerrainChunk();
         }

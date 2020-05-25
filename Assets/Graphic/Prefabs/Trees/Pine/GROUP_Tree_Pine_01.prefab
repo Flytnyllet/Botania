@@ -89,6 +89,7 @@ GameObject:
   - component: {fileID: 1227940294394825327}
   - component: {fileID: 4228905083865001806}
   - component: {fileID: 8552419419029634153}
+  - component: {fileID: 823624400557094448}
   m_Layer: 0
   m_Name: OBJ_Tree_Pine_01_lod0
   m_TagString: Untagged
@@ -156,6 +157,20 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!136 &823624400557094448
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 829349612979371823}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.15
+  m_Height: 5.0011396
+  m_Direction: 1
+  m_Center: {x: 0, y: 2.2727294, z: 0}
 --- !u!1 &4992149228725516557
 GameObject:
   m_ObjectHideFlags: 0
@@ -282,15 +297,15 @@ LODGroup:
   m_AnimateCrossFading: 0
   m_LastLODIsBillboard: 0
   m_LODs:
-  - screenRelativeHeight: 0.79992056
+  - screenRelativeHeight: 0.49918395
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 8552419419029634153}
-  - screenRelativeHeight: 0.45213327
+  - screenRelativeHeight: 0.20209254
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 7890299441944127176}
-  - screenRelativeHeight: 0.1
+  - screenRelativeHeight: 0.010783674
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 970310560045524309}

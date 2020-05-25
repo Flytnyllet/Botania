@@ -68,4 +68,9 @@ public class Player_Emitter : MonoBehaviour
         event_Book_Page.release();
         event_Book_Close.release();
     }
+
+    public void Init_Pickup(string event_Ref)
+    {
+        RuntimeManager.PlayOneShot(event_Ref, transform.position);
+    }
 }

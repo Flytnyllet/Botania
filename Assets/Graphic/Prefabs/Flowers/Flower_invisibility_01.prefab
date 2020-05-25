@@ -55,7 +55,7 @@ LODGroup:
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 8486109138785911885}
-  - screenRelativeHeight: 0.06258223
+  - screenRelativeHeight: 0.012038637
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 8236999523444817370}
@@ -85,6 +85,7 @@ MonoBehaviour:
       Culture=neutral, PublicKeyToken=null
   _pickupAnimationTime: 0.2
   _pickupAnimationForce: 1
+  _player_Data: {fileID: 11400000, guid: d0d6668ab68191b44ac744e3648e5fb3, type: 2}
 --- !u!65 &446984145099543045
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -111,6 +112,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _spawnPartially: 0
+  _groupSpawn: 0
 --- !u!114 &645986671935899920
 MonoBehaviour:
   m_ObjectHideFlags: 0
