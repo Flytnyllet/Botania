@@ -65,6 +65,7 @@ public class PickupFlower : InteractableSaving, IInteractable
             if (_dissableTriggerafterPickup) GetComponent<Collider>().enabled = false;
             StartCoroutine(ShakeFlower(interactor, _pickupAnimationTime, _pickupAnimationForce));
             _pickupAction.Invoke();
+			AlchemyOrganizer_2.DiscoverRecipes(_flowerData);
             return true; //Doesn't really have a purpose for this
         }
         return false;

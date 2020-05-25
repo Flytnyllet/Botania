@@ -107,9 +107,9 @@ public class FPSMovement : MonoBehaviour
 
     void Start()
     {
-        //_prevPos = transform.position;
-        //_randWalk = Random.Range(0.8f, 1.2f);
-        _emitPlayerSound = GetComponent<Player_Emitter>();
+		//_prevPos = transform.position;
+		//_randWalk = Random.Range(0.8f, 1.2f);
+		_emitPlayerSound = GetComponent<Player_Emitter>();
 
         charCon = GetComponent<CharacterController>();
         _playerCam = transform.Find("PlayerCam");
@@ -140,9 +140,11 @@ public class FPSMovement : MonoBehaviour
                 && true);
 
             RaycastHit waterDetection;
-            _inWater = Physics.Raycast(transform.TransformPoint(_cameraStartPosition) + 0.01f * Vector3.up, Vector3.down, out waterDetection, _waterRayDist, _waterLayer);
+            _inWater = Physics.Raycast(transform.TransformPoint(_cameraStartPosition)
+				+ 0.01f * Vector3.up, Vector3.down, out waterDetection, _waterRayDist, _waterLayer);
             Debug.DrawRay(_playerCam.position + 0.45f * Vector3.up, Vector3.down * _waterRayDist, Color.red, 2f);
-            bool isStoned = CharacterState.IsAbilityFlagActive(ABILITY_FLAG.STONE);
+
+			bool isStoned = CharacterState.IsAbilityFlagActive(ABILITY_FLAG.STONE);
             bool isLevitating = CharacterState.IsAbilityFlagActive(ABILITY_FLAG.LEVITATE);
             float gravityFactor = 1.0f;
 
