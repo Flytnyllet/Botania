@@ -18,19 +18,19 @@
             #include "UnityCG.cginc"
 
 
-			float random(float2 st) {
+			float Random(float2 st) {
 				return frac(sin(dot(st.xy,
 					float2(12.9898, 78.233)))
 					* 43758.5453123);
 			}
-			float noise(float2 xy) {
+			float Noise(float2 xy) {
 				float2 i = floor(xy);
 				float2 f = frac(xy);
 
-				float a = random(i);
-				float b = random(i + float2(1.0, 0.0));
-				float c = random(i + float2(0.0, 1.0));
-				float d = random(i + float2(1.0, 1.0));
+				float a = Random(i);
+				float b = Random(i + float2(1.0, 0.0));
+				float c = Random(i + float2(0.0, 1.0));
+				float d = Random(i + float2(1.0, 1.0));
 
 				float2 u = f * f*(3.0 - 2.0*f);
 
@@ -38,14 +38,14 @@
 					(c - a)* u.y * (1.0 - u.x) +
 					(d - b) * u.x * u.y;
 			}
-			float noise(float x, float y) {
+			float Noise(float x, float y) {
 				float2 i = floor(float2(x, y));
 				float2 f = frac(float2(x, y));
 
-				float a = random(i);
-				float b = random(i + float2(1.0, 0.0));
-				float c = random(i + float2(0.0, 1.0));
-				float d = random(i + float2(1.0, 1.0));
+				float a = Random(i);
+				float b = Random(i + float2(1.0, 0.0));
+				float c = Random(i + float2(0.0, 1.0));
+				float d = Random(i + float2(1.0, 1.0));
 
 				float2 u = f * f*(3.0 - 2.0*f);
 

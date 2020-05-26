@@ -118,7 +118,16 @@
 				v.vertex.x += height * (sinW + noise * 0.2) *_StrenghtX*gWindSpeed;
 				v.vertex.y += height * (cosW + noise * 0.2) *_StrenghtY*gWindSpeed;
 			}
-
+			static float thresholArray[] = {
+				0,48,12,60, 3,51,15,63,
+				32,16,44,28,35,19,47,31,
+				8,56, 4,52,11,59, 7,55,
+				40,24,36,20,43,27,39,23,
+				2,50,14,62, 1,49,13,61,
+				34,18,46,30,33,17,45,29,
+				10,58, 6,54, 9,57, 5,53,
+				42,26,38,22,41,25,37,21
+			};
 			void surf(Input IN, inout SurfaceOutput o) {
 				float alpha = tex2D(_Alpha, IN.uv_MainTex).r;
 				float2 pos = IN.screenPos.xy / IN.screenPos.w;
@@ -134,7 +143,8 @@
 #ifdef ALPHA_CUTOUT 
 				clip(alpha - _CutoutValue);
 #else
-				clip(alpha - thresholdMatrix[fmod(pos.x, 4)][pos.y % 4]);
+				clip(alpha -0.01- (thresholArray[fmod(pos.y, 8) * 8 + pos.x % 8] ) / 64);
+				//clip(alpha - thresholdMatrix[fmod(pos.x, 4)][pos.y % 4]);
 #endif
 				fixed4 c = tex2D(_MainTex, IN.uv_MainTex);
 				o.Albedo = c.rgb/ gEmissionMult;
