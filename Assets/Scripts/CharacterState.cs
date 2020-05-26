@@ -45,11 +45,9 @@ public static class CharacterState
     }
     public static void AddAbilityFlag(ABILITY_FLAG flag, float time)
     {
-        Debug.Log("adding flag " + flag.ToString());
         _abilityFlags.Add(flag);
         ActionDelayer.RunAfterDelay(() =>
         {
-            Debug.Log("REMOVING FLAG " + flag.ToString());
             _abilityFlags.Remove(flag);
         }, time);
     }
@@ -80,10 +78,6 @@ public static class CharacterState
 
     public static bool IsAbilityFlagActive(ABILITY_FLAG flag)
     {
-        if (flag == ABILITY_FLAG.LEVITATE)
-        {
-            return (_abilityFlags.Contains(ABILITY_FLAG.SLOWFALL) || _abilityFlags.Contains(ABILITY_FLAG.LEVITATE));
-        }
         return (_abilityFlags.Contains(flag));
     }
     public static bool IsAbilityFlagActive(string name)
