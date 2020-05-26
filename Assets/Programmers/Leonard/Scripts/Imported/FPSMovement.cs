@@ -34,7 +34,7 @@ public class FPSMovement : MonoBehaviour
     [SerializeField] float _strafingSpeedFactor = 0.8f;
     [SerializeField] LayerMask layerMask = 0;
     Vector3 _cameraStartPosition = Vector3.zero;
-	Vector3 _ducking = Vector3.zero;
+    Vector3 _ducking = Vector3.zero;
     bool _inAir = false;
 
     [Header("Bobbing")]
@@ -251,9 +251,7 @@ public class FPSMovement : MonoBehaviour
                 _inAir = true;
                 _velocity.y = -5f;
             }
-
         }
-
     }
 
     void Strafing(float horizontal, float vertical)
@@ -308,14 +306,8 @@ public class FPSMovement : MonoBehaviour
     {
         if (CharacterState.IsAbilityFlagActive(ABILITY_FLAG.SLOWFALL))
         {
-            if (charCon.isGrounded)
-            {
-                CharacterState.RemoveAbilityFlag(ABILITY_FLAG.SLOWFALL);
-            }
-            else
-            {
-                factor *= 0.35f;
-            }
+            if (_velocity.y > 0) _velocity.y = 0;
+            factor *= 0.35f;
         }
 
         charCon.Move(_velocity * Time.deltaTime);
@@ -331,12 +323,12 @@ public class FPSMovement : MonoBehaviour
 
     void Swimming(Vector2 inputs)
     {
-		//Stabilize Position
-		/*float traPosY = transform.position.y;
+        //Stabilize Position
+        /*float traPosY = transform.position.y;
 		transform.position -= traPosY * Vector3.up;
 		transform.position += _lastWaterChunk.transform.position.y * Vector3.up; //Mathf.Abs(traPosY - _lastWaterChunk.transform.position.y)*/
-		//transform.position = Vector3.MoveTowards(transform.position, _lastWaterChunk.ClosestPoint(transform.position), _swimCorrection);
-		charCon.Move(new Vector3(0f, _lastWaterChunk.transform.position.y - transform.position.y, 0f));
+        //transform.position = Vector3.MoveTowards(transform.position, _lastWaterChunk.ClosestPoint(transform.position), _swimCorrection);
+        charCon.Move(new Vector3(0f, _lastWaterChunk.transform.position.y - transform.position.y, 0f));
 
         Debug.Log("Water CHunk Position: " + _lastWaterChunk.transform.position.y);
 
@@ -379,9 +371,9 @@ public class FPSMovement : MonoBehaviour
     //Head Bobbing !Stolen from the internet
     void HeadBob(float x, float z, float modifier = 1.0f)
     {
-		//_timeSinceLastStep += Time.deltaTime;
-		//_travelledDist += (transform.position - _prevPos).magnitude;
-		Vector3 cameraLocalPosition = _cameraStartPosition + _ducking;
+        //_timeSinceLastStep += Time.deltaTime;
+        //_travelledDist += (transform.position - _prevPos).magnitude;
+        Vector3 cameraLocalPosition = _cameraStartPosition + _ducking;
 
         if (Mathf.Abs(x) > 0.1f || Mathf.Abs(z) > 0.1f)
         {
@@ -389,12 +381,12 @@ public class FPSMovement : MonoBehaviour
             _bobTimer += Time.deltaTime * _bobbingSpeed;
             float sinVal = Mathf.Sin(_bobTimer * modifier);
             float yDirectional = Mathf.Lerp(_playerCam.localPosition.y, cameraLocalPosition.y - Mathf.Abs(sinVal)
-				* _bobbingAmount.y * modifier, Time.deltaTime * _swimBobSpeed);
-			Vector3 xDirectional = _playerCam.transform.right.normalized * (cameraLocalPosition.x + sinVal * _bobbingAmount.x * modifier);
+                * _bobbingAmount.y * modifier, Time.deltaTime * _swimBobSpeed);
+            Vector3 xDirectional = _playerCam.transform.right.normalized * (cameraLocalPosition.x + sinVal * _bobbingAmount.x * modifier);
 
-			_playerCam.localPosition = new Vector3(xDirectional.x, yDirectional, xDirectional.z);
+            _playerCam.localPosition = new Vector3(xDirectional.x, yDirectional, xDirectional.z);
 
-			if (!_inAir && Mathf.Abs(sinVal) > 0.9 && _allowStepSound)
+            if (!_inAir && Mathf.Abs(sinVal) > 0.9 && _allowStepSound)
             {
                 _allowStepSound = false;
                 FootstepsSound();
@@ -414,9 +406,9 @@ public class FPSMovement : MonoBehaviour
     }
     void SwimBob(float x, float z)
     {
-		Vector3 cameraLocalPosition = _cameraStartPosition + _ducking;
+        Vector3 cameraLocalPosition = _cameraStartPosition + _ducking;
 
-		if (Mathf.Abs(x) > 0.1f || Mathf.Abs(z) > 0.1f)
+        if (Mathf.Abs(x) > 0.1f || Mathf.Abs(z) > 0.1f)
         {
             //Player is moving
             _swimBobTimer += Time.deltaTime * _swimBobSpeed;

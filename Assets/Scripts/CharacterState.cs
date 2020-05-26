@@ -45,27 +45,22 @@ public static class CharacterState
     }
     public static void AddAbilityFlag(ABILITY_FLAG flag, float time)
     {
-        Debug.Log("adding flag");
-        _abilityFlags.Add(flag);
-        ActionDelayer.RunAfterDelay(() => { _abilityFlags.Remove(flag); }, time);
-    }
-    public static void AddAbilityFlag(string s, float time)
-    {
-        Debug.Log("adding flag");
-        //Debug.Log(s + " added");
-        ABILITY_FLAG flag = GetFlagFromString(s);
         _abilityFlags.Add(flag);
         ActionDelayer.RunAfterDelay(() =>
         {
-            //Debug.Log(s + " added");
             _abilityFlags.Remove(flag);
         }, time);
     }
-
-    public static void RemoveAbilityFlag(ABILITY_FLAG flag)
+    public static void AddAbilityFlag(string s, float time)
     {
-        _abilityFlags.Remove(flag);
+        AddAbilityFlag(GetFlagFromString(s), time);
     }
+
+    //public static void RemoveAbilityFlag(ABILITY_FLAG flag)
+    //{
+    //    Debug.Log("THIS SHOULDN'T HAPPEN!");
+    //    _abilityFlags.Remove(flag);
+    //}
 
     //public static bool RemoveAbilityFlag(string name)
     //{
@@ -92,7 +87,7 @@ public static class CharacterState
         {
             return false;
         }
-        return (_abilityFlags.Contains(flag));
+        return IsAbilityFlagActive(flag);
     }
 
     public static void SetControlState(CHARACTER_CONTROL_STATE state)
