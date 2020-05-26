@@ -174,7 +174,7 @@ public class AlchemyOrganizer_2 : MonoBehaviour
 			_recipieList.Add(newRecipe);
 			//int index = i;
 			newRecipe.craftButton.GetComponent<Button>().onClick.AddListener(delegate { CraftPotion(newRecipe); } ); //_recipieList[index]
-			newRecipe.potionButton.GetComponent<Button>().onClick.AddListener(delegate { newRecipe.potionScript.ActivatePotion(); });
+			newRecipe.potionButton.GetComponent<Button>().onClick.AddListener(delegate { newRecipe.potionScript.ActivatePotion(); UpdateUI(); });
 			UpdateRecipeToState(newRecipe);
 
 			UpdateUI();
