@@ -56,7 +56,7 @@ public class FlagPotion : Potion_Template
             case ABILITY_FLAG.LEVITATE:
                 Debug.Log("test");
 
-                ActionDelayer.RunAfterDelay(() => { CharacterState.AddAbilityFlag("SLOWFALL", 5f); }, duration - 0.05f);
+                ActionDelayer.RunAfterDelay(() => { CharacterState.AddAbilityFlag("SLOWFALL", 5f); }, duration);
                 break;
             case ABILITY_FLAG.NULL:
                 break;
