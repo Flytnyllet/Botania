@@ -5,7 +5,7 @@ using UnityEngine.Events;
 
 public class PickupFlower : InteractableSaving, IInteractable
 {
-    public delegate void onPickUp(); 
+    public delegate void onPickUp(string _text); 
     public static event onPickUp onPickUpEvent;
 
     bool _enabled = true;
@@ -29,10 +29,10 @@ public class PickupFlower : InteractableSaving, IInteractable
             //Pickup save system
             PickUp();
             
-            NotificationObject.name = _flowerData.itemName;
-            NotificationObject.sprite = _flowerData.itemIcon;
-            if(onPickUpEvent != null)
-                onPickUpEvent.Invoke();
+            NotificationObject.name = _flowerData.itemName; // For notification system(not needed but leave it?)
+            NotificationObject.sprite = _flowerData.itemIcon; // For notification system(not needed but leave it?)
+            if (onPickUpEvent != null)
+                onPickUpEvent.Invoke("HELLUUUU");
 
             string debugFlowerNames = "Trying to pick up a " + _flowerData.name
                 + ". Accepted flower types are: [";

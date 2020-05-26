@@ -15,6 +15,7 @@ public class InteractText : UIElement
 {
     private Text _textPopUp;
     private Image _imagePopUp;
+    private string _text;
 
     void Start()
     {
@@ -31,22 +32,24 @@ public class InteractText : UIElement
         PickupFlower.onPickUpEvent += PopUp;
     }
 
-    public void PopUp()
+    public void PopUp(string _text)
     {
         if (_textPopUp != null) {
             if (NotificationObject.currentCoroutineText != null)
                 StopCoroutine(NotificationObject.currentCoroutineText);
 
-            _textPopUp.text = "You have collected ";
-            NotificationObject.currentCoroutineText = StartCoroutine(FadeOut(2, 5));
+            _textPopUp.text = _text;
+            NotificationObject.currentCoroutineText = StartCoroutine(FadeOut(1, 2));
         }
 
-        if (_imagePopUp != null) {
+        /*
+         if (_imagePopUp != null) {
             if (NotificationObject.currentCoroutineImage != null)
                 StopCoroutine(NotificationObject.currentCoroutineImage);
 
             _imagePopUp.sprite = NotificationObject.sprite;
             NotificationObject.currentCoroutineImage = StartCoroutine(FadeOut(2, 5));
         }
+        */
     }
 }
