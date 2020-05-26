@@ -97,6 +97,20 @@ public class WorldState : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Insert))
+        {
+            StartEvent(WORLD_EVENTS.Normal);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Home))
+        {
+            StartEvent(WORLD_EVENTS.Rain);
+        }
+    }
+
+
 
 
     //
