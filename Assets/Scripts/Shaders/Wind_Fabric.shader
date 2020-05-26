@@ -111,7 +111,16 @@
 		  v.vertex.x += tex * (noise)*_Strenght;
 		  v.vertex.y += tex * (sinW)*_Strenght;
 	  }
-
+	  static float thresholArray[] = {
+		  0,48,12,60, 3,51,15,63,
+		  32,16,44,28,35,19,47,31,
+		  8,56, 4,52,11,59, 7,55,
+		  40,24,36,20,43,27,39,23,
+		  2,50,14,62, 1,49,13,61,
+		  34,18,46,30,33,17,45,29,
+		  10,58, 6,54, 9,57, 5,53,
+		  42,26,38,22,41,25,37,21
+	  };
 
 	  void surf(Input IN, inout SurfaceOutput o) {
 		  fixed4 c = tex2D(_MainTex, IN.uv_MainTex)*_Color;
@@ -129,7 +138,8 @@
 #ifdef ALPHA_CUTOUT 
 		  clip(o.Alpha - _CutoutValue);
 #else
-		  clip(o.Alpha - thresholdMatrix[fmod(pos.x, 4)][pos.y % 4]);
+		  clip(o.Alpha -0.01- (thresholArray[pos.x%8*8+pos.y%8]) / 64);
+		  //clip(o.Alpha - thresholdMatrix[fmod(pos.x, 4)][pos.y % 4]);
 #endif
 		  o.Emission = tex2D(_EmissionMap, IN.uv_MainTex)*_EmissionMult*gEmissionMult;
 	  }

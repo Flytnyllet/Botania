@@ -43,7 +43,8 @@ public class CameraEffect : MonoBehaviour
         else
         {
             int i = 0;
-            Graphics.Blit(source, _tempRenderTextures[i], _effectMaterials[i]);
+            FarClipCornerUV(source, _tempRenderTextures[i], _effectMaterials[i]);
+            //Graphics.Blit(source, _tempRenderTextures[i], _effectMaterials[i]);
             for (i = 1; i < _effectMaterials.Count; i++)
             {
                 Debug.Log(i);
@@ -298,9 +299,7 @@ public class CameraEffect : MonoBehaviour
     }
 
 
-
-
-
+    
 
     IEnumerator LerpWaterEffect(float lerpTime)
     {
@@ -314,5 +313,65 @@ public class CameraEffect : MonoBehaviour
             yield return null;
         }
         //}
+    }
+
+
+
+
+    void FarClipCornerUV(RenderTexture source, RenderTexture dest, Material mat)
+    {
+        float camFar = _camera.farClipPlane;
+        float camAspect = _camera.aspect;
+        float fovWHalf = _camera.fieldOfView * 0.5f * Mathf.Deg2Rad;
+
+        Vector3 toRight = _camera.transform.right * Mathf.Tan(fovWHalf ) * camAspect;
+        Vector3 toTop = _camera.transform.up * Mathf.Tan(fovWHalf);
+
+        Vector3 topLeft = (_camera.transform.forward - toRight + toTop);
+        //float camScale = topLeft.magnitude * camFar;
+
+        topLeft.Normalize();
+        //topLeft *= camScale;
+
+        Vector3 topRight = (_camera.transform.forward + toRight + toTop);
+        topRight.Normalize();
+        //topRight *= camScale;
+
+        Vector3 bottomRight = (_camera.transform.forward + toRight - toTop);
+        bottomRight.Normalize();
+        //bottomRight *= camScale;
+
+        Vector3 bottomLeft = (_camera.transform.forward - toRight - toTop);
+        bottomLeft.Normalize();
+        // Custom Blit, encoding Frustum Corners as additional Texture Coordinates
+        RenderTexture.active = dest;
+
+        mat.SetTexture("_MainTex", source);
+
+        GL.PushMatrix();
+        GL.LoadOrtho();
+
+        mat.SetPass(0);
+
+        GL.Begin(GL.QUADS);
+
+        GL.MultiTexCoord2(0, 0.0f, 0.0f);
+        GL.MultiTexCoord(1, bottomLeft);
+        GL.Vertex3(0.0f, 0.0f, 0.0f);
+
+        GL.MultiTexCoord2(0, 1.0f, 0.0f);
+        GL.MultiTexCoord(1, bottomRight);
+        GL.Vertex3(1.0f, 0.0f, 0.0f);
+
+        GL.MultiTexCoord2(0, 1.0f, 1.0f);
+        GL.MultiTexCoord(1, topRight);
+        GL.Vertex3(1.0f, 1.0f, 0.0f);
+
+        GL.MultiTexCoord2(0, 0.0f, 1.0f);
+        GL.MultiTexCoord(1, topLeft);
+        GL.Vertex3(0.0f, 1.0f, 0.0f);
+
+        GL.End();
+        GL.PopMatrix();
     }
 }

@@ -16,7 +16,7 @@ public class BookManager : MonoBehaviour
     [SerializeField] List<GameObject> _bookmarks = new List<GameObject>();
     [SerializeField] List<PageLoader> _flowerPages = new List<PageLoader>();
     [SerializeField] List<PageLoader> _lorePages = new List<PageLoader>();
-    [SerializeField] int _flowerOrganizerId = 0;
+    [SerializeField] int _flowerOrganizerId = 1;
     [SerializeField] RectTransform _bookmarkTemplate = null;
     [SerializeField] GameObject _emptyPageTemplate = null;
     [SerializeField] Vector2[] _bookmarkPositions = null;
@@ -273,7 +273,7 @@ public class BookManager : MonoBehaviour
         }
     }
 
-    void ToBookmark(int index, bool playSounds = false)
+    void ToBookmark(int index, bool playSounds)
     {
         if (index != _currentBookmark && playSounds)
         {
@@ -297,6 +297,28 @@ public class BookManager : MonoBehaviour
         }
         _book.GetComponent<Image>().sprite = _BookSprites[index];
     }
+
+    public void ToBookmark(int index)
+    {
+        if (_currentBookmark != _bookmarks.Count - 1)
+        {
+            _bookmarks[_currentBookmark].SetActive(false);
+        }
+
+        _currentPage = 0;
+        _currentBookmark = index;
+        if (index == _bookmarks.Count - 1)
+        {
+            MapGenerator.Display(true);
+        }
+        else
+        {
+            MapGenerator.Display(false);
+            _bookmarks[_currentBookmark].SetActive(true);
+        }
+        _book.GetComponent<Image>().sprite = _BookSprites[index];
+    }
+
     public void FlipPageSoundEffect()
     {
         EventManager.TriggerEvent(EventNameLibrary.FLIP_PAGE, new EventParameter());
