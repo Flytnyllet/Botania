@@ -62,7 +62,7 @@ public class WorldState : MonoBehaviour
                     EventParameter param = new EventParameter() { floatParam = 0.75f, floatParam2 = 4f };
                     ActionDelayer.RunAfterDelay(() =>
                     {
-
+                        ActionDelayer.RunAfterDelay(() => { Debug.LogError("EVERYTHING IS WORKING AS INTENDED!"); }, 0.5f);
                         EventManager.TriggerEvent(EventNameLibrary.LIGHTNING_STRIKE, param);
                     }, lightningTiming);
                 }
