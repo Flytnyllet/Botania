@@ -338,7 +338,7 @@ public class FPSMovement : MonoBehaviour
 		//transform.position = Vector3.MoveTowards(transform.position, _lastWaterChunk.ClosestPoint(transform.position), _swimCorrection);
 		charCon.Move(new Vector3(0f, _lastWaterChunk.transform.position.y - transform.position.y, 0f));
 
-        Debug.Log("Water CHunk Position: " + _lastWaterChunk.transform.position.y);
+        //Debug.Log("Water CHunk Position: " + _lastWaterChunk.transform.position.y);
 
         Vector2 swimming = inputs * _swimAccelerationTime * _swimMaxSpeed;
         _swimVelocity += swimming;

@@ -76,7 +76,7 @@
 			<value>3</value>
 		</property>
 		<property name="voiceStealing">
-			<value>2</value>
+			<value>3</value>
 		</property>
 	</object>
 	<object class="MarkerTrack" id="{67ccd514-a738-4205-bf62-77e21954cc3d}" />
@@ -710,6 +710,7 @@
 			<destination>{b3c26dab-ba6e-41d2-89d3-1e9b70d408f0}</destination>
 			<destination>{120b035c-31d8-4809-87d9-b8571ce321fc}</destination>
 			<destination>{4223bcdd-e1c0-441d-b192-250ebb53139e}</destination>
+			<destination>{d4db4b72-128f-46c3-8f4f-95c78eaa7605}</destination>
 			<destination>{e2a6c4f0-ff37-4246-955f-6b33bfab60c1}</destination>
 			<destination>{63f537af-78dd-4812-bd3d-47427a25df7a}</destination>
 		</relationship>
@@ -1064,6 +1065,11 @@
 			<value>10</value>
 		</property>
 	</object>
+	<object class="GainEffect" id="{d4db4b72-128f-46c3-8f4f-95c78eaa7605}">
+		<property name="gain">
+			<value>5</value>
+		</property>
+	</object>
 	<object class="MixerBusFader" id="{e2a6c4f0-ff37-4246-955f-6b33bfab60c1}" />
 	<object class="SpatialiserEffect" id="{63f537af-78dd-4812-bd3d-47427a25df7a}">
 		<property name="minimumDistance">
@@ -1167,8 +1173,14 @@
 		<property name="frequencyA">
 			<value>3703.19922</value>
 		</property>
+		<property name="frequencyB">
+			<value>67.9084778</value>
+		</property>
 		<property name="qualityA">
 			<value>0.439999998</value>
+		</property>
+		<property name="qualityB">
+			<value>0.686068952</value>
 		</property>
 		<property name="gainA">
 			<value>2.58620739</value>
@@ -1261,7 +1273,7 @@
 			<value>1</value>
 		</property>
 		<property name="frequencyA">
-			<value>4462.32178</value>
+			<value>4847.90039</value>
 		</property>
 		<property name="frequencyB">
 			<value>225.849808</value>
@@ -1270,7 +1282,7 @@
 			<value>720.641174</value>
 		</property>
 		<property name="frequencyE">
-			<value>6346.44238</value>
+			<value>11816.1611</value>
 		</property>
 		<property name="qualityA">
 			<value>0.439999998</value>
@@ -1282,10 +1294,10 @@
 			<value>0.74999994</value>
 		</property>
 		<property name="qualityE">
-			<value>0.372103453</value>
+			<value>0.393034458</value>
 		</property>
 		<property name="gainA">
-			<value>4.13792992</value>
+			<value>3.10344815</value>
 		</property>
 		<property name="gainC">
 			<value>-6.20689583</value>
@@ -1932,7 +1944,7 @@
 			<value>0</value>
 		</property>
 		<property name="value">
-			<value>-44.4823074</value>
+			<value>-42</value>
 		</property>
 		<property name="curveShape">
 			<value>0.146449953</value>
@@ -1951,7 +1963,7 @@
 			<value>0.47000000000000003</value>
 		</property>
 		<property name="value">
-			<value>-21.6327515</value>
+			<value>-25</value>
 		</property>
 	</object>
 	<object class="AutomationPoint" id="{4ce80e40-08c5-4aee-b154-49d695523663}">
@@ -1967,7 +1979,7 @@
 			<value>0</value>
 		</property>
 		<property name="value">
-			<value>-32.7438774</value>
+			<value>-36</value>
 		</property>
 	</object>
 	<object class="AutomationPoint" id="{3809a616-b7ad-4523-bfc4-026688510cbd}">
@@ -1983,7 +1995,7 @@
 			<value>0</value>
 		</property>
 		<property name="value">
-			<value>-34</value>
+			<value>-36</value>
 		</property>
 	</object>
 	<object class="AutomationPoint" id="{c08f1aca-2c66-42e4-8c5a-9862bd536a21}">

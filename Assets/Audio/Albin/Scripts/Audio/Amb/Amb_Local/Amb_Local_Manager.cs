@@ -58,64 +58,84 @@ public class Amb_Local_Manager : MonoBehaviour
         RuntimeManager.StudioSystem.getParameterDescriptionByName(biome_2_parameter, out biome_2_Description);
         RuntimeManager.StudioSystem.getParameterDescriptionByName(biome_3_parameter, out biome_3_Description);
         RuntimeManager.StudioSystem.getParameterDescriptionByName(biome_4_parameter, out biome_4_Description);
+
     }
 
     private void Update()
     {
-        switch (Player.GetCurrentBiome())
+        if (transform.position.y < 12.5)
         {
-            case BiomeTypes.FOREST:
-                _currentBiome = 1;
-                _biome_1 = 1;
-                _biome_2 = 0;
-                _biome_3 = 0;
-                _biome_4 = 0;
-                amb_01.SetActive(true);
-                amb_02.SetActive(false);
-                amb_03.SetActive(false);
-                amb_04.SetActive(false);
-                break;
-            case BiomeTypes.BIRCH:
-                _currentBiome = 2;
-                _biome_1 = 0;
-                _biome_2 = 1;
-                _biome_3 = 0;
-                _biome_4 = 0;
-                amb_01.SetActive(false);
-                amb_02.SetActive(true);
-                amb_03.SetActive(false);
-                amb_04.SetActive(false);
-                break;
-            case BiomeTypes.WEIRD:
-                _currentBiome = 3;
-                _biome_1 = 0;
-                _biome_2 = 0;
-                _biome_3 = 1;
-                _biome_4 = 0;
-                amb_01.SetActive(false);
-                amb_02.SetActive(false);
-                amb_03.SetActive(true);
-                amb_04.SetActive(false);
-                break;
-            case BiomeTypes.PLANES:
-                _currentBiome = 4;
-                _biome_1 = 0;
-                _biome_2 = 0;
-                _biome_3 = 0;
-                _biome_4 = 1;
-                amb_01.SetActive(false);
-                amb_02.SetActive(false);
-                amb_03.SetActive(false);
-                amb_04.SetActive(true);
-                break;
-        }
-        if (_currentBiome != _lastBiome)
-        {
+            _currentBiome = 4;
+            _biome_1 = 0;
+            _biome_2 = 0;
+            _biome_3 = 0;
+            _biome_4 = 1;
+            amb_01.SetActive(false);
+            amb_02.SetActive(false);
+            amb_03.SetActive(false);
+            amb_04.SetActive(true);
             RuntimeManager.StudioSystem.setParameterByID(biome_1_Description.id, _biome_1);
             RuntimeManager.StudioSystem.setParameterByID(biome_2_Description.id, _biome_2);
             RuntimeManager.StudioSystem.setParameterByID(biome_3_Description.id, _biome_3);
             RuntimeManager.StudioSystem.setParameterByID(biome_4_Description.id, _biome_4);
-            _lastBiome = _currentBiome;
+        }
+        else
+        {
+            switch (Player.GetCurrentBiome())
+            {
+                case BiomeTypes.FOREST:
+                    _currentBiome = 1;
+                    _biome_1 = 1;
+                    _biome_2 = 0;
+                    _biome_3 = 0;
+                    _biome_4 = 0;
+                    amb_01.SetActive(true);
+                    amb_02.SetActive(false);
+                    amb_03.SetActive(false);
+                    amb_04.SetActive(false);
+                    break;
+                case BiomeTypes.BIRCH:
+                    _currentBiome = 2;
+                    _biome_1 = 0;
+                    _biome_2 = 1;
+                    _biome_3 = 0;
+                    _biome_4 = 0;
+                    amb_01.SetActive(false);
+                    amb_02.SetActive(true);
+                    amb_03.SetActive(false);
+                    amb_04.SetActive(false);
+                    break;
+                case BiomeTypes.WEIRD:
+                    _currentBiome = 3;
+                    _biome_1 = 0;
+                    _biome_2 = 0;
+                    _biome_3 = 1;
+                    _biome_4 = 0;
+                    amb_01.SetActive(false);
+                    amb_02.SetActive(false);
+                    amb_03.SetActive(true);
+                    amb_04.SetActive(false);
+                    break;
+                case BiomeTypes.PLANES:
+                    _currentBiome = 4;
+                    _biome_1 = 0;
+                    _biome_2 = 0;
+                    _biome_3 = 0;
+                    _biome_4 = 1;
+                    amb_01.SetActive(false);
+                    amb_02.SetActive(false);
+                    amb_03.SetActive(false);
+                    amb_04.SetActive(true);
+                    break;
+            }
+            if (_currentBiome != _lastBiome)
+            {
+                RuntimeManager.StudioSystem.setParameterByID(biome_1_Description.id, _biome_1);
+                RuntimeManager.StudioSystem.setParameterByID(biome_2_Description.id, _biome_2);
+                RuntimeManager.StudioSystem.setParameterByID(biome_3_Description.id, _biome_3);
+                RuntimeManager.StudioSystem.setParameterByID(biome_4_Description.id, _biome_4);
+                _lastBiome = _currentBiome;
+            }
         }
     }
 }

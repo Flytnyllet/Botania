@@ -18,6 +18,9 @@ public class WorldState : MonoBehaviour
 
     static WorldState _instance;
     public static WorldState Instance { get => _instance; }
+
+    [SerializeField] FMODUnity.StudioEventEmitter _amb_Thunder;
+
     private void Awake()
     {
         if (_instance == null)
