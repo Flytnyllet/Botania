@@ -306,6 +306,7 @@ public class FPSMovement : MonoBehaviour
 		charCon.Move(move * _speed.Value * _slidingSpeedFactor * Time.deltaTime);
 	}
 	*/
+
     void Gravity(float factor)
     {
         if (CharacterState.IsAbilityFlagActive(ABILITY_FLAG.SLOWFALL))

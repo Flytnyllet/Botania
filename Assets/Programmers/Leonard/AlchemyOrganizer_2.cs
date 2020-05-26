@@ -17,6 +17,7 @@ struct Recipe
 	public GameObject craftButton;
 	public Text potionAmount;
 	public Text[] ingredientAmount;
+	public Image[] ingredientImages;
 	public ItemDataContainer potionData;
 	public PotionLoader potionScript;
 	public Text buttonText;
@@ -35,6 +36,7 @@ public class AlchemyOrganizer_2 : MonoBehaviour
     [SerializeField] List<Transform> _pages = new List<Transform>();
     [SerializeField] GameObject _potionButtonPrefab = null;
 	[SerializeField] [Range(1, 10)] int _recipiesPerPage = 4;
+	[SerializeField] Sprite _unknownIngredient = null;
     PotionLoader _result = new PotionLoader();
 
     void Awake()
@@ -131,20 +133,24 @@ public class AlchemyOrganizer_2 : MonoBehaviour
 			newRecipe.state = RecipeState.Unknown;
 			newRecipe.potionData = _availablePotions[i].GetPotionItemData();
 			newRecipe.ingredientsData = _availablePotions[i].GetRecipe().ToArray();
-			newRecipe.ingredientAmount = new Text[newRecipe.ingredientsData.Length];
+
+			int nrIngredients = newRecipe.ingredientsData.Length;
+
+			newRecipe.ingredientAmount = new Text[nrIngredients];
+			newRecipe.ingredientImages = new Image[nrIngredients];
 			newRecipe.potionScript = _availablePotions[i];
 			newRecipe.craftButton = newRecipe.button.transform.GetChild(0).gameObject;
 			newRecipe.potionButton = newRecipe.button.transform.GetChild(1).gameObject;
 			newRecipe.buttonText.text = newRecipe.potionData.itemName;
 			newRecipe.potionAmount = newRecipe.potionButton.GetComponentInChildren<Text>();
 
-			int nrIngredients = newRecipe.ingredientsData.Length;
-			int nrIngredientObjects = newRecipe.button.transform.childCount - 2;
+			int nrIngredientObjects = newRecipe.button.transform.childCount - 3;
 			GameObject ingredientObject = newRecipe.craftButton.transform.GetChild(0).gameObject;
 			List<GameObject> ingCollect = new List<GameObject>();
 
 			//Debug.LogFormat("Number of ingredients: {0}", newRecipe.ingredientsData.Length);
-			ingredientObject.GetComponent<Image>().sprite = newRecipe.ingredientsData[0].ingredient.itemIcon;
+			newRecipe.ingredientImages[0] = ingredientObject.GetComponent<Image>();
+			newRecipe.ingredientImages[0].sprite = newRecipe.ingredientsData[0].ingredient.itemIcon;
 			//Debug.LogFormat("Text object name: {0}", ingredientObject.GetComponentInChildren<Text>().name);
 			newRecipe.ingredientAmount[0] = ingredientObject.GetComponentInChildren<Text>();
 			ingCollect.Add(ingredientObject);
@@ -153,9 +159,11 @@ public class AlchemyOrganizer_2 : MonoBehaviour
 			{
 				for(int ii = nrIngredientObjects; ii < nrIngredients; ii++)
 				{
+					Debug.LogFormat("Setup ingredient nr {0} in recipe {1}", ii, i);
 					GameObject newIngObj = Instantiate(ingredientObject, newRecipe.craftButton.transform);
 					newIngObj.transform.localPosition -= Vector3.right * 95 * ii;
-					newIngObj.GetComponent<Image>().sprite = newRecipe.ingredientsData[ii].ingredient.itemIcon;
+					newRecipe.ingredientImages[ii] = newIngObj.GetComponent<Image>();
+					newRecipe.ingredientImages[ii].sprite = newRecipe.ingredientsData[ii].ingredient.itemIcon;
 
 					newRecipe.ingredientAmount[ii] = newIngObj.GetComponentInChildren<Text>();
 
@@ -189,8 +197,15 @@ public class AlchemyOrganizer_2 : MonoBehaviour
 			//Debug.LogFormat("Sanity Check RecipeList: {0}", _recipieList[i].ingredientAmount);
 			for(int ii = 0; ii < _recipieList[i].ingredientAmount.Length; ii++)
 			{
-				_recipieList[i].ingredientAmount[ii].text = string.Format("{0}/{1}", 
-					FlowerLibrary.GetFlowerAmount(_recipieList[i].ingredientsData[ii].ingredient.itemName), _recipieList[i].ingredientsData[ii].amount);
+				try
+				{
+					_recipieList[i].ingredientAmount[ii].text = string.Format("{0}/{1}",
+						FlowerLibrary.GetFlowerAmount(_recipieList[i].ingredientsData[ii].ingredient.itemName), _recipieList[i].ingredientsData[ii].amount);
+				}
+				catch(System.NullReferenceException e)
+				{
+					Debug.LogErrorFormat("Encountered NullReference in the AlchemyOrganizerV2 during UpdateUI. This was encountered on the {0}th recipe at the {1}th ingredient", i, ii);
+				}
 			}
 		}
 	}
@@ -217,12 +232,54 @@ public class AlchemyOrganizer_2 : MonoBehaviour
 		{
 			recipe.button.SetActive(true);
 			recipe.craftButton.GetComponent<Button>().enabled = false;
+			recipe.craftButton.GetComponent<Image>().color = new Color(0.35f, 0.35f, 0.35f, 0.5f);
+
+			for (int i = 0; i < recipe.ingredientsData.Length; i++)
+			{
+				if(_discoveredFlowers.Contains(recipe.ingredientsData[i].ingredient))
+				{
+					recipe.ingredientImages[i].sprite = recipe.ingredientsData[i].ingredient.itemIcon;
+				}
+				else
+				{
+					recipe.ingredientImages[i].sprite = _unknownIngredient;
+				}
+			}
 		}
 		else
 		{
 			Debug.Log("No");
 			recipe.button.SetActive(true);
 			recipe.craftButton.GetComponent<Button>().enabled = true;
+			recipe.craftButton.GetComponent<Image>().color = new Color(0.4f, 0.75f, 0.25f, 0.5f);
+
+			//for (int i = 0; i < recipe.ingredientsData.Length; i++)
+			//{
+			//	if (_discoveredFlowers.Contains(recipe.ingredientsData[i].ingredient))
+			//	{
+			//		recipe.ingredientImages[i].sprite = recipe.ingredientsData[i].ingredient.itemIcon;
+			//	}
+			//	else
+			//	{
+			//		recipe.ingredientImages[i].sprite = _unknownIngredient;
+			//	}
+			//}
+		}
+
+		UpdatePotionAvailability(recipe);
+	}
+
+	void UpdatePotionAvailability(Recipe recipe)
+	{
+		if(FlowerLibrary.GetPotionAmount(recipe.potionData.itemName) > 0)
+		{
+			recipe.potionButton.GetComponent<Image>().color = new Color(0.4f, 0.75f, 0.25f, 0.5f);
+			recipe.potionButton.GetComponent<Button>().enabled = true;
+		}
+		else
+		{
+			recipe.potionButton.GetComponent<Image>().color = new Color(0.35f, 0.35f, 0.35f, 0.5f);
+			recipe.potionButton.GetComponent<Button>().enabled = false;
 		}
 	}
 
@@ -318,6 +375,7 @@ public class AlchemyOrganizer_2 : MonoBehaviour
 		}
 
 		potionRecipe.potionScript.AddPotion();
+		UpdatePotionAvailability(potionRecipe);
 		UpdateUI();
 		return true;
 	}
@@ -352,6 +410,10 @@ public class AlchemyOrganizer_2 : MonoBehaviour
 
 			for(int ii = 0; ii < _recipieList[i].ingredientsData.Length; ii++)
 			{
+				if(!_discoveredFlowers.Contains(_recipieList[i].ingredientsData[ii].ingredient))
+				{
+					_discoveredFlowers.Add(_recipieList[i].ingredientsData[ii].ingredient);
+				}
 				Debug.LogFormat("Adding flower {0}", _recipieList[i].ingredientsData[ii].ingredient.itemName);
 				FlowerLibrary.IncrementFlower(_recipieList[i].ingredientsData[ii].ingredient.itemName, 50);
 			}

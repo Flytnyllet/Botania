@@ -15,13 +15,14 @@ public class PotionWheelManager : MonoBehaviour
 	RectTransform rect = null;
 	[SerializeField] float selectedScale = 1.2f;
 	[SerializeField] [Range(0.05f, 0.8f)] float selectionDistance = 0.46f;
+	[SerializeField] Image _selectionWheel;
+	[SerializeField] Sprite[] _wheelSprites;
     Camera _mainCam;
 	//Color selectedColor = Color.green;
 	/*
 	 Vector3[] regionPositions = new Vector3[6] 
 		{ Vector3.up, new Vector3(1, 1, 0).normalized, Vector3.right, new Vector3(1, -1, 0).normalized, Vector3.down, new Vector3(-1, -1).normalized }; 
 	*/
-
 	Vector3[] regionPositions;
 
 	// Start is called before the first frame update
@@ -58,6 +59,7 @@ public class PotionWheelManager : MonoBehaviour
 			if (GetClosestPotion(screenPoint.normalized, out region))
 			{
 				SelectPotion((int)region);
+				_selectionWheel.sprite = _wheelSprites[(int)region];
 			}
 			else
 			{
