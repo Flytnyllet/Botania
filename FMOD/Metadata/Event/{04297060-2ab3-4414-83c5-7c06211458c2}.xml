@@ -121,9 +121,6 @@
 		<property name="length">
 			<value>5.5</value>
 		</property>
-		<property name="volume">
-			<value>10</value>
-		</property>
 		<property name="minimumTimeBetweenSounds">
 			<value>5500</value>
 		</property>
@@ -137,7 +134,7 @@
 			<value>5</value>
 		</property>
 		<property name="pitchRandomization">
-			<value>3.0999999</value>
+			<value>1.0999999</value>
 		</property>
 		<relationship name="modulators">
 			<destination>{a6a86289-4623-49f2-a89e-b3508318c9d0}</destination>
@@ -213,7 +210,7 @@
 	</object>
 	<object class="MultiSound" id="{9c3e6fda-24d9-49c2-b3ed-a7c598821cde}">
 		<relationship name="sounds">
-			<destination>{526c56a9-ad5d-4428-834a-9a13ad78dd97}</destination>
+			<destination>{217d8676-9d5e-43dd-b4f2-97071330eb6b}</destination>
 		</relationship>
 	</object>
 	<object class="Automator" id="{8669418f-2eb6-4954-be2f-ae981f97db40}">
@@ -251,21 +248,9 @@
 			<value>154</value>
 		</property>
 	</object>
-	<object class="SingleSound" id="{526c56a9-ad5d-4428-834a-9a13ad78dd97}">
-		<property name="startOffset">
-			<value>28</value>
-		</property>
-		<property name="volume">
-			<value>10</value>
-		</property>
-		<property name="pitch">
-			<value>-1.20000005</value>
-		</property>
-		<relationship name="modulators">
-			<destination>{6251410e-976f-402c-801d-97e7566a38dc}</destination>
-		</relationship>
+	<object class="SingleSound" id="{217d8676-9d5e-43dd-b4f2-97071330eb6b}">
 		<relationship name="audioFile">
-			<destination>{ae47348f-4e52-4c31-972a-4e319d4e2f66}</destination>
+			<destination>{bbc26fe2-4b78-4798-b5e9-134182b72de2}</destination>
 		</relationship>
 	</object>
 	<object class="AutomationCurve" id="{3e643e19-8f90-47df-9c04-b882ad41e44c}">
@@ -281,6 +266,9 @@
 		<property name="lowGain">
 			<value>0.5</value>
 		</property>
+		<property name="highGain">
+			<value>-31</value>
+		</property>
 		<property name="highCrossover">
 			<value>3200</value>
 		</property>
@@ -289,14 +277,6 @@
 		</property>
 	</object>
 	<object class="MixerBusFader" id="{1defe0e9-6e69-48bb-9a16-08613e27d20b}" />
-	<object class="RandomizerModulator" id="{6251410e-976f-402c-801d-97e7566a38dc}">
-		<property name="nameOfPropertyBeingModulated">
-			<value>startOffset</value>
-		</property>
-		<property name="amount">
-			<value>41</value>
-		</property>
-	</object>
 	<object class="AutomationPoint" id="{8117ae2e-07c8-4764-a029-a9fba8805ee3}">
 		<property name="position">
 			<value>0.69458128078817727</value>

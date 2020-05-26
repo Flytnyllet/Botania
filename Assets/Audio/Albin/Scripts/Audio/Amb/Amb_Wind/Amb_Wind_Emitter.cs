@@ -16,11 +16,6 @@ public class Amb_Wind_Emitter : MonoBehaviour
     private bool _isPlaying;
     private bool _isVirtual;
 
-
-    private void Awake()
-    {
-    }
-
     public void Init_Event(string event_Ref)
     {
         if (event_Ref == null) { return; }
