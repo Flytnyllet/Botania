@@ -5,6 +5,9 @@ using UnityEngine.Events;
 
 public class PickupFlower : InteractableSaving, IInteractable
 {
+    public delegate void onPickUp(string _text, Sprite sprite= null);
+    public static event onPickUp onPickUpEvent;
+
     bool _enabled = true;
     [SerializeField] bool _dissableTriggerafterPickup = false;
     public bool SetEnabled //kommer byta namn
@@ -29,8 +32,13 @@ public class PickupFlower : InteractableSaving, IInteractable
     {
         if (_enabled)
         {
+
             //Pickup save system
             PickUp();
+            //NotificationObject.name = _flowerData.itemName; // For notification system(not needed anymore, but leave it?)
+            //NotificationObject.sprite = _flowerData.itemIcon; // For notification system(not needed anymore, but leave it?)
+            if (onPickUpEvent != null)
+                onPickUpEvent.Invoke(_flowerData.itemName, _flowerData.itemIcon);
             //transform.LookAt(interactor, Vector3.up);
             string debugFlowerNames = "Trying to pick up a " + _flowerData.itemName
                 + ". Accepted flower types are: [";

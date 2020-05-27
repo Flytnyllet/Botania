@@ -223,9 +223,9 @@ public class BookManager : MonoBehaviour
         //bookmarkObject.transform.position = new Vector3(_bookmarkPositions[i].x, _bookmarkPositions[i].y, 0.0f);
     }
 
-    public void SetCurrentFlowerPage(int target)
+    public void SetCurrentFlowerPage(int target)//Jens var här
     {
-        PageLoader[] flowerPages = _bookmarks[_flowerOrganizerId].GetComponentsInChildren<PageLoader>();
+        PageLoader[] flowerPages = _bookmarks[_flowerOrganizerId].GetComponentsInChildren<PageLoader>(true);
         flowerPages[_currentPage].gameObject.SetActive(false);
         flowerPages[_currentPage + 1].gameObject.SetActive(false);
         _currentPage = target;
@@ -235,8 +235,6 @@ public class BookManager : MonoBehaviour
 
     public void ChangePage(int change)
     {
-
-
         switch (_currentBookmark)
         {
             /*case 1:
@@ -312,6 +310,11 @@ public class BookManager : MonoBehaviour
 
     void ToBookmark(int index, bool playSounds)
     {
+        if (index == _flowerOrganizerId && _currentBookmark == _flowerOrganizerId) //Jens var här
+        {
+            SetCurrentFlowerPage(0);
+            //return;
+        }
         if (index != _currentBookmark && playSounds)
         {
             FlipPageSoundEffect();
@@ -337,6 +340,11 @@ public class BookManager : MonoBehaviour
 
     public void ToBookmark(int index)
     {
+        if (index == _flowerOrganizerId && _currentBookmark == _flowerOrganizerId)//Jens var här
+        {
+            SetCurrentFlowerPage(0);
+            //return;
+        }
         if (_currentBookmark != _bookmarks.Count - 1)
         {
             _bookmarks[_currentBookmark].SetActive(false);
