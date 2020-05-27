@@ -21,6 +21,7 @@ public static class FlowerLibrary
     //static List<Flower> _flowerTypes = new List<Flower>();
     static Dictionary<string, FlowerData> _flowerTypes = new Dictionary<string, FlowerData>();
     static Dictionary<string, int> _potionTypes = new Dictionary<string, int>();
+	const int _maxItems = 99;
 
     // Initialization
     static FlowerLibrary()
@@ -140,6 +141,11 @@ public static class FlowerLibrary
     {
         if (_flowerTypes.ContainsKey(flowerName))
         {
+			if(amount > _maxItems)
+			{
+				_flowerTypes[flowerName].Amount = _maxItems;
+				_flowerTypes[flowerName].Discovered += amount;
+			}
             _flowerTypes[flowerName].Amount += amount;
             _flowerTypes[flowerName].Discovered += amount;
 
@@ -164,8 +170,16 @@ public static class FlowerLibrary
 
     public static void IncrementPotion(string name, int amount)
     {
-        if (_potionTypes.ContainsKey(name)) _potionTypes[name] += amount;
-        else AddPotion(name, amount);
+		if (_potionTypes.ContainsKey(name))
+		{
+			if(_potionTypes[name] > _maxItems)
+			{
+				_potionTypes[name] = _maxItems;
+			}
+			_potionTypes[name] += amount;
+		}
+
+		else AddPotion(name, amount);
         Debug.Log("Added Potion: " + name);
 
         //FlowerLibrarySave save = new FlowerLibrarySave() { flowerTypes = _flowerTypes };
