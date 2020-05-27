@@ -59,12 +59,12 @@
 			<destination>{44e5a3eb-d70b-4ea6-8625-6d133479e2e5}</destination>
 		</relationship>
 		<relationship name="output">
-			<destination>{188885a1-6692-44d3-89fa-7ea6a74a4f08}</destination>
+			<destination>{8a46f77f-7ac6-412e-b203-708973fab7fd}</destination>
 		</relationship>
 	</object>
 	<object class="EventAutomatableProperties" id="{1f02095d-6d24-437e-8b1f-ade4ef161c88}">
-		<property name="maxVoices">
-			<value>2</value>
+		<property name="voiceStealing">
+			<value>3</value>
 		</property>
 	</object>
 	<object class="MarkerTrack" id="{bf695e9d-652f-4fd5-bf5a-f47589c5fb58}" />
@@ -128,7 +128,7 @@
 	</object>
 	<object class="EventMixerMaster" id="{5c7f28e7-e798-44e6-85f9-eb77999fe61d}">
 		<property name="volume">
-			<value>-11</value>
+			<value>-8</value>
 		</property>
 		<relationship name="modulators">
 			<destination>{d7fb2f7f-f36f-4ce9-a7bf-4dfe18c2d2d5}</destination>
@@ -186,10 +186,10 @@
 	</object>
 	<object class="SingleSound" id="{7c3efc70-e09e-4214-89a2-626ae1faee76}">
 		<property name="start">
-			<value>0.0024630541871921183</value>
+			<value>0.0041050903119868639</value>
 		</property>
 		<property name="length">
-			<value>0.79753694581280776</value>
+			<value>0.79589490968801291</value>
 		</property>
 		<property name="startOffset">
 			<value>50</value>
@@ -543,14 +543,17 @@
 	<object class="MixerBusPanner" id="{69f38b6e-6a71-4836-ba5f-d2f0d91f1304}" />
 	<object class="MixerBusFader" id="{d778186b-936a-4b07-8d6b-f33e414dd556}" />
 	<object class="SpatialiserEffect" id="{a08197a6-b18d-4d04-8eeb-172e5c1b681c}">
+		<property name="minimumDistance">
+			<value>0</value>
+		</property>
 		<property name="maximumDistance">
-			<value>7</value>
+			<value>10</value>
 		</property>
 		<property name="extentMode">
 			<value>1</value>
 		</property>
 		<property name="soundSize">
-			<value>2.5</value>
+			<value>4.30000019</value>
 		</property>
 		<property name="minimumExtent">
 			<value>142</value>
@@ -569,7 +572,7 @@
 	</object>
 	<object class="AutomationPoint" id="{216a9269-9e96-4043-86af-f71779a8f5c3}">
 		<property name="position">
-			<value>0.79999999999999993</value>
+			<value>0.79999999999999982</value>
 		</property>
 		<property name="value">
 			<value>0</value>
@@ -588,7 +591,7 @@
 	</object>
 	<object class="AutomationPoint" id="{2548300c-06bb-40b1-9294-7dd8b7227c42}">
 		<property name="position">
-			<value>0.79999999999999993</value>
+			<value>0.79999999999999982</value>
 		</property>
 		<property name="value">
 			<value>1</value>

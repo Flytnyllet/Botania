@@ -26,10 +26,13 @@ public class Amb_Rain : MonoBehaviour
 
     [SerializeField] private Amb_Rain_Emitter _rainEmitterL;
     [SerializeField] private Amb_Rain_Emitter _rainEmitterR;
+    [SerializeField] private Amb_Rain_Emitter _rainEmitterB;
+    [SerializeField] private Amb_Rain_Emitter _rainEmitterF;
 
     private bool _setScriptOverride = false;
     public bool IsStopping { get { return _isStopping; } }
-    private bool _isStopping = default;
+    private bool _isStopping = false;
+    private bool _raining = false;
 
     private void Awake()
     {
@@ -46,23 +49,30 @@ public class Amb_Rain : MonoBehaviour
         RuntimeManager.StudioSystem.getParameterDescriptionByName(rainOverride_Parameter, out rainOverrideDescription);
 
         Init_Rain_Event();
+        _isStopping = false;
     }
 
     private void Init_Rain_Event()
     {
         _rainEmitterL.Init_Event(rain_Event);
         _rainEmitterR.Init_Event(rain_Event);
+        _rainEmitterB.Init_Event(rain_Event);
+        _rainEmitterF.Init_Event(rain_Event);
     }
 
     public IEnumerator Start_Rain(float rain_intensity)
     {
-        if (_isStopping) { yield break; }
-
-        RuntimeManager.StudioSystem.setParameterByID(rainIntensityDescription.id, 0.3f);
-        _rainEmitterL.Start_Rain_Emitter();
-        _rainEmitterR.Start_Rain_Emitter();
-        yield return new WaitForSeconds(2f);
-        RuntimeManager.StudioSystem.setParameterByID(rainIntensityDescription.id, rain_intensity);
+        if (!_isStopping)
+        {
+            RuntimeManager.StudioSystem.setParameterByID(rainIntensityDescription.id, 0.3f);
+            _rainEmitterL.Start_Rain_Emitter();
+            _rainEmitterR.Start_Rain_Emitter();
+            _rainEmitterB.Start_Rain_Emitter();
+            _rainEmitterF.Start_Rain_Emitter();
+            yield return new WaitForSeconds(2f);
+            RuntimeManager.StudioSystem.setParameterByID(rainIntensityDescription.id, rain_intensity);
+        }
+        else { yield break; }
     }
 
     public IEnumerator Stop_Rain()
@@ -79,6 +89,8 @@ public class Amb_Rain : MonoBehaviour
             yield return new WaitForSeconds(7f);
             _rainEmitterL.Stop_Rain_Emitter();
             _rainEmitterR.Stop_Rain_Emitter();
+            _rainEmitterB.Stop_Rain_Emitter();
+            _rainEmitterF.Start_Rain_Emitter();
             yield return new WaitForSeconds(11f);
             _setScriptOverride = false;
             _isStopping = false;
@@ -94,6 +106,8 @@ public class Amb_Rain : MonoBehaviour
             yield return new WaitForSeconds(10f);
             _rainEmitterL.Stop_Rain_Emitter();
             _rainEmitterR.Stop_Rain_Emitter();
+            _rainEmitterB.Stop_Rain_Emitter();
+            _rainEmitterF.Start_Rain_Emitter();
             yield return new WaitForSeconds(11f);
             _setScriptOverride = false;
             _isStopping = false;
@@ -105,6 +119,18 @@ public class Amb_Rain : MonoBehaviour
         if (!_setScriptOverride)
         {
             RuntimeManager.StudioSystem.setParameterByID(rainOverrideDescription.id, rainOverrideTempSlider);
+        }
+
+        if (WorldState.Instance.IsRaining && !_raining)
+        {
+            StartCoroutine(Start_Rain(1f));
+            _raining = true;
+        }
+
+        if (!WorldState.Instance.IsRaining && _raining)
+        {
+            StartCoroutine(Stop_Rain());
+            _raining = false;
         }
     }
 }

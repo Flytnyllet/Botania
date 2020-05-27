@@ -21,9 +21,9 @@ public class Amb_Global_Wind : MonoBehaviour
     [HideInInspector]
     public PARAMETER_ID ambGlobalOverrideParameterId;
 
-    [SerializeField]
-    [Range(0f, 1f)]
-    public float wind_IntensityValue;           // kommentera ut ifall WorldState-värde används, kan användas i Debug-syfte
+    //[SerializeField]
+    //[Range(0f, 1f)]
+    //public float wind_IntensityValue;           // kommentera ut ifall WorldState-värde används, kan användas i Debug-syfte
 
     private void Awake()
     {
@@ -63,7 +63,7 @@ public class Amb_Global_Wind : MonoBehaviour
 
     private void Update()
     {
-        RuntimeManager.StudioSystem.setParameterByID(windIntensityDescription.id, wind_IntensityValue);     //WorldState.Instance.WindSpeed
+        RuntimeManager.StudioSystem.setParameterByID(windIntensityDescription.id, WorldState.WindSpeed);
     }
 
     public void Set_Parameter(PARAMETER_ID id, float value)
