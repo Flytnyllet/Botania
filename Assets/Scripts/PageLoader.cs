@@ -53,7 +53,7 @@ public class PageLoader : MonoBehaviour
     }
     public void GoToPage(int i)
     {
-        BookManager.Instance.ChangePage(i);
+        BookManager.Instance.SetCurrentFlowerPage(i);
     }
 
 }

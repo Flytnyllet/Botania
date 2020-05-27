@@ -223,31 +223,41 @@ public class BookManager : MonoBehaviour
         //bookmarkObject.transform.position = new Vector3(_bookmarkPositions[i].x, _bookmarkPositions[i].y, 0.0f);
     }
 
+    public void SetCurrentFlowerPage(int target)
+    {
+        PageLoader[] flowerPages = _bookmarks[_flowerOrganizerId].GetComponentsInChildren<PageLoader>();
+        flowerPages[_currentPage].gameObject.SetActive(false);
+        flowerPages[_currentPage + 1].gameObject.SetActive(false);
+        _currentPage = target;
+        flowerPages[_currentPage].gameObject.SetActive(true);
+        flowerPages[_currentPage + 1].gameObject.SetActive(true);
+    }
+
     public void ChangePage(int change)
     {
 
 
         switch (_currentBookmark)
         {
-			/*case 1:
+            /*case 1:
                 List<Transform> children = _bookmarks[1].GetComponent<AlchemyOrganizerV">().GetPages();
                 _currentPage = ChangeCurrentPage(children.Count, change);
                 ChangePage(children);
                 break;*/
 
-			case 1:
-				_currentPage = ChangeCurrentPage(_flowerPages.Count, change);
-				ChangePage(_flowerPages);
-				break;
+            case 1:
+                _currentPage = ChangeCurrentPage(FLOWERPAGE_INDEX.Count, change);
+                ChangePage(FLOWERPAGE_INDEX);
+                break;
 
-			case 2:
+            case 2:
                 _currentPage = ChangeCurrentPage(_lorePages.Count, change);
                 ChangePage(_lorePages);
                 break;
 
             default:
-                _currentPage = ChangeCurrentPage(_flowerPages.Count, change);
-                ChangePage(_flowerPages);
+                _currentPage = ChangeCurrentPage(FLOWERPAGE_INDEX.Count, change);
+                ChangePage(FLOWERPAGE_INDEX);
                 break;
         }
     }
