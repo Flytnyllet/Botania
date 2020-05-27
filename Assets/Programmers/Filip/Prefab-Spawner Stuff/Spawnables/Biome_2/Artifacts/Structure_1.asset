@@ -10,27 +10,27 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a2ef82269fb17cf43a9f1163b1dfd939, type: 3}
-  m_Name: Filip-Flowers-Earth
+  m_Name: Structure_1
   m_EditorClassIdentifier: 
   _autoUpdate: 0
   _noiseMergeType: 2
-  _noiseSettingsData: {fileID: 11400000, guid: 86e7eb72dbff81d46aef11d91857864c, type: 2}
+  _noiseSettingsData: {fileID: 11400000, guid: 88c57b2f44da1154d919a076c9c23239, type: 2}
   _parentOnly: 0
   _rotationAmount: 1
-  _noiseStartPoint: 0.025
-  _thickness: 1.32
-  _uniformSpreadAmount: 1
-  _randomSpread: 0.48
-  _offsetAmount: 0.95
+  _noiseStartPoint: 0
+  _thickness: 0
+  _uniformSpreadAmount: 20
+  _randomSpread: 0
+  _offsetAmount: 0
   _spawnFixedHeight: 0
-  _size: 1
-  _spacing: 0
+  _size: 10
+  _spacing: 1
   _othersCanSpawnInside: 0
-  _spawnDifferencial: 15
+  _spawnDifferencial: 0.3
   _hardMinHeight: 10
   _softMinAmount: 0
   _hardMaxHeight: 100
-  _softMaxAmount: 100
+  _softMaxAmount: 0
   _surfaceNormalAmount: 1
   _pointAlongNormalRandomness: 0
   _softMinSlope: 90
@@ -38,18 +38,18 @@ MonoBehaviour:
   _softMaxSlope: 0
   _hardMaxSlope: 0
   _prefabs:
-  - _prefab: {fileID: 583475435651881015, guid: 779e26cffde921c4ca76ccbf852625c3,
-      type: 3}
-    _probability: 6
-    _height: 0
-    _fixedHeight: 0
-    _scale: 0.85
-    _scaleRandom: 0.25
-  - _prefab: {fileID: 583475435651881015, guid: 16a00d94936d88143893ac8824e80a70,
+  - _prefab: {fileID: 2875429421024424869, guid: f9318347172312344a23a606f0f33b07,
       type: 3}
     _probability: 1
     _height: 0
     _fixedHeight: 0
-    _scale: 0.85
-    _scaleRandom: 0.25
+    _scale: 1
+    _scaleRandom: 0
+  - _prefab: {fileID: 7669264000673288534, guid: 11e645ad18620664b89891393d1d6be7,
+      type: 3}
+    _probability: 1
+    _height: 0
+    _fixedHeight: 0
+    _scale: 1
+    _scaleRandom: 0
   _subSpawners: []
