@@ -107,9 +107,9 @@ public class FPSMovement : MonoBehaviour
 
     void Start()
     {
-        //_prevPos = transform.position;
-        //_randWalk = Random.Range(0.8f, 1.2f);
-        _emitPlayerSound = GetComponent<Player_Emitter>();
+		//_prevPos = transform.position;
+		//_randWalk = Random.Range(0.8f, 1.2f);
+		_emitPlayerSound = GetComponent<Player_Emitter>();
 
         charCon = GetComponent<CharacterController>();
         _playerCam = transform.Find("PlayerCam");
@@ -140,10 +140,13 @@ public class FPSMovement : MonoBehaviour
                 && true);
 
             RaycastHit waterDetection;
-            _inWater = Physics.Raycast(transform.TransformPoint(_cameraStartPosition) + 0.01f * Vector3.up, Vector3.down, out waterDetection, _waterRayDist, _waterLayer);
+            _inWater = Physics.Raycast(transform.TransformPoint(_cameraStartPosition)
+				+ 0.01f * Vector3.up, Vector3.down, out waterDetection, _waterRayDist, _waterLayer);
             Debug.DrawRay(_playerCam.position + 0.45f * Vector3.up, Vector3.down * _waterRayDist, Color.red, 2f);
-            bool isStoned = CharacterState.IsAbilityFlagActive(ABILITY_FLAG.STONE);
-            bool isLevitating = CharacterState.IsAbilityFlagActive(ABILITY_FLAG.LEVITATE);
+
+			bool isStoned = CharacterState.IsAbilityFlagActive(ABILITY_FLAG.STONE);
+			bool isLevitating = CharacterState.IsAbilityFlagActive(ABILITY_FLAG.LEVITATE);
+			_isUnderwater = (!isStoned && !_inWater && (_lastWaterChunk == null ? false : _lastWaterChunk.transform.position.y > transform.position.y));
             float gravityFactor = 1.0f;
 
             // == Functions ==
@@ -154,7 +157,7 @@ public class FPSMovement : MonoBehaviour
 
             if (_inWater)
             {
-                _isUnderwater = false;
+               // _isUnderwater = false;
                 _lastWaterChunk = waterDetection.collider;
 
                 transform.position = Vector3.MoveTowards(transform.position, _lastWaterChunk.ClosestPoint(transform.position), _swimCorrection);
@@ -163,7 +166,7 @@ public class FPSMovement : MonoBehaviour
             if (isStoned)
             {
                 _swimming = false;
-                _isUnderwater = false;
+               // _isUnderwater = false;
             }
             if (_isUnderwater && !_swimming)//  && _lastWaterChunk.transform.position.y > _playerCam.position.y)
             {
@@ -232,10 +235,6 @@ public class FPSMovement : MonoBehaviour
 
             //transform.position = new Vector3(transform.position.x, 9.5f, transform.position.z);
 
-            if (!_inWater && !isStoned && _lastWaterChunk != null)
-            {
-                _isUnderwater = true;
-            }
             //Gravity
             if ((!_inWater && !isLevitating) || isStoned)
             {
@@ -302,6 +301,7 @@ public class FPSMovement : MonoBehaviour
 		charCon.Move(move * _speed.Value * _slidingSpeedFactor * Time.deltaTime);
 	}
 	*/
+
     void Gravity(float factor)
     {
         if (CharacterState.IsAbilityFlagActive(ABILITY_FLAG.SLOWFALL))

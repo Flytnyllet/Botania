@@ -3,11 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+public struct RecipeEntry
+{
+	public ItemDataContainer ingredient;
+	public int amount;
+}
+
 public class PotionLoader : MonoBehaviour
 {
     //[SerializeField] string _potionName = "";
     [SerializeField] Text textObject = null;
-    [SerializeField] List<ItemDataContainer> recipe = new List<ItemDataContainer>();
+    List<RecipeEntry> recipe = new List<RecipeEntry>();
+	[SerializeField] List<ItemDataContainer> recipeIngredients = new List<ItemDataContainer>();
+	[SerializeField] List<int> recipeAmounts = new List<int>();
     //Potion _potion = null;
     Potion_Template _potionEffect = null;
     Potion_Template _potionEffect2 = null;
@@ -32,17 +40,45 @@ public class PotionLoader : MonoBehaviour
 
     void Awake()
     {
-        //_potionName = _item.itemName;
-        if (_potionType != PotionType.FlagGrav)
-        {
-            _potionEffect = PotionEffect();
-        }
-        else
-        {
-            _potionEffect = new SpeedPotion(CharacterStatType.Gravity, _potionFactor, _potionFlat, _potionDuration);
-            _potionEffect2 = new FlagPotion(_potionFlag, _potionDuration);
-        }
+		SetUpRecipies();
+
+		//_potionName = _item.itemName;
+		
     }
+
+	void SetUpRecipies()
+	{
+		if(recipe.Count < 1)
+		{
+			Debug.Log("Test2");
+			if (recipeAmounts.Count == recipeIngredients.Count)
+			{
+				for (int i = 0; i < recipeIngredients.Count; i++)
+				{
+
+					Debug.Log("Test3");
+					RecipeEntry entry;
+					entry.amount = recipeAmounts[i];
+					entry.ingredient = recipeIngredients[i];
+					recipe.Add(entry);
+				}
+			}
+			else
+			{
+				Debug.Log("In all potions recipe ingredients and recipe amounts must be the same length!");
+			}
+		}
+
+		if (_potionType != PotionType.FlagGrav)
+		{
+			_potionEffect = PotionEffect();
+		}
+		else
+		{
+			_potionEffect = new SpeedPotion(CharacterStatType.Gravity, _potionFactor, _potionFlat, _potionDuration);
+			_potionEffect2 = new FlagPotion(_potionFlag, _potionDuration);
+		}
+	}
 
     Potion_Template PotionEffect()
     {
@@ -76,8 +112,24 @@ public class PotionLoader : MonoBehaviour
         UpdateUI();
 
     }
-    public List<ItemDataContainer> GetRecipe()
+
+	public List<ItemDataContainer> GetRecipeIngredients()
+	{
+		return recipeIngredients;
+		/*List<ItemDataContainer> recipeIngredients = new List<ItemDataContainer>();
+
+		for(int i = 0; i < recipe.Count; i++)
+		{
+			recipeIngredients.Add(recipe[i].ingredient);
+		}
+
+		return recipeIngredients;*/
+	}
+
+    public List<RecipeEntry> GetRecipe()
     {
+		Debug.Log("Test");
+		SetUpRecipies();
         return recipe;
     }
 
@@ -92,13 +144,16 @@ public class PotionLoader : MonoBehaviour
 
         for (int i = 0; i < recipe.Count; i++)
         {
-            FlowerLibrary.IncrementFlower(recipe[i].itemName, -1);
+            FlowerLibrary.IncrementFlower(recipe[i].ingredient.itemName, -recipe[i].amount);
         }
         UpdateUI();
     }
     void UpdateUI()
     {
-        textObject.text = _item.itemName + "\n x" + FlowerLibrary.GetPotionAmount(_item.itemName);
+		if (textObject != null)
+		{
+			textObject.text = _item.itemName + "\n x" + FlowerLibrary.GetPotionAmount(_item.itemName);
+		}
     }
 
     public void ActivatePotion()
