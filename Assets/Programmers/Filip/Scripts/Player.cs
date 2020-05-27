@@ -5,6 +5,10 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     [SerializeField] MeshSettings _meshSettings;
+    [SerializeField] Transform _playerParent;
+    [SerializeField] float _playerSpawnHeightOffset = 3f;
+    [SerializeField, Range(0, 1000)] float _distanceRayCast = 200;
+    [SerializeField] LayerMask _layerMask;
     [SerializeField] BiomeInfo _biomeInfoInstance;
     [SerializeField, Range(0.01f, 30)] float _updateBiomeTime = 1.0f; 
 
@@ -28,6 +32,26 @@ public class Player : MonoBehaviour
         }
         else
             Destroy(this);
+    }
+
+    private void Start()
+    {
+        _thisSingleton.StartCoroutine(PlacePlayer());
+    }
+
+    IEnumerator PlacePlayer()
+    {
+        bool hit = false;
+        RaycastHit collision;
+        do
+        {
+            yield return null;
+            hit = Physics.Raycast(_thisSingleton._playerParent.transform.position, Vector3.down, out collision, _distanceRayCast, _layerMask.value);
+            Debug.DrawRay(_thisSingleton._playerParent.transform.position, Vector3.down * _distanceRayCast, Color.cyan, 1f);
+
+        } while (!hit);
+
+        //PLACERA SPELARE HÄR!
     }
 
     void Update()
