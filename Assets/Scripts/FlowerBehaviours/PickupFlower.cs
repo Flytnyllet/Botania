@@ -28,11 +28,11 @@ public class PickupFlower : InteractableSaving, IInteractable
         {
             //Pickup save system
             PickUp();
-            
-            NotificationObject.name = _flowerData.itemName; // For notification system(not needed but leave it?)
-            NotificationObject.sprite = _flowerData.itemIcon; // For notification system(not needed but leave it?)
+
+            //NotificationObject.name = _flowerData.itemName; // For notification system(not needed anymore, but leave it?)
+            //NotificationObject.sprite = _flowerData.itemIcon; // For notification system(not needed anymore, but leave it?)
             if (onPickUpEvent != null)
-                onPickUpEvent.Invoke("HELLUUUU");
+                onPickUpEvent.Invoke("New journal entry");
 
             string debugFlowerNames = "Trying to pick up a " + _flowerData.name
                 + ". Accepted flower types are: [";
