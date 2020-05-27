@@ -81,8 +81,16 @@ public class FPSMovement : MonoBehaviour
     [Header("Potion Effects")]
     [SerializeField] float _levitationSpeed = 1f;
 
-    // !OBS Weird bug causing script to disable itself when awake is used.
-    void Awake()
+	//[SerializeField] float teleportationTime = 2f;
+	[SerializeField] float _teleportationFloatSpeed = 1f;
+	[SerializeField] float _teleportPlacementHeight = 10f;
+	[SerializeField] [Range(1, 1000)] float _teleportMinDistance = 1f;
+	[SerializeField] [Range(80, 2000)] float _teleportMaxDistance = 200f;
+	[SerializeField] LayerMask _groundLayer;
+
+
+	// !OBS Weird bug causing script to disable itself when awake is used.
+	void Awake()
     {
         playerMovement = this;
         _swimVelocity = new Vector2(0f, 0f);
@@ -121,6 +129,13 @@ public class FPSMovement : MonoBehaviour
     {
         if (CharacterState.MayMove)
         {
+			if (CharacterState.IsAbilityFlagActive(ABILITY_FLAG.TELEPORT))
+			{
+				Teleportation();
+
+				return;
+			}
+
             // == Variables ==
             //Input
             Vector2 moveInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
@@ -254,7 +269,80 @@ public class FPSMovement : MonoBehaviour
         }
     }
 
-    void Strafing(float horizontal, float vertical)
+	void Teleport(Vector3 position, float placementHeight)
+	{
+		transform.position = position;
+		PositionCorrection();
+		transform.position += Vector3.up * placementHeight;
+	}
+
+	void PositionCorrection()
+	{
+		RaycastHit hit;
+
+		if (Physics.Raycast(transform.position, Vector3.up, out hit, 500f, _groundLayer))
+		{
+			transform.position = hit.collider.ClosestPointOnBounds(transform.position) + Vector3.up;
+			
+			if(Physics.Raycast(transform.position, Vector3.up, out hit, 100f, _waterLayer))
+			{
+				transform.position = hit.collider.ClosestPointOnBounds(transform.position) + Vector3.up;
+			}
+		}
+		else
+		{
+			Debug.LogError("Position Correction failed to find ground");
+		}
+	}
+
+	void Teleportation()
+	{
+		CharacterState.SetControlState(CHARACTER_CONTROL_STATE.CUTSCENE);
+		StartCoroutine(Teleportation_Execution());
+	}
+
+	IEnumerator Teleportation_Execution()
+	{
+		// ===
+		// TELEPORTATION WINDUP
+		// ===
+		while (CharacterState.IsAbilityFlagActive(ABILITY_FLAG.TELEPORT))
+		{
+			charCon.Move(Vector3.up * _teleportationFloatSpeed * Time.deltaTime);
+
+			yield return null;
+		}
+
+		// ===
+
+		// ===
+		// ACTUAL TELEPORTATION
+		// ===
+
+		float teleportRadius = Random.Range(_teleportMinDistance, _teleportMaxDistance);
+		float teleportAngle = Random.Range(0, 360f);
+		Vector2 teleportPoint = Mathf.Sin(teleportAngle) * teleportRadius * Vector2.right + Mathf.Cos(teleportAngle) * teleportRadius * Vector2.up;
+		Vector3 teleportTarget = Vector3.right * transform.position.x * teleportPoint.x + Vector3.forward * transform.position.z * teleportPoint.y;
+		Debug.LogFormat("Teleportation target: {0}", teleportTarget);
+		Teleport(teleportTarget, _teleportPlacementHeight);
+
+		// ===
+
+		// ===
+		// TELEPORTATION WINDDOWN
+		// ===
+		while (!charCon.isGrounded)
+		{
+			charCon.Move(Vector3.down * _teleportationFloatSpeed * Time.deltaTime);
+
+			yield return null;
+		}
+		// ===
+
+		CharacterState.SetControlState(CHARACTER_CONTROL_STATE.PLAYERCONTROLLED);
+	}
+
+	void Strafing(float horizontal, float vertical)
     {
         Vector3 lookDir = _playerCam.forward;
         lookDir.y = 0;
