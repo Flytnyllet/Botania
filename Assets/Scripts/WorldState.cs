@@ -143,9 +143,9 @@ public class WorldState : MonoBehaviour
     float _cloudthicknessLowStep = 0.6f;
     float _cloudthicknessLowStepSTARTVALUE;
     public bool IsRaining { get => _raining; }
-    public void setRaining(bool b)
+    public void setRaining(bool shouldRain)
     {
-        if (b)
+        if (shouldRain)
         {
             Shader.SetGlobalFloat("gRainWave", 0.9f);
             StartCoroutine(ChangeCloudThickness(2, -0.8f));
