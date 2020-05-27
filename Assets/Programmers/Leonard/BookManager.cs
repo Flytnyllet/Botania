@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class BookManager : MonoBehaviour
 {
+    public static BookManager Instance;
+
     const string INPUT_INVENTORY = "Inventory";
     const string INPUT_MAP = "Map";
     const string INPUT_FLOWERS = "Flowers";
@@ -15,9 +17,10 @@ public class BookManager : MonoBehaviour
 
     [SerializeField] List<GameObject> _bookmarks = new List<GameObject>();
     [SerializeField] List<PageLoader> _flowerPages = new List<PageLoader>();
+    [SerializeField] List<PageLoader> FLOWERPAGE_INDEX = new List<PageLoader>();
     [SerializeField] List<PageLoader> _lorePages = new List<PageLoader>();
-	[SerializeField] List<PageLoader> _indexPages = new List<PageLoader>();
-	[SerializeField] int _flowerOrganizerId = 1;
+    [SerializeField] List<PageLoader> _indexPages = new List<PageLoader>();
+    [SerializeField] int _flowerOrganizerId = 1;
     [SerializeField] RectTransform _bookmarkTemplate = null;
     [SerializeField] GameObject _emptyPageTemplate = null;
     [SerializeField] Vector2[] _bookmarkPositions = null;
@@ -46,8 +49,21 @@ public class BookManager : MonoBehaviour
 
     void Awake()
     {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(this.gameObject);
+        }
+
         SetupBookmarks();
-        SetupPage(_flowerOrganizerId, _flowerPages);
+        foreach (PageLoader page in _flowerPages)
+        {
+            FLOWERPAGE_INDEX.Add(page);
+        }
+        SetupPage(_flowerOrganizerId, FLOWERPAGE_INDEX);
 
         /*
 		if (_book == null)
@@ -166,16 +182,16 @@ public class BookManager : MonoBehaviour
     }
     void SetupBookmarks()
     {
-        for (int i = _bookmarks.Count-1; i >= 0; i--)
+        for (int i = _bookmarks.Count - 1; i >= 0; i--)
         {
             GameObject bookmark = _bookmarks[i];
             _bookmarks[i] = Instantiate(bookmark, _book.transform);
             _bookmarks[i].transform.SetAsFirstSibling();
-			_bookmarks[i].gameObject.SetActive(false);
+            _bookmarks[i].gameObject.SetActive(false);
             //CreateBookmarkObject(i, bookmark, bookmarks);
         }
 
-		_bookmarks[_currentBookmark].SetActive(true);
+        _bookmarks[_currentBookmark].SetActive(true);
     }
 
     void SetupBookTabs()
