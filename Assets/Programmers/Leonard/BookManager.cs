@@ -213,13 +213,18 @@ public class BookManager : MonoBehaviour
 
         switch (_currentBookmark)
         {
-            /*case 1:
+			/*case 1:
                 List<Transform> children = _bookmarks[1].GetComponent<AlchemyOrganizerV">().GetPages();
                 _currentPage = ChangeCurrentPage(children.Count, change);
                 ChangePage(children);
                 break;*/
 
-            case 1:
+			case 1:
+				_currentPage = ChangeCurrentPage(_flowerPages.Count, change);
+				ChangePage(_flowerPages);
+				break;
+
+			case 2:
                 _currentPage = ChangeCurrentPage(_lorePages.Count, change);
                 ChangePage(_lorePages);
                 break;
