@@ -17,8 +17,10 @@ public class Player : MonoBehaviour
 
     static Transform _playerTransform;
     static BiomeInfo _biomeInfo;
+    static Vector3 _spawnPosition;
 
     Timer _updateBiomeTableTimer;
+
 
     private void Awake()
     {
@@ -28,6 +30,8 @@ public class Player : MonoBehaviour
             _playerTransform = GetComponent<Transform>();
             _updateBiomeTableTimer = new Timer(_updateBiomeTime);
             _biomeInfo = _biomeInfoInstance;
+            _spawnPosition = _playerParent.position;
+
             UpdateBiomeInfo();
         }
         else
@@ -37,6 +41,19 @@ public class Player : MonoBehaviour
     private void Start()
     {
         _thisSingleton.StartCoroutine(PlacePlayer());
+    }
+
+    public static void Load()
+    {
+        object spawnPosition = Serialization.Load(Saving.FileNames.PLAYER_POSITION);
+
+        if (spawnPosition != null)
+            _spawnPosition = (Vector3)spawnPosition;
+    }
+
+    public static void Save()
+    {
+        Serialization.Save(Saving.FileNames.PLAYER_POSITION, _playerTransform.position + Vector3.up * 50); //+50 is just to guarantee it doesn't fall throught the ground
     }
 
     IEnumerator PlacePlayer()
@@ -51,6 +68,7 @@ public class Player : MonoBehaviour
 
         } while (!hit);
 
+        Debug.LogError(_spawnPosition);
         //PLACERA SPELARE HÄR!
     }
 

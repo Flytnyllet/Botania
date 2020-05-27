@@ -93,7 +93,7 @@ public class SaveSystem : MonoBehaviour
         {
             ValidateSave();
             Noise.SetSeed(GetWorldSeed());
-
+            Player.Load();
             PrefabSpawnerSaveData.Load();
             MapGenerator.Load();
         }
@@ -143,6 +143,7 @@ public class SaveSystem : MonoBehaviour
             StartCoroutine(SaveIconAlpha());
             Noise.Save();
             PrefabSpawnerSaveData.Save();
+            Player.Save();
             MapGenerator.Save();
         }
     }
