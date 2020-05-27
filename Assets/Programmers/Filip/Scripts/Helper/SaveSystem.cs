@@ -22,9 +22,12 @@ public class SaveSystem : MonoBehaviour
     [SerializeField] bool _save = true;
     [SerializeField] bool _load = true;
 
+    [SerializeField, Range(0, 15)] int _clearAreaSize = 3;
+
     [Header("Setup")]
 
     [SerializeField] Image _saveIcon;
+    [SerializeField] MeshSettings _meshSettings;
 
     Animator _animator;
 
@@ -94,6 +97,9 @@ public class SaveSystem : MonoBehaviour
             PrefabSpawnerSaveData.Load();
             MapGenerator.Load();
         }
+
+        //Used to make clear circle around player on spawn
+        PrefabSpawnerSaveData.ClearStartArea(_meshSettings.NumVertsPerLine / 2, _clearAreaSize);
 
         Ready = true;
     }
