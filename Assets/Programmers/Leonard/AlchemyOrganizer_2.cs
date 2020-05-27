@@ -109,10 +109,13 @@ public class AlchemyOrganizer_2 : MonoBehaviour
         return _pages;
     }
 
-	void SetupPotionLoaders()
+	public void SetupPotionLoaders()
 	{
-		PotionLoader[] potionLoaders = _potionHolder.GetComponentsInChildren<PotionLoader>();
-		_availablePotions.AddRange(potionLoaders);
+		if (_availablePotions.Count < 1)
+		{
+			PotionLoader[] potionLoaders = _potionHolder.GetComponentsInChildren<PotionLoader>(true);
+			_availablePotions.AddRange(potionLoaders);
+		}
 	}
 
 	void SetupRecipes()
@@ -267,6 +270,20 @@ public class AlchemyOrganizer_2 : MonoBehaviour
 		}
 
 		UpdatePotionAvailability(recipe);
+	}
+
+	bool RecipeContainsIngredient(Recipe recipe, string ingredientName)
+	{
+
+
+		return false;
+	}
+
+	bool RecipeContainsIngredient(Recipe recipe, string ingredientFlag, bool flag)
+	{
+
+
+		return false;
 	}
 
 	void UpdatePotionAvailability(Recipe recipe)
