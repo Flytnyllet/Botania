@@ -65,6 +65,8 @@ public class PrefabSpawner : MonoBehaviour
                         bool shouldSpawn = true;
                         bool partialSpawn = false;
 
+                        if (PrefabSpawnerSaveData.InsideSpawnArea(chunkCoordIndex) && !spawnables[i].OthersCanSpawnInside)
+                            shouldSpawn = false;
                         //This thing is already picked up! (Size > 0 is just to check if the thing is pickable)
                         if (!spawnables[i].OthersCanSpawnInside && PrefabSpawnerSaveData.ContainsChunkCoordIndex(chunkCoordIndex))
                         {
