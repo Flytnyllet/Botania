@@ -81,8 +81,16 @@ public class FPSMovement : MonoBehaviour
     [Header("Potion Effects")]
     [SerializeField] float _levitationSpeed = 1f;
 
-    // !OBS Weird bug causing script to disable itself when awake is used.
-    void Awake()
+	//[SerializeField] float teleportationTime = 2f;
+	[SerializeField] float _teleportationFloatSpeed = 1f;
+	[SerializeField] float _teleportPlacementHeight = 10f;
+	[SerializeField] [Range(1, 1000)] float _teleportMinDistance = 1f;
+	[SerializeField] [Range(80, 2000)] float _teleportMaxDistance = 200f;
+	[SerializeField] LayerMask _groundLayer;
+
+
+	// !OBS Weird bug causing script to disable itself when awake is used.
+	void Awake()
     {
         playerMovement = this;
         _swimVelocity = new Vector2(0f, 0f);
@@ -107,9 +115,9 @@ public class FPSMovement : MonoBehaviour
 
     void Start()
     {
-        //_prevPos = transform.position;
-        //_randWalk = Random.Range(0.8f, 1.2f);
-        _emitPlayerSound = GetComponent<Player_Emitter>();
+		//_prevPos = transform.position;
+		//_randWalk = Random.Range(0.8f, 1.2f);
+		_emitPlayerSound = GetComponent<Player_Emitter>();
 
         charCon = GetComponent<CharacterController>();
         _playerCam = transform.Find("PlayerCam");
@@ -121,6 +129,13 @@ public class FPSMovement : MonoBehaviour
     {
         if (CharacterState.MayMove)
         {
+			if (CharacterState.IsAbilityFlagActive(ABILITY_FLAG.TELEPORT))
+			{
+				Teleportation();
+
+				return;
+			}
+
             // == Variables ==
             //Input
             Vector2 moveInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
@@ -140,10 +155,13 @@ public class FPSMovement : MonoBehaviour
                 && true);
 
             RaycastHit waterDetection;
-            _inWater = Physics.Raycast(transform.TransformPoint(_cameraStartPosition) + 0.01f * Vector3.up, Vector3.down, out waterDetection, _waterRayDist, _waterLayer);
+            _inWater = Physics.Raycast(transform.TransformPoint(_cameraStartPosition)
+				+ 0.01f * Vector3.up, Vector3.down, out waterDetection, _waterRayDist, _waterLayer);
             Debug.DrawRay(_playerCam.position + 0.45f * Vector3.up, Vector3.down * _waterRayDist, Color.red, 2f);
-            bool isStoned = CharacterState.IsAbilityFlagActive(ABILITY_FLAG.STONE);
-            bool isLevitating = CharacterState.IsAbilityFlagActive(ABILITY_FLAG.LEVITATE);
+
+			bool isStoned = CharacterState.IsAbilityFlagActive(ABILITY_FLAG.STONE);
+			bool isLevitating = CharacterState.IsAbilityFlagActive(ABILITY_FLAG.LEVITATE);
+			_isUnderwater = (!isStoned && !_inWater && (_lastWaterChunk == null ? false : _lastWaterChunk.transform.position.y > transform.position.y));
             float gravityFactor = 1.0f;
 
             // == Functions ==
@@ -154,7 +172,7 @@ public class FPSMovement : MonoBehaviour
 
             if (_inWater)
             {
-                _isUnderwater = false;
+               // _isUnderwater = false;
                 _lastWaterChunk = waterDetection.collider;
 
                 transform.position = Vector3.MoveTowards(transform.position, _lastWaterChunk.ClosestPoint(transform.position), _swimCorrection);
@@ -163,7 +181,7 @@ public class FPSMovement : MonoBehaviour
             if (isStoned)
             {
                 _swimming = false;
-                _isUnderwater = false;
+               // _isUnderwater = false;
             }
             if (_isUnderwater && !_swimming)//  && _lastWaterChunk.transform.position.y > _playerCam.position.y)
             {
@@ -232,10 +250,6 @@ public class FPSMovement : MonoBehaviour
 
             //transform.position = new Vector3(transform.position.x, 9.5f, transform.position.z);
 
-            if (!_inWater && !isStoned && _lastWaterChunk != null)
-            {
-                _isUnderwater = true;
-            }
             //Gravity
             if ((!_inWater && !isLevitating) || isStoned)
             {
@@ -255,7 +269,80 @@ public class FPSMovement : MonoBehaviour
         }
     }
 
-    void Strafing(float horizontal, float vertical)
+	void Teleport(Vector3 position, float placementHeight)
+	{
+		transform.position = position;
+		PositionCorrection();
+		transform.position += Vector3.up * placementHeight;
+	}
+
+	void PositionCorrection()
+	{
+		RaycastHit hit;
+
+		if (Physics.Raycast(transform.position, Vector3.up, out hit, 500f, _groundLayer))
+		{
+			transform.position = hit.collider.ClosestPointOnBounds(transform.position) + Vector3.up;
+			
+			if(Physics.Raycast(transform.position, Vector3.up, out hit, 100f, _waterLayer))
+			{
+				transform.position = hit.collider.ClosestPointOnBounds(transform.position) + Vector3.up;
+			}
+		}
+		else
+		{
+			Debug.LogError("Position Correction failed to find ground");
+		}
+	}
+
+	void Teleportation()
+	{
+		CharacterState.SetControlState(CHARACTER_CONTROL_STATE.CUTSCENE);
+		StartCoroutine(Teleportation_Execution());
+	}
+
+	IEnumerator Teleportation_Execution()
+	{
+		// ===
+		// TELEPORTATION WINDUP
+		// ===
+		while (CharacterState.IsAbilityFlagActive(ABILITY_FLAG.TELEPORT))
+		{
+			charCon.Move(Vector3.up * _teleportationFloatSpeed * Time.deltaTime);
+
+			yield return null;
+		}
+
+		// ===
+
+		// ===
+		// ACTUAL TELEPORTATION
+		// ===
+
+		float teleportRadius = Random.Range(_teleportMinDistance, _teleportMaxDistance);
+		float teleportAngle = Random.Range(0, 360f);
+		Vector2 teleportPoint = Mathf.Sin(teleportAngle) * teleportRadius * Vector2.right + Mathf.Cos(teleportAngle) * teleportRadius * Vector2.up;
+		Vector3 teleportTarget = Vector3.right * transform.position.x * teleportPoint.x + Vector3.forward * transform.position.z * teleportPoint.y;
+		Debug.LogFormat("Teleportation target: {0}", teleportTarget);
+		Teleport(teleportTarget, _teleportPlacementHeight);
+
+		// ===
+
+		// ===
+		// TELEPORTATION WINDDOWN
+		// ===
+		while (!charCon.isGrounded)
+		{
+			charCon.Move(Vector3.down * _teleportationFloatSpeed * Time.deltaTime);
+
+			yield return null;
+		}
+		// ===
+
+		CharacterState.SetControlState(CHARACTER_CONTROL_STATE.PLAYERCONTROLLED);
+	}
+
+	void Strafing(float horizontal, float vertical)
     {
         Vector3 lookDir = _playerCam.forward;
         lookDir.y = 0;
@@ -302,6 +389,7 @@ public class FPSMovement : MonoBehaviour
 		charCon.Move(move * _speed.Value * _slidingSpeedFactor * Time.deltaTime);
 	}
 	*/
+
     void Gravity(float factor)
     {
         if (CharacterState.IsAbilityFlagActive(ABILITY_FLAG.SLOWFALL))

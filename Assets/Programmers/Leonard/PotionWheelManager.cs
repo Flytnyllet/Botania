@@ -15,13 +15,14 @@ public class PotionWheelManager : MonoBehaviour
 	RectTransform rect = null;
 	[SerializeField] float selectedScale = 1.2f;
 	[SerializeField] [Range(0.05f, 0.8f)] float selectionDistance = 0.46f;
+	[SerializeField] Image _selectionWheel;
+	[SerializeField] Sprite[] _wheelSprites;
     Camera _mainCam;
 	//Color selectedColor = Color.green;
 	/*
 	 Vector3[] regionPositions = new Vector3[6] 
 		{ Vector3.up, new Vector3(1, 1, 0).normalized, Vector3.right, new Vector3(1, -1, 0).normalized, Vector3.down, new Vector3(-1, -1).normalized }; 
 	*/
-
 	Vector3[] regionPositions;
 
 	// Start is called before the first frame update
@@ -29,7 +30,9 @@ public class PotionWheelManager : MonoBehaviour
 	{
         _mainCam = Camera.main; //slow
         rect = GetComponent<RectTransform>();
-		_allPotions = _bookManager.GetBookmark(1).GetComponent<AlchemyOrganizer>().GetAllPotions();
+		AlchemyOrganizer_2 alchOrger = _bookManager._book.GetComponentInChildren<AlchemyOrganizer_2>(true);
+		alchOrger.SetupPotionLoaders();
+		_allPotions = alchOrger.GetAllPotions();
 
 		SetUpRegions();
 	}
@@ -58,6 +61,7 @@ public class PotionWheelManager : MonoBehaviour
 			if (GetClosestPotion(screenPoint.normalized, out region))
 			{
 				SelectPotion((int)region);
+				_selectionWheel.sprite = _wheelSprites[(int)region+1];
 			}
 			else
 			{
@@ -68,6 +72,7 @@ public class PotionWheelManager : MonoBehaviour
 		}
 		else
 		{
+			_selectionWheel.sprite = _wheelSprites[0];
 			SelectPotion(-1);
 			//Debug.Log("Mouse too close to center: " + screenPoint + " " + Input.mousePosition + "  " + screenPoint.magnitude.ToString() + " \n mouse position is: " + Input.mousePosition);
 		}
@@ -140,6 +145,7 @@ public class PotionWheelManager : MonoBehaviour
 			Vector2 childPosition = transform.GetChild(i).position / _mainCam.pixelHeight * 2f - new Vector3(1f * _mainCam.aspect, 1f); //Camera.main.ScreenToViewportPoint(transform.GetChild(i).position) * 2f  - new Vector3(1f, 1f);
 			//(Camera.main.ToViewportPoint(transform.GetChild(i).position) - new Vector3(0.5f, 0.5f)) * 2f;
 			//Debug.Log("During closest potion calculation the child position is: " + childPosition);
+
 			float newDistance = Vector3.Distance(targetPosition, childPosition);
 			if (newDistance < distance)
 			{

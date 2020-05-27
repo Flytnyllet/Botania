@@ -51,5 +51,9 @@ public class PageLoader : MonoBehaviour
         transform.parent.GetChild(nextI).gameObject.SetActive(true);
         gameObject.SetActive(false);
     }
+    public void GoToPage(int i)
+    {
+        BookManager.Instance.ChangePage(i);
+    }
 
 }

@@ -102,6 +102,7 @@
 		}
 
 	  void vert(inout appdata_full v) {
+
 		  float3 worldPos = mul(unity_ObjectToWorld, float4(v.vertex.xyz, 1)).xyz;
 
 		  float tex = tex2Dlod(_PhysicsMap, float4(v.texcoord.xy, 0, 0)).r;
