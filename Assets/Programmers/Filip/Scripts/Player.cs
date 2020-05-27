@@ -5,6 +5,10 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     [SerializeField] MeshSettings _meshSettings;
+    [SerializeField] Transform _playerParent;
+    [SerializeField] float _playerSpawnHeightOffset = 3f;
+    [SerializeField, Range(0, 1000)] float _distanceRayCast = 200;
+    [SerializeField] LayerMask _layerMask;
     [SerializeField] BiomeInfo _biomeInfoInstance;
     [SerializeField, Range(0.01f, 30)] float _updateBiomeTime = 1.0f; 
 
@@ -13,8 +17,10 @@ public class Player : MonoBehaviour
 
     static Transform _playerTransform;
     static BiomeInfo _biomeInfo;
+    static Vector3 _spawnPosition;
 
     Timer _updateBiomeTableTimer;
+
 
     private void Awake()
     {
@@ -24,10 +30,46 @@ public class Player : MonoBehaviour
             _playerTransform = GetComponent<Transform>();
             _updateBiomeTableTimer = new Timer(_updateBiomeTime);
             _biomeInfo = _biomeInfoInstance;
+            _spawnPosition = _playerParent.position;
+
             UpdateBiomeInfo();
         }
         else
             Destroy(this);
+    }
+
+    private void Start()
+    {
+        _thisSingleton.StartCoroutine(PlacePlayer());
+    }
+
+    public static void Load()
+    {
+        object spawnPosition = Serialization.Load(Saving.FileNames.PLAYER_POSITION);
+
+        if (spawnPosition != null)
+            _spawnPosition = (Vector3)spawnPosition;
+    }
+
+    public static void Save()
+    {
+        Serialization.Save(Saving.FileNames.PLAYER_POSITION, _playerTransform.position + Vector3.up * 50); //+50 is just to guarantee it doesn't fall throught the ground
+    }
+
+    IEnumerator PlacePlayer()
+    {
+        bool hit = false;
+        RaycastHit collision;
+        do
+        {
+            yield return null;
+            hit = Physics.Raycast(_thisSingleton._playerParent.transform.position, Vector3.down, out collision, _distanceRayCast, _layerMask.value);
+            Debug.DrawRay(_thisSingleton._playerParent.transform.position, Vector3.down * _distanceRayCast, Color.cyan, 1f);
+
+        } while (!hit);
+
+        Debug.LogError(_spawnPosition);
+        //PLACERA SPELARE HÄR!
     }
 
     void Update()

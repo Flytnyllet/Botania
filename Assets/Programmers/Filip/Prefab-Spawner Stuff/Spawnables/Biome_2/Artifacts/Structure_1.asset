@@ -10,26 +10,26 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a2ef82269fb17cf43a9f1163b1dfd939, type: 3}
-  m_Name: Underwater-common-Flower
+  m_Name: Structure_1
   m_EditorClassIdentifier: 
   _autoUpdate: 0
   _noiseMergeType: 2
-  _noiseSettingsData: {fileID: 11400000, guid: 62b8a14286d30904288ea85b8b5269be, type: 2}
+  _noiseSettingsData: {fileID: 11400000, guid: 88c57b2f44da1154d919a076c9c23239, type: 2}
   _parentOnly: 0
   _rotationAmount: 1
   _noiseStartPoint: 0
-  _thickness: 0.73
-  _uniformSpreadAmount: 1
-  _randomSpread: 0.285
-  _offsetAmount: 1.46
+  _thickness: 0
+  _uniformSpreadAmount: 20
+  _randomSpread: 0
+  _offsetAmount: 0
   _spawnFixedHeight: 0
-  _size: 1
+  _size: 10
   _spacing: 1
   _othersCanSpawnInside: 0
-  _spawnDifferencial: 15
-  _hardMinHeight: 0
+  _spawnDifferencial: 0.3
+  _hardMinHeight: 10
   _softMinAmount: 0
-  _hardMaxHeight: 7
+  _hardMaxHeight: 100
   _softMaxAmount: 0
   _surfaceNormalAmount: 1
   _pointAlongNormalRandomness: 0
@@ -38,11 +38,18 @@ MonoBehaviour:
   _softMaxSlope: 0
   _hardMaxSlope: 0
   _prefabs:
-  - _prefab: {fileID: 2383357519381037074, guid: 9557476a7d233b1418ea670c9a63a452,
+  - _prefab: {fileID: 2875429421024424869, guid: f9318347172312344a23a606f0f33b07,
       type: 3}
     _probability: 1
     _height: 0
     _fixedHeight: 0
-    _scale: 0.5
-    _scaleRandom: 1
+    _scale: 1
+    _scaleRandom: 0
+  - _prefab: {fileID: 7669264000673288534, guid: 11e645ad18620664b89891393d1d6be7,
+      type: 3}
+    _probability: 1
+    _height: 0
+    _fixedHeight: 0
+    _scale: 1
+    _scaleRandom: 0
   _subSpawners: []

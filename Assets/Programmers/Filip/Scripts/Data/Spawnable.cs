@@ -37,9 +37,9 @@ public class Spawnable : UpdatableData
     [Header("Height Spawn Settings")]
 
     [SerializeField, Range(0, 100), Tooltip("At which height should objects start spawning? (hard amount)")] float _hardMinHeight = 0;
-    [SerializeField, Range(0, 100), Tooltip("At which height should objects start spawning? (soft amount)")] float _softMinAmount = 0;
+    [SerializeField, Range(-100, 100), Tooltip("At which height should objects start spawning? (soft amount)")] float _softMinAmount = 0;
     [SerializeField, Range(0, 100), Tooltip("At which height should objects stop spawning? (hard amount)")] float _hardMaxHeight = 100;
-    [SerializeField, Range(0, 100), Tooltip("At which height should objects stop spawning? (soft amount)")] float _softMaxAmount = 0;
+    [SerializeField, Range(-100, 100), Tooltip("At which height should objects stop spawning? (soft amount)")] float _softMaxAmount = 0;
     
 
     [Header("Slope Spawn Settings")]
