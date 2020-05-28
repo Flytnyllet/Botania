@@ -20,6 +20,8 @@ public class DevCam : MonoBehaviour
     [SerializeField] float _tiltSpeedModifier = 1f;
     [SerializeField] int _devLayer = 20;
     [SerializeField] FPSMovement _movementScript;
+    [SerializeField] Interactor _interactorScript;
+    [SerializeField] GameObject _crosshairHolder;
 
     bool _activated = false;
     int _originalLayer;
@@ -48,6 +50,8 @@ public class DevCam : MonoBehaviour
             _tiltSpeedModifier = 1f;
             _playerCamera.localEulerAngles = new Vector3(_playerCamera.localEulerAngles.x, _playerCamera.localEulerAngles.y, _tilt);
             _movementScript.enabled = _activated;
+            _interactorScript.enabled = _activated;
+            _crosshairHolder.SetActive(_activated);
             _instructions.SetActive(!_activated);
             _activated = !_activated;
             if (_activated)
