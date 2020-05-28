@@ -41,9 +41,19 @@ public class Music_Manager : MonoBehaviour
         }
 
         DontDestroyOnLoad(this.gameObject);
+
+        Init_MusicPlayer();
     }
 
-    public void Play_Music(int )
+    private void Init_MusicPlayer()
+    {
+
+    }
+
+    public void Play_Music()
+    {
+
+    }
 
     public void Stop_All_Music()
     {

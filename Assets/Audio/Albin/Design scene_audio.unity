@@ -121,6 +121,36 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &103228251
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 103228252}
+  m_Layer: 0
+  m_Name: DELETE ME IF MANY OF ME
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &103228252
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 103228251}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &125917501
 GameObject:
   m_ObjectHideFlags: 0
@@ -296,6 +326,36 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 125917501}
   m_CullTransparentMesh: 0
+--- !u!1 &155687426
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 155687427}
+  m_Layer: 0
+  m_Name: DELETE ME IF MANY OF ME
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &155687427
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 155687426}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 10
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &182451204 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6380197203547624253, guid: 8e92fc871f98d5f4f8caefc7a9acfefc,
@@ -421,7 +481,7 @@ PrefabInstance:
     - target: {fileID: 73162785187240862, guid: 4d206538a7045654f8c45b6d4d6bf3a4,
         type: 3}
       propertyPath: m_RootOrder
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 73162785187240862, guid: 4d206538a7045654f8c45b6d4d6bf3a4,
         type: 3}
@@ -514,7 +574,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &686802104
 GameObject:
@@ -605,7 +665,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 50, y: 200, z: 0}
 --- !u!1001 &869049537
 PrefabInstance:
@@ -705,12 +765,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb5502ada52e7af42b32d487b8148ab8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mus_00_meny: 
-  mus_00_paus: 
-  mus_01_biome2: 
-  mus_01_biome3: 
-  mus_01_biome4: 
-  mus_02_dimma: event:/mus/mus___02_event_dimma
+  mus_00_meny_0: event:/mus/mus___00_meny
+  mus_00_paus_1: event:/mus/mus___00_paus
+  mus_01_biome2_2: event:/mus/mus___01_symbol___biome2
+  mus_01_biome3_3: event:/mus/mus___02_symbol___biome3
+  mus_01_biome4_4: event:/mus/mus___01_symbol_biome4
+  mus_02_dimma_5: event:/mus/mus___02_event_dimma
 --- !u!4 &928711207
 Transform:
   m_ObjectHideFlags: 0
@@ -718,13 +778,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 928711205}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.6312056, y: 11.764923, z: -10.454924}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1645300039}
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1278320910 stripped
 MonoBehaviour:
@@ -793,7 +853,7 @@ PrefabInstance:
     - target: {fileID: 6855661117858189712, guid: e48629ace85defa439adee7fe19723de,
         type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 6855661117858189712, guid: e48629ace85defa439adee7fe19723de,
         type: 3}
@@ -1003,7 +1063,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
 --- !u!1001 &1635830042
 PrefabInstance:
@@ -1055,7 +1115,7 @@ PrefabInstance:
     - target: {fileID: 8190450543575226650, guid: d04509d9a33d4314785a21cdc704c4b2,
         type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 8190450543575226650, guid: d04509d9a33d4314785a21cdc704c4b2,
         type: 3}
@@ -1092,6 +1152,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1645300039}
   - component: {fileID: 1645300040}
+  - component: {fileID: 1645300041}
   m_Layer: 0
   m_Name: Music_Trigger
   m_TagString: Untagged
@@ -1125,6 +1186,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a76735e91f058f4d86487defdbb6d36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!135 &1645300041
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1645300038}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!224 &1881928674 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 2220721196071298707, guid: 9e0ca3a6079c66046aee67eb7061dd1f,
@@ -1376,7 +1450,7 @@ PrefabInstance:
     - target: {fileID: 2726881888222344543, guid: 9e0ca3a6079c66046aee67eb7061dd1f,
         type: 3}
       propertyPath: m_RootOrder
-      value: 6
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 2726881888222344543, guid: 9e0ca3a6079c66046aee67eb7061dd1f,
         type: 3}
