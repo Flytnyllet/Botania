@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class FPSMovement : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class FPSMovement : MonoBehaviour
 	// Tag Handling (Replace with LayerMasks)
 	const string DUCK_BUTTON = "Duck";
 	const string SPRINT_BUTTON = "Sprint";
+	const string CHANGE_CAMERA_MODE_BUTTOM = "Camera";
 	//[SerializeField] string GROUND_TAG = "null";
 	//[SerializeField] string WATER_TAG = "null";
 
@@ -86,8 +88,11 @@ public class FPSMovement : MonoBehaviour
 	[SerializeField] float _teleportPlacementHeight = 10f;
 	[SerializeField] [Range(1, 1000)] float _teleportMinDistance = 1f;
 	[SerializeField] [Range(80, 2000)] float _teleportMaxDistance = 200f;
+	[SerializeField] [Range(50, 500)] float _teleportRay = 100f;
 	[SerializeField] LayerMask _groundLayer;
+	Color alpha = new Color(0, 0, 0, 1);
 
+	[SerializeField] Image _loadScreen = null;
 
 	// !OBS Weird bug causing script to disable itself when awake is used.
 	void Awake()
@@ -123,6 +128,16 @@ public class FPSMovement : MonoBehaviour
 		_playerCam = transform.Find("PlayerCam");
 		_cameraStartPosition = _playerCam.localPosition;
 		CharacterState.SetControlState(CHARACTER_CONTROL_STATE.PLAYERCONTROLLED);
+	}
+
+	private void Update()
+	{
+		if (Input.GetKeyDown(KeyCode.N))
+		{
+			Debug.Log("START SMOTHNESS");
+			MouseLook camScript = _playerCam.GetComponent<MouseLook>();
+			camScript.smoothing = !camScript.smoothing;
+		}
 	}
 
 	void FixedUpdate()
@@ -273,21 +288,32 @@ public class FPSMovement : MonoBehaviour
 
 	public void Teleport(Vector3 position)
 	{
-		transform.position = position;
+		charCon.Move(position - transform.position);
+		//transform.position = position;
 	}
 
 	public bool PositionCorrection(float placementHeight)
 	{
 		RaycastHit hit;
-		Vector3 rayPoint = transform.position.x * Vector3.right + Vector3.up * 300f + transform.position.z * Vector3.forward;
+		Vector3 rayPoint = transform.position.x * Vector3.right + Vector3.up * _teleportRay + transform.position.z * Vector3.forward;
 
-		if (Physics.Raycast(rayPoint, Vector3.down, out hit, 500f, _groundLayer))
+		if (Physics.Raycast(rayPoint, Vector3.down, out hit, _teleportRay, _groundLayer))
 		{
 			Vector3 closestPoint = hit.point;
 
 			transform.position = closestPoint + Vector3.up; //hit.collider.ClosestPointOnBounds(closestPoint+Vector3.up*10) + Vector3.up*2;
 
-
+			if(transform.position.y < 8f)
+			{
+				Debug.Log("Attempt to correct water");
+				RaycastHit hitWater;
+				Vector3 rayPointWater = transform.position.x * Vector3.right + Vector3.up * _teleportRay + transform.position.z * Vector3.forward;
+				if (Physics.Raycast(rayPointWater, Vector3.up, out hitWater, _teleportRay, _waterLayer))
+				{
+					Vector3 closestWater = hitWater.point;
+					transform.position = closestWater + Vector3.up;
+				}
+			}
 			//bool foundWater = false;
 			//if (Physics.Raycast(transform.position, Vector3.up, out hit, 100f, _waterLayer))
 			//{
@@ -324,17 +350,43 @@ public class FPSMovement : MonoBehaviour
 		StartCoroutine(Teleportation_Execution());
 	}
 
+	IEnumerator Fade(float fadeTime, Image image, float change)
+	{
+		float clock =  fadeTime + Time.time;
+		while(clock > Time.time)
+		{
+			image.color += change * alpha * fadeTime * Time.deltaTime;
+			yield return null;
+		}
+	}
+
+	void DelayedTPFade()
+	{
+		StartCoroutine(Fade(1f, _loadScreen, 1f));
+	}
+
 	IEnumerator Teleportation_Execution()
 	{
 		// =====================
 		// TELEPORTATION WIND-UP
 		// =====================
+
+		_loadScreen.gameObject.SetActive(true);
+		_loadScreen.color *= new Color(1f,1f,1f,0f);
+		Image _loadIcon = _loadScreen.transform.GetChild(0).GetComponent<Image>();
+		_loadIcon.color *= new Color(1f, 1f, 1f, 0f);
+
+		Invoke("DelayedTPFade", 1f);
+
 		while (CharacterState.IsAbilityFlagActive(ABILITY_FLAG.TELEPORT))
 		{
 			charCon.Move(Vector3.up * _teleportationFloatSpeed * Time.deltaTime);
 
 			yield return null;
 		}
+
+		_loadScreen.color += new Color(0f, 0f, 0f, 1f);
+		_loadIcon.color += new Color(0f, 0f, 0f, 1f);
 
 		// =====================
 
@@ -349,6 +401,9 @@ public class FPSMovement : MonoBehaviour
 		//Vector3.right * transform.position.x * teleportPoint.x + Vector3.forward * transform.position.z * teleportPoint.y;
 		Debug.LogFormat("Teleportation target: {0}", teleportTarget);
 		Teleport(teleportTarget);
+
+		_loadIcon.color += new Color(0f, 0f, 0f, 1f);
+		Fade(1f, _loadScreen, -1f);
 
 		yield return null;
 
@@ -366,6 +421,7 @@ public class FPSMovement : MonoBehaviour
 			
 		}
 
+
 		yield return null;
 
 
@@ -376,6 +432,7 @@ public class FPSMovement : MonoBehaviour
 		// TELEPORTATION WIND-DOWN
 		// =====================
 
+		_loadScreen.gameObject.SetActive(false);
 		CharacterState.SetControlState(CHARACTER_CONTROL_STATE.PLAYERCONTROLLED);
 
 		_gravity.BaseValue = 4f;
@@ -521,6 +578,7 @@ public class FPSMovement : MonoBehaviour
 				* _bobbingAmount.y * modifier, Time.deltaTime * _swimBobSpeed);
 			Vector3 xDirectional = _playerCam.transform.right.normalized * (cameraLocalPosition.x + sinVal * _bobbingAmount.x * modifier);
 
+			//_playerCam.localPosition = Vector3.Lerp(_playerCam.localPosition, new Vector3(xDirectional.x, yDirectional, xDirectional.z), 0.5f);
 			_playerCam.localPosition = new Vector3(xDirectional.x, yDirectional, xDirectional.z);
 
 			if (!_inAir && Mathf.Abs(sinVal) > 0.9 && _allowStepSound)

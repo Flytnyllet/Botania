@@ -94,13 +94,13 @@ public class BookManager : MonoBehaviour
 
         else if (OpenBookmark(4, INPUT_MAP)) ;
 
-        else if (OpenBookmark(1, INPUT_LORE)) ;
+        else if (OpenBookmark(2, INPUT_LORE)) ;
 
-        else if (OpenBookmark(2, INPUT_FLOWERS)) ;
+        else if (OpenBookmark(1, INPUT_FLOWERS)) ;
 
         else if (OpenBookmark(3, INPUT_ALCHEMY)) ;
 
-        if (Input.GetButtonDown(OPEN_WHEEL) && !_book.activeSelf && CharacterState.Control_State == CHARACTER_CONTROL_STATE.PLAYERCONTROLLED)
+        else if (Input.GetButtonDown(OPEN_WHEEL) && !_book.activeSelf && CharacterState.Control_State == CHARACTER_CONTROL_STATE.PLAYERCONTROLLED)
         {
             _potionWheel.SetActive(true);
             //_potionWheel.SetActive(!_potionWheel.activeSelf);
