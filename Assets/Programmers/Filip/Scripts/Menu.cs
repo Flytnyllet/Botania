@@ -11,16 +11,15 @@ public class Menu : MonoBehaviour
 
     CHARACTER_CONTROL_STATE _previousState;
 
-    private void Awake()
-    {
-        _menu.SetActive(false);
-    }
+    bool _onStart = true;
 
     void Update()
     {
-        if (Input.GetButtonDown(MENU_BUTTON))
+        if ((_onStart || Input.GetButtonDown(MENU_BUTTON)) && _menu != null)
         {
-            if (CharacterState.Control_State != CHARACTER_CONTROL_STATE.MENU_NO_MOVEMENT || CharacterState.Control_State != CHARACTER_CONTROL_STATE.MENU)
+            _onStart = false;
+
+            if (CharacterState.Control_State != CHARACTER_CONTROL_STATE.MENU_NO_MOVEMENT && CharacterState.Control_State != CHARACTER_CONTROL_STATE.MENU)
             {
                 _previousState = CharacterState.Control_State;
                 CharacterState.SetControlState(CHARACTER_CONTROL_STATE.MENU_NO_MOVEMENT);
@@ -33,20 +32,32 @@ public class Menu : MonoBehaviour
         }
     }
 
-    void ExitMenu()
+    public void ExitMenu()
     {
         CharacterState.SetControlState(_previousState);
         _menu.SetActive(false);
     }
 
-
-    public void TEST()
+    public void Quit()
     {
-        Debug.LogError("PRESSED!");
+        SaveSystem.SaveStatic();
+        Application.Quit();
     }
 
     public void Restart()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name, LoadSceneMode.Single);
+        Destroy(_menu);
+        OnStartFadeIn.FadeOut();
+        StartCoroutine(RestartWithFade());
+    }
+
+    IEnumerator RestartWithFade()
+    {
+        while (!OnStartFadeIn.Done())
+        {
+            yield return null;
+        }
+
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex, LoadSceneMode.Single);
     }
 }

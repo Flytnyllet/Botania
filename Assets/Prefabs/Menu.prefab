@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7325609581472266348}
   - component: {fileID: 7325609581472266346}
   m_Layer: 5
-  m_Name: Options
+  m_Name: Restart
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -88,7 +88,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 0}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8271645719695222983}
+        m_MethodName: Restart
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!1 &7325609582375723722
@@ -203,6 +214,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cdd026ddd06a0c44a9a3b5c667ff2641, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _menu: {fileID: 7325609583524373537}
 --- !u!1 &7325609582903974898
 GameObject:
   m_ObjectHideFlags: 0
@@ -293,7 +305,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 8271645719695222983}
-        m_MethodName: TEST
+        m_MethodName: ExitMenu
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -383,7 +395,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: Options
+  m_Text: RESTART
 --- !u!1 &7325609583165646979
 GameObject:
   m_ObjectHideFlags: 0
@@ -473,8 +485,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: ExitGame
+      - m_Target: {fileID: 8271645719695222983}
+        m_MethodName: Quit
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

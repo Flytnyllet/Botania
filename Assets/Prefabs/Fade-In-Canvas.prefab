@@ -59,7 +59,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 10
   m_TargetDisplay: 0
 --- !u!114 &7559629404705851067
 MonoBehaviour:
@@ -112,7 +112,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f1dab6ae1c594c4aa1a5c9a2dcba515, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _curve:
+  _fadeInCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
@@ -125,24 +125,6 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 0.36766624
-      value: 0.779597
-      inSlope: -1.7640747
-      outSlope: -1.7640747
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.6459288
-      value: 0.16989754
-      inSlope: -0.6394725
-      outSlope: -0.6394725
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.11498201
-      outWeight: 0.33333334
-    - serializedVersion: 3
       time: 1
       value: 0
       inSlope: 0
@@ -154,8 +136,33 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  _speed: 3
-  _destroyOnUse: 1
+  _fadeOutCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _fadeInSpeed: 6
+  _fadeOutSpeed: 3
+  _destroyOnUse: 0
   _image: {fileID: 7559629405713545463}
 --- !u!1 &7559629405713545461
 GameObject:

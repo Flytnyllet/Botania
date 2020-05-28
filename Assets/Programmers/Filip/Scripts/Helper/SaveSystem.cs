@@ -92,7 +92,7 @@ public class SaveSystem : MonoBehaviour
         if (_load)
         {
             ValidateSave();
-            Noise.SetSeed(GetWorldSeed());
+            Noise.Load();
             Player.Load();
             PrefabSpawnerSaveData.Load();
             MapGenerator.Load();
@@ -109,20 +109,15 @@ public class SaveSystem : MonoBehaviour
         object seed = Serialization.Load(Saving.FileNames.SEED);
 
         if (seed == null)
-        {
-            PrefabSpawnerSaveData.Wipe();
-            MapGenerator.Wipe();
-        }
+            Wipe();
     }
 
-    int GetWorldSeed()
+    public void Wipe()
     {
-        object seed = Serialization.Load(Saving.FileNames.SEED);
-
-        if (seed == null)
-            return UnityEngine.Random.Range(int.MinValue, int.MaxValue);
-        else
-            return (int)seed;
+        Noise.Wipe();
+        Player.Wipe();
+        PrefabSpawnerSaveData.Wipe();
+        MapGenerator.Wipe();
     }
 
     public static void SaveStatic()

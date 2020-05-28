@@ -10,7 +10,9 @@ public class Player : MonoBehaviour
     [SerializeField, Range(0, 1000)] float _distanceRayCast = 200;
     [SerializeField] LayerMask _layerMask;
     [SerializeField] BiomeInfo _biomeInfoInstance;
-    [SerializeField, Range(0.01f, 30)] float _updateBiomeTime = 1.0f; 
+    [SerializeField, Range(0.01f, 30)] float _updateBiomeTime = 1.0f;
+
+    [SerializeField] FPSMovement _fpsScript;
 
     //Singleton
     static Player _thisSingleton;
@@ -47,13 +49,18 @@ public class Player : MonoBehaviour
     {
         object spawnPosition = Serialization.Load(Saving.FileNames.PLAYER_POSITION);
 
-        if (spawnPosition != null)
+        if (spawnPosition != null || (Vector3)spawnPosition == new Vector3(-1000, -1000, -1000))
             _spawnPosition = (Vector3)spawnPosition;
     }
 
     public static void Save()
     {
         Serialization.Save(Saving.FileNames.PLAYER_POSITION, _playerTransform.position + Vector3.up * 50); //+50 is just to guarantee it doesn't fall throught the ground
+    }
+
+    public static void Wipe()
+    {
+        Serialization.Save(Saving.FileNames.PLAYER_POSITION, new Vector3(-1000, -1000, -1000)); //This is to mark it as null
     }
 
     IEnumerator PlacePlayer()
@@ -65,11 +72,11 @@ public class Player : MonoBehaviour
             yield return null;
             hit = Physics.Raycast(_thisSingleton._playerParent.transform.position, Vector3.down, out collision, _distanceRayCast, _layerMask.value);
             Debug.DrawRay(_thisSingleton._playerParent.transform.position, Vector3.down * _distanceRayCast, Color.cyan, 1f);
-
         } while (!hit);
 
-        Debug.LogError(_spawnPosition);
-        //PLACERA SPELARE HÄR!
+        _fpsScript.Teleport(collision.point);
+
+        OnStartFadeIn.FadeIn();
     }
 
     void Update()
