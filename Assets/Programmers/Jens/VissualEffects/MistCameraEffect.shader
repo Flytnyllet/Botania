@@ -111,13 +111,15 @@
 			fixed4 frag(v2f i) : SV_Target
 			{
 				float rawDepth = DecodeFloatRG(tex2D(_CameraDepthTexture, i.uv));
-				float depth = Linear01Depth(rawDepth)*1850;
-				float4 wsDir = depth * i.interpolatedRay;
+				float depth = Linear01Depth(rawDepth) * 1850;
+				float4 wsDir = depth * i.interpolatedRay*0.99;
 				float3 position = _WorldSpaceCameraPos + wsDir;
+				//position.y = 0;
 				//return float4(position % 1, 1);
 
 				fixed4 col = tex2D(_MainTex, i.uv);
-				return smoothstep(0.3,1, fBm3D(position));
+				float4 noise =smoothstep(0.3, 1, fBm3D(position*5));
+				return lerp(noise, col, 0.95);
 				return float4(position.x % 1, 0, position.z % 1, 1);
 				float2 uv = i.uv - 0.5;
 				float dist = step(distance(uv, 0), 0.55);
@@ -126,5 +128,5 @@
 			}
 			ENDCG
 		}
-	}
+					}
 }
