@@ -30,7 +30,7 @@ public class Amb_Local_Wind : MonoBehaviour
         Init_Local_Wind();
     }
 
-    public void Init_Local_Wind()
+    private void Init_Local_Wind()
     {
         windEmitterL.Init_Event(event_Ref);
         windEmitterR.Init_Event(event_Ref);

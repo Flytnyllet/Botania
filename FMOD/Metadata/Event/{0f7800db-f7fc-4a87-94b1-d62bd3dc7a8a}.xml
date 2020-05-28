@@ -115,9 +115,6 @@
 		</relationship>
 	</object>
 	<object class="EventMixerMaster" id="{b17d222f-59ed-4b78-8191-8c486b983205}">
-		<property name="volume">
-			<value>-4.5</value>
-		</property>
 		<relationship name="effectChain">
 			<destination>{336d4585-2c56-444b-96c0-051f846e356c}</destination>
 		</relationship>
@@ -146,6 +143,9 @@
 		</relationship>
 	</object>
 	<object class="EventMixerGroup" id="{50d99700-e050-4c0d-9f78-dceb9dec8f0b}">
+		<property name="volume">
+			<value>4</value>
+		</property>
 		<property name="name">
 			<value>sub</value>
 		</property>
@@ -172,7 +172,7 @@
 	</object>
 	<object class="EventMixerGroup" id="{49f83b9d-3ef6-4079-892f-39e596d1a7dc}">
 		<property name="volume">
-			<value>-17</value>
+			<value>-11.5</value>
 		</property>
 		<property name="name">
 			<value>flap</value>
@@ -200,7 +200,7 @@
 	</object>
 	<object class="EventMixerGroup" id="{995214eb-5f68-4068-b5c7-4e78c0649851}">
 		<property name="volume">
-			<value>-31</value>
+			<value>-22.5</value>
 		</property>
 		<property name="name">
 			<value>sharp</value>
@@ -225,7 +225,7 @@
 	</object>
 	<object class="EventMixerGroup" id="{e4b685ea-e61c-4f64-9c15-885cd0e9d3c4}">
 		<property name="volume">
-			<value>-12</value>
+			<value>-5.5</value>
 		</property>
 		<property name="name">
 			<value>dryleaf</value>
@@ -250,7 +250,7 @@
 	</object>
 	<object class="EventMixerGroup" id="{5982f859-1cc8-41b6-83e3-4a8ed38bec65}">
 		<property name="volume">
-			<value>-13</value>
+			<value>-5</value>
 		</property>
 		<property name="name">
 			<value>dryleaf</value>
@@ -330,13 +330,10 @@
 	<object class="MixerBusPanner" id="{30545203-36d5-40ae-a7ca-eab26f919543}" />
 	<object class="ThreeEQEffect" id="{e9ff7295-eb34-4f1a-9259-9f1364e60d99}">
 		<property name="lowGain">
-			<value>-11.5</value>
+			<value>0.5</value>
 		</property>
 		<property name="midGain">
 			<value>2.5</value>
-		</property>
-		<property name="highGain">
-			<value>-3</value>
 		</property>
 		<property name="lowCrossover">
 			<value>700</value>
@@ -360,7 +357,7 @@
 			<value>1</value>
 		</property>
 		<property name="soundSize">
-			<value>5.5</value>
+			<value>3.4000001</value>
 		</property>
 		<property name="minimumExtent">
 			<value>276</value>

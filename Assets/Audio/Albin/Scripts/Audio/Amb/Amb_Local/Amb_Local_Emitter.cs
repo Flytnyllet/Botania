@@ -54,7 +54,7 @@ public class Amb_Local_Emitter : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (_isShy == true && other.CompareTag("Player"))
         {
             Set_Parameter(_isShyParameterId, 1);
         }
@@ -62,7 +62,7 @@ public class Amb_Local_Emitter : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (_isShy == true && other.CompareTag("Player"))
         {
             StartCoroutine(WaitBeforeNotShy(Random.Range(1, 5)));
         }

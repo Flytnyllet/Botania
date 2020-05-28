@@ -93,6 +93,9 @@
 		</relationship>
 	</object>
 	<object class="EventMixerMaster" id="{ac980b89-fb87-4760-b732-b819b4e1b77d}">
+		<property name="volume">
+			<value>-6</value>
+		</property>
 		<relationship name="modulators">
 			<destination>{6f786ae0-3d50-414d-93ba-6b35c36246cd}</destination>
 		</relationship>
@@ -128,10 +131,10 @@
 			<value>1</value>
 		</property>
 		<property name="minimumTimeBetweenSounds">
-			<value>7000</value>
+			<value>25000</value>
 		</property>
 		<property name="maximumTimeBetweenSounds">
-			<value>16000</value>
+			<value>80000</value>
 		</property>
 		<property name="minimumScatterDistance">
 			<value>3.60000014</value>

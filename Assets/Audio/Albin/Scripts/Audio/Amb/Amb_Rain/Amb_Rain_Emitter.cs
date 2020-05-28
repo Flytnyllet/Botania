@@ -27,26 +27,33 @@ public class Amb_Rain_Emitter : MonoBehaviour
     public void Attach_Rain_Emitter()
     {
         event_Description.createInstance(out event_Instance);
-        RuntimeManager.AttachInstanceToGameObject(event_Instance, transform, GetComponent<Rigidbody>());
+        
     }
 
     public void Start_Rain_Emitter()
     {
-        event_Instance.start();
-        event_Instance.release();
         _isPlaying = true;
+        event_Instance.start();
     }
 
     private void Update()
     {
         if (_isPlaying)
         {
+            RuntimeManager.AttachInstanceToGameObject(event_Instance, transform, GetComponent<Rigidbody>());
             event_Instance.isVirtual(out _isVirtual);
             event_Instance.getPlaybackState(out _playbackState);
 
             if (_playbackState != PLAYBACK_STATE.STOPPED) { return; }
             else { _isPlaying = false; }
         }
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.yellow;
+
+        Gizmos.DrawIcon(transform.position, "FMOD/FMODEmitter.tiff", true);
     }
 
     public void Stop_Rain_Emitter()

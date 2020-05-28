@@ -97,7 +97,7 @@
 	</object>
 	<object class="EventMixerMaster" id="{8df1be48-34ae-485f-8e6f-d3354b9c3c1e}">
 		<property name="volume">
-			<value>-4</value>
+			<value>-6</value>
 		</property>
 		<relationship name="effectChain">
 			<destination>{28dff33c-b5ec-4634-843f-6550b7271bcf}</destination>
@@ -198,6 +198,9 @@
 		</relationship>
 	</object>
 	<object class="EventMixerGroup" id="{d16aa14d-ba39-46c4-8a23-0ecfea3590b6}">
+		<property name="volume">
+			<value>-5.5</value>
+		</property>
 		<property name="name">
 			<value>Audio 2</value>
 		</property>
@@ -351,8 +354,14 @@
 	</object>
 	<object class="MixerBusFader" id="{35d7238f-32ae-4b7f-b151-60020971ce9f}" />
 	<object class="ThreeEQEffect" id="{664015de-1fc0-4c28-a8e5-061a1aef40f9}">
+		<property name="lowGain">
+			<value>-4</value>
+		</property>
+		<property name="midGain">
+			<value>-10</value>
+		</property>
 		<property name="highGain">
-			<value>-2</value>
+			<value>-7.5</value>
 		</property>
 		<property name="lowCrossover">
 			<value>850</value>
@@ -491,7 +500,7 @@
 			<value>1</value>
 		</property>
 		<property name="value">
-			<value>-80</value>
+			<value>-55</value>
 		</property>
 	</object>
 	<object class="AutomationPoint" id="{272ee528-63a9-4127-94c7-5f77227d1ad1}">
@@ -499,7 +508,7 @@
 			<value>0.99507389162561555</value>
 		</property>
 		<property name="value">
-			<value>0</value>
+			<value>-6.5</value>
 		</property>
 	</object>
 	<object class="AutomationPoint" id="{776e2d14-4241-4d20-85d7-d9c84f428445}">
@@ -507,7 +516,7 @@
 			<value>1.4991200000000002</value>
 		</property>
 		<property name="value">
-			<value>-80</value>
+			<value>-55</value>
 		</property>
 	</object>
 	<object class="AutomationPoint" id="{82cf2cb8-92e4-450d-84a3-9c045ad1e314}">
@@ -515,7 +524,7 @@
 			<value>1.4996400000000001</value>
 		</property>
 		<property name="value">
-			<value>0</value>
+			<value>-6.5</value>
 		</property>
 	</object>
 </objects>

@@ -82,6 +82,9 @@
 		</relationship>
 	</object>
 	<object class="EventMixerMaster" id="{ade82334-35c3-4b84-be6f-088f33b3e367}">
+		<property name="volume">
+			<value>-13.5</value>
+		</property>
 		<relationship name="modulators">
 			<destination>{f536906d-075b-40a5-82d7-be61a535e469}</destination>
 		</relationship>
@@ -109,10 +112,10 @@
 			<value>1</value>
 		</property>
 		<property name="minimumTimeBetweenSounds">
-			<value>5500</value>
+			<value>10000</value>
 		</property>
 		<property name="maximumTimeBetweenSounds">
-			<value>10000</value>
+			<value>30000</value>
 		</property>
 		<property name="minimumScatterDistance">
 			<value>1.60000002</value>
@@ -211,6 +214,15 @@
 		</property>
 		<property name="minimumExtent">
 			<value>136</value>
+		</property>
+		<property name="panBlend">
+			<value>0.270000011</value>
+		</property>
+		<property name="userPanDirection">
+			<value>-0.21040529</value>
+		</property>
+		<property name="userPanExtent">
+			<value>80.9047394</value>
 		</property>
 	</object>
 	<object class="SingleSound" id="{b2269e60-d4b5-4790-906e-9ce8e0e81c53}">

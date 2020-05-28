@@ -592,13 +592,20 @@ public class FPSMovement : MonoBehaviour
 		return false;*/
 	}
 
-	void FootstepsSound()
-	{
-		//if (!_inAir && _travelledDist >= _travelDist + _randWalk)
-		//{
-		_emitPlayerSound.Init_Footsteps(0);
-		//_travelledDist = 0f;
-		//}
-		//_prevPos = transform.position;
-	}
+    void FootstepsSound()
+    {
+        //if (!_inAir && _travelledDist >= _travelDist + _randWalk)
+        //{
+        if (transform.position.y < 10.2f)
+        {
+            _emitPlayerSound.Init_Footsteps(1);
+        }
+        else
+        {
+            _emitPlayerSound.Init_Footsteps(0);
+        }
+        //_travelledDist = 0f;
+        //}
+        //_prevPos = transform.position;
+    }
 }
