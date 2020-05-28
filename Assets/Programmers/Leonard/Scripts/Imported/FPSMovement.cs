@@ -444,7 +444,7 @@ public class FPSMovement : MonoBehaviour
 		if (CharacterState.IsAbilityFlagActive(ABILITY_FLAG.SLOWFALL))
 		{
 			if (_velocity.y > 0) _velocity.y = 0;
-			factor *= 0.15f;
+			factor *= 0.075f;
 		}
 
 		charCon.Move(_velocity * Time.deltaTime);

@@ -11,6 +11,8 @@ public class DevCam : MonoBehaviour
 
     [SerializeField] bool _useDevCam = true;
 
+    Camera _camera;
+
     [SerializeField] Transform _playerCamera;
     [SerializeField] CharacterController _characterController;
     [SerializeField] GameObject _instructions;
@@ -23,12 +25,13 @@ public class DevCam : MonoBehaviour
     [SerializeField] Interactor _interactorScript;
     [SerializeField] GameObject _crosshairHolder;
 
-    bool _activated = false;
+    public bool _activated = false;
     int _originalLayer;
     float _tilt = 0f;
 
     private void Awake()
     {
+        _camera = Camera.main;
         _instructions.SetActive(false);
 
         if (!_useDevCam)
@@ -40,9 +43,14 @@ public class DevCam : MonoBehaviour
     private void Update()
     {
         bool activate = Input.GetKeyDown(KeyCode.F1);
-
+        if (Input.GetKeyDown(KeyCode.F1))
+        {
+            CharacterState.SetControlState(CHARACTER_CONTROL_STATE.Dev);
+        }
         if (activate)
         {
+
+
             RenderSettings.fog = true;
 
             _speedModifier = 1f;
@@ -62,6 +70,7 @@ public class DevCam : MonoBehaviour
 
         if (_activated)
         {
+
             bool showInstructions = Input.GetKeyDown(KeyCode.F2);
             bool shouldCollide = Input.GetKeyDown(KeyCode.F3);
             bool resetSpeed = Input.GetKeyDown(KeyCode.F4);
@@ -72,7 +81,7 @@ public class DevCam : MonoBehaviour
 
             bool shouldChangeTilt = Input.GetKey(KeyCode.Z);
 
-            
+
             if (showInstructions)
                 _instructions.SetActive(!_instructions.activeSelf);
             if (shouldCollide)
@@ -110,6 +119,8 @@ public class DevCam : MonoBehaviour
     {
         if (_activated)
         {
+
+
             Vector4 movement = new Vector4(Input.GetAxis(HORIZONTAL), Input.GetAxis(VERTICAL), Input.GetAxis(UP), Input.GetAxis(DOWN));
             bool tiltLeft = Input.GetKey(KeyCode.Alpha1);
             bool tiltRight = Input.GetKey(KeyCode.Alpha3);
@@ -119,8 +130,22 @@ public class DevCam : MonoBehaviour
         }
     }
 
+
     void Walking(Vector4 movement, float modifier)
     {
+        Vector2 mousePos = Input.mousePosition;
+        mousePos.x /= _camera.pixelWidth;
+        mousePos.y /= _camera.pixelHeight;
+        float temp = mousePos.x;
+        mousePos.x = mousePos.y;
+        mousePos.y = temp;
+        mousePos = mousePos * 2 - new Vector2(1, 1);
+        _playerCamera.Rotate(mousePos * 10 * Time.deltaTime);
+
+
+
+        Debug.Log(mousePos);
+
         Vector3 lookDir = _playerCamera.forward;
         Vector3 move = _playerCamera.right.normalized * movement.x + lookDir.normalized * movement.y + _playerCamera.up.normalized * movement.z + _playerCamera.up * -movement.w;
         _characterController.Move(move.normalized * _speed * modifier * Time.deltaTime);

@@ -18,12 +18,12 @@
 		_NoiseStrenght("Strenght", float) = 0.5
 	}
 		SubShader{
-		  Tags { "RenderType" = "Opaque" }
+			Tags  {"Queue" = "Transparent" "RenderType" = "Transparent" }
 		  cull off
 		  CGPROGRAM
-		  #pragma surface surf Lambert vertex:vert addshadow
-		  #pragma target 3.0 
-		  #pragma shader_feature ALPHA_CUTOUT
+			#pragma surface surf Lambert vertex:vert dithercrossfade addshadow alpha:fade
+			#pragma target 3.0
+		  //#pragma shader_feature ALPHA_CUTOUT
 
 		struct Input {
 			  float2 uv_MainTex;
@@ -133,22 +133,22 @@
 	  void surf(Input IN, inout SurfaceOutput o) {
 		  fixed4 c = tex2D(_MainTex, IN.uv_MainTex)*_Color;
 		  o.Albedo = c.rgb / gEmissionMult;
-		  o.Alpha = tex2D(_Alpha, IN.uv_MainTex)*_Color;
-		  float2 pos = IN.screenPos.xy / IN.screenPos.w;
-		  pos *= _ScreenParams.xy; // pixel position
-		  float4x4 thresholdMatrix =
-		  {
-		  1.0 / 17.0,   9.0 / 17.0,   3.0 / 17.0,   11.0 / 17.0,
-		  13.0 / 17.0,  5.0 / 17.0,   15.0 / 17.0,  7.0 / 17.0,
-		  4.0 / 17.0,   12.0 / 17.0,  2.0 / 17.0,   10.0 / 17.0,
-		  16.0 / 17.0,  8.0 / 17.0,   14.0 / 17.0,  6.0 / 17.0
-		  };
-#ifdef ALPHA_CUTOUT 
-		  clip(o.Alpha - _CutoutValue);
-#else
-		  clip(o.Alpha - 0.01 - (thresholArray[pos.x % 8 * 8 + pos.y % 8]) / 64);
-		  //clip(o.Alpha - thresholdMatrix[fmod(pos.x, 4)][pos.y % 4]);
-#endif
+		  o.Alpha = tex2D(_Alpha, IN.uv_MainTex);
+//		  float2 pos = IN.screenPos.xy / IN.screenPos.w;
+//		  pos *= _ScreenParams.xy; // pixel position
+//		  float4x4 thresholdMatrix =
+//		  {
+//		  1.0 / 17.0,   9.0 / 17.0,   3.0 / 17.0,   11.0 / 17.0,
+//		  13.0 / 17.0,  5.0 / 17.0,   15.0 / 17.0,  7.0 / 17.0,
+//		  4.0 / 17.0,   12.0 / 17.0,  2.0 / 17.0,   10.0 / 17.0,
+//		  16.0 / 17.0,  8.0 / 17.0,   14.0 / 17.0,  6.0 / 17.0
+//		  };
+//#ifdef ALPHA_CUTOUT 
+//		  clip(o.Alpha - _CutoutValue);
+//#else
+//		  clip(o.Alpha - 0.01 - (thresholArray[pos.x % 8 * 8 + pos.y % 8]) / 64);
+//		  //clip(o.Alpha - thresholdMatrix[fmod(pos.x, 4)][pos.y % 4]);
+//#endif
 		  o.Emission = tex2D(_EmissionMap, IN.uv_MainTex)*_EmissionMult*gEmissionMult;
 	  }
 	ENDCG
