@@ -42,6 +42,8 @@ public class SaveSystem : MonoBehaviour
     {
         if (_thisSaveSystem == null)
         {
+            Ready = false;
+
             _saveIntervalTime = _saveIntervalTime < _saveIconTime ? _saveIconTime : _saveIntervalTime;
             _menuSaveIntervall = _menuSaveIntervall < _saveIconTime ? _saveIconTime : _menuSaveIntervall;
 
