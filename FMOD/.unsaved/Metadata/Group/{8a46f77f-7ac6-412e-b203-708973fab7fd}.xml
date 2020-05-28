@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.00.00">
+	<object class="MixerGroup" id="{8a46f77f-7ac6-412e-b203-708973fab7fd}">
+		<property name="name">
+			<value>amb</value>
+		</property>
+		<relationship name="effectChain">
+			<destination>{079223ab-1fe7-4d28-a7f4-e8a23c0189ba}</destination>
+		</relationship>
+		<relationship name="panner">
+			<destination>{7c27b596-f988-4225-8b08-1cc6e59c2956}</destination>
+		</relationship>
+		<relationship name="output">
+			<destination>{188885a1-6692-44d3-89fa-7ea6a74a4f08}</destination>
+		</relationship>
+	</object>
+	<object class="MixerBusEffectChain" id="{079223ab-1fe7-4d28-a7f4-e8a23c0189ba}">
+		<relationship name="effects">
+			<destination>{3030f133-e2fa-49fb-81f1-c31d8e304a13}</destination>
+			<destination>{3581c7e1-491b-42dd-9ade-31e1f22a0a72}</destination>
+		</relationship>
+	</object>
+	<object class="MixerBusPanner" id="{7c27b596-f988-4225-8b08-1cc6e59c2956}" />
+	<object class="GainEffect" id="{3030f133-e2fa-49fb-81f1-c31d8e304a13}">
+		<property name="gain">
+			<value>3</value>
+		</property>
+	</object>
+	<object class="MixerBusFader" id="{3581c7e1-491b-42dd-9ade-31e1f22a0a72}" />
+</objects>

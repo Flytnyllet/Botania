@@ -9,7 +9,22 @@ public class Music_Manager : MonoBehaviour
     public static Music_Manager Instance;
 
     [EventRef]
-    public string mus_02_dimma;
+    public string mus_00_meny_0;
+
+    [EventRef]
+    public string mus_00_paus_1;
+
+    [EventRef]
+    public string mus_01_biome2_2;
+
+    [EventRef]
+    public string mus_01_biome3_3;
+
+    [EventRef]
+    public string mus_01_biome4_4;
+
+    [EventRef]
+    public string mus_02_dimma_5;
 
     public bool IsSilent { get { return _isSilent; } }
     private bool _isSilent;
@@ -24,7 +39,11 @@ public class Music_Manager : MonoBehaviour
         {
             Instance = this;
         }
+
+        DontDestroyOnLoad(this.gameObject);
     }
+
+    public void Play_Music(int )
 
     public void Stop_All_Music()
     {
