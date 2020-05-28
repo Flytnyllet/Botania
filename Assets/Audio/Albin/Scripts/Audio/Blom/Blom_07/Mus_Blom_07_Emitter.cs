@@ -13,6 +13,9 @@ public class Mus_Blom_07_Emitter : MonoBehaviour
     private bool _is3D;
     [HideInInspector]
     public float _maxDistance;
+    public bool IsPlaying { get { return _isPlaying; } }
+    private bool _isPlaying = false;
+    private bool _shouldStart = false;
 
     [HideInInspector]
     public PARAMETER_ID _isFollowParameterId;
@@ -42,7 +45,6 @@ public class Mus_Blom_07_Emitter : MonoBehaviour
             RuntimeManager.AttachInstanceToGameObject(event_Instance, transform, GetComponent<Rigidbody>());
 
         Init_Parameter();
-        Init_Blom_07();
     }
 
     private void Init_Parameter()
@@ -77,18 +79,30 @@ public class Mus_Blom_07_Emitter : MonoBehaviour
         blom07CalmEventDescription.getParameterDescriptionByName("blom_07_calm", out blom07CalmParameterDescription);
         _blom07CalmParameterId = blom07CalmParameterDescription.id;
 
+        Init_Blom_07();
     }
 
     private void Init_Blom_07()
     {
-        event_Instance.start();
-        event_Instance.release();
+                                     //Music_Manager.Instance.Stop_All_Music();
+        _shouldStart = true;
     }
 
     private void FixedUpdate()
     {
-        event_Instance.getPlaybackState(out _event_State);
-        CheckPlaybackState();
+        if (_shouldStart)           // && Music_Manager.Instance.IsSilent
+        {
+            event_Instance.start();
+            _isPlaying = true;
+            _shouldStart = false;
+        }
+        if (_isPlaying)
+        {
+            event_Instance.getPlaybackState(out _event_State);
+
+            if (_event_State != PLAYBACK_STATE.STOPPED) { return; }
+            else { _isPlaying = false; }
+        }
     }
 
     public void Set_Parameter(PARAMETER_ID id, float value)
@@ -112,28 +126,6 @@ public class Mus_Blom_07_Emitter : MonoBehaviour
         if (_event_State == PLAYBACK_STATE.PLAYING)
         {
             Gizmos.DrawIcon(transform.position, "FMOD/FMODEmitter.tiff", true);
-        }
-    }
-
-    private void CheckPlaybackState()
-    {
-        switch (_event_State)
-        {
-            case PLAYBACK_STATE.PLAYING:
-                _state = 0;
-                break;
-            case PLAYBACK_STATE.SUSTAINING:
-                _state = 1;
-                break;
-            case PLAYBACK_STATE.STOPPED:
-                _state = 2;
-                break;
-            case PLAYBACK_STATE.STARTING:
-                _state = 3;
-                break;
-            case PLAYBACK_STATE.STOPPING:
-                _state = 4;
-                break;
         }
     }
 

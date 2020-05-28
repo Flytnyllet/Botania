@@ -11,7 +11,6 @@ public class Amb_Wind_Emitter : MonoBehaviour
     public float MaxDistance { get { return _maxDistance; } }
     private float _maxDistance;
     private PLAYBACK_STATE _playbackState;
-    private int _timelinePosition;
     public bool IsPlaying { get { return _isPlaying; } }
     private bool _isPlaying;
     private bool _isVirtual;

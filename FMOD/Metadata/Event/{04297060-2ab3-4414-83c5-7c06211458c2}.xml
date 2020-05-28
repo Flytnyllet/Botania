@@ -93,6 +93,9 @@
 		</relationship>
 	</object>
 	<object class="EventMixerMaster" id="{f2135827-ed2b-4a44-a44f-65b8562ac977}">
+		<property name="volume">
+			<value>-9</value>
+		</property>
 		<relationship name="modulators">
 			<destination>{f6da9078-c18b-4017-8416-b19a9be27ea9}</destination>
 		</relationship>
@@ -122,10 +125,10 @@
 			<value>5.5</value>
 		</property>
 		<property name="minimumTimeBetweenSounds">
-			<value>5500</value>
+			<value>24000</value>
 		</property>
 		<property name="maximumTimeBetweenSounds">
-			<value>9000</value>
+			<value>40000</value>
 		</property>
 		<property name="minimumScatterDistance">
 			<value>3.60000014</value>
@@ -196,7 +199,6 @@
 	</object>
 	<object class="MixerBusEffectChain" id="{e3d55250-dc9d-4589-851e-2055940d80ac}">
 		<relationship name="effects">
-			<destination>{be9aff8c-b358-44da-a7d2-302d7eff44ff}</destination>
 			<destination>{73605da2-4f72-4d7f-a191-d5117e339486}</destination>
 			<destination>{33cbfb6e-ec55-4e38-a61f-e72fd4243b43}</destination>
 		</relationship>
@@ -228,11 +230,6 @@
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{0811a724-bb16-4a29-9f1e-44295a879a60}" />
-	<object class="GainEffect" id="{be9aff8c-b358-44da-a7d2-302d7eff44ff}">
-		<property name="gain">
-			<value>6</value>
-		</property>
-	</object>
 	<object class="MixerBusFader" id="{73605da2-4f72-4d7f-a191-d5117e339486}" />
 	<object class="SpatialiserEffect" id="{33cbfb6e-ec55-4e38-a61f-e72fd4243b43}">
 		<property name="maximumDistance">

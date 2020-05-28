@@ -18,6 +18,9 @@ public class WorldState : MonoBehaviour
 
     static WorldState _instance;
     public static WorldState Instance { get => _instance; }
+
+    [SerializeField] private FMODUnity.StudioEventEmitter _amb_Thunder;
+
     private void Awake()
     {
         if (_instance == null)
@@ -64,6 +67,7 @@ public class WorldState : MonoBehaviour
                     {
                         ActionDelayer.RunAfterDelay(() => { Debug.LogError("EVERYTHING IS WORKING AS INTENDED!"); }, 0.5f);
                         EventManager.TriggerEvent(EventNameLibrary.LIGHTNING_STRIKE, param);
+                        //_amb_Thunder.Play();                // ??? mer delay ??
                     }, lightningTiming);
                 }
                 ActionDelayer.RunAfterDelay(() =>
