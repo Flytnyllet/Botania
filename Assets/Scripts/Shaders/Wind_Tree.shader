@@ -119,7 +119,7 @@
 		  v.vertex.y += physicsMap * (sinB)*_StrenghtY;
 	  }
 
-	  static float thresholArray[] = {
+	  static const float thresholArray[] = {
 		  0,48,12,60, 3,51,15,63,
 		  32,16,44,28,35,19,47,31,
 		  8,56, 4,52,11,59, 7,55,
@@ -129,6 +129,13 @@
 		  10,58, 6,54, 9,57, 5,53,
 		  42,26,38,22,41,25,37,21
 	  };
+	  const float4x4 thresholdMatrix =
+	  {
+	  1.0 / 17.0,   9.0 / 17.0,   3.0 / 17.0,   11.0 / 17.0,
+	  13.0 / 17.0,  5.0 / 17.0,   15.0 / 17.0,  7.0 / 17.0,
+	  4.0 / 17.0,   12.0 / 17.0,  2.0 / 17.0,   10.0 / 17.0,
+	  16.0 / 17.0,  8.0 / 17.0,   14.0 / 17.0,  6.0 / 17.0
+	  };
 
 	  void surf(Input IN, inout SurfaceOutput o) {
 		  fixed4 c = tex2D(_MainTex, IN.uv_MainTex)*_Color;
@@ -136,17 +143,11 @@
 		  o.Alpha = tex2D(_Alpha, IN.uv_MainTex)*_Color;
 		  float2 pos = IN.screenPos.xy / IN.screenPos.w;
 		  pos *= _ScreenParams.xy; // pixel position
-		  float4x4 thresholdMatrix =
-		  {
-		  1.0 / 17.0,   9.0 / 17.0,   3.0 / 17.0,   11.0 / 17.0,
-		  13.0 / 17.0,  5.0 / 17.0,   15.0 / 17.0,  7.0 / 17.0,
-		  4.0 / 17.0,   12.0 / 17.0,  2.0 / 17.0,   10.0 / 17.0,
-		  16.0 / 17.0,  8.0 / 17.0,   14.0 / 17.0,  6.0 / 17.0
-		  };
+
 #ifdef ALPHA_CUTOUT 
 		  clip(o.Alpha - _CutoutValue);
 #else
-		  clip(o.Alpha - 0.01 - (thresholArray[pos.x % 8 * 8 + pos.y % 8]) / 64);
+		  clip(o.Alpha - (thresholArray[pos.x % 8 * 8 + pos.y % 8] + 1) / 65);
 		  //clip(o.Alpha - thresholdMatrix[fmod(pos.x, 4)][pos.y % 4]);
 #endif
 		  o.Emission = tex2D(_EmissionMap, IN.uv_MainTex)*_EmissionMult*gEmissionMult;
