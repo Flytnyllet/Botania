@@ -137,7 +137,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -212,7 +212,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -15356,7 +15356,7 @@ MonoBehaviour:
   _strafingSpeedFactor: 0.8
   layerMask:
     serializedVersion: 2
-    m_Bits: 39
+    m_Bits: 1050663
   _bobbingAmount: {x: 0, y: 0.2}
   _bobbingSpeed: 5
   _swimCorrection: 1
@@ -15374,13 +15374,13 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 16
   _levitationSpeed: 3
-  _teleportationFloatSpeed: 1
-  _teleportPlacementHeight: 10
-  _teleportMinDistance: 1
-  _teleportMaxDistance: 200
+  _teleportationFloatSpeed: 1.5
+  _teleportPlacementHeight: 5
+  _teleportMinDistance: 650
+  _teleportMaxDistance: 1300
   _groundLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 1050915
 --- !u!114 &7695500336731500830
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15673,7 +15673,7 @@ MonoBehaviour:
   _distanceRayCast: 200
   _layerMask:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 2048
   _biomeInfoInstance:
     _biomeTypes:
     - _noiseSettings: {fileID: 11400000, guid: 1a3c314bb7fe7604dba499589c7f0141, type: 2}
@@ -15689,6 +15689,7 @@ MonoBehaviour:
       _noiseStartPoint: 0.7
       _biomeType: 3
   _updateBiomeTime: 0.01
+  _fpsScript: {fileID: 6380197203547624249}
 --- !u!114 &3639043941128572948
 MonoBehaviour:
   m_ObjectHideFlags: 0

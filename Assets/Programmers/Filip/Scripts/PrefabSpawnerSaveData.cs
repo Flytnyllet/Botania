@@ -46,6 +46,7 @@ public static class PrefabSpawnerSaveData
         List<StoredSaveData> saveData = new List<StoredSaveData>();
 
         Serialization.Save(Saving.FileNames.PREFAB_SPAWNING, saveData);
+        _spawnAreaDataDic = new Dictionary<ChunkCoordIndex, StoredSaveData>();
     }
 
     public static void AddPickup(StoredSaveData saveDataToStore)
