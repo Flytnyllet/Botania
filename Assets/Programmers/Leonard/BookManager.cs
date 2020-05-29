@@ -57,8 +57,8 @@ public class BookManager : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
-
-        SetupBookmarks();
+		StartCoroutine(TurnGOOff(_book));
+		SetupBookmarks();
         foreach (PageLoader page in _flowerPages)
         {
             FLOWERPAGE_INDEX.Add(page);
@@ -94,13 +94,13 @@ public class BookManager : MonoBehaviour
 
         else if (OpenBookmark(4, INPUT_MAP)) ;
 
-        else if (OpenBookmark(1, INPUT_LORE)) ;
+        else if (OpenBookmark(2, INPUT_LORE)) ;
 
-        else if (OpenBookmark(2, INPUT_FLOWERS)) ;
+        else if (OpenBookmark(1, INPUT_FLOWERS)) ;
 
         else if (OpenBookmark(3, INPUT_ALCHEMY)) ;
 
-        if (Input.GetButtonDown(OPEN_WHEEL) && !_book.activeSelf && CharacterState.Control_State == CHARACTER_CONTROL_STATE.PLAYERCONTROLLED)
+        else if (Input.GetButtonDown(OPEN_WHEEL) && !_book.activeSelf && CharacterState.Control_State == CHARACTER_CONTROL_STATE.PLAYERCONTROLLED)
         {
             _potionWheel.SetActive(true);
             //_potionWheel.SetActive(!_potionWheel.activeSelf);
@@ -187,12 +187,22 @@ public class BookManager : MonoBehaviour
             GameObject bookmark = _bookmarks[i];
             _bookmarks[i] = Instantiate(bookmark, _book.transform);
             _bookmarks[i].transform.SetAsFirstSibling();
-            _bookmarks[i].gameObject.SetActive(false);
+            _bookmarks[i].gameObject.SetActive(true);
+			if(i != _currentBookmark)
+			{
+				StartCoroutine(TurnGOOff(_bookmarks[i]));
+			}
             //CreateBookmarkObject(i, bookmark, bookmarks);
         }
 
-        _bookmarks[_currentBookmark].SetActive(true);
+        //_bookmarks[_currentBookmark].SetActive(true);
     }
+
+	IEnumerator TurnGOOff(GameObject go)
+	{
+		yield return null;
+		go.SetActive(false);
+	}
 
     void SetupBookTabs()
     {

@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 enum RecipeState
 {
-	Unknown, Unavailable, Available
+	Unknown, Available //, Unavailable
 }
 
 struct Recipe
@@ -41,19 +41,19 @@ public class AlchemyOrganizer_2 : MonoBehaviour
 
     void Awake()
 	{
-		alchemyOrganizer = this;
-		SetupPotionLoaders();
-		SetupRecipes();
+		OnAwake();
 	}
-
-    void Start()
-    {
-
-    }
 
 	void OnEnable()
 	{
 		UpdateUI();
+	}
+
+	void OnAwake()
+	{
+		alchemyOrganizer = this;
+		SetupPotionLoaders();
+		SetupRecipes();
 	}
 
 	public static void DiscoverRecipes(ItemDataContainer flower)
@@ -66,30 +66,35 @@ public class AlchemyOrganizer_2 : MonoBehaviour
 				Recipe recipe = alchemyOrganizer._recipieList[i];
 				if (recipe.state != RecipeState.Available)
 				{
-					
-					bool fullyDiscovered = true;
-					bool discovered = false;
-
-					for (int ii = 0; ii < recipe.ingredientsData.Length; ii++)
-					{
-						if(alchemyOrganizer._discoveredFlowers.Contains(recipe.ingredientsData[ii].ingredient))
-						{
-							discovered = true;
-						}
-						else
-						{
-							fullyDiscovered = false;
-						}
-					}
-
-					if (fullyDiscovered == true)
+					if(recipe.ingredientsData[0].ingredient.itemName == flower.itemName)
 					{
 						alchemyOrganizer.UpdateRecipeToState(recipe, RecipeState.Available);
 					}
-					else if (discovered == true && recipe.state != RecipeState.Unavailable)
-					{
-						alchemyOrganizer.UpdateRecipeToState(recipe, RecipeState.Unavailable);
-					}
+
+					//bool fullyDiscovered = true;
+					//bool discovered = false;
+
+					//for (int ii = 0; ii < recipe.ingredientsData.Length; ii++)
+					//{
+					//	if(alchemyOrganizer._discoveredFlowers.Contains(recipe.ingredientsData[ii].ingredient))
+					//	{
+					//		discovered = true;
+					//	}
+					//	else
+					//	{
+					//		fullyDiscovered = false;
+					//	}
+					//}
+
+					//if (fullyDiscovered == true)
+					//{
+					//	alchemyOrganizer.UpdateRecipeToState(recipe, RecipeState.Available);
+					//}
+					//// Unavailable Removed
+					////else if (discovered == true && recipe.state != RecipeState.Unavailable)
+					////{
+					////	alchemyOrganizer.UpdateRecipeToState(recipe, RecipeState.Unavailable);
+					////}
 
 				}
 				/*for(int ii = 0; ii < alchemyOrganizer._recipieList[i].ingredientsData.Length; ii++)
@@ -177,7 +182,13 @@ public class AlchemyOrganizer_2 : MonoBehaviour
 			_recipieList.Add(newRecipe);
 			//int index = i;
 			newRecipe.craftButton.GetComponent<Button>().onClick.AddListener(delegate { CraftPotion(newRecipe); } ); //_recipieList[index]
-			newRecipe.potionButton.GetComponent<Button>().onClick.AddListener(delegate { newRecipe.potionScript.ActivatePotion(); UpdateUI(); });
+			newRecipe.potionButton.GetComponent<Button>().onClick.AddListener(
+				delegate 
+				{
+					newRecipe.potionScript.ActivatePotion();
+					UpdateUI();
+					UpdatePotionAvailability(newRecipe);
+				});
 			UpdateRecipeToState(newRecipe);
 
 			UpdateUI();
@@ -231,24 +242,26 @@ public class AlchemyOrganizer_2 : MonoBehaviour
 			Debug.Log("Yes");
 			recipe.button.SetActive(false);
 		}
-		else if (recipe.state == RecipeState.Unavailable)
-		{
-			recipe.button.SetActive(true);
-			recipe.craftButton.GetComponent<Button>().enabled = false;
-			recipe.craftButton.GetComponent<Image>().color = new Color(0.35f, 0.35f, 0.35f, 0.5f);
 
-			for (int i = 0; i < recipe.ingredientsData.Length; i++)
-			{
-				if(_discoveredFlowers.Contains(recipe.ingredientsData[i].ingredient))
-				{
-					recipe.ingredientImages[i].sprite = recipe.ingredientsData[i].ingredient.itemIcon;
-				}
-				else
-				{
-					recipe.ingredientImages[i].sprite = _unknownIngredient;
-				}
-			}
-		}
+		// Unavailable Removed
+		//else if (recipe.state == RecipeState.Unavailable)
+		//{
+		//	recipe.button.SetActive(true);
+		//	recipe.craftButton.GetComponent<Button>().enabled = false;
+		//	recipe.craftButton.GetComponent<Image>().color = new Color(0.35f, 0.35f, 0.35f, 0.5f);
+
+		//	for (int i = 0; i < recipe.ingredientsData.Length; i++)
+		//	{
+		//		if(_discoveredFlowers.Contains(recipe.ingredientsData[i].ingredient))
+		//		{
+		//			recipe.ingredientImages[i].sprite = recipe.ingredientsData[i].ingredient.itemIcon;
+		//		}
+		//		else
+		//		{
+		//			recipe.ingredientImages[i].sprite = _unknownIngredient;
+		//		}
+		//	}
+		//}
 		else
 		{
 			Debug.Log("No");
@@ -270,20 +283,6 @@ public class AlchemyOrganizer_2 : MonoBehaviour
 		}
 
 		UpdatePotionAvailability(recipe);
-	}
-
-	bool RecipeContainsIngredient(Recipe recipe, string ingredientName)
-	{
-
-
-		return false;
-	}
-
-	bool RecipeContainsIngredient(Recipe recipe, string ingredientFlag, bool flag)
-	{
-
-
-		return false;
 	}
 
 	void UpdatePotionAvailability(Recipe recipe)
