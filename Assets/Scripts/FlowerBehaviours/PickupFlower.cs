@@ -5,7 +5,7 @@ using UnityEngine.Events;
 
 public class PickupFlower : InteractableSaving, IInteractable
 {
-    public delegate void onPickUp(string _text, Sprite sprite= null);
+    public delegate void onPickUp(string _text, Sprite sprite = null);
     public static event onPickUp onPickUpEvent;
 
     bool _enabled = true;
@@ -16,6 +16,7 @@ public class PickupFlower : InteractableSaving, IInteractable
         set { _enabled = value; }
     }
     [SerializeField] ItemDataContainer _flowerData;
+    [SerializeField] int _amount = 1;
     [SerializeField] Texture2D _pickupAlpha;
 
     [Tooltip("Används i fall ett annat objekt än det lokala skall tas bort vid upplockning")]
@@ -51,7 +52,7 @@ public class PickupFlower : InteractableSaving, IInteractable
 
             //Debug.Log(debugFlowerNames);
 
-            FlowerLibrary.IncrementFlower(_flowerData.itemName, 1);
+            FlowerLibrary.IncrementFlower(_flowerData.itemName, _amount);
             if (_gameobjectOverload.Length == 0)
             {
                 if (_pickupAlpha != null)
@@ -77,7 +78,7 @@ public class PickupFlower : InteractableSaving, IInteractable
             if (_dissableTriggerafterPickup) GetComponent<Collider>().enabled = false;
             StartCoroutine(ShakeFlower(interactor, _pickupAnimationTime, _pickupAnimationForce));
             _pickupAction.Invoke();
-			AlchemyOrganizer_2.DiscoverRecipes(_flowerData);
+            AlchemyOrganizer_2.DiscoverRecipes(_flowerData);
             Play_PickupSound(_flowerData.itemName);
             return true; //Doesn't really have a purpose for this
         }
