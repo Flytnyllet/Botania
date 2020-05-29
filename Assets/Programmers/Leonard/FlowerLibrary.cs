@@ -4,7 +4,21 @@ using UnityEngine;
 
 public static class FlowerLibrary
 {
-    [System.Serializable]
+	[System.Serializable]
+	struct FlowerEntry
+	{
+		public string key;
+		public FlowerData data;
+	}
+	[System.Serializable]
+	struct PotionEntry
+	{
+		public string key;
+		public int amount;
+	}
+	const string FILE_NAME_FLOWERS = "Flowers";
+	const string FILE_NAME_POTIONS = "Potions";
+	[System.Serializable]
     public class FlowerData
     {
         public FlowerData(int startAmount)
@@ -16,6 +30,47 @@ public static class FlowerLibrary
         public int Amount;
         public int Discovered;
     }
+
+	public static void Save()
+	{
+		List<FlowerEntry> flowerEntries = new List<FlowerEntry>();
+		foreach(string key in _flowerTypes.Keys)
+		{
+			FlowerEntry flowerEntry;
+			flowerEntry.key = key;
+			flowerEntry.data = _flowerTypes[key];
+			flowerEntries.Add(flowerEntry);
+		}
+		List<PotionEntry> potionEntries = new List<PotionEntry>();
+		foreach (string key in _potionTypes.Keys)
+		{
+			PotionEntry potionEntry;
+			potionEntry.key = key;
+			potionEntry.amount = _potionTypes[key];
+			potionEntries.Add(potionEntry);
+		}
+		Serialization.Save(FILE_NAME_FLOWERS, flowerEntries); 
+		Serialization.Save(FILE_NAME_POTIONS, potionEntries); 
+	}
+
+	public static void Load()
+	{
+		Dictionary<string, FlowerData> flowerTypes = new Dictionary<string, FlowerData>();
+		List<FlowerEntry> flowerEntries = (List<FlowerEntry>)Serialization.Load(FILE_NAME_FLOWERS);
+		for(int i  = 0; i < flowerEntries.Count; i++)
+		{
+			flowerTypes.Add(flowerEntries[i].key, flowerEntries[i].data);
+		}
+		_flowerTypes = flowerTypes;
+
+		Dictionary<string, int> potionTypes = new Dictionary<string, int>();
+		List<PotionEntry> potionEntries = (List<PotionEntry>)Serialization.Load(FILE_NAME_POTIONS);
+		for (int i = 0; i < potionEntries.Count; i++)
+		{
+			potionTypes.Add(potionEntries[i].key, potionEntries[i].amount);
+		}
+		_potionTypes = potionTypes;
+	}
 
     const string SAVE_FILE_NAME = "FlowerLibrary";
     //static List<Flower> _flowerTypes = new List<Flower>();
@@ -141,14 +196,16 @@ public static class FlowerLibrary
     {
         if (_flowerTypes.ContainsKey(flowerName))
         {
-			if(amount > _maxItems)
+			if(amount + _flowerTypes[flowerName].Amount > _maxItems)
 			{
 				_flowerTypes[flowerName].Amount = _maxItems;
 				_flowerTypes[flowerName].Discovered += amount;
 			}
-            _flowerTypes[flowerName].Amount += amount;
-            _flowerTypes[flowerName].Discovered += amount;
-
+			else
+			{
+				_flowerTypes[flowerName].Amount += amount;
+				_flowerTypes[flowerName].Discovered += amount;
+			}
         }
         else AddFlower(flowerName, amount);
 
@@ -172,11 +229,14 @@ public static class FlowerLibrary
     {
 		if (_potionTypes.ContainsKey(name))
 		{
-			if(_potionTypes[name] > _maxItems)
+			if (_potionTypes[name] + amount > _maxItems)
 			{
 				_potionTypes[name] = _maxItems;
 			}
-			_potionTypes[name] += amount;
+			else
+			{
+				_potionTypes[name] += amount;
+			}
 		}
 
 		else AddPotion(name, amount);

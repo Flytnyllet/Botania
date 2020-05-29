@@ -96,6 +96,7 @@ public class SaveSystem : MonoBehaviour
             Player.Load();
             PrefabSpawnerSaveData.Load();
             MapGenerator.Load();
+			FlowerLibrary.Load();
         }
 
         //Used to make clear circle around player on spawn
@@ -145,6 +146,7 @@ public class SaveSystem : MonoBehaviour
             PrefabSpawnerSaveData.Save();
             Player.Save();
             MapGenerator.Save();
+			FlowerLibrary.Save();
         }
     }
 

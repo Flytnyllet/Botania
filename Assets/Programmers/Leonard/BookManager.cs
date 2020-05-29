@@ -57,8 +57,8 @@ public class BookManager : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
-
-        SetupBookmarks();
+		StartCoroutine(TurnGOOff(_book));
+		SetupBookmarks();
         foreach (PageLoader page in _flowerPages)
         {
             FLOWERPAGE_INDEX.Add(page);
@@ -187,12 +187,22 @@ public class BookManager : MonoBehaviour
             GameObject bookmark = _bookmarks[i];
             _bookmarks[i] = Instantiate(bookmark, _book.transform);
             _bookmarks[i].transform.SetAsFirstSibling();
-            _bookmarks[i].gameObject.SetActive(false);
+            _bookmarks[i].gameObject.SetActive(true);
+			if(i != _currentBookmark)
+			{
+				StartCoroutine(TurnGOOff(_bookmarks[i]));
+			}
             //CreateBookmarkObject(i, bookmark, bookmarks);
         }
 
-        _bookmarks[_currentBookmark].SetActive(true);
+        //_bookmarks[_currentBookmark].SetActive(true);
     }
+
+	IEnumerator TurnGOOff(GameObject go)
+	{
+		yield return null;
+		go.SetActive(false);
+	}
 
     void SetupBookTabs()
     {

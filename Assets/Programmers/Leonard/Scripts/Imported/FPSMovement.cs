@@ -305,13 +305,18 @@ public class FPSMovement : MonoBehaviour
 
 			if(transform.position.y < 8f)
 			{
-				Debug.Log("Attempt to correct water");
+				Debug.Log("Attempt to correct to water");
 				RaycastHit hitWater;
 				Vector3 rayPointWater = transform.position.x * Vector3.right + Vector3.up * _teleportRay + transform.position.z * Vector3.forward;
-				if (Physics.Raycast(rayPointWater, Vector3.up, out hitWater, _teleportRay, _waterLayer))
+				if (Physics.Raycast(rayPointWater, Vector3.down, out hitWater, _teleportRay, _waterLayer))
 				{
 					Vector3 closestWater = hitWater.point;
 					transform.position = closestWater + Vector3.up;
+				}
+				else
+				{
+					Debug.Log("Failed to correct to water");
+
 				}
 			}
 			//bool foundWater = false;
@@ -421,10 +426,14 @@ public class FPSMovement : MonoBehaviour
 			
 		}
 
-
 		yield return null;
 
-
+		if(Physics.OverlapBox(transform.position, Vector3.one * 0.5f).Length > 1)
+		{
+			Debug.Log("Correcting position because collision");
+			transform.position += Vector3.up * _teleportPlacementHeight;
+			yield return null;
+		}
 
 		// =====================
 
