@@ -1,0 +1,47 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6584c9b0b77a13b4693016fb8adc9786, type: 3}
+  m_Name: GroundMaterialMaker
+  m_EditorClassIdentifier: 
+  _meshSettings: {fileID: 11400000, guid: 7d9387cccf68fe249839b1efd02293a8, type: 2}
+  _shader: {fileID: 4800000, guid: f282adb13a6e5774ebd1fabf3cb1fdb9, type: 3}
+  _noiseDetailLevel: 1
+  _mainTex: {fileID: 2800000, guid: 547a26e3963e34045a42a1d3f6205edb, type: 3}
+  _emission: {fileID: 2800000, guid: 5b5cc8c6b60776742bf37e09d80f207d, type: 3}
+  _mainTexStart: 0.8
+  _mainTexStop: 0.7
+  _mainTexScale: 4
+  _layers:
+  - _noise: {fileID: 11400000, guid: bd05ff3b369781d4fa09091ee8c6796b, type: 2}
+    _colour: {r: 1, g: 1, b: 1, a: 1}
+    _texture: {fileID: 2800000, guid: 96902b42b73a889408d1d949508ecd91, type: 3}
+    _textureScale: 4
+    _startStep: 0.001
+    _endStep: 0.005
+  - _noise: {fileID: 11400000, guid: 49d8f884d25a5a04ebf4918bc2dff1f6, type: 2}
+    _colour: {r: 1, g: 1, b: 1, a: 1}
+    _texture: {fileID: 2800000, guid: fc9d16e0803f52f4ca55c963db9d9e92, type: 3}
+    _textureScale: 4
+    _startStep: 0.001
+    _endStep: 0.005
+  - _noise: {fileID: 11400000, guid: c8fad1a2a66d0524c858108d5b2dac42, type: 2}
+    _colour: {r: 1, g: 1, b: 1, a: 1}
+    _texture: {fileID: 2800000, guid: 3ef5275f7d6681e40b15539f255c44ad, type: 3}
+    _textureScale: 4
+    _startStep: 0.001
+    _endStep: 0.005
+  - _noise: {fileID: 0}
+    _colour: {r: 1, g: 1, b: 1, a: 1}
+    _texture: {fileID: 0}
+    _textureScale: 4
+    _startStep: 0
+    _endStep: 0

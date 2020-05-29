@@ -1,0 +1,84 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2ef82269fb17cf43a9f1163b1dfd939, type: 3}
+  m_Name: Basic-Graveyard
+  m_EditorClassIdentifier: 
+  _autoUpdate: 0
+  _noiseMergeType: 2
+  _noiseSettingsData: {fileID: 11400000, guid: d40e9444266e1314aad647b950b64892, type: 2}
+  _parentOnly: 0
+  _rotationAmount: 0.206
+  _noiseStartPoint: 0
+  _thickness: 0.51
+  _uniformSpreadAmount: 5
+  _randomSpread: 0.504
+  _offsetAmount: 0.39
+  _spawnFixedHeight: 0
+  _size: 3
+  _spacing: 0
+  _othersCanSpawnInside: 0
+  _spawnDifferencial: 15
+  _hardMinHeight: 10
+  _softMinAmount: 0
+  _hardMaxHeight: 100
+  _softMaxAmount: 100
+  _surfaceNormalAmount: 1
+  _pointAlongNormalRandomness: 0
+  _softMinSlope: 90
+  _hardMinSlope: 90
+  _softMaxSlope: 0
+  _hardMaxSlope: 0
+  _prefabs:
+  - _prefab: {fileID: 487079682659468118, guid: 743d3836edf678e46a7f792200eddc3f,
+      type: 3}
+    _probability: 1
+    _height: 0
+    _fixedHeight: 0
+    _scale: 1.5
+    _scaleRandom: 0.25
+  - _prefab: {fileID: 3831219244706282671, guid: ab5eff2050159924193f876eec2f8e75,
+      type: 3}
+    _probability: 2
+    _height: 0
+    _fixedHeight: 0
+    _scale: 1.5
+    _scaleRandom: 0.25
+  - _prefab: {fileID: 203256195968900501, guid: 9941f89edbd0d174ca91a9f6f277822e,
+      type: 3}
+    _probability: 1
+    _height: 0
+    _fixedHeight: 0
+    _scale: 1.5
+    _scaleRandom: 0.25
+  - _prefab: {fileID: 6185324799242757683, guid: 643fcdc1e0b45cb43a6f7815f7685e71,
+      type: 3}
+    _probability: 2
+    _height: 0
+    _fixedHeight: 0
+    _scale: 1.5
+    _scaleRandom: 0.25
+  - _prefab: {fileID: 487079682659468118, guid: 5b346c74bd92e8d4180da26b707d7c6d,
+      type: 3}
+    _probability: 1
+    _height: 0
+    _fixedHeight: 0
+    _scale: 1.5
+    _scaleRandom: 0.25
+  - _prefab: {fileID: 203256195968900501, guid: a8b2ebadb23aee1419aa6ee0430017f5,
+      type: 3}
+    _probability: 1
+    _height: 0
+    _fixedHeight: 0
+    _scale: 1.5
+    _scaleRandom: 0.25
+  _subSpawners:
+  - {fileID: 11400000, guid: 389917ec96217f04d8b37c663bdf9d91, type: 2}

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.00.00">
+	<object class="MixerGroup" id="{fab4a404-d58d-4f76-bf97-731a699d5671}">
+		<property name="name">
+			<value>amb_biome_2</value>
+		</property>
+		<relationship name="effectChain">
+			<destination>{cbb2c17d-3491-4c72-9feb-c5a7d8dbfccb}</destination>
+		</relationship>
+		<relationship name="panner">
+			<destination>{c5138b78-b3a0-4009-b071-142d9e20a2db}</destination>
+		</relationship>
+		<relationship name="output">
+			<destination>{8a46f77f-7ac6-412e-b203-708973fab7fd}</destination>
+		</relationship>
+	</object>
+	<object class="MixerBusEffectChain" id="{cbb2c17d-3491-4c72-9feb-c5a7d8dbfccb}">
+		<relationship name="effects">
+			<destination>{a9903c6c-25e6-4cc0-bbf4-0933991d2019}</destination>
+			<destination>{0550dc81-e7e2-49ae-a6bc-188a0e10b8ee}</destination>
+		</relationship>
+	</object>
+	<object class="MixerBusPanner" id="{c5138b78-b3a0-4009-b071-142d9e20a2db}" />
+	<object class="MixerBusFader" id="{a9903c6c-25e6-4cc0-bbf4-0933991d2019}" />
+	<object class="MixerSend" id="{0550dc81-e7e2-49ae-a6bc-188a0e10b8ee}">
+		<property name="level">
+			<value>-51</value>
+		</property>
+		<property name="inputFormat">
+			<value>0</value>
+		</property>
+		<relationship name="mixerReturn">
+			<destination>{84241717-df73-4ad8-b0cb-9edac96cb88a}</destination>
+		</relationship>
+	</object>
+</objects>

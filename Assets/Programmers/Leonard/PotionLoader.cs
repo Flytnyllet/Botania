@@ -3,55 +3,182 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+public struct RecipeEntry
+{
+	public ItemDataContainer ingredient;
+	public int amount;
+}
+
 public class PotionLoader : MonoBehaviour
 {
-	[SerializeField] string _potionName = "";
-	[SerializeField] Text textObject;
-	List<string> recipe = new List<string>();
-	Potion _potion;
+    //[SerializeField] string _potionName = "";
+    [SerializeField] Text textObject = null;
+    List<RecipeEntry> recipe = new List<RecipeEntry>();
+	[SerializeField] List<ItemDataContainer> recipeIngredients = new List<ItemDataContainer>();
+	[SerializeField] List<int> recipeAmounts = new List<int>();
+    //Potion _potion = null;
+    Potion_Template _potionEffect = null;
+    Potion_Template _potionEffect2 = null;
+    [SerializeField] ItemDataContainer _item = null;
+    [SerializeField] Image imageObject = null;
 
-	void Awake()
-	{
-		CreateThisPotion();
-	}
+    //Potion_Template _modifiers;
+    enum PotionType
+    {
+        Speed, Flag, Gravity, Jump, FlagGrav
+    }
+    [SerializeField] PotionType _potionType = PotionType.Speed;
+    [SerializeField] Material _potionCameraEffect;
+    [SerializeField] float _potionCameraEffectFadeTime;
+    [SerializeField] float _potionDuration = 0;
+    [Tooltip("Only used for potions of type 'Flag'")]
+    [SerializeField] string _potionFlag = null;
+    [Tooltip("Only used for potions of type 'Speed'")]
+    [SerializeField] float _potionFactor = 0;
+    [Tooltip("Only used for potions of type 'Speed'")]
+    [SerializeField] float _potionFlat = 0;
 
-	void Start()
-	{
-		//_potion = FlowerLibrary.GetPotionType(_potionName);
-		//recipe.AddRange(_potion.Recipe);
-		textObject.text = _potionName + "\n x" + FlowerLibrary.GetPotionAmount(_potionName);
-	}
+    void Awake()
+    {
+		SetUpRecipies();
 
-	void OnEnable()
+		//_potionName = _item.itemName;
+		
+    }
+
+	void SetUpRecipies()
 	{
-		if (_potion != null)
+		if(recipe.Count < 1)
 		{
-			textObject.text = _potion.Name + "\n x" + _potion.Amount;
-		}
-	}
-
-	void CreateThisPotion ()
-	{
-		string[] recipe0 = new string[2] { "Tulip", "Tulip" };
-		Potion potion0 = new Potion(0, "Speed", 0, recipe0);
-	}
-
-	public void AddPotion()
-	{
-		bool hasIngredients = true;
-		for (int i = 0; i < recipe.Count; i++)
-		{
-			/*if(recipe[i].Amount < 1)
+			Debug.Log("Test2");
+			if (recipeAmounts.Count == recipeIngredients.Count)
 			{
-				hasIngredients = false;
-				break;
-			}*/
+				for (int i = 0; i < recipeIngredients.Count; i++)
+				{
+
+					Debug.Log("Test3");
+					RecipeEntry entry;
+					entry.amount = recipeAmounts[i];
+					entry.ingredient = recipeIngredients[i];
+					recipe.Add(entry);
+				}
+			}
+			else
+			{
+				Debug.Log("In all potions recipe ingredients and recipe amounts must be the same length!");
+			}
 		}
-		for (int i = 0; i < recipe.Count; i++)
+
+		if (_potionType != PotionType.FlagGrav)
 		{
-			//recipe[i].Amount--;
+			_potionEffect = PotionEffect();
 		}
-		if (hasIngredients) FlowerLibrary.IncrementPotion(_potionName, 1);
-		else Debug.Log("Not enough flowers");
+		else
+		{
+			_potionEffect = new SpeedPotion(CharacterStatType.Gravity, _potionFactor, _potionFlat, _potionDuration);
+			_potionEffect2 = new FlagPotion(_potionFlag, _potionDuration);
+		}
 	}
+
+    Potion_Template PotionEffect()
+    {
+        switch (_potionType)
+        {
+            case PotionType.Speed:
+                return new SpeedPotion(_potionFactor, _potionFlat, _potionDuration);
+
+            case PotionType.Flag:
+                return new FlagPotion(_potionFlag, _potionDuration);
+
+            case PotionType.Jump:
+                return new SpeedPotion(CharacterStatType.Jump, _potionFactor, _potionFlat, _potionDuration);
+
+            case PotionType.Gravity:
+                return new SpeedPotion(CharacterStatType.Gravity, _potionFactor, _potionFlat, _potionDuration);
+
+            default:
+                Debug.LogError("No potion type assigned in the potion loader of " + gameObject.name);
+                return null;
+        }
+    }
+
+    void Start()
+    {
+        imageObject.sprite = _item.itemIcon;
+        textObject.text = _item.itemName + "\n x" + FlowerLibrary.GetPotionAmount(_item.itemName);
+    }
+    void OnEnable()
+    {
+        UpdateUI();
+
+    }
+
+	public List<ItemDataContainer> GetRecipeIngredients()
+	{
+		return recipeIngredients;
+		/*List<ItemDataContainer> recipeIngredients = new List<ItemDataContainer>();
+
+		for(int i = 0; i < recipe.Count; i++)
+		{
+			recipeIngredients.Add(recipe[i].ingredient);
+		}
+
+		return recipeIngredients;*/
+	}
+
+    public List<RecipeEntry> GetRecipe()
+    {
+		Debug.Log("Test");
+		SetUpRecipies();
+        return recipe;
+    }
+
+    public ItemDataContainer GetPotionItemData()
+    {
+        return _item;
+    }
+    public void AddPotion()
+    {
+        FlowerLibrary.IncrementPotion(_item.itemName, 1);
+        Debug.Log("Adding one more " + _item.itemName + ", now there are " + FlowerLibrary.GetPotionAmount(_item.itemName));
+
+        for (int i = 0; i < recipe.Count; i++)
+        {
+            FlowerLibrary.IncrementFlower(recipe[i].ingredient.itemName, -recipe[i].amount);
+        }
+        UpdateUI();
+    }
+    void UpdateUI()
+    {
+		if (textObject != null)
+		{
+			textObject.text = _item.itemName + "\n x" + FlowerLibrary.GetPotionAmount(_item.itemName);
+		}
+    }
+
+    public void ActivatePotion()
+    {
+        if (FlowerLibrary.GetPotionAmount(_item.itemName) > 0)
+        {
+            if (_potionEffect.PotionEffectStart(FPSMovement.playerMovement))
+            {
+                EventManager.TriggerEvent(EventNameLibrary.DRINK_POTION, new EventParameter()
+                {
+                    materialParam = _potionCameraEffect,
+                    floatParam = _potionDuration,
+                    floatParam2 = _potionCameraEffectFadeTime
+                });
+                FlowerLibrary.IncrementPotion(_item.itemName, -1);
+                UpdateUI();
+            }
+            else
+            {
+                Debug.Log("Potion already active");
+            }
+        }
+        else
+        {
+            Debug.Log("Not enough of " + _item.itemName);
+        }
+    }
 }

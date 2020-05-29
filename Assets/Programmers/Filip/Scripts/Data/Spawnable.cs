@@ -16,27 +16,30 @@ public class Spawnable : UpdatableData
 
     [Header("General Settings")]
 
+    [SerializeField, Tooltip("If true it will not spawn anything by itself, only act as parent noise")] bool _parentOnly = false;
+
     [SerializeField, Range(0, 1), Tooltip("How much random rotation should be applied (probably keep it on 1)")] float _rotationAmount = 1.0f;
     [SerializeField, Range(0, 1), Tooltip("At which point in the noise gradient should object start spawning? Low = smooth edges, high = sharp af")] float _noiseStartPoint;
     [SerializeField, Range(0, 2), Tooltip("How thick the area of spawn should be")] float _thickness = 0.75f;
     [SerializeField, Range(1, 80), Tooltip("Uniform spread amount (use for general spreading and not for fine tuning) (low = low spread, high = high spread)")] int _uniformSpreadAmount = 1;
     [SerializeField, Range(0, 1), Tooltip("How much random spawn spread there should be")] float _randomSpread = 0.5f;
     [SerializeField, Range(0, 4), Tooltip("How much should the spawning avert from the grid it is based on? (high values might cause clipping!!!)")] float _offsetAmount = 0.75f;
-    [SerializeField, Tooltip("At what height should this object spawn relative to it's origin?")] float _height = 0.5f;
-
+    [SerializeField, Tooltip("Should the object spawn at certain height?")] bool _spawnFixedHeight = false;
 
     [Header("Size Settings")]
 
-    [SerializeField, Range(0, 30), Tooltip("How many squares does this object occupy? (ZERO will be treated as the object can spawn inside other objects (such as grass))")] int _size;
-    [SerializeField, Range(0, 15), Tooltip("How high can the difference between highest and lowest point in spawn area be for it to spawn?")] float _spawnDifferencial;
+    [SerializeField, Range(1, 30), Tooltip("How many squares does this object occupy?")] int _size;
+    [SerializeField, Range(1, 30)] int _spacing = 0; 
+    [SerializeField, Tooltip("Do not have this enabled for pickups!!! It will crash!")] bool _othersCanSpawnInside = false;
+    [SerializeField, Range(0, 50), Tooltip("How high can the difference between highest and lowest point in spawn area be for it to spawn?")] float _spawnDifferencial;
 
 
     [Header("Height Spawn Settings")]
 
     [SerializeField, Range(0, 100), Tooltip("At which height should objects start spawning? (hard amount)")] float _hardMinHeight = 0;
-    [SerializeField, Range(0, 100), Tooltip("At which height should objects start spawning? (soft amount)")] float _softMinAmount = 0;
+    [SerializeField, Range(-100, 100), Tooltip("At which height should objects start spawning? (soft amount)")] float _softMinAmount = 0;
     [SerializeField, Range(0, 100), Tooltip("At which height should objects stop spawning? (hard amount)")] float _hardMaxHeight = 100;
-    [SerializeField, Range(0, 100), Tooltip("At which height should objects stop spawning? (soft amount)")] float _softMaxAmount = 0;
+    [SerializeField, Range(-100, 100), Tooltip("At which height should objects stop spawning? (soft amount)")] float _softMaxAmount = 0;
     
 
     [Header("Slope Spawn Settings")]
@@ -63,15 +66,20 @@ public class Spawnable : UpdatableData
     public NoiseMergeType NoiseMergeType              { get { return _noiseMergeType; }             private set { _noiseMergeType = value; } }
     public NoiseSettingsData NoiseSettingsData        { get { return _noiseSettingsData; }          private set { _noiseSettingsData = value; } }
     public Spawnable[] SubSpawners                    { get { return _subSpawners; }                private set { _subSpawners = value; } }
+
+    public bool ParentOnly                            { get { return _parentOnly; }                 private set { _parentOnly = value; } }
+
     public float RotationAmount                       { get { return _rotationAmount; }             private set { _rotationAmount = value; } }
     public float NoiseStartPoint                      { get { return _noiseStartPoint; }            private set { _noiseStartPoint = value; } }
     public float Thickness                            { get { return _thickness; }                  private set { _thickness = value; } }
     public int UniformSpreadAmount                    { get { return _uniformSpreadAmount; }        private set { _uniformSpreadAmount = value; } }
     public float RandomSpread                         { get { return _randomSpread; }               private set { _randomSpread = value; } }
     public float OffsetAmount                         { get { return _offsetAmount; }               private set { _offsetAmount = value; } }
-    public float Height                               { get { return _height; }                     private set { _height = value; } }
+    public bool SpawnFixedHeight                      { get { return _spawnFixedHeight; }           private set { _spawnFixedHeight = value; } }
 
     public int Size                                   { get { return _size; }                       private set { _size = value; } }
+    public int Spacing                                { get { return _spacing; }                    private set { _spacing = value; } }
+    public bool OthersCanSpawnInside                  { get { return _othersCanSpawnInside; }       private set { _othersCanSpawnInside = value; } }
     public float SpawnDifferencial                    { get { return _spawnDifferencial; }          private set { _spawnDifferencial = value; } }
 
     public float SoftMinAmount                        { get { return _softMinAmount; }              private set { _softMinAmount = value; } }
@@ -96,14 +104,17 @@ public class Spawnable : UpdatableData
         this._noiseMergeType = spawnable._noiseMergeType;
         this._noiseSettingsData = spawnable._noiseSettingsData;
         this._subSpawners = spawnable._subSpawners;
+        this._parentOnly = spawnable._parentOnly;
         this._rotationAmount = spawnable._rotationAmount;
         this._noiseStartPoint = spawnable._noiseStartPoint;
         this._thickness = spawnable._thickness;
         this._uniformSpreadAmount = spawnable._uniformSpreadAmount;
         this._randomSpread = spawnable._randomSpread;
         this._offsetAmount = spawnable._offsetAmount;
-        this._height = spawnable._height;
+        this._spawnFixedHeight = spawnable._spawnFixedHeight;
         this._size = spawnable._size;
+        this._spacing = spawnable._spacing;
+        this._othersCanSpawnInside = spawnable._othersCanSpawnInside;
         this._spawnDifferencial = spawnable._spawnDifferencial;
         this._softMinAmount = spawnable._softMinAmount;
         this._hardMinHeight = spawnable._hardMinHeight;
@@ -134,6 +145,18 @@ public class Spawnable : UpdatableData
         return newSpawnable;
     }
 
+    static SpawnablePrefab[] CopyPrefabs(SpawnablePrefab[] prefabs)
+    {
+        SpawnablePrefab[] newPrefabs = new SpawnablePrefab[prefabs.Length];
+
+        for (int i = 0; i < newPrefabs.Length; i++)
+        {
+            newPrefabs[i] = new SpawnablePrefab(prefabs[i]);
+        }
+
+        return newPrefabs;
+    }
+
     // Used to calculate all the different noises for every spawable
     public void Setup(float[,] parentNoise, int chunkSize, NoiseSettingsData offsetNoiseSettings, Vector2 center, Vector2 offsetNoiseOffset)
     {
@@ -141,6 +164,8 @@ public class Spawnable : UpdatableData
             _noise = Noise.MergeNoise(chunkSize, chunkSize, 1, _noiseSettingsData.NoiseSettingsDataMerge, parentNoise, _noiseMergeType, new Vector2(center.x, -center.y));
         else
             _noise = Noise.GenerateNoiseMap(chunkSize, chunkSize, 1, _noiseSettingsData.NoiseSettingsDataMerge, new Vector2(center.x, -center.y));
+
+        _noise = Noise.Clamp(_noise, _noiseSettingsData);
 
         _offsetNoise = Noise.GenerateNoiseMap(chunkSize, chunkSize, 1, offsetNoiseSettings.NoiseSettingsDataMerge, new Vector2(center.x, -center.y) + offsetNoiseOffset);
         _spreadNoise = Noise.GenerateNoiseMap(chunkSize, chunkSize, 1, offsetNoiseSettings.NoiseSettingsDataMerge, new Vector2(center.x, -center.y) + offsetNoiseOffset * 2);
@@ -154,7 +179,7 @@ public class Spawnable : UpdatableData
     }
 
     //Returns a prefab in the prefab selection based on noise and probability in world position
-    public GameObject GetPrefab(int x, int y)
+    public SpawnablePrefab GetPrefab(int x, int y)
     {
         float randomValue = _spreadNoise[x, y] * _prefabMaxProbability;
         int compareValue = 0;
@@ -162,7 +187,7 @@ public class Spawnable : UpdatableData
         for (int i = 0; i < _prefabs.Length; i++)
         {
             if (randomValue <= compareValue + _prefabs[i].Probability)
-                return _prefabs[i].Prefab;
+                return _prefabs[i];
 
             compareValue += _prefabs[i].Probability;
         }
@@ -177,9 +202,27 @@ public class SpawnablePrefab
 {
     [SerializeField] GameObject _prefab;
     [SerializeField, Range(1, 100), Tooltip("Not based on percent but the overall combined probabilities")] int _probability;
+    [SerializeField, Tooltip("At what height should this object spawn relative to it's origin?")] float _height = 0.5f;
+    [SerializeField, Tooltip("If spawn at fixed height, which height?")] float _fixedHeight = 0.0f;
+    [SerializeField, Range(0, 10)] float _scale = 1.0f;
+    [SerializeField, Range(0, 10), Tooltip("How much should the objects differ in scale?")] float _scaleRandom = 0.0f;
 
     public GameObject Prefab { get { return _prefab; }      private set { _prefab = value; } }
     public int Probability   { get { return _probability; } private set { _probability = value; } }
+    public float Height { get { return _height; } private set { _height = value; } }
+    public float FixedHeight { get { return _fixedHeight; } private set { _fixedHeight = value; } }
+    public float Scale { get { return _scale; } private set { _scale = value; } }
+    public float ScaleRandom { get { return _scaleRandom; } private set { _scaleRandom = value; } }
+
+    public SpawnablePrefab(SpawnablePrefab copyPrefabs)
+    {
+        this._prefab = copyPrefabs._prefab;
+        this._probability = copyPrefabs._probability;
+        this._height = copyPrefabs._height;
+        this._fixedHeight = copyPrefabs._fixedHeight;
+        this._scale = copyPrefabs._scale;
+        this._scaleRandom = copyPrefabs._scaleRandom;
+    }
 
     //Return total combined probability
     public static int GetMaxSize(SpawnablePrefab[] spawnablePrefabs)
@@ -193,3 +236,53 @@ public class SpawnablePrefab
         return size;
     }
 }
+
+/* BIOME 1
+ 
+    Biome_1_LOD_0 (NONE)
+        
+    Biome_1_LOD_1 (NONE)
+        - Trees (NONE)
+            - Rare-0
+            - Soul
+            - Mole
+            - Teleport
+
+    Biome_1_LOD_2 (NONE)
+        - Trees
+
+*/
+/* BIOME 2
+   Biome_2_LOD_0(NONE)
+
+   Biome_2_LOD_1 (NONE)
+
+   Biome_2_LOD_2 (NONE)
+*/
+/* BIOME 3
+   Biome_3_LOD_0(NONE)
+
+   Biome_3_LOD_1 (NONE)
+
+   Biome_3_LOD_2 (NONE)
+*/
+/* BIOME ZERO
+   Biome_ZERO_LOD_0(NONE)
+
+   Biome_ZERO_LOD_1 (NONE)
+       - Earth flower
+
+   Biome_ZERO_LOD_2 (NONE)
+*/
+/* NONE
+   Biome_NONE_LOD_0(NONE)
+       - Grass High LOD    
+
+   Biome_NONE_LOD_1 (NONE)
+       - Seaweed
+       - Beach
+       - Bord och stolar
+       - Grass Low LOD
+
+   Biome_NONE_LOD_2 (NONE)
+*/

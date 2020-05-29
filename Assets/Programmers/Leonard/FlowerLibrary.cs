@@ -2,9 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
-
-
 public static class FlowerLibrary
 {
     [System.Serializable]
@@ -24,6 +21,7 @@ public static class FlowerLibrary
     //static List<Flower> _flowerTypes = new List<Flower>();
     static Dictionary<string, FlowerData> _flowerTypes = new Dictionary<string, FlowerData>();
     static Dictionary<string, int> _potionTypes = new Dictionary<string, int>();
+	const int _maxItems = 99;
 
     // Initialization
     static FlowerLibrary()
@@ -80,12 +78,12 @@ public static class FlowerLibrary
 		*/
     }
 
-    public static void AddFlower(string flower, int amount)
+    static void AddFlower(string flower, int amount)
     {
         _flowerTypes.Add(flower, new FlowerData(amount));
     }
 
-    public static void AddPotion(string potion, int amount)
+    static void AddPotion(string potion, int amount)
     {
         _potionTypes.Add(potion, amount);
     }
@@ -143,11 +141,16 @@ public static class FlowerLibrary
     {
         if (_flowerTypes.ContainsKey(flowerName))
         {
+			if(amount > _maxItems)
+			{
+				_flowerTypes[flowerName].Amount = _maxItems;
+				_flowerTypes[flowerName].Discovered += amount;
+			}
             _flowerTypes[flowerName].Amount += amount;
             _flowerTypes[flowerName].Discovered += amount;
 
         }
-        else AddFlower(flowerName, 1);
+        else AddFlower(flowerName, amount);
 
         //Debug.Log($"{flowerName} amount = {_flowerTypes[flowerName].Amount}");
 
@@ -167,8 +170,16 @@ public static class FlowerLibrary
 
     public static void IncrementPotion(string name, int amount)
     {
-        if (_potionTypes.ContainsKey(name)) _potionTypes[name] += amount;
-        else AddPotion(name, amount);
+		if (_potionTypes.ContainsKey(name))
+		{
+			if(_potionTypes[name] > _maxItems)
+			{
+				_potionTypes[name] = _maxItems;
+			}
+			_potionTypes[name] += amount;
+		}
+
+		else AddPotion(name, amount);
         Debug.Log("Added Potion: " + name);
 
         //FlowerLibrarySave save = new FlowerLibrarySave() { flowerTypes = _flowerTypes };

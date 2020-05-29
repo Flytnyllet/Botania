@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class EscMenu : MonoBehaviour
 {
@@ -39,5 +40,9 @@ public class EscMenu : MonoBehaviour
     {
         Application.Quit();
     }
-
+	
+	public void GoToScene(string sceneName)
+	{
+		SceneManager.LoadScene(sceneName);
+	}
 }

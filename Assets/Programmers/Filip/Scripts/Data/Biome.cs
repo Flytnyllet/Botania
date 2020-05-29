@@ -38,21 +38,35 @@ public class Biome : UpdatableData
         this._waterHeight = biome._waterHeight;
     }
 
-    public void Setup(Vector2 center)
+    public void Setup(Vector2 center, int LODIndex)
     {
-        for (int i = 0; i < _highLODSpawnable.Length; i++)
+        switch (LODIndex)
         {
-            _highLODSpawnable[i].Setup(null, _meshSettings.ChunkSize, _offsetNoiseSettings, center, _offsetVectorForOffsetNoise);
-        }
-
-        for (int i = 0; i < _mediumLODSpawnable.Length; i++)
-        {
-            _mediumLODSpawnable[i].Setup(null, _meshSettings.ChunkSize, _offsetNoiseSettings, center, _offsetVectorForOffsetNoise);
-        }
-
-        for (int i = 0; i < _lowLODSpawnable.Length; i++)
-        {
-            _lowLODSpawnable[i].Setup(null, _meshSettings.ChunkSize, _offsetNoiseSettings, center, _offsetVectorForOffsetNoise);
-        }
+            case (0):
+                {
+                    for (int i = 0; i < _highLODSpawnable.Length; i++)
+                    {
+                        _highLODSpawnable[i].Setup(null, _meshSettings.ChunkSize, _offsetNoiseSettings, center, _offsetVectorForOffsetNoise);
+                    }
+                    break;
+                }
+            case (1):
+                {
+                    for (int i = 0; i < _mediumLODSpawnable.Length; i++)
+                    {
+                        _mediumLODSpawnable[i].Setup(null, _meshSettings.ChunkSize, _offsetNoiseSettings, center, _offsetVectorForOffsetNoise);
+                    }
+                    break;
+                }
+            case (2):
+                {
+                    for (int i = 0; i < _lowLODSpawnable.Length; i++)
+                    {
+                        _lowLODSpawnable[i].Setup(null, _meshSettings.ChunkSize, _offsetNoiseSettings, center, _offsetVectorForOffsetNoise);
+                    }
+                    break;
+                }
+            default: Debug.LogError("There is no LOD index that is " + LODIndex); break;
+        }  
     }
 }

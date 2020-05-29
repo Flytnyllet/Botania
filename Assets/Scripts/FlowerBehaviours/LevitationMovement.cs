@@ -1,40 +1,107 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Threading.Tasks;
+using System.Timers;
 
 public class LevitationMovement : MonoBehaviour
 {
-    [SerializeField] Shader _shader;
-    //CharacterController _charCon;
-    //float _randomStartValue;
-
-    //[SerializeField] float _rotationSpeed = 10;
-    //[SerializeField] float _verticalRangeRadious = 0.1f;
-    //[SerializeField] float _verticalTimeMultiplier = 0.4f;
-    //[SerializeField] float _hoptizontalXRangeRadious = 0.05f;
-    //[SerializeField] float _hoptizontalXTimeMultiplier = 0.12f;
-    //[SerializeField] float _hoptizontalZRangeRadious = 0.12f;
-    //[SerializeField] float _hoptizontalZTimeMultiplier = 0.07f;
-
+    [SerializeField] Vector3 _movementDirection;
+    [SerializeField, Range(0, 1.57f)] float _randomDirectionOffset;
+    [SerializeField] MeshRenderer _renderer;
+    [SerializeField] Transform _childTran;
+    [SerializeField] float _heightChangeSpeed = 1;
+    [SerializeField] float _heighToGroundDifference = 20;
+    [SerializeField] LayerMask _mask;
+    Velocity _velocity;
+    Vector3 _position;
+    private System.Timers.Timer _timer;
     private void Awake()
     {
-        MeshRenderer renderer = GetComponent<MeshRenderer>();
-        Material material = new Material(_shader);
-        renderer.material = material;
-        //float f = Random.Range(0.0f, 6.28f);
-        renderer.material.SetFloat("_Random", Random.Range(0.0f, 6.28f));
+        if (_childTran == null)
+        {
+            _childTran = transform.GetChild(0);
+        }
+        _position = transform.localPosition;
+        AddRandomDirectionOffset();
+        if (_renderer != null)
+        {
+            _renderer.material.SetFloat("_Random", Random.Range(0.0f, 6.28f));
+        }
+        _velocity = new Velocity { transform = this.transform, direction = _movementDirection };
 
-        //_charCon = GetComponent<CharacterController>();
-        //_randomStartValue = +Random.Range(0, 3.14f);
+        _timer = new System.Timers.Timer();
+        _timer.Interval = 20000;
+        _timer.Elapsed += _timer_Elapsed;
+        _timer.AutoReset = true;
+        _timer.Enabled = true;
+    }
+    private void _timer_Elapsed(object sender, ElapsedEventArgs e)
+    {
+        AdjustHeight();
     }
 
-    //void Update()
-    //{
-    //    This shit is slow as fuck and either needs some good culling or complete replacement
-    //    float vertical = Mathf.Sin(Time.time * _verticalTimeMultiplier + _randomStartValue) * Time.deltaTime * _verticalRangeRadious;
-    //    float horizontalX = Mathf.Cos(Time.time * _hoptizontalXTimeMultiplier + _randomStartValue) * Time.deltaTime * _hoptizontalXRangeRadious;
-    //    float horizontalZ = Mathf.Cos(Time.time * _hoptizontalZTimeMultiplier + _randomStartValue) * Time.deltaTime * _hoptizontalZRangeRadious;
-    //    _charCon.Move(new Vector3(horizontalX, vertical, horizontalZ));
-    //    this.transform.Rotate(new Vector3(0, _rotationSpeed * Time.deltaTime, 0));
-    //}
+
+
+
+
+    private void OnEnable()
+    {
+        try
+        {
+            BatchMovement.Instance.Subscribe(_velocity);
+        }
+        catch
+        {
+            Debug.LogError("BatchMovement.cs not found on scene, simply add that script to any singleton purpuse object");
+        }
+    }
+    private void OnDisable()
+    {
+        BatchMovement.Instance.UnSubscribe(_velocity);
+        _timer.Dispose();
+    }
+
+
+
+
+
+    void AddRandomDirectionOffset()
+    {
+        float sincosVal = Random.Range(-_randomDirectionOffset, _randomDirectionOffset);
+        float sin = Mathf.Sin(sincosVal);
+        float cos = Mathf.Cos(sincosVal);
+        float x = _movementDirection.x * cos - _movementDirection.y * sin;
+        float z = _movementDirection.x * sin + _movementDirection.y * cos;
+        _movementDirection.x = x;
+        _movementDirection.z = z;
+    }
+
+
+
+
+
+    void AdjustHeight()
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(_childTran.position, -Vector3.up, out hit, _mask))
+        {
+            Debug.Log("Changing Height");
+            float targetHeight = hit.point.y + _heighToGroundDifference;
+            StartCoroutine(LerpToHeight(_heightChangeSpeed, targetHeight));
+        }
+    }
+    IEnumerator LerpToHeight(float lerpTime, float targetHeight)
+    {
+        float startHeight = _childTran.position.y;
+        float time = 0;
+        while (time < lerpTime)
+        {
+            Vector3 currentPos = _childTran.position;
+            currentPos.y = Mathf.Lerp(startHeight, targetHeight, time / lerpTime);
+            _childTran.position = currentPos;
+            time += Time.deltaTime;
+            yield return null;
+        }
+    }
 }
