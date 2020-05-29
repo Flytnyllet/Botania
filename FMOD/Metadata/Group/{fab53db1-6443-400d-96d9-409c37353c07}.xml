@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.00.00">
+	<object class="MixerGroup" id="{fab53db1-6443-400d-96d9-409c37353c07}">
+		<property name="name">
+			<value>amb_underwater</value>
+		</property>
+		<relationship name="effectChain">
+			<destination>{c679462d-a8cd-4d00-a7e1-794761e75185}</destination>
+		</relationship>
+		<relationship name="panner">
+			<destination>{77196f2b-f4aa-4aab-87b1-7fdb71a35888}</destination>
+		</relationship>
+		<relationship name="output">
+			<destination>{747de4b4-8c8a-4655-81bf-e6a8f56bbd94}</destination>
+		</relationship>
+	</object>
+	<object class="MixerBusEffectChain" id="{c679462d-a8cd-4d00-a7e1-794761e75185}">
+		<relationship name="effects">
+			<destination>{d178b97e-7aaa-441c-b5c2-0a5d3b57d855}</destination>
+		</relationship>
+	</object>
+	<object class="MixerBusPanner" id="{77196f2b-f4aa-4aab-87b1-7fdb71a35888}" />
+	<object class="MixerBusFader" id="{d178b97e-7aaa-441c-b5c2-0a5d3b57d855}" />
+</objects>

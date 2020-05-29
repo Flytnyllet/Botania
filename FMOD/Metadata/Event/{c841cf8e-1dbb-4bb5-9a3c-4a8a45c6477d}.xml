@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.00.00">
 	<object class="Event" id="{c841cf8e-1dbb-4bb5-9a3c-4a8a45c6477d}">
 		<property name="name">
-			<value>mus___02_symbol___biome3</value>
+			<value>mus___01_symbol___biome3</value>
 		</property>
 		<property name="outputFormat">
 			<value>1</value>
@@ -54,7 +54,7 @@
 			<destination>{3b2e2967-396e-4f2d-bc53-efe7c0a8bc2a}</destination>
 		</relationship>
 		<relationship name="output">
-			<destination>{188885a1-6692-44d3-89fa-7ea6a74a4f08}</destination>
+			<destination>{cee2c7df-690c-484c-914d-67b5477398c6}</destination>
 		</relationship>
 	</object>
 	<object class="EventAutomatableProperties" id="{ae48504a-f33c-440c-b132-5eeb0dce1c3e}" />
@@ -86,7 +86,7 @@
 	</object>
 	<object class="EventMixerMaster" id="{0feec199-b5af-424b-99bb-9517bf19c6c3}">
 		<property name="volume">
-			<value>-5</value>
+			<value>-10.5</value>
 		</property>
 		<relationship name="effectChain">
 			<destination>{41f9e5b2-4983-4015-8539-cb9732b9c055}</destination>
@@ -231,6 +231,7 @@
 	</object>
 	<object class="MixerBusEffectChain" id="{cef9d5cc-c93a-464d-89a4-9aeb6bfeebb7}">
 		<relationship name="effects">
+			<destination>{27af36cf-8849-407b-ad5a-288d28d16dc9}</destination>
 			<destination>{eb90cdd1-0312-4779-9894-bfc3644c9478}</destination>
 		</relationship>
 	</object>
@@ -312,6 +313,17 @@
 		</property>
 		<property name="value">
 			<value>1</value>
+		</property>
+	</object>
+	<object class="MultibandEqEffect" id="{27af36cf-8849-407b-ad5a-288d28d16dc9}">
+		<property name="filterTypeA">
+			<value>9</value>
+		</property>
+		<property name="frequencyA">
+			<value>6614.95264</value>
+		</property>
+		<property name="gainA">
+			<value>-3.62068939</value>
 		</property>
 	</object>
 	<object class="MixerBusFader" id="{eb90cdd1-0312-4779-9894-bfc3644c9478}" />

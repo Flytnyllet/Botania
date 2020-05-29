@@ -6,45 +6,71 @@ public class Music_Trigger : MonoBehaviour
 {
     private Transform _camera;
     private bool _shouldTry = false;
+    private int _track;
 
     private void Start()
     {
         _camera = Camera.main.transform;
-        _shouldTry = true;
+
+        switch (transform.parent.name)
+        {
+            case "Lusthus":
+                _shouldTry = true;
+                break;
+            case "Flower_Magic":
+                if (Random.Range(0, 1f) > 0.2f)
+                    _shouldTry = true;
+                else
+                    _shouldTry = false;
+                break;
+            case "Object_Gate(Clone)":
+                if (Random.Range(0, 1f) > 0.5f)
+                    _shouldTry = true;
+                else
+                    _shouldTry = false;
+                break;
+            case "Object_Grave_04(Clone)":
+                if (Random.Range(0, 1f) > 0.5f)
+                    _shouldTry = true;
+                else
+                    _shouldTry = false;
+                break;
+        }
     }
 
     private void Update()
     {
-        float distance = Vector3.Distance(transform.position, _camera.position); 
-        if (distance > 18) { return; }
-        else
+        if (_shouldTry && !Music_Manager.Instance.IsPlaying && !Music_Manager.Instance.IsCooldown)
         {
-
-            Vector3 dir = transform.position - _camera.position;
-            float dot = Vector3.Dot(dir.normalized, _camera.transform.forward);
-
-            if (dot > 0.7f && _shouldTry)
+            float distance = Vector3.Distance(transform.position, _camera.position);
+            if (distance > 18) { return; }
+            else
             {
-                Debug.Log(transform.parent.name);
 
-                switch (transform.parent.name)
+                Vector3 dir = transform.position - _camera.position;
+                float dot = Vector3.Dot(dir.normalized, _camera.transform.forward);
+
+                if (dot > 0.7f)
                 {
-                    case "Lusthus":
-                        Debug.Log("LUSTHUS!!!!!!!!!!");
-                        break;
-                    case "Flower_Magic":
-                        Debug.Log("MAGIIIC!!!");
-                        break;
-                    case "Object_Gate(Clone)":
-                        Debug.Log("GAAAATE!!!!!");
-                        break;
-                    case "Object_Grave_04(Clone)":
-                        Debug.Log("GRAVE....RAAAAVE!!!!");
-                        break;
+                    switch (transform.parent.name)
+                    {
+                        case "Object_Grave_04(Clone)":
+                            _track = 1;
+                            break;
+                        case "Lusthus":
+                            _track = 2;
+                            break;
+                        case "Object_Gate(Clone)":
+                            _track = 2;
+                            break;
+                        case "Flower_Magic":
+                            _track = 3;
+                            break;
+                    }
+                    Music_Manager.Instance.Init_Music(_track);
+                    _shouldTry = false;
                 }
-                _shouldTry = false;
             }
-
         }
     }
 }

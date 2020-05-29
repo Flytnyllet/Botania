@@ -67,14 +67,10 @@
 			<destination>{c22ad78e-0c30-4d2d-b581-d475b898426d}</destination>
 		</relationship>
 		<relationship name="output">
-			<destination>{188885a1-6692-44d3-89fa-7ea6a74a4f08}</destination>
+			<destination>{cee2c7df-690c-484c-914d-67b5477398c6}</destination>
 		</relationship>
 	</object>
-	<object class="EventAutomatableProperties" id="{9fc019ca-e917-44de-b7ac-7e18d3b54305}">
-		<property name="maxVoices">
-			<value>1</value>
-		</property>
-	</object>
+	<object class="EventAutomatableProperties" id="{9fc019ca-e917-44de-b7ac-7e18d3b54305}" />
 	<object class="MarkerTrack" id="{7287763c-4d76-40ee-9ce9-2376ebec6807}" />
 	<object class="MarkerTrack" id="{56afd8e6-fdd3-4d8a-8547-23ba278e3841}" />
 	<object class="MarkerTrack" id="{56d0e4f0-c496-4341-94cf-241250ce7b66}" />
@@ -138,6 +134,12 @@
 		</relationship>
 	</object>
 	<object class="EventMixerMaster" id="{dabab4c6-d671-45b2-8895-33c7dd68a82a}">
+		<property name="volume">
+			<value>-3</value>
+		</property>
+		<relationship name="modulators">
+			<destination>{0a97458f-8da4-421a-bc2d-72d15b93dead}</destination>
+		</relationship>
 		<relationship name="effectChain">
 			<destination>{eff19f93-06d2-4380-8269-e1927b18491d}</destination>
 		</relationship>
@@ -520,6 +522,20 @@
 		<relationship name="triggerConditions">
 			<destination>{89ec2382-f1eb-4bb7-8684-2a13b5007ae9}</destination>
 		</relationship>
+	</object>
+	<object class="ADSRModulator" id="{0a97458f-8da4-421a-bc2d-72d15b93dead}">
+		<property name="nameOfPropertyBeingModulated">
+			<value>volume</value>
+		</property>
+		<property name="initialValue">
+			<value>-80</value>
+		</property>
+		<property name="attackTime">
+			<value>0</value>
+		</property>
+		<property name="finalValue">
+			<value>-80</value>
+		</property>
 	</object>
 	<object class="MixerBusEffectChain" id="{eff19f93-06d2-4380-8269-e1927b18491d}">
 		<relationship name="effects">
