@@ -14,6 +14,8 @@ public class Player : MonoBehaviour
 
     [SerializeField] FPSMovement _fpsScript;
 
+    Camera _playerCamera;
+
     //Singleton
     static Player _thisSingleton;
 
@@ -30,6 +32,7 @@ public class Player : MonoBehaviour
         {
             _thisSingleton = this;
             _playerTransform = GetComponent<Transform>();
+            _playerCamera = GetComponent<Camera>();
             _updateBiomeTableTimer = new Timer(_updateBiomeTime);
             _biomeInfo = _biomeInfoInstance;
             _spawnPosition = _playerParent.position;
@@ -101,6 +104,11 @@ public class Player : MonoBehaviour
     public static Transform GetPlayerTransform()
     {
         return _playerTransform;
+    }
+
+    public static Camera GetPlayerCamera()
+    {
+        return _thisSingleton._playerCamera;
     }
 
     public static BiomeTypes GetCurrentBiome()
