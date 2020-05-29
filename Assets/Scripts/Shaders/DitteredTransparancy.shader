@@ -24,7 +24,7 @@
 
 
 		CGPROGRAM
-		#pragma surface surf Standard noforwardadd addshadow vertex:vert alpha:fade 
+		#pragma surface surf Standard noforwardadd addshadow vertex:vert
 		#pragma shader_feature _EMISSION
 		#pragma shader_feature _METALLICGLOSSMAP
 		#pragma target 3.0
@@ -72,20 +72,20 @@
 			fixed4 c = tex2D(_MainTex, IN.uv_MainTex);
 			o.Albedo = c.rgb*_Color / gEmissionMult / gEmissionMult;
 			o.Alpha = tex2D(_Alpha, IN.uv_MainTex);
-			//float2 pos = IN.screenPos.xy / IN.screenPos.w;
-			//pos *= _ScreenParams.xy; // pixel position
-			//float4x4 thresholdMatrix =
-			//{
-			//1.0 / 17.0,   9.0 / 17.0,   3.0 / 17.0,   11.0 / 17.0,
-			//13.0 / 17.0,  5.0 / 17.0,   15.0 / 17.0,  7.0 / 17.0,
-			//4.0 / 17.0,   12.0 / 17.0,  2.0 / 17.0,   10.0 / 17.0,
-			//16.0 / 17.0,  8.0 / 17.0,   14.0 / 17.0,  6.0 / 17.0
-			//};
-//#ifdef ALPHA_CUTOUT 
-//			clip(o.Alpha - _CutoutValue);
-//#else
-//			clip(o.Alpha - thresholdMatrix[fmod(pos.x, 4)][pos.y % 4]);
-//#endif
+			float2 pos = IN.screenPos.xy / IN.screenPos.w;
+			pos *= _ScreenParams.xy; // pixel position
+			float4x4 thresholdMatrix =
+			{
+			1.0 / 17.0,   9.0 / 17.0,   3.0 / 17.0,   11.0 / 17.0,
+			13.0 / 17.0,  5.0 / 17.0,   15.0 / 17.0,  7.0 / 17.0,
+			4.0 / 17.0,   12.0 / 17.0,  2.0 / 17.0,   10.0 / 17.0,
+			16.0 / 17.0,  8.0 / 17.0,   14.0 / 17.0,  6.0 / 17.0
+			};
+#ifdef ALPHA_CUTOUT 
+			clip(o.Alpha - _CutoutValue);
+#else
+			clip(o.Alpha - thresholdMatrix[fmod(pos.x, 4)][pos.y % 4]);
+#endif
 			o.Emission = tex2D(_EmissionMap, IN.uv_MainTex)*_EmissionMult*gEmissionMult;
 			o.Metallic = tex2D(_SpecularMap, IN.uv_MainTex).r*tex2D(_RoughMap, IN.uv_MainTex).r;
 
