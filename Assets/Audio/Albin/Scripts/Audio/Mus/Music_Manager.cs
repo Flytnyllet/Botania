@@ -153,6 +153,7 @@ public class Music_Manager : MonoBehaviour
     private void Play_TriggerMusic()
     {
         trigger_Instance.start();
+        trigger_Instance.release();
         _isPlaying = true;
     }
 
@@ -199,7 +200,6 @@ public class Music_Manager : MonoBehaviour
         if (_isPlaying)
         {
             _triggeredStop = true;
-            trigger_Instance.release();
             trigger_Instance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
         }
     }
