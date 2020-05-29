@@ -30,6 +30,7 @@ public class AlchemyOrganizer_2 : MonoBehaviour
 	//[SerializeField] List<ItemLoader> _allIngredients = new List<ItemLoader>();
 	static AlchemyOrganizer_2 alchemyOrganizer;
 	List<ItemDataContainer> _discoveredFlowers = new List<ItemDataContainer>();
+	List<ItemDataContainer> _allIngredients = new List<ItemDataContainer>();
     [SerializeField] List<Recipe> _recipieList = new List<Recipe>();
 	[SerializeField] GameObject _potionHolder = null;
     [SerializeField] List<PotionLoader> _availablePotions = new List<PotionLoader>();
@@ -54,7 +55,37 @@ public class AlchemyOrganizer_2 : MonoBehaviour
 		alchemyOrganizer = this;
 		SetupPotionLoaders();
 		SetupRecipes();
+		CreateIngredientList();
 	}
+
+	void CreateIngredientList()
+	{
+		for (int i = 0; i < _recipieList.Count; i++)
+		{
+			for (int ii = 0; ii < _recipieList[i].ingredientsData.Length; ii++)
+			{
+				if(!_allIngredients.Contains(_recipieList[i].ingredientsData[ii].ingredient))
+				{
+					_allIngredients.Add(_recipieList[i].ingredientsData[ii].ingredient);
+				}
+			}
+		}
+	}
+
+	public static void UpdateAfterLoad()
+	{
+		string[] allSavedFlowers = FlowerLibrary.GetAllFlowerNames();
+		List<ItemDataContainer> allIngredients = alchemyOrganizer._allIngredients;
+		for (int i = 0; i < allIngredients.Count; i++)
+		{
+			if(allSavedFlowers.Contains(allIngredients[i].itemName))
+			{
+				DiscoverRecipes(allIngredients[i]);
+			}
+		}
+	}
+
+
 
 	public static void DiscoverRecipes(ItemDataContainer flower)
 	{
@@ -379,9 +410,15 @@ public class AlchemyOrganizer_2 : MonoBehaviour
 		//Debug.Log("Test Crafting");
 		for(int i = 0; i < potionRecipe.ingredientsData.Length; i++)
 		{
+			ItemDataContainer comparableItem;
 			if (potionRecipe.ingredientsData[i].amount <= FlowerLibrary.GetFlowerAmount(potionRecipe.ingredientsData[i].ingredient.itemName))
 			{
-				
+
+			}
+			else if(FindSameSymbol(potionRecipe.ingredientsData[i].ingredient, potionRecipe.ingredientsData[i].amount, out comparableItem))
+			{
+				potionRecipe.ingredientsData[i].ingredient = comparableItem;
+				potionRecipe.ingredientImages[i].sprite = comparableItem.itemIcon;
 			}
 			else
 			{
@@ -390,11 +427,36 @@ public class AlchemyOrganizer_2 : MonoBehaviour
 			}
 		}
 
-		potionRecipe.potionScript.AddPotion();
+		potionRecipe.potionScript.AddPotion(potionRecipe.ingredientsData);
+
 		UpdatePotionAvailability(potionRecipe);
 		UpdateUI();
 		return true;
 	}
+
+	bool FindSameSymbol(ItemDataContainer data, int amount, out ItemDataContainer hasSame)
+	{
+		Debug.Log("Test");
+		for (int i = 0; i < _allIngredients.Count; i++)
+		{
+			if(data.symbol == null || _allIngredients[i] == null)
+			{
+				Debug.Log("Null Fail");
+				hasSame = null;
+			}
+			if (object.ReferenceEquals(_allIngredients[i].symbol, data.symbol) && FlowerLibrary.GetFlowerAmount(_allIngredients[i].itemName) > amount)
+			{
+				Debug.Log("Not Null Fail");
+				hasSame = _allIngredients[i];
+				return true;
+			}
+		}
+
+		Debug.Log("test");
+		hasSame = null;
+		return false;
+	}
+
  //   public void CraftPotion()
  //   {
 	//	bool hasIngredients = true;
@@ -424,15 +486,15 @@ public class AlchemyOrganizer_2 : MonoBehaviour
 		{
 			UpdateRecipeToState(_recipieList[i], RecipeState.Available);
 
-			for(int ii = 0; ii < _recipieList[i].ingredientsData.Length; ii++)
+		}
+		for(int i = 0; i < _allIngredients.Count; i++)
+		{
+			if (!_discoveredFlowers.Contains(_allIngredients[i]))
 			{
-				if(!_discoveredFlowers.Contains(_recipieList[i].ingredientsData[ii].ingredient))
-				{
-					_discoveredFlowers.Add(_recipieList[i].ingredientsData[ii].ingredient);
-				}
-				Debug.LogFormat("Adding flower {0}", _recipieList[i].ingredientsData[ii].ingredient.itemName);
-				FlowerLibrary.IncrementFlower(_recipieList[i].ingredientsData[ii].ingredient.itemName, 50);
+				_discoveredFlowers.Add(_allIngredients[i]);
 			}
+			Debug.LogFormat("Adding flower {0}", _allIngredients[i]);
+			FlowerLibrary.IncrementFlower(_allIngredients[i].itemName, 50);
 		}
 
 		//Debug.LogFormat("FLÖWERS: {0}", allFlowers.Count);

@@ -97,6 +97,7 @@ public class SaveSystem : MonoBehaviour
             PrefabSpawnerSaveData.Load();
             MapGenerator.Load();
 			FlowerLibrary.Load();
+			AlchemyOrganizer_2.UpdateAfterLoad();
         }
 
         //Used to make clear circle around player on spawn
