@@ -22,9 +22,12 @@ public class SaveSystem : MonoBehaviour
     [SerializeField] bool _save = true;
     [SerializeField] bool _load = true;
 
+    [SerializeField, Range(0, 15)] int _clearAreaSize = 3;
+
     [Header("Setup")]
 
     [SerializeField] Image _saveIcon;
+    [SerializeField] MeshSettings _meshSettings;
 
     Animator _animator;
 
@@ -39,6 +42,8 @@ public class SaveSystem : MonoBehaviour
     {
         if (_thisSaveSystem == null)
         {
+            Ready = false;
+
             _saveIntervalTime = _saveIntervalTime < _saveIconTime ? _saveIconTime : _saveIntervalTime;
             _menuSaveIntervall = _menuSaveIntervall < _saveIconTime ? _saveIconTime : _menuSaveIntervall;
 
@@ -89,11 +94,16 @@ public class SaveSystem : MonoBehaviour
         if (_load)
         {
             ValidateSave();
-            Noise.SetSeed(GetWorldSeed());
-
+            Noise.Load();
+            Player.Load();
             PrefabSpawnerSaveData.Load();
             MapGenerator.Load();
+			FlowerLibrary.Load();
+			AlchemyOrganizer_2.UpdateAfterLoad();
         }
+
+        //Used to make clear circle around player on spawn
+        PrefabSpawnerSaveData.ClearStartArea(_meshSettings.NumVertsPerLine / 2, _clearAreaSize);
 
         Ready = true;
     }
@@ -103,20 +113,15 @@ public class SaveSystem : MonoBehaviour
         object seed = Serialization.Load(Saving.FileNames.SEED);
 
         if (seed == null)
-        {
-            PrefabSpawnerSaveData.Wipe();
-            MapGenerator.Wipe();
-        }
+            Wipe();
     }
 
-    int GetWorldSeed()
+    public void Wipe()
     {
-        object seed = Serialization.Load(Saving.FileNames.SEED);
-
-        if (seed == null)
-            return UnityEngine.Random.Range(int.MinValue, int.MaxValue);
-        else
-            return (int)seed;
+        Noise.Wipe();
+        Player.Wipe();
+        PrefabSpawnerSaveData.Wipe();
+        MapGenerator.Wipe();
     }
 
     public static void SaveStatic()
@@ -137,7 +142,9 @@ public class SaveSystem : MonoBehaviour
             StartCoroutine(SaveIconAlpha());
             Noise.Save();
             PrefabSpawnerSaveData.Save();
+            Player.Save();
             MapGenerator.Save();
+			FlowerLibrary.Save();
         }
     }
 

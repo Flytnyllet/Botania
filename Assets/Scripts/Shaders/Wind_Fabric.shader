@@ -102,6 +102,7 @@
 		}
 
 	  void vert(inout appdata_full v) {
+
 		  float3 worldPos = mul(unity_ObjectToWorld, float4(v.vertex.xyz, 1)).xyz;
 
 		  float tex = tex2Dlod(_PhysicsMap, float4(v.texcoord.xy, 0, 0)).r;
@@ -138,7 +139,7 @@
 #ifdef ALPHA_CUTOUT 
 		  clip(o.Alpha - _CutoutValue);
 #else
-		  clip(o.Alpha -0.01- (thresholArray[pos.x%8*8+pos.y%8]) / 64);
+		  clip(o.Alpha- (thresholArray[pos.x%8*8+pos.y%8]+1) / 65);
 		  //clip(o.Alpha - thresholdMatrix[fmod(pos.x, 4)][pos.y % 4]);
 #endif
 		  o.Emission = tex2D(_EmissionMap, IN.uv_MainTex)*_EmissionMult*gEmissionMult;

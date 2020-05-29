@@ -56,7 +56,7 @@ public class AlchemyOrganizer : MonoBehaviour
                 Sprite ingredientIcon;
                 for (int ii = 0; ii < imageObjects.Length; ii++)
                 {
-                    List<ItemDataContainer> recipe = _availablePotions[i].GetRecipe();
+                    List<ItemDataContainer> recipe = _availablePotions[i].GetRecipeIngredients();
                     if (imageObjects[ii].name.Contains("1"))
                     {
                         if (GetImageFromCollection(recipe[0], out ingredientIcon))
@@ -334,7 +334,7 @@ public class AlchemyOrganizer : MonoBehaviour
         for (int i = 0; i < _availablePotions.Count; i++)
         {
             //Debug.Log("LOOP");
-            List<ItemDataContainer> recipe = _availablePotions[i].GetRecipe();
+            List<ItemDataContainer> recipe = _availablePotions[i].GetRecipeIngredients();
             _recipieList.Add(recipe);
             /*debug += "\n \t ";
 			for (int j = 0; j < recipe.Count; j++)

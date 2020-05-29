@@ -63,8 +63,9 @@ public class Interactor : MonoBehaviour
         bool hit = Physics.Raycast(transform.position, transform.forward * distance, out collision, distance, _layerMask.value);
         Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * distance, Color.green, 1f);
 
-        if (hit)
+        if (hit && transform.eulerAngles.x < 180)
         {
+
             //Debug.Log(collision.transform.name);
             PickupFlower[] pickupFlowers = collision.transform.GetComponents<PickupFlower>();
 

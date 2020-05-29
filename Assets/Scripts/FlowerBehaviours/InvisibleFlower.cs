@@ -19,7 +19,6 @@ public class InvisibleFlower : MonoBehaviour
         _collider.enabled = _IsVissible;
         foreach (MeshRenderer renderer in _renderer)
         {
-            Debug.Log(_IsVissible);
             renderer.material.SetTexture("_Alpha", _IsVissible ? _visibleTex : _invisibleTex);
         }
     }

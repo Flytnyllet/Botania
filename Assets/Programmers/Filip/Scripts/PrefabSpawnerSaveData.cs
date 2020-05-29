@@ -6,6 +6,19 @@ using System.Linq;
 public static class PrefabSpawnerSaveData
 {
     static Dictionary<ChunkCoordIndex, StoredSaveData> _storedSaveDataDic = new Dictionary<ChunkCoordIndex, StoredSaveData>();
+    static Dictionary<ChunkCoordIndex, StoredSaveData> _spawnAreaDataDic = new Dictionary<ChunkCoordIndex, StoredSaveData>();
+
+    public static void ClearStartArea(int startIndex, int clearSize)
+    {
+        for (int x = startIndex - clearSize; x < startIndex + clearSize; x++)
+        {
+            for (int y = startIndex - clearSize; y < startIndex + clearSize; y++)
+            {
+                StoredSaveData data = new StoredSaveData(Vector2.zero, new Vector2(x, y));
+                _spawnAreaDataDic.Add(data.ChunkCoordIndex, data);
+            }
+        }
+    }
 
     public static void Save()
     {
@@ -33,6 +46,7 @@ public static class PrefabSpawnerSaveData
         List<StoredSaveData> saveData = new List<StoredSaveData>();
 
         Serialization.Save(Saving.FileNames.PREFAB_SPAWNING, saveData);
+        _spawnAreaDataDic = new Dictionary<ChunkCoordIndex, StoredSaveData>();
     }
 
     public static void AddPickup(StoredSaveData saveDataToStore)
@@ -60,6 +74,11 @@ public static class PrefabSpawnerSaveData
     public static StoredSaveData GetStoredSaveData(ChunkCoordIndex index)
     {
         return _storedSaveDataDic[index];
+    }
+
+    public static bool InsideSpawnArea(ChunkCoordIndex chunkCoordIndex)
+    {
+        return _spawnAreaDataDic.ContainsKey(chunkCoordIndex);
     }
 
     //Checks if it should spawn depending on key (used in spawning script only)

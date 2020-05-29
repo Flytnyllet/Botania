@@ -36,7 +36,7 @@ public class TerrainChunk
     SpawnInfoRequester _spawnInfoRequester;
     Biome _biome;
 
-    public TerrainChunk(Vector2 coord, HeightMapSettings heightMapSettings, MeshSettings meshSettings, LODInfo[] detailLevels, int colliderLODIndex, Transform parent, Transform viewer, Material material, Biome biome, GroundMaterialGenerator materialGenerator)
+    public TerrainChunk(Vector2 coord, HeightMapSettings heightMapSettings, MeshSettings meshSettings, LODInfo[] detailLevels, int colliderLODIndex, Transform parent, Transform viewer, Material material, Biome biome, GroundMaterialGenerator materialGenerator, string groundLayer)
     {
         this._biome = biome;
         this.Coord = coord;
@@ -76,6 +76,7 @@ public class TerrainChunk
         _spawnInfoRequester._updateCallback += UpdateTerrainChunk;
 
         _maxViewDistance = _detailLevels[_detailLevels.Length - 1].visableDstThreshold;
+        _meshObject.layer = LayerMask.NameToLayer(groundLayer);
     }
 
     public void Load()

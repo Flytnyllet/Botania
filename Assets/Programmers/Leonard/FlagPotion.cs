@@ -14,7 +14,19 @@ public class FlagPotion : Potion_Template
     }
     public override bool PotionEffectStart(FPSMovement p)
     {
-        if (!CharacterState.IsAbilityFlagActive(effect))
+        ABILITY_FLAG flag = CharacterState.GetFlagFromString(effect);
+        bool AbillityActive;
+        if (flag == ABILITY_FLAG.LEVITATE)
+        {
+            AbillityActive = (CharacterState.IsAbilityFlagActive(ABILITY_FLAG.LEVITATE) || CharacterState.IsAbilityFlagActive(ABILITY_FLAG.SLOWFALL));
+        }
+        else
+        {
+            AbillityActive = CharacterState.IsAbilityFlagActive(flag);
+        }
+
+
+        if (!AbillityActive)
         {
             CharacterState.AddAbilityFlag(effect, duration);
             AddAdditionalEffects();
@@ -52,7 +64,6 @@ public class FlagPotion : Potion_Template
                 break;
 
             case ABILITY_FLAG.LEVITATE:
-
 
                 ActionDelayer.RunAfterDelay(() => { CharacterState.AddAbilityFlag("SLOWFALL", 5f); }, duration);
                 break;

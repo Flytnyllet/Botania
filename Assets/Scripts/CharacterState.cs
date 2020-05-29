@@ -6,8 +6,8 @@ using UnityEngine;
 
 //This is supposed to act as a place to store character variables which
 // can be edidted by other objects for the sake of avoiding dependendies.
-public enum CHARACTER_CONTROL_STATE { PLAYERCONTROLLED = 0, CUTSCENE, MENU, MENU_NO_MOVEMENT }
-public enum ABILITY_FLAG { NULL = 0, INVISSIBLE, SUPERHEARING, STONE, LEVITATE, SLOWFALL, CALM_ALL_FLOWERS, VISSION }
+public enum CHARACTER_CONTROL_STATE { PLAYERCONTROLLED = 0, CUTSCENE, MENU, MENU_NO_MOVEMENT, Dev }
+public enum ABILITY_FLAG { NULL = 0, INVISSIBLE, SUPERHEARING, STONE, LEVITATE, SLOWFALL, CALM_ALL_FLOWERS, VISSION, TELEPORT }
 public static class CharacterState
 {
     static CursorUsabilityControll _cursorControll = new CursorUsabilityControll();
@@ -45,27 +45,22 @@ public static class CharacterState
     }
     public static void AddAbilityFlag(ABILITY_FLAG flag, float time)
     {
-        Debug.Log("adding flag");
-        _abilityFlags.Add(flag);
-        ActionDelayer.RunAfterDelay(() => { _abilityFlags.Remove(flag); }, time);
-    }
-    public static void AddAbilityFlag(string s, float time)
-    {
-        Debug.Log("adding flag");
-        //Debug.Log(s + " added");
-        ABILITY_FLAG flag = GetFlagFromString(s);
         _abilityFlags.Add(flag);
         ActionDelayer.RunAfterDelay(() =>
         {
-            //Debug.Log(s + " added");
             _abilityFlags.Remove(flag);
         }, time);
     }
-
-    public static void RemoveAbilityFlag(ABILITY_FLAG flag)
+    public static void AddAbilityFlag(string s, float time)
     {
-        _abilityFlags.Remove(flag);
+        AddAbilityFlag(GetFlagFromString(s), time);
     }
+
+    //public static void RemoveAbilityFlag(ABILITY_FLAG flag)
+    //{
+    //    Debug.Log("THIS SHOULDN'T HAPPEN!");
+    //    _abilityFlags.Remove(flag);
+    //}
 
     //public static bool RemoveAbilityFlag(string name)
     //{
@@ -92,7 +87,7 @@ public static class CharacterState
         {
             return false;
         }
-        return (_abilityFlags.Contains(flag));
+        return IsAbilityFlagActive(flag);
     }
 
     public static void SetControlState(CHARACTER_CONTROL_STATE state)
@@ -138,7 +133,9 @@ public static class CharacterState
                 return ABILITY_FLAG.CALM_ALL_FLOWERS;
             case "VISION":
                 return ABILITY_FLAG.VISSION;
-            default:
+			case "TELEPORT":
+				return ABILITY_FLAG.TELEPORT;
+			default:
                 return ABILITY_FLAG.NULL;
         }
     }

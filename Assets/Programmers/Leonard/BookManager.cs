@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class BookManager : MonoBehaviour
 {
+    public static BookManager Instance;
+
     const string INPUT_INVENTORY = "Inventory";
     const string INPUT_MAP = "Map";
     const string INPUT_FLOWERS = "Flowers";
@@ -15,7 +17,9 @@ public class BookManager : MonoBehaviour
 
     [SerializeField] List<GameObject> _bookmarks = new List<GameObject>();
     [SerializeField] List<PageLoader> _flowerPages = new List<PageLoader>();
+    [SerializeField] List<PageLoader> FLOWERPAGE_INDEX = new List<PageLoader>();
     [SerializeField] List<PageLoader> _lorePages = new List<PageLoader>();
+    [SerializeField] List<PageLoader> _indexPages = new List<PageLoader>();
     [SerializeField] int _flowerOrganizerId = 1;
     [SerializeField] RectTransform _bookmarkTemplate = null;
     [SerializeField] GameObject _emptyPageTemplate = null;
@@ -23,7 +27,7 @@ public class BookManager : MonoBehaviour
     [SerializeField] Color[] _bookmarkColors = null;
     int _currentBookmark = 0;
     int _currentPage = 0;
-    [SerializeField] GameObject _book = null;
+    [SerializeField] public GameObject _book = null;
     [SerializeField] GameObject _map = null;
     [SerializeField] GameObject _potionWheel = null;
 
@@ -45,8 +49,21 @@ public class BookManager : MonoBehaviour
 
     void Awake()
     {
-        SetupBookmarks();
-        SetupPage(_flowerOrganizerId, _flowerPages);
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(this.gameObject);
+        }
+		StartCoroutine(TurnGOOff(_book));
+		SetupBookmarks();
+        foreach (PageLoader page in _flowerPages)
+        {
+            FLOWERPAGE_INDEX.Add(page);
+        }
+        SetupPage(_flowerOrganizerId, FLOWERPAGE_INDEX);
 
         /*
 		if (_book == null)
@@ -75,15 +92,15 @@ public class BookManager : MonoBehaviour
     {
         if (OpenBookmark(_currentBookmark, INPUT_INVENTORY)) ;
 
-        else if (OpenBookmark(3, INPUT_MAP)) ;
+        else if (OpenBookmark(4, INPUT_MAP)) ;
 
         else if (OpenBookmark(2, INPUT_LORE)) ;
 
         else if (OpenBookmark(1, INPUT_FLOWERS)) ;
 
-        else if (OpenBookmark(0, INPUT_ALCHEMY)) ;
+        else if (OpenBookmark(3, INPUT_ALCHEMY)) ;
 
-        if (Input.GetButtonDown(OPEN_WHEEL) && !_book.activeSelf && CharacterState.Control_State == CHARACTER_CONTROL_STATE.PLAYERCONTROLLED)
+        else if (Input.GetButtonDown(OPEN_WHEEL) && !_book.activeSelf && CharacterState.Control_State == CHARACTER_CONTROL_STATE.PLAYERCONTROLLED)
         {
             _potionWheel.SetActive(true);
             //_potionWheel.SetActive(!_potionWheel.activeSelf);
@@ -165,14 +182,27 @@ public class BookManager : MonoBehaviour
     }
     void SetupBookmarks()
     {
-        for (int i = 0; i < _bookmarks.Count; i++)
+        for (int i = _bookmarks.Count - 1; i >= 0; i--)
         {
             GameObject bookmark = _bookmarks[i];
             _bookmarks[i] = Instantiate(bookmark, _book.transform);
             _bookmarks[i].transform.SetAsFirstSibling();
+            _bookmarks[i].gameObject.SetActive(true);
+			if(i != _currentBookmark)
+			{
+				StartCoroutine(TurnGOOff(_bookmarks[i]));
+			}
             //CreateBookmarkObject(i, bookmark, bookmarks);
         }
+
+        //_bookmarks[_currentBookmark].SetActive(true);
     }
+
+	IEnumerator TurnGOOff(GameObject go)
+	{
+		yield return null;
+		go.SetActive(false);
+	}
 
     void SetupBookTabs()
     {
@@ -180,7 +210,7 @@ public class BookManager : MonoBehaviour
 
         for (int i = 0; i < _bookmarks.Count; i++)
         {
-            CreateBookmarkObject(i, _bookmarks[i], bookmarks);
+            //CreateBookmarkObject(i, _bookmarks[i], bookmarks);
         }
         for (int i = 0; i < bookmarks.Count; i++)
         {
@@ -203,14 +233,29 @@ public class BookManager : MonoBehaviour
         //bookmarkObject.transform.position = new Vector3(_bookmarkPositions[i].x, _bookmarkPositions[i].y, 0.0f);
     }
 
+    public void SetCurrentFlowerPage(int target)//Jens var här
+    {
+        PageLoader[] flowerPages = _bookmarks[_flowerOrganizerId].GetComponentsInChildren<PageLoader>(true);
+        flowerPages[_currentPage].gameObject.SetActive(false);
+        flowerPages[_currentPage + 1].gameObject.SetActive(false);
+        _currentPage = target;
+        flowerPages[_currentPage].gameObject.SetActive(true);
+        flowerPages[_currentPage + 1].gameObject.SetActive(true);
+    }
+
     public void ChangePage(int change)
     {
         switch (_currentBookmark)
         {
-            case 1:
-                List<Transform> children = _bookmarks[1].GetComponent<AlchemyOrganizer>().GetPages();
+            /*case 1:
+                List<Transform> children = _bookmarks[1].GetComponent<AlchemyOrganizerV">().GetPages();
                 _currentPage = ChangeCurrentPage(children.Count, change);
                 ChangePage(children);
+                break;*/
+
+            case 1:
+                _currentPage = ChangeCurrentPage(FLOWERPAGE_INDEX.Count, change);
+                ChangePage(FLOWERPAGE_INDEX);
                 break;
 
             case 2:
@@ -219,8 +264,8 @@ public class BookManager : MonoBehaviour
                 break;
 
             default:
-                _currentPage = ChangeCurrentPage(_flowerPages.Count, change);
-                ChangePage(_flowerPages);
+                _currentPage = ChangeCurrentPage(FLOWERPAGE_INDEX.Count, change);
+                ChangePage(FLOWERPAGE_INDEX);
                 break;
         }
     }
@@ -275,6 +320,11 @@ public class BookManager : MonoBehaviour
 
     void ToBookmark(int index, bool playSounds)
     {
+        if (index == _flowerOrganizerId && _currentBookmark == _flowerOrganizerId) //Jens var här
+        {
+            SetCurrentFlowerPage(0);
+            //return;
+        }
         if (index != _currentBookmark && playSounds)
         {
             FlipPageSoundEffect();
@@ -300,6 +350,11 @@ public class BookManager : MonoBehaviour
 
     public void ToBookmark(int index)
     {
+        if (index == _flowerOrganizerId && _currentBookmark == _flowerOrganizerId)//Jens var här
+        {
+            SetCurrentFlowerPage(0);
+            //return;
+        }
         if (_currentBookmark != _bookmarks.Count - 1)
         {
             _bookmarks[_currentBookmark].SetActive(false);
