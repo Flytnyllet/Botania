@@ -8,6 +8,8 @@ public class Menu : MonoBehaviour
     const string MENU_BUTTON = "Cancel";
 
     [SerializeField] GameObject _menu;
+    [SerializeField] GameObject _main;
+    [SerializeField] GameObject[] _rest;
 
     CHARACTER_CONTROL_STATE _previousState;
 
@@ -21,9 +23,7 @@ public class Menu : MonoBehaviour
 
             if (CharacterState.Control_State != CHARACTER_CONTROL_STATE.MENU_NO_MOVEMENT && CharacterState.Control_State != CHARACTER_CONTROL_STATE.MENU)
             {
-                _previousState = CharacterState.Control_State;
-                CharacterState.SetControlState(CHARACTER_CONTROL_STATE.MENU_NO_MOVEMENT);
-                _menu.SetActive(true);
+                EnterMenu();
             }
             else if (_menu.activeSelf)
             {//If menu object is active, turn it off and set characterState to previousState
@@ -32,10 +32,29 @@ public class Menu : MonoBehaviour
         }
     }
 
+    public void EnterMenu()
+    {
+        ResetMenu();
+        _previousState = CharacterState.Control_State;
+        CharacterState.SetControlState(CHARACTER_CONTROL_STATE.MENU_NO_MOVEMENT);
+        _menu.SetActive(true);
+    }
+
     public void ExitMenu()
     {
         CharacterState.SetControlState(_previousState);
         _menu.SetActive(false);
+        ResetMenu();
+    }
+
+    private void ResetMenu()
+    {
+        _main.SetActive(true);
+
+        for (int i = 0; i < _rest.Length; i++)
+        {
+            _rest[i].SetActive(false);
+        }
     }
 
     public void Quit()
