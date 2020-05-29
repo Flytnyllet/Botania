@@ -139,6 +139,7 @@ public class PotionLoader : MonoBehaviour
     }
     public void AddPotion()
     {
+
         FlowerLibrary.IncrementPotion(_item.itemName, 1);
         Debug.Log("Adding one more " + _item.itemName + ", now there are " + FlowerLibrary.GetPotionAmount(_item.itemName));
 
@@ -148,7 +149,13 @@ public class PotionLoader : MonoBehaviour
         }
         UpdateUI();
     }
-    void UpdateUI()
+	public void AddPotion(RecipeEntry[] changeRecipe)
+	{
+		recipe = new List<RecipeEntry>(changeRecipe);
+		AddPotion();
+	}
+
+	void UpdateUI()
     {
 		if (textObject != null)
 		{

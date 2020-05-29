@@ -56,12 +56,20 @@ public static class FlowerLibrary
 	public static void Load()
 	{
 		Dictionary<string, FlowerData> flowerTypes = new Dictionary<string, FlowerData>();
-		List<FlowerEntry> flowerEntries = (List<FlowerEntry>)Serialization.Load(FILE_NAME_FLOWERS);
-		for(int i  = 0; i < flowerEntries.Count; i++)
+		object temp = Serialization.Load(FILE_NAME_FLOWERS);
+		List<FlowerEntry> flowerEntries = null;
+		if (temp != null)
+			flowerEntries = (List<FlowerEntry>)temp;
+		else
+			Debug.LogErrorFormat("Load Data Is Null");
+		
+		for (int i  = 0; i < flowerEntries.Count; i++)
 		{
 			flowerTypes.Add(flowerEntries[i].key, flowerEntries[i].data);
 		}
 		_flowerTypes = flowerTypes;
+
+		Debug.LogFormat("Number of flower types in Load is {0}", flowerEntries.Count.ToString());
 
 		Dictionary<string, int> potionTypes = new Dictionary<string, int>();
 		List<PotionEntry> potionEntries = (List<PotionEntry>)Serialization.Load(FILE_NAME_POTIONS);
@@ -70,6 +78,8 @@ public static class FlowerLibrary
 			potionTypes.Add(potionEntries[i].key, potionEntries[i].amount);
 		}
 		_potionTypes = potionTypes;
+
+		Debug.LogFormat("Number of potion types in Load is {0}", potionTypes.Count.ToString());
 	}
 
     const string SAVE_FILE_NAME = "FlowerLibrary";

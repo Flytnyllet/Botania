@@ -8,4 +8,5 @@ public class ItemDataContainer : ScriptableObject
 {
 	public string itemName;
 	public Sprite itemIcon;
+	public Sprite symbol;
 }
