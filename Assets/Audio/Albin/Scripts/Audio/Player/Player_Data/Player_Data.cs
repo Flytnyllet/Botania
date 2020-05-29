@@ -13,6 +13,9 @@ public class Player_Data : UnityEngine.ScriptableObject
     public string p_mov_jump = null;
 
     [FMODUnity.EventRef]
+    public string p_mov_land = null;
+
+    [FMODUnity.EventRef]
     public string p_mov_swim = null;
 
     [Space(10)]
@@ -39,18 +42,42 @@ public class Player_Data : UnityEngine.ScriptableObject
 
     [Header("P_Pickup")]
     [FMODUnity.EventRef]
-    public string p_pickup_01_earth = null;
+    public string p_pickup_calm = null;
 
     [FMODUnity.EventRef]
-    public string p_pickup_03_tp = null;
+    public string p_pickup_earth = null;
 
     [FMODUnity.EventRef]
-    public string p_pickup_05_mole = null;
+    public string p_pickup_home = null;
 
     [FMODUnity.EventRef]
-    public string p_pickup_06_soul = null;
+    public string p_pickup_invisible = null;
 
     [FMODUnity.EventRef]
-    public string p_pickup_07_calm = null;
+    public string p_pickup_mole = null;
+
+    [FMODUnity.EventRef]
+    public string p_pickup_soul = null;
+
+    [FMODUnity.EventRef]
+    public string p_pickup_tp = null;
+
+    [FMODUnity.EventRef]
+    public string p_pickup_vitsippa = null;
+
+    [FMODUnity.EventRef]
+    public string p_pickup_levitation = null;
+
+    [FMODUnity.EventRef]
+    public string p_pickup_sight = null;
+
+    [FMODUnity.EventRef]
+    public string p_pickup_magic = null;
+
+    [FMODUnity.EventRef]
+    public string p_pickup_underwater = null;
+
+    [FMODUnity.EventRef]
+    public string p_pickup_water = null;
 }
 
