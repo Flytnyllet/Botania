@@ -71,6 +71,20 @@ public class TerrainGenerator : MonoBehaviour
         UpdateVisableChunks();
     }
 
+    public void ChangeRenderDistance(int index)
+    {
+        _detailLevelIndex = index;
+
+        float maxViewDistance = _detailLevelsHolder[_detailLevelIndex]._levelOfDetail[_detailLevelsHolder[_detailLevelIndex]._levelOfDetail.Length - 1].visableDstThreshold;
+        _chunksVisableInViewDist = Mathf.RoundToInt(maxViewDistance / _meshWorldSize);
+
+        foreach(KeyValuePair<Vector2, TerrainChunk> entry in _terrainChunkDictionary)
+        {
+            entry.Value.UpdateRenderDistance(_detailLevelsHolder[_detailLevelIndex]._levelOfDetail);
+        }
+        UpdateVisableChunks();
+    }
+
     private void Update()
     {
         if (SaveSystem.Ready)

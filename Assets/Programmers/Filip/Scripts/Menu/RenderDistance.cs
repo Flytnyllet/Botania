@@ -5,6 +5,7 @@ using TMPro;
 
 public class RenderDistance : MonoBehaviour
 {
+    [SerializeField] TerrainGenerator _terrainGeneratorScript;
     [SerializeField] List<string> _options;
 
     TMP_Dropdown _dropdown;
@@ -25,5 +26,6 @@ public class RenderDistance : MonoBehaviour
 
     public void ChangeRenderDistance()
     {
+        _terrainGeneratorScript.ChangeRenderDistance(_dropdown.value);
     }
 }
