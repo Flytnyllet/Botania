@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    [SerializeField] float _seaLevelSpawn = 10;
     [SerializeField] MeshSettings _meshSettings;
     [SerializeField] Transform _playerParent;
     [SerializeField] float _playerSpawnHeightOffset = 3f;
@@ -77,7 +78,12 @@ public class Player : MonoBehaviour
             Debug.DrawRay(_thisSingleton._playerParent.transform.position, Vector3.down * _distanceRayCast, Color.cyan, 1f);
         } while (!hit);
 
-        _fpsScript.Teleport(collision.point);
+        Vector3 spawnPosition = collision.point;
+
+        if (collision.point.y < _seaLevelSpawn)
+            spawnPosition.y = _seaLevelSpawn;
+
+        _fpsScript.Teleport(spawnPosition);
 
         OnStartFadeIn.FadeIn();
     }

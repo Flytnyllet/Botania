@@ -17,7 +17,6 @@ using System.Collections;
 [AddComponentMenu("Camera-Control/Mouse Look")]
 public class MouseLook : MonoBehaviour
 {
-    [SerializeField] DevCam _devCamThing;
     Camera _camera;
 
     public enum RotationAxes { MouseXAndY = 0, MouseX = 1, MouseY = 2 }

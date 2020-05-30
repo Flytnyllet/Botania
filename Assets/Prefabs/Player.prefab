@@ -10284,7 +10284,9 @@ MonoBehaviour:
     Reset Tilt = F5
 
 
-    Turn off Fog = F6'
+    Turn off Fog = F6
+
+    Smooth Cam = F7'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
@@ -10353,12 +10355,12 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 1431492966069420420}
-    characterCount: 281
+    characterCount: 297
     spriteCount: 0
-    spaceCount: 60
-    wordCount: 43
+    spaceCount: 64
+    wordCount: 46
     linkCount: 0
-    lineCount: 16
+    lineCount: 17
     pageCount: 1
     materialCount: 2
   m_isUsingLegacyAnimationComponent: 0
@@ -15378,9 +15380,11 @@ MonoBehaviour:
   _teleportPlacementHeight: 5
   _teleportMinDistance: 650
   _teleportMaxDistance: 1300
+  _teleportRay: 100
   _groundLayer:
     serializedVersion: 2
     m_Bits: 1050915
+  _loadScreen: {fileID: 0}
 --- !u!114 &7695500336731500830
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15405,6 +15409,7 @@ MonoBehaviour:
   _movementScript: {fileID: 6380197203547624249}
   _interactorScript: {fileID: 6380197204816857827}
   _crosshairHolder: {fileID: 2710802850243251676}
+  _activated: 0
 --- !u!114 &104122664
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15622,6 +15627,8 @@ MonoBehaviour:
   maximumX: 360
   minimumY: -89
   maximumY: 60
+  smoothing: 0
+  smoothValue: 0.5
 --- !u!114 &6380197204816857827
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15667,6 +15674,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87d5de57c3b275843a4ebb5342c7073b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _seaLevelSpawn: 10
   _meshSettings: {fileID: 11400000, guid: 7d9387cccf68fe249839b1efd02293a8, type: 2}
   _playerParent: {fileID: 6380197203547624253}
   _playerSpawnHeightOffset: 5
