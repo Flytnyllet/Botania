@@ -48,7 +48,7 @@ public class InteractText : UIElement
                 StopCoroutine(NotificationObject.currentCoroutineImage);
 
             _imagePopUp.sprite = sprite;
-            NotificationObject.currentCoroutineImage = StartCoroutine(FadeOut(2, 5));
+            NotificationObject.currentCoroutineImage = StartCoroutine(FadeOut(1.5f, 2));
         }
 
     }

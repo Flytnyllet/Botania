@@ -10,6 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 75141199}
   - component: {fileID: 75141200}
+  - component: {fileID: 5497524601712020148}
+  - component: {fileID: 2266556761320553169}
   m_Layer: 9
   m_Name: Point Light
   m_TagString: Untagged
@@ -25,7 +27,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 75141198}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.253, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8514162632322935081}
@@ -91,6 +93,36 @@ Light:
   m_UseBoundingSphereOverride: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+--- !u!135 &5497524601712020148
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 75141198}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 5
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &2266556761320553169
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 75141198}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54fb2706b99311e47afdbe89491c63b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _charCon: {fileID: 9067932830191463594}
+  _targetTransform: {fileID: 3191428825255980730}
+  _direction: {x: 0.1, y: -2, z: 0}
+  _fleeSpeed: 3
+  _playerDistanceTarget: 10
 --- !u!1 &1878390561116118185
 GameObject:
   m_ObjectHideFlags: 0
@@ -105,7 +137,7 @@ GameObject:
   - component: {fileID: 2941169685239680044}
   - component: {fileID: 690314116}
   - component: {fileID: 690314120}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: EXP_Flower_Levitation
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -213,6 +245,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _dissableTriggerafterPickup: 1
   _flowerData: {fileID: 11400000, guid: fedd86c71b7f5e04ab3eddc64e6662d1, type: 2}
+  _amount: 1
   _pickupAlpha: {fileID: 0}
   _gameobjectOverload:
   - {fileID: 5167158702135448164}
@@ -233,10 +266,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8514162632322935081}
-  - component: {fileID: 1791142920}
-  - component: {fileID: 1791142919}
   - component: {fileID: 9067932830191463594}
-  m_Layer: 9
+  m_Layer: 8
   m_Name: Flower_Levitation
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -251,7 +282,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5167158702135448164}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.119, y: 0.5, z: 17.6}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 3191428825255980730}
@@ -259,35 +290,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1791142920
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5167158702135448164}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 54fb2706b99311e47afdbe89491c63b6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _targetTransform: {fileID: 3191428825255980730}
-  _direction: {x: 0, y: -2, z: 0}
-  _fleeSpeed: 3
-  _playerDistanceTarget: 10
---- !u!135 &1791142919
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5167158702135448164}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!143 &9067932830191463594
 CharacterController:
   m_ObjectHideFlags: 0

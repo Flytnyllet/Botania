@@ -138,13 +138,10 @@ public class DevCam : MonoBehaviour
         mousePos.y /= _camera.pixelHeight;
         float temp = mousePos.x;
         mousePos.x = mousePos.y;
-        mousePos.y = temp;
+        mousePos.y = -temp;
         mousePos = mousePos * 2 - new Vector2(1, 1);
         _playerCamera.Rotate(mousePos * 10 * Time.deltaTime);
 
-
-
-        Debug.Log(mousePos);
 
         Vector3 lookDir = _playerCamera.forward;
         Vector3 move = _playerCamera.right.normalized * movement.x + lookDir.normalized * movement.y + _playerCamera.up.normalized * movement.z + _playerCamera.up * -movement.w;
