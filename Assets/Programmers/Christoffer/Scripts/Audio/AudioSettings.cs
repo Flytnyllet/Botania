@@ -1,51 +1,40 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using FMODUnity;
+using UnityEngine.UI;
 
 public class AudioSettings : MonoBehaviour
 {
-    FMOD.Studio.EventInstance SFXTest;
+    [SerializeField] string _masterName;
+    [SerializeField] string _musicName;
+    [SerializeField] string _SFXName;
 
-    FMOD.Studio.Bus Master;
-    FMOD.Studio.Bus Music;
-    FMOD.Studio.Bus SFX;
-    float MasterVolume;
-    float MusicVolume;
-    float SFXVolume;
+    FMOD.Studio.Bus _master;
+    FMOD.Studio.Bus _music;
+    FMOD.Studio.Bus _SFX;
+
+    static readonly string BUS_START_PREFIX = "bus:/";
 
     void Awake()
     {
-        Master = FMODUnity.RuntimeManager.GetBus("");
-        Music = FMODUnity.RuntimeManager.GetBus("");
-        SFX = FMODUnity.RuntimeManager.GetBus("");
-        SFXTest = FMODUnity.RuntimeManager.CreateInstance("");
+        _master = RuntimeManager.GetBus(BUS_START_PREFIX + _masterName);
+        _music = RuntimeManager.GetBus(BUS_START_PREFIX + _musicName);
+        _SFX = RuntimeManager.GetBus(BUS_START_PREFIX + _SFXName);
     }
 
-    void Update()
+    public void MasterVolumeLevel(Slider thisSlider)
     {
-        Master.setVolume(MasterVolume);
-        SFX.setVolume(SFXVolume);
-        Master.setVolume(MasterVolume);
+        _master.setVolume(thisSlider.value);
     }
 
-    public void MasterVolumeLevel(float newMasterVolume)
+    public void MusicVolumeLevel(Slider thisSlider)
     {
-        MasterVolume = newMasterVolume;
+        _music.setVolume(thisSlider.value);
     }
 
-    public void MusicVolumeLevel(float newMusicVolume)
+    public void SFXVolumeLevel(Slider thisSlider)
     {
-        MusicVolume = newMusicVolume;
-    }
-
-    public void SFXVolumeLevel(float newSFXVolume)
-    {
-        SFXVolume = newSFXVolume;
-
-        FMOD.Studio.PLAYBACK_STATE pb;
-        SFXTest.getPlaybackState(out pb);
-        if(pb != FMOD.Studio.PLAYBACK_STATE.PLAYING) {
-            SFXTest.start();
-        }
+        _SFX.setVolume(thisSlider.value);
     }
 }

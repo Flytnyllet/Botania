@@ -9,6 +9,8 @@ public class FOVSetting : MonoBehaviour
     [SerializeField] TMP_Text _value;
     Slider _slider;
 
+    bool _first = true;
+
     private void Awake()
     {
         _slider = GetComponent<Slider>();
@@ -16,8 +18,23 @@ public class FOVSetting : MonoBehaviour
 
     private void OnEnable()
     {
-        _slider.value = Player.GetPlayerCamera().fieldOfView;
-        ChangeFOV();
+        if (!_first)
+        {
+            _slider.value = Player.GetPlayerCamera().fieldOfView;
+            ChangeFOV();
+        }
+    }
+
+    //This is just to make sure Player is initialized before setting
+    private void Start()
+    {
+        if (_first)
+        {
+            _slider.value = Player.GetPlayerCamera().fieldOfView;
+            ChangeFOV();
+
+            _first = false;
+        }
     }
 
     public void ChangeFOV()

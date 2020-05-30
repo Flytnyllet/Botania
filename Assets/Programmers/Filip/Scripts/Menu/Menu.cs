@@ -11,9 +11,14 @@ public class Menu : MonoBehaviour
     [SerializeField] GameObject _main;
     [SerializeField] GameObject[] _rest;
 
+    [SerializeField] MenuItemHover[] _changeNames;
+    [SerializeField] GameObject _logo;
+
     CHARACTER_CONTROL_STATE _previousState;
 
     bool _onStart = true;
+
+    bool _mainMenu = true;
 
     void Update()
     {
@@ -45,7 +50,20 @@ public class Menu : MonoBehaviour
         CharacterState.SetControlState(_previousState);
         _menu.SetActive(false);
         ResetMenu();
+
+        if (_mainMenu)
+        {
+            _mainMenu = false;
+            for (int i = 0; i < _changeNames.Length; i++)
+            {
+                _changeNames[i].ChangeName();
+            }
+
+            _logo.SetActive(false);
+        }
     }
+
+
 
     private void ResetMenu()
     {
