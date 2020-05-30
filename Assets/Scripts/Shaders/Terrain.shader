@@ -126,8 +126,8 @@
 				noise.a = smoothstep(startStep[3], endStep[3], noise.a)*(1 - noise.r)*(1 - noise.g)*(1 - noise.b);
 				float mainTexVal = 1 * (1 - noise.r)*(1 - noise.g)*(1 - noise.b)*(1 - noise.a);
 				mainTex *= mainTexVal;
-				float3 emissions = tex2D(_Emission, IN.worldPos.xz / baseTextureScale);
-				o.Emission = lerp(float3(0,0,0), emissions, mainTexVal)*noiseVal;
+				float3 emissions = tex2D(_Emission, IN.worldPos.xz / baseTextureScale)*2;
+				o.Emission = lerp(float3(0,0,0), emissions, 1 - noise.r)*noiseVal;
 				//o.Albedo = altCol+colour;
 
 				float4 altCol0 = tex2D(_AltTex0, IN.worldPos.xz / altTextureScale[0])*altTextureColour[0] * noise.r;
