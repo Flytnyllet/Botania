@@ -41,6 +41,9 @@ public class Amb_Local_Manager : MonoBehaviour
     private GameObject amb_03;
     [SerializeField]
     private GameObject amb_04;
+    [SerializeField]
+    private GameObject amb_Water;
+
 
     private void Awake()
     {
@@ -63,9 +66,10 @@ public class Amb_Local_Manager : MonoBehaviour
 
     private void Update()
     {
-        if (transform.position.y < 12.5)
+        if (transform.position.y < 10.7)
         {
-            _currentBiome = 4;
+            amb_Water.SetActive(true);
+            _currentBiome = 5;
             _biome_1 = 0;
             _biome_2 = 0;
             _biome_3 = 0;
@@ -74,6 +78,7 @@ public class Amb_Local_Manager : MonoBehaviour
             amb_02.SetActive(false);
             amb_03.SetActive(false);
             amb_04.SetActive(true);
+            
             RuntimeManager.StudioSystem.setParameterByID(biome_1_Description.id, _biome_1);
             RuntimeManager.StudioSystem.setParameterByID(biome_2_Description.id, _biome_2);
             RuntimeManager.StudioSystem.setParameterByID(biome_3_Description.id, _biome_3);
@@ -81,6 +86,8 @@ public class Amb_Local_Manager : MonoBehaviour
         }
         else
         {
+            amb_Water.SetActive(false);
+
             switch (Player.GetCurrentBiome())
             {
                 case BiomeTypes.FOREST:
@@ -93,6 +100,8 @@ public class Amb_Local_Manager : MonoBehaviour
                     amb_02.SetActive(false);
                     amb_03.SetActive(false);
                     amb_04.SetActive(false);
+
+                    Amb_Rain.Instance.Set_Rain_Override(0);
                     break;
                 case BiomeTypes.BIRCH:
                     _currentBiome = 2;
@@ -104,6 +113,8 @@ public class Amb_Local_Manager : MonoBehaviour
                     amb_02.SetActive(true);
                     amb_03.SetActive(false);
                     amb_04.SetActive(false);
+
+                    Amb_Rain.Instance.Set_Rain_Override(0.75f);
                     break;
                 case BiomeTypes.WEIRD:
                     _currentBiome = 3;
@@ -115,6 +126,8 @@ public class Amb_Local_Manager : MonoBehaviour
                     amb_02.SetActive(false);
                     amb_03.SetActive(true);
                     amb_04.SetActive(false);
+
+                    Amb_Rain.Instance.Set_Rain_Override(0);
                     break;
                 case BiomeTypes.PLANES:
                     _currentBiome = 4;
@@ -126,6 +139,13 @@ public class Amb_Local_Manager : MonoBehaviour
                     amb_02.SetActive(false);
                     amb_03.SetActive(false);
                     amb_04.SetActive(true);
+
+                    Amb_Rain.Instance.Set_Rain_Override(0);
+
+                    if (Random.Range(0, 1f) > 0.5f)
+                    {
+                        Music_Manager.Instance.Init_Music(4);
+                    }
                     break;
             }
             if (_currentBiome != _lastBiome)

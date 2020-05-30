@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.00.00">
+	<object class="ParameterPreset" id="{bee34686-8e4e-431c-8dfb-e6335814800a}">
+		<property name="name">
+			<value>near_water</value>
+		</property>
+		<relationship name="folder">
+			<destination>{0b08e8e6-a100-4a90-9bb1-5d34c410c72f}</destination>
+		</relationship>
+		<relationship name="parameter">
+			<destination>{26019241-19e0-4816-89bf-6d2c07ee7ce7}</destination>
+		</relationship>
+	</object>
+	<object class="GameParameter" id="{26019241-19e0-4816-89bf-6d2c07ee7ce7}">
+		<property name="isGlobal">
+			<value>true</value>
+		</property>
+		<property name="initialValue">
+			<value>0</value>
+		</property>
+		<property name="isExposedRecursively">
+			<value>false</value>
+		</property>
+		<relationship name="automators">
+			<destination>{247e0ea6-fc25-497d-9354-373eec3070f5}</destination>
+		</relationship>
+	</object>
+	<object class="Automator" id="{247e0ea6-fc25-497d-9354-373eec3070f5}">
+		<property name="nameOfPropertyBeingAutomated">
+			<value>cursorPosition</value>
+		</property>
+	</object>
+</objects>

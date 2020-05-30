@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.00.00">
 	<object class="Event" id="{896f61e7-b496-4ee3-9b0e-11affd97ed4e}">
 		<property name="name">
-			<value>p___04_pickup_05_mole</value>
+			<value>p___04_pickup_mole</value>
 		</property>
 		<property name="outputFormat">
 			<value>1</value>
@@ -72,6 +72,9 @@
 		</relationship>
 	</object>
 	<object class="EventMixerMaster" id="{15494a74-4e18-42f4-937c-5063681907e9}">
+		<property name="volume">
+			<value>-3.5</value>
+		</property>
 		<relationship name="effectChain">
 			<destination>{d2b0cb7a-7e26-44dd-abd1-9ea57cd3fa5f}</destination>
 		</relationship>

@@ -9,6 +9,13 @@ public class Player_Emitter : MonoBehaviour
     private EventInstance event_P_Mov_Footsteps;
     private PARAMETER_ID groundMaterialParameterId;
 
+    private EventInstance event_P_Mov_Swim;
+    private PARAMETER_ID underwaterParameterId;
+
+    private EventInstance event_P_Mov_Jump;
+
+    private EventInstance event_P_Mov_Land;
+
     private EventInstance event_Book_Close;
     private EventInstance event_Book_Open;
     private EventInstance event_Book_Page;
@@ -34,11 +41,25 @@ public class Player_Emitter : MonoBehaviour
     {   
         _movement = GetComponentInParent<FPSMovement>();
         event_P_Mov_Footsteps = RuntimeManager.CreateInstance(player_Data.p_mov_rnd_footsteps);
+        event_P_Mov_Swim = RuntimeManager.CreateInstance(player_Data.p_mov_swim);
+        event_P_Mov_Jump = RuntimeManager.CreateInstance(player_Data.p_mov_jump);
+        event_P_Mov_Land = RuntimeManager.CreateInstance(player_Data.p_mov_land);
+
+        event_Book_Close = RuntimeManager.CreateInstance(player_Data.p_book_close);
+        event_Book_Open = RuntimeManager.CreateInstance(player_Data.p_book_open);
+        event_Book_Page = RuntimeManager.CreateInstance(player_Data.p_book_page);
+
         EventDescription groundMaterialEventDescription;
         event_P_Mov_Footsteps.getDescription(out groundMaterialEventDescription);
         PARAMETER_DESCRIPTION groundMaterialParameterDescription;
         groundMaterialEventDescription.getParameterDescriptionByName("ground_material", out groundMaterialParameterDescription);
         groundMaterialParameterId = groundMaterialParameterDescription.id;
+
+        EventDescription underwaterEventDescription;
+        event_P_Mov_Swim.getDescription(out underwaterEventDescription);
+        PARAMETER_DESCRIPTION underwaterParameterDescription;
+        underwaterEventDescription.getParameterDescriptionByName("underwater", out underwaterParameterDescription);
+        underwaterParameterId = underwaterParameterDescription.id;
     }
 
     public void Init_Footsteps(float ground_material)
@@ -47,11 +68,24 @@ public class Player_Emitter : MonoBehaviour
         event_P_Mov_Footsteps.start();
     }
 
+    public void Init_Swim(float underwater)
+    {
+        event_P_Mov_Swim.setParameterByID(underwaterParameterId, underwater);
+        event_P_Mov_Swim.start();
+    }
+
+    public void Init_Jump()
+    {
+        event_P_Mov_Jump.start();
+    }
+
+    public void Init_Land()
+    {
+        event_P_Mov_Land.start();
+    }
+
     public void Init_Book_Open(EventParameter param)
     {
-        event_Book_Close = RuntimeManager.CreateInstance(player_Data.p_book_close);
-        event_Book_Open = RuntimeManager.CreateInstance(player_Data.p_book_open);
-        event_Book_Page = RuntimeManager.CreateInstance(player_Data.p_book_page);
         event_Book_Open.start();
     }
 
@@ -63,10 +97,6 @@ public class Player_Emitter : MonoBehaviour
     public void Init_Book_Close(EventParameter param)
     {
         event_Book_Close.start();
-
-        event_Book_Open.release();
-        event_Book_Page.release();
-        event_Book_Close.release();
     }
 
     public void Init_Pickup(string event_Ref)

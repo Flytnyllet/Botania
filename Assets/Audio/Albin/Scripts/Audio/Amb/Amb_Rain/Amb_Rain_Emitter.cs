@@ -27,7 +27,6 @@ public class Amb_Rain_Emitter : MonoBehaviour
     public void Attach_Rain_Emitter()
     {
         event_Description.createInstance(out event_Instance);
-        
     }
 
     public void Start_Rain_Emitter()

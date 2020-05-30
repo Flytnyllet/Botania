@@ -11,7 +11,9 @@ public class Amb_Rain : MonoBehaviour
 
 
 
-    [SerializeField] [Range(0f, 1f)] private float rainOverrideTempSlider;
+    //[SerializeField] [Range(0f, 1f)] private float rainOverrideTempSlider;
+
+    private float _rainOverrideValue = default;
 
 
 
@@ -24,10 +26,10 @@ public class Amb_Rain : MonoBehaviour
     [ParamRef] public string rainOverride_Parameter;
     private PARAMETER_DESCRIPTION rainOverrideDescription;
 
-    [SerializeField] private Amb_Rain_Emitter _rainEmitterL;
-    [SerializeField] private Amb_Rain_Emitter _rainEmitterR;
-    [SerializeField] private Amb_Rain_Emitter _rainEmitterB;
-    [SerializeField] private Amb_Rain_Emitter _rainEmitterF;
+    [SerializeField] private Amb_Rain_Emitter _rainEmitterL = default;
+    [SerializeField] private Amb_Rain_Emitter _rainEmitterR = default;
+    [SerializeField] private Amb_Rain_Emitter _rainEmitterB = default;
+    [SerializeField] private Amb_Rain_Emitter _rainEmitterF = default;
 
     private bool _setScriptOverride = false;
     public bool IsStopping { get { return _isStopping; } }
@@ -78,7 +80,7 @@ public class Amb_Rain : MonoBehaviour
     public IEnumerator Stop_Rain()
     {
         _isStopping = true;
-        if (rainOverrideTempSlider != 1)
+        if (_rainOverrideValue != 1)
         {
             RuntimeManager.StudioSystem.setParameterByID(rainIntensityDescription.id, 0.3f);
             yield return new WaitForSeconds(5f);
@@ -114,16 +116,17 @@ public class Amb_Rain : MonoBehaviour
         }
     }
 
+    public void Set_Rain_Override(float overrideValue)
+    {
+        RuntimeManager.StudioSystem.setParameterByID(rainOverrideDescription.id, overrideValue);
+        _rainOverrideValue = overrideValue;
+    }
+
     private void Update()
     {
-        if (!_setScriptOverride)
-        {
-            RuntimeManager.StudioSystem.setParameterByID(rainOverrideDescription.id, rainOverrideTempSlider);
-        }
-
         if (WorldState.Instance.IsRaining && !_raining)
         {
-            StartCoroutine(Start_Rain(1f));
+            StartCoroutine(Start_Rain(0.3f));
             _raining = true;
         }
 

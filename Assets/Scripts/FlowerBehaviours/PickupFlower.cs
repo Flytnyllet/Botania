@@ -106,25 +106,44 @@ public class PickupFlower : InteractableSaving, IInteractable
         switch (flowerName)
         {
             case "Calm":
-                return;
+                _flowerPickupSound = _player_Data.p_pickup_calm;
+                break;
             case "Earth Flower":
-                _flowerPickupSound = _player_Data.p_pickup_01_earth;
+                _flowerPickupSound = _player_Data.p_pickup_earth;
                 break;
             case "Home":
-                return;
-            case "Magic":
-                return;
+                _flowerPickupSound = _player_Data.p_pickup_home;
+                break;
+            case "Invisible":
+                _flowerPickupSound = _player_Data.p_pickup_invisible;
+                break;
             case "Mole":
-                _flowerPickupSound = _player_Data.p_pickup_05_mole;
+                _flowerPickupSound = _player_Data.p_pickup_mole;
                 break;
             case "Soul":
-                _flowerPickupSound = _player_Data.p_pickup_06_soul;
+                _flowerPickupSound = _player_Data.p_pickup_soul;
                 break;
             case "Teleporter":
-                _flowerPickupSound = _player_Data.p_pickup_03_tp;
+                _flowerPickupSound = _player_Data.p_pickup_tp;
                 break;
-            case "":
-                return;
+            case "Vitsippa":
+                _flowerPickupSound = _player_Data.p_pickup_vitsippa;
+                break;
+            case "Levitation":
+                _flowerPickupSound = _player_Data.p_pickup_levitation;
+                break;
+            case "Sight":
+                _flowerPickupSound = _player_Data.p_pickup_sight;
+                break;
+            case "Magic":
+                _flowerPickupSound = _player_Data.p_pickup_magic;
+                break;
+            case "Underwater":
+                _flowerPickupSound = _player_Data.p_pickup_underwater;
+                break;
+            case "Water":
+                _flowerPickupSound = _player_Data.p_pickup_water;
+                break;
             default:
                 return;
         }

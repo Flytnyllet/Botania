@@ -16,6 +16,7 @@ public class Mus_Blom_07_Emitter : MonoBehaviour
     public bool IsPlaying { get { return _isPlaying; } }
     private bool _isPlaying = false;
     private bool _shouldStart = false;
+    private bool _isPaused = default;
 
     [HideInInspector]
     public PARAMETER_ID _isFollowParameterId;
@@ -84,24 +85,45 @@ public class Mus_Blom_07_Emitter : MonoBehaviour
 
     private void Init_Blom_07()
     {
-                                     //Music_Manager.Instance.Stop_All_Music();
+        if (Music_Manager.Instance.IsPlaying)
+            Music_Manager.Instance.Stop_TriggerMusic();
+
         _shouldStart = true;
     }
 
     private void FixedUpdate()
     {
-        if (_shouldStart)           // && Music_Manager.Instance.IsSilent
+        if (_shouldStart && !Music_Manager.Instance.IsPlaying && !Music_Manager.Instance.IsCooldown)
         {
+            Music_Manager.Instance.Cooldown_Override(1);
             event_Instance.start();
             _isPlaying = true;
             _shouldStart = false;
         }
         if (_isPlaying)
         {
+            event_Instance.getPaused(out _isPaused);
+
+            switch (Music_Manager.Instance.IsOptions)
+            {
+                case true:
+                    event_Instance.setPaused(true);
+                    break;
+            }
+
+            if (_isPaused && !Music_Manager.Instance.IsOptions)
+            {
+                event_Instance.setPaused(false);
+            }
+
             event_Instance.getPlaybackState(out _event_State);
 
             if (_event_State != PLAYBACK_STATE.STOPPED) { return; }
-            else { _isPlaying = false; }
+            else
+            {
+                Music_Manager.Instance.Cooldown_Override(0);
+                _isPlaying = false;
+            }
         }
     }
 
