@@ -41,7 +41,7 @@ public class WorldState : MonoBehaviour
         StartCoroutine(ChangeCloudThickness(1, _cloudthicknessLowStep));
     }
 
-    enum WORLD_EVENTS { Normal = 0, Rain, Fog, StrongWind };
+    enum WORLD_EVENTS { Normal = 0, Rain/*, Fog, StrongWind*/ };
     void StartEvent(WORLD_EVENTS worldEvent)
     {
         switch (worldEvent)
@@ -65,39 +65,43 @@ public class WorldState : MonoBehaviour
                     EventParameter param = new EventParameter() { floatParam = 0.75f, floatParam2 = 4f };
                     ActionDelayer.RunAfterDelay(() =>
                     {
-                        ActionDelayer.RunAfterDelay(() => { Debug.LogError("EVERYTHING IS WORKING AS INTENDED!"); }, 0.5f);
+                        ActionDelayer.RunAfterDelay(() =>
+                        {
+                            _amb_Thunder.Play();                // ??? mer delay ??
+                            Debug.LogError("EVERYTHING IS WORKING AS INTENDED!");
+                        }, Random.Range(0.15f, 1f));
                         EventManager.TriggerEvent(EventNameLibrary.LIGHTNING_STRIKE, param);
-                        //_amb_Thunder.Play();                // ??? mer delay ??
+
                     }, lightningTiming);
                 }
                 ActionDelayer.RunAfterDelay(() =>
                 {
                     setRaining(false);
                     StartEvent(WORLD_EVENTS.Normal);
-                }, eventTime);
+                }, eventTime * 0.5f);
                 break;
 
-            case WORLD_EVENTS.Fog:
-                StartCoroutine(ChangeFogDensity(_fogChangeTime, _targetFogDensity));
-                _thickFog = true;
-                ActionDelayer.RunAfterDelay(() =>
-                {
-                    StartCoroutine(ChangeFogDensity(_fogChangeTime, _baseFogDensity));
-                    _thickFog = false;
-                    StartEvent(WORLD_EVENTS.Normal);
-                }, Random.Range(_eventMinTime, _eventMaxTime));
-                break;
+                //case WORLD_EVENTS.Fog:
+                //    StartCoroutine(ChangeFogDensity(_fogChangeTime, _targetFogDensity));
+                //    _thickFog = true;
+                //    ActionDelayer.RunAfterDelay(() =>
+                //    {
+                //        StartCoroutine(ChangeFogDensity(_fogChangeTime, _baseFogDensity));
+                //        _thickFog = false;
+                //        StartEvent(WORLD_EVENTS.Normal);
+                //    }, Random.Range(_eventMinTime, _eventMaxTime));
+                //    break;
 
-            case WORLD_EVENTS.StrongWind:
-                //Debug.Log("A wind is rising");
-                StartCoroutine(changeWindSpeed(2, 3));
-                ActionDelayer.RunAfterDelay(() =>
-                {
-                    // Debug.Log("the wind is settling");
-                    StartCoroutine(changeWindSpeed(2, 1));
-                    StartEvent(WORLD_EVENTS.Normal);
-                }, Random.Range(_eventMinTime, _eventMaxTime));
-                break;
+                //case WORLD_EVENTS.StrongWind:
+                //    //Debug.Log("A wind is rising");
+                //    StartCoroutine(changeWindSpeed(2, 3));
+                //    ActionDelayer.RunAfterDelay(() =>
+                //    {
+                //        // Debug.Log("the wind is settling");
+                //        StartCoroutine(changeWindSpeed(2, 1));
+                //        StartEvent(WORLD_EVENTS.Normal);
+                //    }, Random.Range(_eventMinTime, _eventMaxTime));
+                //    break;
         }
     }
 

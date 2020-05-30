@@ -17,6 +17,8 @@ using System.Collections;
 [AddComponentMenu("Camera-Control/Mouse Look")]
 public class MouseLook : MonoBehaviour
 {
+    [SerializeField] DevCam _devCamThing;
+    Camera _camera;
 
     public enum RotationAxes { MouseXAndY = 0, MouseX = 1, MouseY = 2 }
     public RotationAxes axes = RotationAxes.MouseXAndY;
@@ -97,7 +99,7 @@ public class MouseLook : MonoBehaviour
 				}
             }
 
-			// This is not used currently
+            // This is not used currently
             /*else if (axes == RotationAxes.MouseX)
             {
                 transform.Rotate(0, Input.GetAxis("Mouse X") * sensitivityX, 0);
@@ -114,6 +116,7 @@ public class MouseLook : MonoBehaviour
 
     void Start()
     {
+        _camera = Camera.main;
         if (transform.GetComponentInParent<FPSMovement>() != null)
         {
             fpsMove = transform.GetComponentInParent<FPSMovement>();

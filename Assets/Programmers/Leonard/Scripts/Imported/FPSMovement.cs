@@ -142,7 +142,11 @@ public class FPSMovement : MonoBehaviour
 
 	void FixedUpdate()
 	{
-		if (CharacterState.MayMove)
+        bool isStoned = CharacterState.IsAbilityFlagActive(ABILITY_FLAG.STONE);
+        bool isLevitating = CharacterState.IsAbilityFlagActive(ABILITY_FLAG.LEVITATE);
+        float gravityFactor = 1.0f;
+
+        if (CharacterState.MayMove)
 		{
 			if (CharacterState.IsAbilityFlagActive(ABILITY_FLAG.TELEPORT))
 			{
@@ -176,10 +180,7 @@ public class FPSMovement : MonoBehaviour
 				+ 0.01f * Vector3.up, Vector3.down, out waterDetection, _waterRayDist, _waterLayer);
 			Debug.DrawRay(_playerCam.position + 0.45f * Vector3.up, Vector3.down * _waterRayDist, Color.red, 2f);
 
-			bool isStoned = CharacterState.IsAbilityFlagActive(ABILITY_FLAG.STONE);
-			bool isLevitating = CharacterState.IsAbilityFlagActive(ABILITY_FLAG.LEVITATE);
 			_isUnderwater = (!isStoned && !_inWater && (_lastWaterChunk == null ? false : _lastWaterChunk.transform.position.y > transform.position.y));
-			float gravityFactor = 1.0f;
 
 			// == Functions ==
 			if (charCon.isGrounded)
@@ -266,25 +267,25 @@ public class FPSMovement : MonoBehaviour
 			}
 
 			//transform.position = new Vector3(transform.position.x, 9.5f, transform.position.z);
-
-			//Gravity
-			if ((!_inWater && !isLevitating) || isStoned)
-			{
-				Gravity(gravityFactor);
-			}
-			else if (Time.time % 5 < 0.01)
-			{
-				Debug.Log("Gravity is disabled");
-			}
-
-			if (isLevitating)
-			{
-				charCon.Move(_levitationSpeed * Vector3.up * Time.deltaTime);
-				_inAir = true;
-				_velocity.y = -5f;
-			}
 		}
-	}
+
+        //Gravity
+        if ((!_inWater && !isLevitating) || isStoned)
+        {
+            Gravity(gravityFactor);
+        }
+        else if (Time.time % 5 < 0.01)
+        {
+            Debug.Log("Gravity is disabled");
+        }
+
+        if (isLevitating)
+        {
+            charCon.Move(_levitationSpeed * Vector3.up * Time.deltaTime);
+            _inAir = true;
+            _velocity.y = -5f;
+        }
+    }
 
 	public void Teleport(Vector3 position)
 	{
@@ -510,7 +511,7 @@ public class FPSMovement : MonoBehaviour
 		if (CharacterState.IsAbilityFlagActive(ABILITY_FLAG.SLOWFALL))
 		{
 			if (_velocity.y > 0) _velocity.y = 0;
-			factor *= 0.15f;
+			factor *= 0.075f;
 		}
 
 		charCon.Move(_velocity * Time.deltaTime);
@@ -659,13 +660,20 @@ public class FPSMovement : MonoBehaviour
 		return false;*/
 	}
 
-	void FootstepsSound()
-	{
-		//if (!_inAir && _travelledDist >= _travelDist + _randWalk)
-		//{
-		_emitPlayerSound.Init_Footsteps(0);
-		//_travelledDist = 0f;
-		//}
-		//_prevPos = transform.position;
-	}
+    void FootstepsSound()
+    {
+        //if (!_inAir && _travelledDist >= _travelDist + _randWalk)
+        //{
+        if (transform.position.y < 10.2f)
+        {
+            _emitPlayerSound.Init_Footsteps(1);
+        }
+        else
+        {
+            _emitPlayerSound.Init_Footsteps(0);
+        }
+        //_travelledDist = 0f;
+        //}
+        //_prevPos = transform.position;
+    }
 }

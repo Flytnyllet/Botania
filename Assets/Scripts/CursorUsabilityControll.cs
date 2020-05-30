@@ -26,6 +26,12 @@ public class CursorUsabilityControll
                 Cursor.visible = true;
                 break;
 
+            case CHARACTER_CONTROL_STATE.Dev:
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = false;
+                break;
+
+
             default:
                 Debug.Log("CharacterControlState does not have mouse switch case defined, defaulting to menu case");
                 SetMouseState(CHARACTER_CONTROL_STATE.MENU);

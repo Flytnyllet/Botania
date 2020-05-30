@@ -139,7 +139,7 @@
 #ifdef ALPHA_CUTOUT 
 		  clip(o.Alpha - _CutoutValue);
 #else
-		  clip(o.Alpha -0.01- (thresholArray[pos.x%8*8+pos.y%8]) / 64);
+		  clip(o.Alpha- (thresholArray[pos.x%8*8+pos.y%8]+1) / 65);
 		  //clip(o.Alpha - thresholdMatrix[fmod(pos.x, 4)][pos.y % 4]);
 #endif
 		  o.Emission = tex2D(_EmissionMap, IN.uv_MainTex)*_EmissionMult*gEmissionMult;

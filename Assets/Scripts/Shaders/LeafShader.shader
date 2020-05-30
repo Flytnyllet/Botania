@@ -19,7 +19,7 @@
 			_StrenghtShake("Shake Strength", float) = 0.5
 	}
 		SubShader{
-			Tags { "Queue" = "AlphaTest" "IgnoreProjector" = "True" "RenderType" = "TransparentCutout" }
+		  Tags { "RenderType" = "Opaque" }
 			LOD 250
 			cull off
 
@@ -110,11 +110,11 @@
 				//float sinW = sin((unity_ObjectToWorld[1].x + unity_ObjectToWorld[1].z) + _Time.y*_Speed)*0.1;
 				//float cosW = cos((unity_ObjectToWorld[1].x + unity_ObjectToWorld[1].z) + _Time.y*_Speed*2)*0.1;
 				float sinW = sin((worldPos.x + worldPos.z) + _Time.y*_Speed)*0.1;
-				float cosW = cos((worldPos.x + worldPos.z) + _Time.y*_Speed*2)*0.1;
+				float cosW = cos((worldPos.x + worldPos.z) + _Time.y*_Speed * 2)*0.1;
 				//float noise = sin(unity_ObjectToWorld[1].x+ unity_ObjectToWorld[1].z + _Time.y*_Speed);
 				//float noise = fBm(unity_ObjectToWorld[1].xz+ _Time.y*_Speed);
 				//float noise = sin((worldPos.x + worldPos.x) + _Time.y*_Speed * 10);
-				float noise = fBm(worldPos.xz + _Time.w*_Speed )*0.1*_StrenghtShake;
+				float noise = fBm(worldPos.xz + _Time.w*_Speed)*0.1*_StrenghtShake;
 				v.vertex.x += height * (sinW + noise * 0.2) *_StrenghtX*gWindSpeed;
 				v.vertex.y += height * (cosW + noise * 0.2) *_StrenghtY*gWindSpeed;
 			}
@@ -128,26 +128,28 @@
 				10,58, 6,54, 9,57, 5,53,
 				42,26,38,22,41,25,37,21
 			};
+			static float4x4 thresholdMatrix =
+			{
+			1.0 / 17.0,   9.0 / 17.0,   3.0 / 17.0,   11.0 / 17.0,
+			13.0 / 17.0,  5.0 / 17.0,   15.0 / 17.0,  7.0 / 17.0,
+			4.0 / 17.0,   12.0 / 17.0,  2.0 / 17.0,   10.0 / 17.0,
+			16.0 / 17.0,  8.0 / 17.0,   14.0 / 17.0,  6.0 / 17.0
+			};
+
 			void surf(Input IN, inout SurfaceOutput o) {
 				float alpha = tex2D(_Alpha, IN.uv_MainTex).r;
+				//alpha = alpha * smoothstep(0.2, 0.3, alpha);
+				//alpha = 0;
 				float2 pos = IN.screenPos.xy / IN.screenPos.w;
 				pos *= _ScreenParams.xy; // pixel position
-				float4x4 thresholdMatrix =
-				{
-				1.0 / 17.0,   9.0 / 17.0,   3.0 / 17.0,   11.0 / 17.0,
-				13.0 / 17.0,  5.0 / 17.0,   15.0 / 17.0,  7.0 / 17.0,
-				4.0 / 17.0,   12.0 / 17.0,  2.0 / 17.0,   10.0 / 17.0,
-				16.0 / 17.0,  8.0 / 17.0,   14.0 / 17.0,  6.0 / 17.0
-				};
-
 #ifdef ALPHA_CUTOUT 
 				clip(alpha - _CutoutValue);
 #else
-				clip(alpha -0.01- (thresholArray[fmod(pos.y, 8) * 8 + pos.x % 8] ) / 64);
-				//clip(alpha - thresholdMatrix[fmod(pos.x, 4)][pos.y % 4]);
+				//clip(alpha- (thresholArray[fmod(pos.y, 8) * 8 + pos.x % 8]+1) / 65);
+				clip(alpha - thresholdMatrix[fmod(pos.x, 4)][pos.y % 4]);
 #endif
 				fixed4 c = tex2D(_MainTex, IN.uv_MainTex);
-				o.Albedo = c.rgb/ gEmissionMult;
+				o.Albedo = c.rgb / gEmissionMult;
 				o.Emission = tex2D(_EmissionMap, IN.uv_MainTex)*_EmissionMult*gEmissionMult;
 
 				if (IN.facing < 0.5)

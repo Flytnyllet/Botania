@@ -146,12 +146,11 @@ public class MapGenerator : MonoBehaviour, IDragHandler, IScrollHandler, IPointe
 
     private void Start()
     {
-		_parentCanvas = GameObject.Find("Canvas").GetComponent<Canvas>();
+        _parentCanvas = GameObject.Find("Canvas").GetComponent<Canvas>();
 		_canvasRectTransform = _parentCanvas.GetComponent<RectTransform>();
 
 		_viewer = Player.GetPlayerTransform();
         UpdateWaypointSprite();
-
         Display(false); //ONLY TESTING
     }
 
@@ -192,8 +191,6 @@ public class MapGenerator : MonoBehaviour, IDragHandler, IScrollHandler, IPointe
             return _spriteAndIndexes[index];
         else
             Debug.LogError("This is not a valid index to get a waypoint/marker sprite: " + index);
-
-        Debug.Log(_spriteAndIndexes.Count);
 
         return _spriteAndIndexes[0];
     }

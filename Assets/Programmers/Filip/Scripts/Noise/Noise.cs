@@ -25,9 +25,29 @@ public static class Noise
         return (noiseSeed + _seed) % MAX_SEED_SIZE;
     }
 
+    public static void Wipe()
+    {
+        Serialization.Save(Saving.FileNames.SEED, _seed - 1); //This will make it make new seed on restart!
+    }
+
     public static void Save()
     {
         Serialization.Save(Saving.FileNames.SEED, _seed);
+    }
+
+    public static void Load()
+    {
+        SetSeed(GetWorldSeed());
+    }
+
+    static int GetWorldSeed()
+    {
+        object seed = Serialization.Load(Saving.FileNames.SEED);
+
+        if (seed == null)
+            return UnityEngine.Random.Range(int.MinValue, int.MaxValue);
+        else
+            return (int)seed;
     }
 
     //Combines different noises of one noise object into one final noise
