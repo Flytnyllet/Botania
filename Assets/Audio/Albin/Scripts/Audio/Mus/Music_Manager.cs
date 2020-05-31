@@ -43,7 +43,11 @@ public class Music_Manager : MonoBehaviour
     public bool IsCooldown { get { return _isCooldown; } }
     private bool _isCooldown = false;
 
+    public bool StartMenu { get { return _startMenu; } }
+    private bool _startMenu = default;
+
     private bool _triggeredStop = false;
+    
 
     private void Awake()
     {
@@ -77,10 +81,12 @@ public class Music_Manager : MonoBehaviour
         gameStartEventDescription.getParameterDescriptionByName("game_start", out gameStartParameterDescription);
         gameStartParameterId = gameStartParameterDescription.id;
 
+        Start_MenuMusic();
     }
 
     public void Start_MenuMusic()
     {
+        _startMenu = true;
         Set_GameStart(0);
         startMenu_Instance.start();
     }
@@ -88,6 +94,11 @@ public class Music_Manager : MonoBehaviour
     public void Set_GameStart(float startValue)
     {
         startMenu_Instance.setParameterByID(gameStartParameterId, startValue);
+    }
+
+    public void Stop_MenuMusic()
+    {
+        startMenu_Instance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
     }
 
     /// ==================== OPTIONS PAUS ===========================
@@ -99,14 +110,17 @@ public class Music_Manager : MonoBehaviour
 
     public void Play_OptionsMusic()
     {
-        _isOptions = true;
-
-        if (_isPlaying)
+        if (!_startMenu)
         {
-            Pause_TriggerMusic();
-        }
+            _isOptions = true;
 
-        pauseMenu_Instance.start();
+            if (_isPlaying)
+            {
+                Pause_TriggerMusic();
+            }
+
+            pauseMenu_Instance.start();
+        }
     }
 
     public void Stop_OptionsMusic()
@@ -159,6 +173,13 @@ public class Music_Manager : MonoBehaviour
 
     private void Update()
     {
+        if (_startMenu)
+        {
+            startMenu_Instance.getPlaybackState(out _playbackState);
+            if (_playbackState != PLAYBACK_STATE.STOPPED) { return; }
+            else { _startMenu = false; }
+        }
+
         if (_isPlaying)
         {
             trigger_Instance.getPlaybackState(out _playbackState);

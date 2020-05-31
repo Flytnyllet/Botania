@@ -78,7 +78,7 @@ public class Amb_Local_Manager : MonoBehaviour
             amb_02.SetActive(false);
             amb_03.SetActive(false);
             amb_04.SetActive(true);
-            
+
             RuntimeManager.StudioSystem.setParameterByID(biome_1_Description.id, _biome_1);
             RuntimeManager.StudioSystem.setParameterByID(biome_2_Description.id, _biome_2);
             RuntimeManager.StudioSystem.setParameterByID(biome_3_Description.id, _biome_3);
@@ -88,68 +88,68 @@ public class Amb_Local_Manager : MonoBehaviour
         {
             amb_Water.SetActive(false);
 
-            switch (Player.GetCurrentBiome())
-            {
-                case BiomeTypes.FOREST:
-                    _currentBiome = 1;
-                    _biome_1 = 1;
-                    _biome_2 = 0;
-                    _biome_3 = 0;
-                    _biome_4 = 0;
-                    amb_01.SetActive(true);
-                    amb_02.SetActive(false);
-                    amb_03.SetActive(false);
-                    amb_04.SetActive(false);
-
-                    Amb_Rain.Instance.Set_Rain_Override(0);
-                    break;
-                case BiomeTypes.BIRCH:
-                    _currentBiome = 2;
-                    _biome_1 = 0;
-                    _biome_2 = 1;
-                    _biome_3 = 0;
-                    _biome_4 = 0;
-                    amb_01.SetActive(false);
-                    amb_02.SetActive(true);
-                    amb_03.SetActive(false);
-                    amb_04.SetActive(false);
-
-                    Amb_Rain.Instance.Set_Rain_Override(0.75f);
-                    break;
-                case BiomeTypes.WEIRD:
-                    _currentBiome = 3;
-                    _biome_1 = 0;
-                    _biome_2 = 0;
-                    _biome_3 = 1;
-                    _biome_4 = 0;
-                    amb_01.SetActive(false);
-                    amb_02.SetActive(false);
-                    amb_03.SetActive(true);
-                    amb_04.SetActive(false);
-
-                    Amb_Rain.Instance.Set_Rain_Override(0);
-                    break;
-                case BiomeTypes.PLANES:
-                    _currentBiome = 4;
-                    _biome_1 = 0;
-                    _biome_2 = 0;
-                    _biome_3 = 0;
-                    _biome_4 = 1;
-                    amb_01.SetActive(false);
-                    amb_02.SetActive(false);
-                    amb_03.SetActive(false);
-                    amb_04.SetActive(true);
-
-                    Amb_Rain.Instance.Set_Rain_Override(0);
-
-                    if (Random.Range(0, 1f) > 0.5f)
-                    {
-                        Music_Manager.Instance.Init_Music(4);
-                    }
-                    break;
-            }
             if (_currentBiome != _lastBiome)
             {
+                switch (Player.GetCurrentBiome())
+                {
+                    case BiomeTypes.FOREST:
+                        _currentBiome = 1;
+                        _biome_1 = 1;
+                        _biome_2 = 0;
+                        _biome_3 = 0;
+                        _biome_4 = 0;
+                        amb_01.SetActive(true);
+                        amb_02.SetActive(false);
+                        amb_03.SetActive(false);
+                        amb_04.SetActive(false);
+
+                        Amb_Rain.Instance.Set_Rain_Override(0f);
+                        break;
+                    case BiomeTypes.BIRCH:
+                        _currentBiome = 2;
+                        _biome_1 = 0;
+                        _biome_2 = 1;
+                        _biome_3 = 0;
+                        _biome_4 = 0;
+                        amb_01.SetActive(false);
+                        amb_02.SetActive(true);
+                        amb_03.SetActive(false);
+                        amb_04.SetActive(false);
+
+                        Amb_Rain.Instance.Set_Rain_Override(0.7f);
+                        break;
+                    case BiomeTypes.WEIRD:
+                        _currentBiome = 3;
+                        _biome_1 = 0;
+                        _biome_2 = 0;
+                        _biome_3 = 1;
+                        _biome_4 = 0;
+                        amb_01.SetActive(false);
+                        amb_02.SetActive(false);
+                        amb_03.SetActive(true);
+                        amb_04.SetActive(false);
+
+                        Amb_Rain.Instance.Set_Rain_Override(0f);
+                        break;
+                    case BiomeTypes.PLANES:
+                        _currentBiome = 4;
+                        _biome_1 = 0;
+                        _biome_2 = 0;
+                        _biome_3 = 0;
+                        _biome_4 = 1;
+                        amb_01.SetActive(false);
+                        amb_02.SetActive(false);
+                        amb_03.SetActive(false);
+                        amb_04.SetActive(true);
+
+                        if (Random.Range(0, 1f) > 0.5f)
+                        {
+                            Music_Manager.Instance.Init_Music(4);
+                        }
+
+                        Amb_Rain.Instance.Set_Rain_Override(0f);
+                        break;
+                }
                 RuntimeManager.StudioSystem.setParameterByID(biome_1_Description.id, _biome_1);
                 RuntimeManager.StudioSystem.setParameterByID(biome_2_Description.id, _biome_2);
                 RuntimeManager.StudioSystem.setParameterByID(biome_3_Description.id, _biome_3);

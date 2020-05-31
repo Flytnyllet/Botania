@@ -15,7 +15,7 @@ public class Amb_Rain : MonoBehaviour
 
     private float _rainOverrideValue = default;
 
-
+    private bool _setScriptOverride = false;
 
 
 
@@ -31,7 +31,6 @@ public class Amb_Rain : MonoBehaviour
     [SerializeField] private Amb_Rain_Emitter _rainEmitterB = default;
     [SerializeField] private Amb_Rain_Emitter _rainEmitterF = default;
 
-    private bool _setScriptOverride = false;
     public bool IsStopping { get { return _isStopping; } }
     private bool _isStopping = false;
     private bool _raining = false;
@@ -92,7 +91,7 @@ public class Amb_Rain : MonoBehaviour
             _rainEmitterL.Stop_Rain_Emitter();
             _rainEmitterR.Stop_Rain_Emitter();
             _rainEmitterB.Stop_Rain_Emitter();
-            _rainEmitterF.Start_Rain_Emitter();
+            _rainEmitterF.Stop_Rain_Emitter();
             yield return new WaitForSeconds(11f);
             _setScriptOverride = false;
             _isStopping = false;
@@ -109,7 +108,7 @@ public class Amb_Rain : MonoBehaviour
             _rainEmitterL.Stop_Rain_Emitter();
             _rainEmitterR.Stop_Rain_Emitter();
             _rainEmitterB.Stop_Rain_Emitter();
-            _rainEmitterF.Start_Rain_Emitter();
+            _rainEmitterF.Stop_Rain_Emitter();
             yield return new WaitForSeconds(11f);
             _setScriptOverride = false;
             _isStopping = false;

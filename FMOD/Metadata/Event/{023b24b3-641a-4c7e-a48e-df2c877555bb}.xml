@@ -135,7 +135,7 @@
 	</object>
 	<object class="EventMixerMaster" id="{dabab4c6-d671-45b2-8895-33c7dd68a82a}">
 		<property name="volume">
-			<value>-3</value>
+			<value>-11</value>
 		</property>
 		<relationship name="modulators">
 			<destination>{0a97458f-8da4-421a-bc2d-72d15b93dead}</destination>
@@ -533,12 +533,16 @@
 		<property name="attackTime">
 			<value>0</value>
 		</property>
+		<property name="releaseTime">
+			<value>3600</value>
+		</property>
 		<property name="finalValue">
 			<value>-80</value>
 		</property>
 	</object>
 	<object class="MixerBusEffectChain" id="{eff19f93-06d2-4380-8269-e1927b18491d}">
 		<relationship name="effects">
+			<destination>{79572bd0-3e08-41c4-b6a5-62ea684d6036}</destination>
 			<destination>{95b79653-729a-4638-81d3-d57c115bfb94}</destination>
 		</relationship>
 	</object>
@@ -741,6 +745,14 @@
 		<relationship name="parameter">
 			<destination>{c9e4e9c2-14f8-434b-be5e-45debef1e133}</destination>
 		</relationship>
+	</object>
+	<object class="ThreeEQEffect" id="{79572bd0-3e08-41c4-b6a5-62ea684d6036}">
+		<property name="highGain">
+			<value>3.5</value>
+		</property>
+		<property name="highCrossover">
+			<value>3600</value>
+		</property>
 	</object>
 	<object class="MixerBusFader" id="{95b79653-729a-4638-81d3-d57c115bfb94}" />
 	<object class="AutomationPoint" id="{628e2b9b-1035-421c-a89d-3302ebfa7f32}">
