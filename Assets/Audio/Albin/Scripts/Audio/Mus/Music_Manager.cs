@@ -17,7 +17,7 @@ public class Music_Manager : MonoBehaviour
     public string mus_00_paus;
     private EventInstance pauseMenu_Instance;
     public bool IsOptions { get { return _isOptions; } }
-    private bool _isOptions;
+    private bool _isOptions = default;
 
     [EventRef]
     public string mus_01_biome1_1;
@@ -46,7 +46,11 @@ public class Music_Manager : MonoBehaviour
     public bool StartMenu { get { return _startMenu; } }
     private bool _startMenu = default;
 
+    public bool PlayOnlyFirstTime { get { return _playOnlyFirstTime; } }
+    private bool _playOnlyFirstTime = true;
+
     private bool _triggeredStop = false;
+    
     
 
     private void Awake()
@@ -110,7 +114,7 @@ public class Music_Manager : MonoBehaviour
 
     public void Play_OptionsMusic()
     {
-        if (!_startMenu)
+        if (!_startMenu && !_isOptions)
         {
             _isOptions = true;
 
@@ -139,7 +143,7 @@ public class Music_Manager : MonoBehaviour
     
     public void Init_Music(int track)
     {
-        if (!_isPlaying && !_isCooldown)
+        if (!_isPlaying && !_isCooldown && !_startMenu)
         {
             switch (track)
             {
@@ -156,11 +160,15 @@ public class Music_Manager : MonoBehaviour
                     trigger_Event = mus_01_biome4_4;
                     break;
                 case 5:
-                    trigger_Event = mus_02_dimma_5;
+                    if (_playOnlyFirstTime)
+                        trigger_Event = mus_02_dimma_5;
                     break;
             }
             trigger_Instance = RuntimeManager.CreateInstance(trigger_Event);
             Play_TriggerMusic();
+
+            if (trigger_Event == mus_02_dimma_5)
+                _playOnlyFirstTime = false;
         }
     }
 

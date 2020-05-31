@@ -93,7 +93,7 @@ public class Mus_Blom_07_Emitter : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (_shouldStart && !Music_Manager.Instance.IsPlaying && !Music_Manager.Instance.IsCooldown)
+        if (_shouldStart && !Music_Manager.Instance.IsPlaying && !Music_Manager.Instance.IsCooldown && !Music_Manager.Instance.StartMenu)
         {
             Music_Manager.Instance.Cooldown_Override(1);
             event_Instance.start();
