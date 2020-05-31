@@ -371,6 +371,23 @@ public class FPSMovement : MonoBehaviour
 		StartCoroutine(Fade(1f, _loadScreen, 1f));
 	}
 
+	public IEnumerator PositionCorrection(int placementHeight, int maxFrameAttempts)
+	{
+		int attempts = 0;
+		while (attempts < maxFrameAttempts)
+		{
+			if (PositionCorrection(_teleportPlacementHeight))
+			{
+				break;
+			}
+			else
+			{
+				yield return null;
+				charCon.Move(Vector3.forward * 0.01f);
+			}
+		}
+	}
+
 	IEnumerator Teleportation_Execution()
 	{
 		// =====================
@@ -413,19 +430,7 @@ public class FPSMovement : MonoBehaviour
 
 		yield return null;
 
-		while (true)
-		{
-			if(PositionCorrection(_teleportPlacementHeight))
-			{
-				break;
-			}
-			else
-			{
-				yield return null;
-				charCon.Move(Vector3.forward * 0.01f);
-			}
-			
-		}
+		
 
 		yield return null;
 
