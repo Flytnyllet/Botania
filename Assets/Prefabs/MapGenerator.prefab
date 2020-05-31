@@ -44,13 +44,43 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04defc001634f2c4990071e88f4a7f42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _detailLevels:
-  - levelOfDetail: 0
-    visableDstThreshold: 50
-  - levelOfDetail: 2
-    visableDstThreshold: 100
-  - levelOfDetail: 4
-    visableDstThreshold: 150
+  _detailLevelsHolder:
+  - _levelOfDetail:
+    - levelOfDetail: 0
+      visableDstThreshold: 20
+    - levelOfDetail: 2
+      visableDstThreshold: 40
+    - levelOfDetail: 4
+      visableDstThreshold: 60
+  - _levelOfDetail:
+    - levelOfDetail: 0
+      visableDstThreshold: 30
+    - levelOfDetail: 2
+      visableDstThreshold: 50
+    - levelOfDetail: 4
+      visableDstThreshold: 70
+  - _levelOfDetail:
+    - levelOfDetail: 0
+      visableDstThreshold: 50
+    - levelOfDetail: 2
+      visableDstThreshold: 75
+    - levelOfDetail: 4
+      visableDstThreshold: 100
+  - _levelOfDetail:
+    - levelOfDetail: 0
+      visableDstThreshold: 60
+    - levelOfDetail: 2
+      visableDstThreshold: 85
+    - levelOfDetail: 4
+      visableDstThreshold: 120
+  - _levelOfDetail:
+    - levelOfDetail: 0
+      visableDstThreshold: 70
+    - levelOfDetail: 2
+      visableDstThreshold: 100
+    - levelOfDetail: 4
+      visableDstThreshold: 150
+  _detailLevelIndex: 4
   _colliderLODIndex: 2
   _biome: {fileID: 11400000, guid: 879a5fe3b8d9641478814691d2dc556c, type: 2}
   _groundLayer: Ground
