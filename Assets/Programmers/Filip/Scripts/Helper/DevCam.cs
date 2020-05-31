@@ -42,6 +42,7 @@ public class DevCam : MonoBehaviour
 
     private void Update()
     {
+
         bool activate = Input.GetKeyDown(KeyCode.F1);
         if (activate)
         {

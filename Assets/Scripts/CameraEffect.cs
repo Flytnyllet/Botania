@@ -330,18 +330,16 @@ public class CameraEffect : MonoBehaviour
         //float camScale = topLeft.magnitude * camFar;
 
         topLeft.Normalize();
-        //topLeft *= camScale;
 
         Vector3 topRight = (_camera.transform.forward + toRight + toTop);
         topRight.Normalize();
-        //topRight *= camScale;
 
         Vector3 bottomRight = (_camera.transform.forward + toRight - toTop);
         bottomRight.Normalize();
-        //bottomRight *= camScale;
 
         Vector3 bottomLeft = (_camera.transform.forward - toRight - toTop);
         bottomLeft.Normalize();
+
         // Custom Blit, encoding Frustum Corners as additional Texture Coordinates
         RenderTexture.active = dest;
 
