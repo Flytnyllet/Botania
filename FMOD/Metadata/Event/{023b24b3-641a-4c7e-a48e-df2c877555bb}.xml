@@ -67,7 +67,7 @@
 			<destination>{c22ad78e-0c30-4d2d-b581-d475b898426d}</destination>
 		</relationship>
 		<relationship name="output">
-			<destination>{cee2c7df-690c-484c-914d-67b5477398c6}</destination>
+			<destination>{2442cae7-8979-4fb0-8df6-9c133c6a19f5}</destination>
 		</relationship>
 	</object>
 	<object class="EventAutomatableProperties" id="{9fc019ca-e917-44de-b7ac-7e18d3b54305}" />
@@ -135,7 +135,7 @@
 	</object>
 	<object class="EventMixerMaster" id="{dabab4c6-d671-45b2-8895-33c7dd68a82a}">
 		<property name="volume">
-			<value>-11</value>
+			<value>-14</value>
 		</property>
 		<relationship name="modulators">
 			<destination>{0a97458f-8da4-421a-bc2d-72d15b93dead}</destination>
@@ -542,7 +542,6 @@
 	</object>
 	<object class="MixerBusEffectChain" id="{eff19f93-06d2-4380-8269-e1927b18491d}">
 		<relationship name="effects">
-			<destination>{79572bd0-3e08-41c4-b6a5-62ea684d6036}</destination>
 			<destination>{95b79653-729a-4638-81d3-d57c115bfb94}</destination>
 		</relationship>
 	</object>
@@ -746,14 +745,6 @@
 			<destination>{c9e4e9c2-14f8-434b-be5e-45debef1e133}</destination>
 		</relationship>
 	</object>
-	<object class="ThreeEQEffect" id="{79572bd0-3e08-41c4-b6a5-62ea684d6036}">
-		<property name="highGain">
-			<value>3.5</value>
-		</property>
-		<property name="highCrossover">
-			<value>3600</value>
-		</property>
-	</object>
 	<object class="MixerBusFader" id="{95b79653-729a-4638-81d3-d57c115bfb94}" />
 	<object class="AutomationPoint" id="{628e2b9b-1035-421c-a89d-3302ebfa7f32}">
 		<property name="position">
@@ -867,11 +858,17 @@
 		<property name="filterTypeA">
 			<value>4</value>
 		</property>
+		<property name="filterTypeB">
+			<value>9</value>
+		</property>
 		<property name="filterTypeE">
 			<value>3</value>
 		</property>
 		<property name="frequencyA">
 			<value>34.9930267</value>
+		</property>
+		<property name="frequencyB">
+			<value>92.6610107</value>
 		</property>
 		<property name="frequencyE">
 			<value>21000</value>
@@ -881,6 +878,9 @@
 		</property>
 		<property name="qualityE">
 			<value>0.100000001</value>
+		</property>
+		<property name="gainB">
+			<value>-2.58620834</value>
 		</property>
 		<relationship name="automators">
 			<destination>{8d7336a5-9e5d-4b87-adb0-083aea51ba9f}</destination>

@@ -16,7 +16,7 @@ public class Amb_Rain_Overrider : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            Amb_Rain.Instance.Set_Rain_Override(0.85f);
+            Amb_Rain.Instance.Set_Rain_Override(0.9f);
         }
     }
 
@@ -24,14 +24,7 @@ public class Amb_Rain_Overrider : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            if (Player.GetCurrentBiome() == BiomeTypes.BIRCH)
-            {
-                Amb_Rain.Instance.Set_Rain_Override(0.7f);
-            }
-            else
-            {
-                Amb_Rain.Instance.Set_Rain_Override(0);
-            }
+            Amb_Rain.Instance.Stop_Rain_Override();
         }
     }
 }

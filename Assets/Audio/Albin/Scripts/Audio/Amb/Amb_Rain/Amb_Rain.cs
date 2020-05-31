@@ -79,7 +79,7 @@ public class Amb_Rain : MonoBehaviour
     public IEnumerator Stop_Rain()
     {
         _isStopping = true;
-        if (_rainOverrideValue != 1)
+        if (_rainOverrideValue != 0.9f)
         {
             RuntimeManager.StudioSystem.setParameterByID(rainIntensityDescription.id, 0.3f);
             yield return new WaitForSeconds(5f);
@@ -117,8 +117,14 @@ public class Amb_Rain : MonoBehaviour
 
     public void Set_Rain_Override(float overrideValue)
     {
+        _setScriptOverride = true;
         RuntimeManager.StudioSystem.setParameterByID(rainOverrideDescription.id, overrideValue);
         _rainOverrideValue = overrideValue;
+    }
+
+    public void Stop_Rain_Override()
+    {
+        _setScriptOverride = false;
     }
 
     private void Update()
@@ -133,6 +139,25 @@ public class Amb_Rain : MonoBehaviour
         {
             StartCoroutine(Stop_Rain());
             _raining = false;
+        }
+
+        if (!_setScriptOverride)
+        {
+            switch (Player.GetCurrentBiome())
+            {
+                case BiomeTypes.FOREST:
+                    RuntimeManager.StudioSystem.setParameterByID(rainOverrideDescription.id, 0);
+                    break;
+                case BiomeTypes.BIRCH:
+                    RuntimeManager.StudioSystem.setParameterByID(rainOverrideDescription.id, 0.7f);
+                    break;
+                case BiomeTypes.WEIRD:
+                    RuntimeManager.StudioSystem.setParameterByID(rainOverrideDescription.id, 0);
+                    break;
+                case BiomeTypes.PLANES:
+                    RuntimeManager.StudioSystem.setParameterByID(rainOverrideDescription.id, 0);
+                    break;
+            }
         }
     }
 }

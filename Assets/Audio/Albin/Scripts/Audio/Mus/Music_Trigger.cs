@@ -18,7 +18,7 @@ public class Music_Trigger : MonoBehaviour
                 _shouldTry = true;
                 break;
             case "Flower_Magic":
-                if (Random.Range(0, 1f) > 0.2f)
+                if (Random.Range(0, 1f) > 0.85f)
                     _shouldTry = true;
                 else
                     _shouldTry = false;
@@ -31,6 +31,12 @@ public class Music_Trigger : MonoBehaviour
                 break;
             case "Object_Grave_04(Clone)":
                 if (Random.Range(0, 1f) > 0.5f)
+                    _shouldTry = true;
+                else
+                    _shouldTry = false;
+                break;
+            case "Object_Pole(Clone)":
+                if (Random.Range(0, 1f) > 0.1f)
                     _shouldTry = true;
                 else
                     _shouldTry = false;
@@ -65,6 +71,9 @@ public class Music_Trigger : MonoBehaviour
                             break;
                         case "Flower_Magic":
                             _track = 3;
+                            break;
+                        case "Object_Pole(Clone)":
+                            _track = 5;
                             break;
                     }
                     Music_Manager.Instance.Init_Music(_track);

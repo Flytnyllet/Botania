@@ -195,7 +195,7 @@ public class Music_Manager : MonoBehaviour
             else
             {
                 _isPlaying = false;
-                StartCoroutine(Start_Cooldown(Random.Range(30, 60)));
+                StartCoroutine(Start_Cooldown(Random.Range(60, 120)));
             }
         }
     }
