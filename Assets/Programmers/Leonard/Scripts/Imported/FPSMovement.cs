@@ -266,25 +266,26 @@ public class FPSMovement : MonoBehaviour
 				Strafing(moveInput.x, moveInput.y);
 			}
 
+			//Gravity
+			if ((!_inWater && !isLevitating) || isStoned)
+			{
+				Gravity(gravityFactor);
+			}
+			else if (Time.time % 5 < 0.01)
+			{
+				Debug.Log("Gravity is disabled");
+			}
+
+			if (isLevitating)
+			{
+				charCon.Move(_levitationSpeed * Vector3.up * Time.deltaTime);
+				_inAir = true;
+				_velocity.y = -5f;
+			}
 			//transform.position = new Vector3(transform.position.x, 9.5f, transform.position.z);
 		}
 
-        //Gravity
-        if ((!_inWater && !isLevitating) || isStoned)
-        {
-            Gravity(gravityFactor);
-        }
-        else if (Time.time % 5 < 0.01)
-        {
-            Debug.Log("Gravity is disabled");
-        }
-
-        if (isLevitating)
-        {
-            charCon.Move(_levitationSpeed * Vector3.up * Time.deltaTime);
-            _inAir = true;
-            _velocity.y = -5f;
-        }
+       
     }
 
 	public void Teleport(Vector3 position)
@@ -430,7 +431,18 @@ public class FPSMovement : MonoBehaviour
 
 		yield return null;
 
-		
+		while (true)
+		{
+			if (PositionCorrection(_teleportPlacementHeight))
+			{
+				break;
+			}
+			else
+			{
+				yield return null;
+				charCon.Move(Vector3.forward * 0.01f);
+			}
+		}
 
 		yield return null;
 
