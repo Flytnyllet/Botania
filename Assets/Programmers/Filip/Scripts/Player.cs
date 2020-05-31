@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    [SerializeField] float _seaLevelSpawn = 10;
     [SerializeField] MeshSettings _meshSettings;
     [SerializeField] Transform _playerParent;
     [SerializeField] float _playerSpawnHeightOffset = 3f;
@@ -13,6 +14,8 @@ public class Player : MonoBehaviour
     [SerializeField, Range(0.01f, 30)] float _updateBiomeTime = 1.0f;
 
     [SerializeField] FPSMovement _fpsScript;
+
+    Camera _playerCamera;
 
     //Singleton
     static Player _thisSingleton;
@@ -30,6 +33,7 @@ public class Player : MonoBehaviour
         {
             _thisSingleton = this;
             _playerTransform = GetComponent<Transform>();
+            _playerCamera = GetComponent<Camera>();
             _updateBiomeTableTimer = new Timer(_updateBiomeTime);
             _biomeInfo = _biomeInfoInstance;
             _spawnPosition = _playerParent.position;
@@ -74,7 +78,12 @@ public class Player : MonoBehaviour
             Debug.DrawRay(_thisSingleton._playerParent.transform.position, Vector3.down * _distanceRayCast, Color.cyan, 1f);
         } while (!hit);
 
-        _fpsScript.Teleport(collision.point);
+        Vector3 spawnPosition = collision.point;
+
+        if (collision.point.y < _seaLevelSpawn)
+            spawnPosition.y = _seaLevelSpawn;
+
+        _fpsScript.Teleport(spawnPosition);
 
         OnStartFadeIn.FadeIn();
     }
@@ -101,6 +110,11 @@ public class Player : MonoBehaviour
     public static Transform GetPlayerTransform()
     {
         return _playerTransform;
+    }
+
+    public static Camera GetPlayerCamera()
+    {
+        return _thisSingleton._playerCamera;
     }
 
     public static BiomeTypes GetCurrentBiome()

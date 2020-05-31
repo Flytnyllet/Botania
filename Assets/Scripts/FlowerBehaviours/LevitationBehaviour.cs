@@ -5,7 +5,7 @@ using UnityEngine;
 public class LevitationBehaviour : MonoBehaviour
 {
     bool _playerInside = false;
-    CharacterController _charCon;
+    [SerializeField]CharacterController _charCon;
     SphereCollider _collider;
     [SerializeField] Transform _targetTransform;
     [SerializeField] Vector3 _direction;
@@ -18,7 +18,6 @@ public class LevitationBehaviour : MonoBehaviour
     {
         _collider = GetComponent<SphereCollider>();
         _colliderStartRadius = _collider.radius;
-        _charCon = GetComponent<CharacterController>();
     }
     private void OnTriggerEnter(Collider other)
     {

@@ -43,14 +43,8 @@ public class DevCam : MonoBehaviour
     private void Update()
     {
         bool activate = Input.GetKeyDown(KeyCode.F1);
-        if (Input.GetKeyDown(KeyCode.F1))
-        {
-            CharacterState.SetControlState(CHARACTER_CONTROL_STATE.Dev);
-        }
         if (activate)
         {
-
-
             RenderSettings.fog = true;
 
             _speedModifier = 1f;
@@ -76,11 +70,11 @@ public class DevCam : MonoBehaviour
             bool resetSpeed = Input.GetKeyDown(KeyCode.F4);
             bool resetTilt = Input.GetKeyDown(KeyCode.F5);
             bool removeFog = Input.GetKeyDown(KeyCode.F6);
+            bool smoothCamera = Input.GetKeyDown(KeyCode.F7);
             Vector2 scroll = Input.mouseScrollDelta;
             bool shouldChangeSpeed = Input.GetKey(KeyCode.LeftShift);
 
             bool shouldChangeTilt = Input.GetKey(KeyCode.Z);
-
 
             if (showInstructions)
                 _instructions.SetActive(!_instructions.activeSelf);
@@ -96,6 +90,13 @@ public class DevCam : MonoBehaviour
             if (removeFog)
                 RenderSettings.fog = !RenderSettings.fog;
 
+            if (smoothCamera)
+            {
+                if (CharacterState.Control_State == CHARACTER_CONTROL_STATE.PLAYERCONTROLLED)
+                    CharacterState.SetControlState(CHARACTER_CONTROL_STATE.Dev);
+                else
+                    CharacterState.SetControlState(CHARACTER_CONTROL_STATE.PLAYERCONTROLLED);
+            }
 
             if (scroll != Vector2.zero && shouldChangeSpeed)
             {
@@ -119,8 +120,6 @@ public class DevCam : MonoBehaviour
     {
         if (_activated)
         {
-
-
             Vector4 movement = new Vector4(Input.GetAxis(HORIZONTAL), Input.GetAxis(VERTICAL), Input.GetAxis(UP), Input.GetAxis(DOWN));
             bool tiltLeft = Input.GetKey(KeyCode.Alpha1);
             bool tiltRight = Input.GetKey(KeyCode.Alpha3);
@@ -133,18 +132,17 @@ public class DevCam : MonoBehaviour
 
     void Walking(Vector4 movement, float modifier)
     {
-        Vector2 mousePos = Input.mousePosition;
-        mousePos.x /= _camera.pixelWidth;
-        mousePos.y /= _camera.pixelHeight;
-        float temp = mousePos.x;
-        mousePos.x = mousePos.y;
-        mousePos.y = temp;
-        mousePos = mousePos * 2 - new Vector2(1, 1);
-        _playerCamera.Rotate(mousePos * 10 * Time.deltaTime);
-
-
-
-        Debug.Log(mousePos);
+        if (CharacterState.Control_State == CHARACTER_CONTROL_STATE.Dev)
+        {
+            Vector2 mousePos = Input.mousePosition;
+            mousePos.x /= _camera.pixelWidth;
+            mousePos.y /= _camera.pixelHeight;
+            float temp = mousePos.x;
+            mousePos.x = mousePos.y;
+            mousePos.y = temp;
+            mousePos = mousePos * 2 - new Vector2(1, 1);
+            _playerCamera.Rotate(mousePos * 10 * Time.deltaTime);
+        }
 
         Vector3 lookDir = _playerCamera.forward;
         Vector3 move = _playerCamera.right.normalized * movement.x + lookDir.normalized * movement.y + _playerCamera.up.normalized * movement.z + _playerCamera.up * -movement.w;

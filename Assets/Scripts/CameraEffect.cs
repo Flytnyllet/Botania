@@ -271,7 +271,6 @@ public class CameraEffect : MonoBehaviour
     {
         float time = 0;
         float startValue = Shader.GetGlobalFloat("gEmissionMult");
-        Debug.Log(startValue);
         while (time < lerpTime)
         {
             Shader.SetGlobalFloat("gEmissionMult", Mathf.Lerp(startValue, targetValue, time / lerpTime));

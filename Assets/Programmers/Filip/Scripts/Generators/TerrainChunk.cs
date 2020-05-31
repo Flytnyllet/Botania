@@ -84,6 +84,12 @@ public class TerrainChunk
         ThreadedDataRequester.RequestData(() => HeightMapGenerator.GenerateHeightMap(_meshSettings.NumVertsPerLine, _meshSettings.NumVertsPerLine, _heightMapSettings, _sampleCenter), OnHeightMapReceived);
     }
 
+    public void UpdateRenderDistance(LODInfo[] lodInfo)
+    {
+        _detailLevels = lodInfo;
+        _maxViewDistance = _detailLevels[_detailLevels.Length - 1].visableDstThreshold;
+    }
+
     void OnHeightMapReceived(object heightMapObject)
     {
         this._heightMap = (HeightMap)heightMapObject;

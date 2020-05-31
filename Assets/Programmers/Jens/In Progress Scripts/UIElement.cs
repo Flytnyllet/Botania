@@ -23,11 +23,11 @@ public class UIElement : MonoBehaviour
         time += Time.time;
         while (time > Time.time)
         {
-            //time += Time.deltaTime;
             color.a -= alphaChange * Time.deltaTime;
             element.color = color;
             yield return null;
         }
-        //Destroy(this.gameObject);
+        color.a = 0;
+        element.color = color;
     }
 }
