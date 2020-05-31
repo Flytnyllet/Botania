@@ -28,6 +28,7 @@ public class BookManager : MonoBehaviour
     int _currentBookmark = 0;
     int _currentPage = 0;
     [SerializeField] public GameObject _book = null;
+    [SerializeField] AlphaAwareButton _tabButtons = null;
     [SerializeField] GameObject _map = null;
     [SerializeField] GameObject _potionWheel = null;
 
@@ -42,6 +43,7 @@ public class BookManager : MonoBehaviour
     void CloseBook(EventParameter param = null)
     {
         _book.SetActive(false);
+        _tabButtons.gameObject.SetActive(false);
         MapGenerator.Display(false);
         EventManager.TriggerEvent(EventNameLibrary.CLOSE_BOOK, new EventParameter());
         CharacterState.SetControlState(CHARACTER_CONTROL_STATE.PLAYERCONTROLLED);
@@ -57,8 +59,8 @@ public class BookManager : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
-		StartCoroutine(TurnGOOff(_book));
-		SetupBookmarks();
+        StartCoroutine(TurnGOOff(_book));
+        SetupBookmarks();
         foreach (PageLoader page in _flowerPages)
         {
             FLOWERPAGE_INDEX.Add(page);
@@ -126,7 +128,7 @@ public class BookManager : MonoBehaviour
         {
             if (_book.activeSelf && _currentBookmark == index)
             {
-                CloseBook(new EventParameter());
+                CloseBook();
             }
             else if (_book.activeSelf)
             {
@@ -147,6 +149,7 @@ public class BookManager : MonoBehaviour
         if (CharacterState.Control_State == CHARACTER_CONTROL_STATE.PLAYERCONTROLLED)
         {
             _book.SetActive(true);
+            _tabButtons.gameObject.SetActive(true);
             EventManager.TriggerEvent(EventNameLibrary.OPEN_BOOK, new EventParameter());
             CharacterState.SetControlState(CHARACTER_CONTROL_STATE.MENU);
             ToBookmark(index);
@@ -188,21 +191,21 @@ public class BookManager : MonoBehaviour
             _bookmarks[i] = Instantiate(bookmark, _book.transform);
             _bookmarks[i].transform.SetAsFirstSibling();
             _bookmarks[i].gameObject.SetActive(true);
-			if(i != _currentBookmark)
-			{
-				StartCoroutine(TurnGOOff(_bookmarks[i]));
-			}
+            if (i != _currentBookmark)
+            {
+                StartCoroutine(TurnGOOff(_bookmarks[i]));
+            }
             //CreateBookmarkObject(i, bookmark, bookmarks);
         }
 
         //_bookmarks[_currentBookmark].SetActive(true);
     }
 
-	IEnumerator TurnGOOff(GameObject go)
-	{
-		yield return null;
-		go.SetActive(false);
-	}
+    IEnumerator TurnGOOff(GameObject go)
+    {
+        yield return null;
+        go.SetActive(false);
+    }
 
     void SetupBookTabs()
     {
@@ -255,6 +258,7 @@ public class BookManager : MonoBehaviour
 
             case 1:
                 _currentPage = ChangeCurrentPage(FLOWERPAGE_INDEX.Count, change);
+                EventManager.TriggerEvent(EventNameLibrary.FLIP_PAGE, new EventParameter()); //Play flip page sound. This should be moved. I just don't know where.
                 ChangePage(FLOWERPAGE_INDEX);
                 break;
 
