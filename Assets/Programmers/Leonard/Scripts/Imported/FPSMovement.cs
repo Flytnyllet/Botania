@@ -441,13 +441,25 @@ public class FPSMovement : MonoBehaviour
 			yield return null;
 		}
 
-		// =====================
+        // =====================
 
-		// =====================
-		// TELEPORTATION WIND-DOWN
-		// =====================
-
-		_loadScreen.gameObject.SetActive(false);
+        // =====================
+        // TELEPORTATION WIND-DOWN
+        // =====================
+        //yield return null;
+        //float time = 0;
+        //Color colA = new Color(1, 1, 1, 1);
+        //Color colB = new Color(0, 0, 0, 1);
+        //while (time < 1)
+        //{
+        //    time += Time.deltaTime;
+        //    colA.a -= 1 - time;
+        //    colB.a -= 1 - time;
+        //    _loadIcon.color = colA;
+        //    _loadScreen.color = colB;
+        //    yield return null;
+        //}
+        _loadScreen.gameObject.SetActive(false);
 		CharacterState.SetControlState(CHARACTER_CONTROL_STATE.PLAYERCONTROLLED);
 
 		_gravity.BaseValue = 4f;
