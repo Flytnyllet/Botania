@@ -1,4 +1,4 @@
-﻿Shader "Botania/ScreenEffects/NewImageEffectShader"
+﻿Shader "Botania/ScreenEffects/Mist"
 {
 	Properties
 	{
