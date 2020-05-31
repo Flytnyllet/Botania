@@ -83,8 +83,11 @@
 	</object>
 	<object class="EventMixerMaster" id="{7920c5e9-b42e-443b-b8d6-4c7e267aeb3f}">
 		<property name="volume">
-			<value>-8.5</value>
+			<value>-16</value>
 		</property>
+		<relationship name="modulators">
+			<destination>{f19d0e57-371f-47aa-843b-ca55a9cad406}</destination>
+		</relationship>
 		<relationship name="effectChain">
 			<destination>{356f603f-5638-4c6a-9fb1-6cec1cb178ca}</destination>
 		</relationship>
@@ -102,21 +105,33 @@
 	</object>
 	<object class="MixerBusPanner" id="{7567d965-566a-4be2-a4b1-ac66520a6caa}" />
 	<object class="SoundScatterer" id="{f18603f5-8fc7-433e-bbb6-672905878078}">
+		<property name="length">
+			<value>1.0122742200328405</value>
+		</property>
+		<property name="volume">
+			<value>-8.5</value>
+		</property>
 		<property name="polyphony">
 			<value>3</value>
 		</property>
 		<property name="minimumTimeBetweenSounds">
-			<value>6500</value>
+			<value>9500</value>
 		</property>
 		<property name="maximumTimeBetweenSounds">
-			<value>10000</value>
+			<value>28000</value>
 		</property>
 		<property name="minimumScatterDistance">
-			<value>3.79999995</value>
+			<value>4.20000029</value>
 		</property>
 		<property name="maximumScatterDistance">
 			<value>6.4000001</value>
 		</property>
+		<property name="pitchRandomization">
+			<value>0.899999976</value>
+		</property>
+		<relationship name="modulators">
+			<destination>{51f4d435-936a-46e5-84b6-dae4e02aa267}</destination>
+		</relationship>
 		<relationship name="sound">
 			<destination>{0b09e1f5-668d-4859-adfe-0c8db7e8121c}</destination>
 		</relationship>
@@ -152,14 +167,40 @@
 			<destination>{44c651b1-cfbd-4023-8b9d-78e61415dcc1}</destination>
 		</relationship>
 	</object>
+	<object class="ADSRModulator" id="{f19d0e57-371f-47aa-843b-ca55a9cad406}">
+		<property name="nameOfPropertyBeingModulated">
+			<value>volume</value>
+		</property>
+		<property name="initialValue">
+			<value>-80</value>
+		</property>
+		<property name="attackTime">
+			<value>880</value>
+		</property>
+		<property name="releaseTime">
+			<value>980</value>
+		</property>
+		<property name="finalValue">
+			<value>-80</value>
+		</property>
+	</object>
 	<object class="MixerBusEffectChain" id="{356f603f-5638-4c6a-9fb1-6cec1cb178ca}">
 		<relationship name="effects">
 			<destination>{c6182cc6-04bc-4588-a5af-01b9d97537a0}</destination>
 			<destination>{d3cb0d3b-ab9b-4f50-bae8-02bdc3989a58}</destination>
 		</relationship>
 	</object>
-	<object class="MixerBusPanner" id="{3882d67f-397d-49d4-b4df-e7c922351b48}" />
+	<object class="MixerBusPanner" id="{3882d67f-397d-49d4-b4df-e7c922351b48}">
+		<property name="surroundPanExtent">
+			<value>173.333328</value>
+		</property>
+	</object>
 	<object class="MixerBusFader" id="{33cd0726-b73d-475d-a962-d92daf5236ad}" />
+	<object class="RandomizerModulator" id="{51f4d435-936a-46e5-84b6-dae4e02aa267}">
+		<property name="nameOfPropertyBeingModulated">
+			<value>pitch</value>
+		</property>
+	</object>
 	<object class="MultiSound" id="{0b09e1f5-668d-4859-adfe-0c8db7e8121c}">
 		<relationship name="sounds">
 			<destination>{ec49bff5-2c3a-464d-9ed7-ff2d1317b82f}</destination>
@@ -178,10 +219,10 @@
 	</object>
 	<object class="MixerBusPanner" id="{69a76e97-5f46-4a90-93af-9d71d90595c8}">
 		<property name="surroundPanDirection">
-			<value>0.00341865025</value>
+			<value>0.00512797525</value>
 		</property>
 		<property name="surroundPanExtent">
-			<value>161.600006</value>
+			<value>277.488892</value>
 		</property>
 	</object>
 	<object class="MixerBusFader" id="{c6182cc6-04bc-4588-a5af-01b9d97537a0}" />
@@ -200,11 +241,17 @@
 		</property>
 	</object>
 	<object class="SingleSound" id="{ec49bff5-2c3a-464d-9ed7-ff2d1317b82f}">
+		<property name="volume">
+			<value>-20.5</value>
+		</property>
 		<relationship name="audioFile">
 			<destination>{582dffb8-6e04-4b33-8f18-297a0fd0cb8e}</destination>
 		</relationship>
 	</object>
 	<object class="SingleSound" id="{15d17f75-5eaf-40bc-acce-e99ba4f12e6b}">
+		<property name="volume">
+			<value>-21.5</value>
+		</property>
 		<relationship name="audioFile">
 			<destination>{be3b43a6-0584-4e76-a014-22d93f829a4c}</destination>
 		</relationship>

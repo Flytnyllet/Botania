@@ -108,7 +108,7 @@ public class PickupFlower : InteractableSaving, IInteractable
             case "Calm":
                 _flowerPickupSound = _player_Data.p_pickup_calm;
                 break;
-            case "Earth Flower":
+            case "Earth":
                 _flowerPickupSound = _player_Data.p_pickup_earth;
                 break;
             case "Home":
@@ -126,13 +126,13 @@ public class PickupFlower : InteractableSaving, IInteractable
             case "Teleporter":
                 _flowerPickupSound = _player_Data.p_pickup_tp;
                 break;
-            case "Vitsippa":
+            case "Faith":
                 _flowerPickupSound = _player_Data.p_pickup_vitsippa;
                 break;
             case "Levitation":
                 _flowerPickupSound = _player_Data.p_pickup_levitation;
                 break;
-            case "Sight":
+            case "Gazing":
                 _flowerPickupSound = _player_Data.p_pickup_sight;
                 break;
             case "Magic":
@@ -141,7 +141,7 @@ public class PickupFlower : InteractableSaving, IInteractable
             case "Underwater":
                 _flowerPickupSound = _player_Data.p_pickup_underwater;
                 break;
-            case "Water":
+            case "Lillypad":
                 _flowerPickupSound = _player_Data.p_pickup_water;
                 break;
             default:
