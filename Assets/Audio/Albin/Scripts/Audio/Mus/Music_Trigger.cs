@@ -17,13 +17,19 @@ public class Music_Trigger : MonoBehaviour
             case "Lusthus":
                 _shouldTry = true;
                 break;
-            case "Flower_Magic":
-                if (Random.Range(0, 1f) > 0.85f)
+            case "Flower_Magic_Group":
+                if (Random.Range(0, 1f) > 0.05f)
                     _shouldTry = true;
                 else
                     _shouldTry = false;
                 break;
             case "Object_Gate(Clone)":
+                if (Random.Range(0, 1f) > 0.5f)
+                    _shouldTry = true;
+                else
+                    _shouldTry = false;
+                break;
+            case "Object_Well(Clone)":
                 if (Random.Range(0, 1f) > 0.5f)
                     _shouldTry = true;
                 else
@@ -36,7 +42,7 @@ public class Music_Trigger : MonoBehaviour
                     _shouldTry = false;
                 break;
             case "Object_Pole(Clone)":
-                if (Random.Range(0, 1f) > 0.1f)
+                if (Music_Manager.Instance.PlayOnlyFirstTime)
                     _shouldTry = true;
                 else
                     _shouldTry = false;
@@ -49,7 +55,7 @@ public class Music_Trigger : MonoBehaviour
         if (_shouldTry && !Music_Manager.Instance.IsPlaying && !Music_Manager.Instance.IsCooldown)
         {
             float distance = Vector3.Distance(transform.position, _camera.position);
-            if (distance > 18) { return; }
+            if (distance > 15) { return; }
             else
             {
 
@@ -69,6 +75,9 @@ public class Music_Trigger : MonoBehaviour
                         case "Object_Gate(Clone)":
                             _track = 2;
                             break;
+                        case "Object_Well(Clone)":
+                            _track = 2;
+                            break;
                         case "Flower_Magic":
                             _track = 3;
                             break;
@@ -77,6 +86,7 @@ public class Music_Trigger : MonoBehaviour
                             break;
                     }
                     Music_Manager.Instance.Init_Music(_track);
+                    Debug.Log("Initialised music for " + transform.parent.name);
                     _shouldTry = false;
                 }
             }

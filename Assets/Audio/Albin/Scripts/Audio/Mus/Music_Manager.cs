@@ -17,7 +17,7 @@ public class Music_Manager : MonoBehaviour
     public string mus_00_paus;
     private EventInstance pauseMenu_Instance;
     public bool IsOptions { get { return _isOptions; } }
-    private bool _isOptions;
+    private bool _isOptions = default;
 
     [EventRef]
     public string mus_01_biome1_1;
@@ -46,8 +46,11 @@ public class Music_Manager : MonoBehaviour
     public bool StartMenu { get { return _startMenu; } }
     private bool _startMenu = default;
 
-    private bool _triggeredStop = false;
+    public bool PlayOnlyFirstTime { get { return _playOnlyFirstTime; } }
     private bool _playOnlyFirstTime = true;
+
+    private bool _triggeredStop = false;
+    
     
 
     private void Awake()
