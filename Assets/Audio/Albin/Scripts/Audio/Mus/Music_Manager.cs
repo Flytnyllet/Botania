@@ -47,6 +47,7 @@ public class Music_Manager : MonoBehaviour
     private bool _startMenu = default;
 
     private bool _triggeredStop = false;
+    private bool _playOnlyFirstTime = true;
     
 
     private void Awake()
@@ -110,7 +111,7 @@ public class Music_Manager : MonoBehaviour
 
     public void Play_OptionsMusic()
     {
-        if (!_startMenu)
+        if (!_startMenu && !_isOptions)
         {
             _isOptions = true;
 
@@ -139,7 +140,7 @@ public class Music_Manager : MonoBehaviour
     
     public void Init_Music(int track)
     {
-        if (!_isPlaying && !_isCooldown)
+        if (!_isPlaying && !_isCooldown && !_startMenu)
         {
             switch (track)
             {
@@ -156,11 +157,15 @@ public class Music_Manager : MonoBehaviour
                     trigger_Event = mus_01_biome4_4;
                     break;
                 case 5:
-                    trigger_Event = mus_02_dimma_5;
+                    if (_playOnlyFirstTime)
+                        trigger_Event = mus_02_dimma_5;
                     break;
             }
             trigger_Instance = RuntimeManager.CreateInstance(trigger_Event);
             Play_TriggerMusic();
+
+            if (trigger_Event == mus_02_dimma_5)
+                _playOnlyFirstTime = false;
         }
     }
 
