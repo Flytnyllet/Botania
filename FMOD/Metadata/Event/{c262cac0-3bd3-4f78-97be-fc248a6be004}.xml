@@ -60,9 +60,6 @@
 		</relationship>
 	</object>
 	<object class="EventAutomatableProperties" id="{3ef36eb3-f989-4f2c-a6c2-36ef8ec48da5}">
-		<property name="maxVoices">
-			<value>2</value>
-		</property>
 		<property name="voiceStealing">
 			<value>1</value>
 		</property>
@@ -94,7 +91,7 @@
 	</object>
 	<object class="EventMixerMaster" id="{949988ca-5fff-4821-a8e2-8c14bd6f12a7}">
 		<property name="volume">
-			<value>-7</value>
+			<value>-6.5</value>
 		</property>
 		<relationship name="modulators">
 			<destination>{37593b7a-ca7e-4d40-a906-8ae5c8ecd57a}</destination>
@@ -124,20 +121,23 @@
 		<property name="length">
 			<value>5.5</value>
 		</property>
+		<property name="volume">
+			<value>10</value>
+		</property>
 		<property name="minimumTimeBetweenSounds">
-			<value>24000</value>
+			<value>26000</value>
 		</property>
 		<property name="maximumTimeBetweenSounds">
-			<value>30000</value>
+			<value>74000</value>
 		</property>
 		<property name="minimumScatterDistance">
 			<value>0</value>
 		</property>
 		<property name="maximumScatterDistance">
-			<value>0</value>
+			<value>0.699999928</value>
 		</property>
 		<property name="pitchRandomization">
-			<value>1.0999999</value>
+			<value>0.649999976</value>
 		</property>
 		<relationship name="modulators">
 			<destination>{cb5076d7-75ea-4041-a16b-8913a298e496}</destination>
@@ -249,6 +249,12 @@
 		<property name="volume">
 			<value>5.5</value>
 		</property>
+		<property name="pitch">
+			<value>-1.60000002</value>
+		</property>
+		<relationship name="modulators">
+			<destination>{a920baba-9228-4bcb-8727-c48414d55c71}</destination>
+		</relationship>
 		<relationship name="audioFile">
 			<destination>{431bf388-6503-438b-98f3-62d2250d2f4f}</destination>
 		</relationship>
@@ -277,6 +283,14 @@
 		</property>
 	</object>
 	<object class="MixerBusFader" id="{1b255dd7-e99c-4d29-ad2c-740a0814964f}" />
+	<object class="RandomizerModulator" id="{a920baba-9228-4bcb-8727-c48414d55c71}">
+		<property name="nameOfPropertyBeingModulated">
+			<value>pitch</value>
+		</property>
+		<property name="amount">
+			<value>10</value>
+		</property>
+	</object>
 	<object class="AutomationPoint" id="{c6203714-1e90-4d46-8c5d-eea377ca5a82}">
 		<property name="position">
 			<value>0.69458128078817727</value>

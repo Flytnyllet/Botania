@@ -83,7 +83,7 @@
 	</object>
 	<object class="EventMixerMaster" id="{7920c5e9-b42e-443b-b8d6-4c7e267aeb3f}">
 		<property name="volume">
-			<value>-3.5</value>
+			<value>-8.5</value>
 		</property>
 		<relationship name="effectChain">
 			<destination>{356f603f-5638-4c6a-9fb1-6cec1cb178ca}</destination>
@@ -176,7 +176,14 @@
 			<destination>{559e381a-6da7-450f-bd7f-2b830f8c1d95}</destination>
 		</relationship>
 	</object>
-	<object class="MixerBusPanner" id="{69a76e97-5f46-4a90-93af-9d71d90595c8}" />
+	<object class="MixerBusPanner" id="{69a76e97-5f46-4a90-93af-9d71d90595c8}">
+		<property name="surroundPanDirection">
+			<value>0.00341865025</value>
+		</property>
+		<property name="surroundPanExtent">
+			<value>161.600006</value>
+		</property>
+	</object>
 	<object class="MixerBusFader" id="{c6182cc6-04bc-4588-a5af-01b9d97537a0}" />
 	<object class="SpatialiserEffect" id="{d3cb0d3b-ab9b-4f50-bae8-02bdc3989a58}">
 		<property name="minimumDistance">

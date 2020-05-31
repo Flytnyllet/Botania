@@ -60,9 +60,6 @@
 		</relationship>
 	</object>
 	<object class="EventAutomatableProperties" id="{f78052cf-aa90-4d8c-9525-7f92dbef0cd5}">
-		<property name="maxVoices">
-			<value>2</value>
-		</property>
 		<property name="voiceStealing">
 			<value>1</value>
 		</property>
@@ -94,7 +91,7 @@
 	</object>
 	<object class="EventMixerMaster" id="{7acfd753-f72a-4efa-b41f-9e8daf1c6b82}">
 		<property name="volume">
-			<value>-6.5</value>
+			<value>-11</value>
 		</property>
 		<relationship name="modulators">
 			<destination>{b8c08fcc-3496-4149-b3a9-5d97ca785c36}</destination>
@@ -124,17 +121,20 @@
 		<property name="length">
 			<value>5.5</value>
 		</property>
+		<property name="pitch">
+			<value>-1</value>
+		</property>
 		<property name="minimumTimeBetweenSounds">
-			<value>22000</value>
+			<value>35000</value>
 		</property>
 		<property name="maximumTimeBetweenSounds">
-			<value>28000</value>
+			<value>63000</value>
 		</property>
 		<property name="minimumScatterDistance">
 			<value>2.4000001</value>
 		</property>
 		<property name="maximumScatterDistance">
-			<value>5</value>
+			<value>4.5999999</value>
 		</property>
 		<property name="pitchRandomization">
 			<value>1.0999999</value>
