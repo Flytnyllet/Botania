@@ -68,7 +68,7 @@ public class WorldState : MonoBehaviour
                         {
                             if (IsRaining)
                             {
-                                _amb_Thunder.Play();           
+                                _amb_Thunder.Play();
                             }
                         }, Random.Range(0.15f, 1f));
                         EventManager.TriggerEvent(EventNameLibrary.LIGHTNING_STRIKE, param);
@@ -185,13 +185,13 @@ public class WorldState : MonoBehaviour
         if (shouldRain)
         {
             Shader.SetGlobalFloat("gRainWave", 0.9f);
-            StartCoroutine(ChangeCloudThickness(25, -0.8f));
+            StartCoroutine(ChangeCloudThickness(20, -0.8f));
             _raining = true;
             ActionDelayer.RunAfterDelay(() =>
             {
                 if (_raining)
                     EventManager.TriggerEvent(EventNameLibrary.START_RAIN, new EventParameter() { intParam = rainAmount });
-            }, 0);
+            }, 10);
 
         }
         else
