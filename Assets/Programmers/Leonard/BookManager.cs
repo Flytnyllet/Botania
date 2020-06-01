@@ -33,6 +33,8 @@ public class BookManager : MonoBehaviour
     [SerializeField] GameObject _map = null;
     [SerializeField] GameObject _potionWheel = null;
 	ItemDataContainer recentlyPickedFlower = null;
+	GameObject nextPage = null;
+	GameObject prevPage = null;
 
 	public static void SetPickedFlower(ItemDataContainer flower)
 	{
@@ -138,6 +140,25 @@ public class BookManager : MonoBehaviour
 		}
     }
 
+	void PageChangerActive(int bookmark)
+	{
+		if (nextPage == null)
+		{
+			nextPage = _book.transform.Find("NextPage").gameObject;
+			prevPage = _book.transform.Find("PrevPage").gameObject;
+		}
+		if(bookmark == 1)
+		{
+			nextPage.SetActive(true);
+			prevPage.SetActive(true);
+		}
+		else
+		{
+			nextPage.SetActive(false);
+			prevPage.SetActive(false);
+		}
+	}
+
     bool OpenBookmark(int index, string input)
     {
         if (Input.GetButtonDown(input) && !_potionWheel.activeSelf)
@@ -170,8 +191,13 @@ public class BookManager : MonoBehaviour
 					OpenBook(index);
 				}
             }
-            else { return false; }
-            return true;
+            else
+			{
+				return false;
+			}
+			PageChangerActive(_currentBookmark);
+
+			return true;
         }
         return false;
     }
