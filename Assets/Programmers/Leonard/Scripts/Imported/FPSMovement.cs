@@ -134,12 +134,12 @@ public class FPSMovement : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.N))
-        {
-            Debug.Log("START SMOTHNESS");
-            MouseLook camScript = _playerCam.GetComponent<MouseLook>();
-            camScript.smoothing = !camScript.smoothing;
-        }
+        //if (Input.GetKeyDown(KeyCode.N))
+        //{
+        //    Debug.Log("START SMOTHNESS");
+        //    MouseLook camScript = _playerCam.GetComponent<MouseLook>();
+        //    camScript.smoothing = !camScript.smoothing;
+        //}
     }
 
     void FixedUpdate()
@@ -390,10 +390,11 @@ public class FPSMovement : MonoBehaviour
                 break;
             }
             else
-            {
-                yield return null;
-                charCon.Move(Vector3.forward * 0.01f);
+			{
+				charCon.Move(Vector3.forward * 0.01f);
+				yield return null;
             }
+			attempts++;
         }
     }
 
@@ -439,25 +440,30 @@ public class FPSMovement : MonoBehaviour
 
         yield return null;
 
-        while (true)
+		int maxAttempts = 5;
+		int attempts = 0;
+        while (attempts < maxAttempts)
         {
             if (PositionCorrection(_teleportPlacementHeight))
             {
                 break;
             }
             else
-            {
-                yield return null;
-                charCon.Move(Vector3.forward * 0.01f);
+			{
+				attempts++;
+				charCon.Move(Vector3.forward * 0.01f);
+				yield return null;
             }
         }
 
         yield return null;
 
-        if (Physics.OverlapBox(transform.position, Vector3.one * 0.5f).Length > 1)
+		attempts = 0;
+        while (Physics.OverlapBox(transform.position, Vector3.one * 0.5f).Length > 1 && attempts < maxAttempts)
         {
             Debug.Log("Correcting position because collision");
             transform.position += Vector3.up * _teleportPlacementHeight;
+			attempts++;
             yield return null;
         }
 

@@ -50,8 +50,9 @@ public class PickupFlower : InteractableSaving, IInteractable
             }
             debugFlowerNames += "]";
 
-            //Debug.Log(debugFlowerNames);
+			//Debug.Log(debugFlowerNames);
 
+			BookManager.SetPickedFlower(_flowerData);
             FlowerLibrary.IncrementFlower(_flowerData.itemName, _amount);
             if (_gameobjectOverload.Length == 0)
             {

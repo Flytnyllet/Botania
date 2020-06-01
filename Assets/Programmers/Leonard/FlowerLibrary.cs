@@ -31,6 +31,12 @@ public static class FlowerLibrary
         public int Discovered;
     }
 
+	public static void Wipe()
+	{
+		_flowerTypes.Clear();
+		_potionTypes.Clear();
+	}
+
 	public static void Save()
 	{
 		List<FlowerEntry> flowerEntries = new List<FlowerEntry>();
