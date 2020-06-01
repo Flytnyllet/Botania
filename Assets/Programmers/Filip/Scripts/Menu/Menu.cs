@@ -86,7 +86,6 @@ public class Menu : MonoBehaviour
         _previousState = CharacterState.Control_State;
         CharacterState.SetControlState(CHARACTER_CONTROL_STATE.MENU_NO_MOVEMENT);
         _menu.SetActive(true);
-        Music_Manager.Instance.Play_OptionsMusic();
     }
 
     public void ExitMenu()
@@ -96,22 +95,7 @@ public class Menu : MonoBehaviour
         if (Music_Manager.Instance.StartMenu)
             Music_Manager.Instance.Stop_StartMenuMusic();
         ResetMenu();
-
-        if (_mainMenu)
-        {
-            _mainMenu = false;
-            for (int i = 0; i < _changeNames.Length; i++)
-            {
-                _changeNames[i].ChangeName();
-            }
-
-            _logo.SetActive(false);
-        }
-
-        if (Music_Manager.Instance.StartMenu)
-            Music_Manager.Instance.Stop_OptionsMusic();
     }
-
 
 
     private void ResetMenu()
