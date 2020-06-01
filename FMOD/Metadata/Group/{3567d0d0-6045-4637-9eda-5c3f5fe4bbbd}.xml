@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.00.00">
 	<object class="MixerGroup" id="{3567d0d0-6045-4637-9eda-5c3f5fe4bbbd}">
 		<property name="volume">
-			<value>-9.5</value>
+			<value>-12</value>
 		</property>
 		<property name="name">
 			<value>p_pickup</value>
@@ -19,9 +19,42 @@
 	</object>
 	<object class="MixerBusEffectChain" id="{706d3446-a28b-47d6-b20e-49dad4c382dd}">
 		<relationship name="effects">
+			<destination>{419738ec-d66b-4b2b-8599-64f9b834f6df}</destination>
 			<destination>{b60fc10c-501f-479c-b347-aeb1cd8633ed}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{6b2eaf43-e7f0-4c74-b674-f15a8918dfde}" />
+	<object class="MultibandEqEffect" id="{419738ec-d66b-4b2b-8599-64f9b834f6df}">
+		<property name="filterTypeA">
+			<value>9</value>
+		</property>
+		<property name="filterTypeB">
+			<value>4</value>
+		</property>
+		<property name="frequencyA">
+			<value>6614.95264</value>
+		</property>
+		<property name="frequencyB">
+			<value>81.8291092</value>
+		</property>
+		<property name="frequencyC">
+			<value>9026.09277</value>
+		</property>
+		<property name="qualityA">
+			<value>0.849999964</value>
+		</property>
+		<property name="qualityB">
+			<value>0.7961725</value>
+		</property>
+		<property name="qualityC">
+			<value>3.29999971</value>
+		</property>
+		<property name="gainA">
+			<value>-7.24137878</value>
+		</property>
+		<property name="gainC">
+			<value>-7.24137878</value>
+		</property>
+	</object>
 	<object class="MixerBusFader" id="{b60fc10c-501f-479c-b347-aeb1cd8633ed}" />
 </objects>

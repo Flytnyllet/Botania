@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.00.00">
+	<object class="MixerGroup" id="{37c58fd5-2135-4f28-821e-d8887d4e8590}">
+		<property name="name">
+			<value>amb_biome_snapshots</value>
+		</property>
+		<relationship name="effectChain">
+			<destination>{3339be99-f5ff-4a4a-8981-cf37a07743b3}</destination>
+		</relationship>
+		<relationship name="panner">
+			<destination>{ad84de82-642e-424a-9327-58d9be2dabb5}</destination>
+		</relationship>
+		<relationship name="output">
+			<destination>{58f1f3b5-da36-4450-ad68-b3bedd091f5f}</destination>
+		</relationship>
+	</object>
+	<object class="MixerBusEffectChain" id="{3339be99-f5ff-4a4a-8981-cf37a07743b3}">
+		<relationship name="effects">
+			<destination>{6b78961f-4db5-4485-892d-414c3165d896}</destination>
+		</relationship>
+	</object>
+	<object class="MixerBusPanner" id="{ad84de82-642e-424a-9327-58d9be2dabb5}" />
+	<object class="MixerBusFader" id="{6b78961f-4db5-4485-892d-414c3165d896}" />
+</objects>
