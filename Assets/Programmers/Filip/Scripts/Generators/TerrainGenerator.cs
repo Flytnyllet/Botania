@@ -8,7 +8,7 @@ public class TerrainGenerator : MonoBehaviour
     static readonly float VIEWER_MOVE_THRESHOLD_FOR_CHUNK_UPDATE = 20f;
     static readonly float SQR_VIEWER_MOVE_THRESHOLD_FOR_CHUNK_UPDATE = VIEWER_MOVE_THRESHOLD_FOR_CHUNK_UPDATE * VIEWER_MOVE_THRESHOLD_FOR_CHUNK_UPDATE;
 
-    public static int RenderDistanceIndex { get; private set; }
+    public static int RenderDistanceIndex { get; private set; } = 0;
 
     public static void SetRenderDistanceOnStart(int index)
     {
@@ -44,7 +44,7 @@ public class TerrainGenerator : MonoBehaviour
 
     private void Awake()
     {
-        RenderDistanceIndex = _detailLevelIndex;
+        _detailLevelIndex = RenderDistanceIndex;
 
         _spawnTimer = new Timer(1f);
     }
