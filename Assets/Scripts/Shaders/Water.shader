@@ -23,12 +23,21 @@
 	}
 		SubShader
 		{
-			Tags  { "RenderType" = "Transparent" "Queue" = "Transparent" }
+			Tags  { "RenderType" = "Transparent" "IgnoreProjector" = "True" "Queue" = "Transparent" }
 			LOD 200
 			cull off
+			Blend SrcAlpha OneMinusSrcAlpha
+			ZWrite Off
+
+			 Pass {
+				ZWrite On
+				ColorMask 0
+			 }
+
+
 			CGPROGRAM
 			// Physically based Standard lighting model, and enable shadows on all light types
-			#pragma surface surf Standard exclude_path:deferred exclude_path:prepass alpha:fade
+			#pragma surface surf Standard exclude_path:deferred exclude_path:prepass alpha:fade  
 
 			#pragma target 3.0
 
@@ -186,5 +195,5 @@
 			}
 			ENDCG
 		}
-			FallBack "Diffuse"
+		Fallback "Transparent/VertexLit"
 }
