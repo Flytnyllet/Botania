@@ -46,6 +46,9 @@ public class Music_Manager : MonoBehaviour
     public bool StartMenu { get { return _startMenu; } }
     private bool _startMenu = default;
 
+    public bool IsIdleMusic { get { return _isIdleMusic; } }
+    private bool _isIdleMusic = default;
+
     public bool PlayOnlyFirstTime { get { return _playOnlyFirstTime; } }
     private bool _playOnlyFirstTime = true;
 
@@ -70,7 +73,7 @@ public class Music_Manager : MonoBehaviour
     private void OnEnable()
     {
         Init_StartMenuMusic();
-        Init_OptionsMusic();
+        //Init_OptionsMusic();
     }
 
 
@@ -85,10 +88,10 @@ public class Music_Manager : MonoBehaviour
         gameStartEventDescription.getParameterDescriptionByName("game_start", out gameStartParameterDescription);
         gameStartParameterId = gameStartParameterDescription.id;
 
-        Start_MenuMusic();
+        Start_StartMenuMusic();
     }
 
-    public void Start_MenuMusic()
+    public void Start_StartMenuMusic()
     {
         _startMenu = true;
         Set_GameStart(0);
@@ -100,47 +103,81 @@ public class Music_Manager : MonoBehaviour
         startMenu_Instance.setParameterByID(gameStartParameterId, startValue);
     }
 
-    public void Stop_MenuMusic()
+    public void Stop_StartMenuMusic()
     {
         startMenu_Instance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        Cooldown_Override(0);
     }
 
     /// ==================== OPTIONS PAUS ===========================
 
-    private void Init_OptionsMusic()
-    {
-        pauseMenu_Instance = RuntimeManager.CreateInstance(mus_00_paus);
-    }
+    //private void Init_OptionsMusic()
+    //{
+    //    pauseMenu_Instance = RuntimeManager.CreateInstance(mus_00_paus);
+    //}
 
-    public void Play_OptionsMusic()
+    //public void Play_OptionsMusic()
+    //{
+    //    if (!_startMenu && !_isOptions)
+    //    {
+    //        _isOptions = true;
+
+    //        if (_isPlaying)
+    //        {
+    //            Pause_TriggerMusic();
+    //        }
+
+    //        pauseMenu_Instance.start();
+    //    }
+    //}
+
+    //public void Stop_OptionsMusic()
+    //{
+    //    pauseMenu_Instance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+
+    //    _isOptions = false;
+
+    //    if (_isPaused)
+    //    {
+    //        Unpause_TriggerMusic();
+    //    }
+    //}
+
+    //=========================== UPDATE ========================
+
+    private void Update()
     {
-        if (!_startMenu && !_isOptions)
+        if (_startMenu)
         {
-            _isOptions = true;
-
-            if (_isPlaying)
-            {
-                Pause_TriggerMusic();
-            }
-
-            pauseMenu_Instance.start();
+            startMenu_Instance.getPlaybackState(out _playbackState);
+            if (_playbackState != PLAYBACK_STATE.STOPPED) { return; }
+            else { _startMenu = false; }
         }
-    }
 
-    public void Stop_OptionsMusic()
-    {
-        pauseMenu_Instance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
-
-        _isOptions = false;
-
-        if (_isPaused)
+        if (_isPlaying)
         {
-            Unpause_TriggerMusic();
+            trigger_Instance.getPlaybackState(out _playbackState);
+            trigger_Instance.getPaused(out _isPaused);
+
+            if (_playbackState != PLAYBACK_STATE.STOPPED) { return; }
+            else if (_triggeredStop)
+            {
+                if (_isIdleMusic)
+                    _isIdleMusic = false;
+                _isPlaying = false;
+                StartCoroutine(Start_Cooldown(4));
+                _triggeredStop = false;
+            }
+            else
+            {
+                _isPlaying = false;
+                StartCoroutine(Start_Cooldown(Random.Range(60, 120)));
+            }
         }
     }
 
     /// ==================== TRIGGER MUSIC ===========================
-    
+
     public void Init_Music(int track)
     {
         if (!_isPlaying && !_isCooldown && !_startMenu)
@@ -163,12 +200,18 @@ public class Music_Manager : MonoBehaviour
                     if (_playOnlyFirstTime)
                         trigger_Event = mus_02_dimma_5;
                     break;
+                case 6:
+                    trigger_Event = mus_00_paus;
+                    break;
             }
             trigger_Instance = RuntimeManager.CreateInstance(trigger_Event);
             Play_TriggerMusic();
 
             if (trigger_Event == mus_02_dimma_5)
                 _playOnlyFirstTime = false;
+
+            if (trigger_Event == mus_00_paus)
+                _isIdleMusic = true;
         }
     }
 
@@ -179,50 +222,21 @@ public class Music_Manager : MonoBehaviour
         _isPlaying = true;
     }
 
-    private void Update()
-    {
-        if (_startMenu)
-        {
-            startMenu_Instance.getPlaybackState(out _playbackState);
-            if (_playbackState != PLAYBACK_STATE.STOPPED) { return; }
-            else { _startMenu = false; }
-        }
+    //private void Pause_TriggerMusic()
+    //{
+    //    if (_isPlaying)
+    //    {
+    //        trigger_Instance.setPaused(true);
+    //    }
+    //}
 
-        if (_isPlaying)
-        {
-            trigger_Instance.getPlaybackState(out _playbackState);
-            trigger_Instance.getPaused(out _isPaused);
-
-            if (_playbackState != PLAYBACK_STATE.STOPPED) { return; }
-            else if (_triggeredStop)
-            {
-                _isPlaying = false;
-                StartCoroutine(Start_Cooldown(4));
-                _triggeredStop = false;
-            }
-            else
-            {
-                _isPlaying = false;
-                StartCoroutine(Start_Cooldown(Random.Range(60, 120)));
-            }
-        }
-    }
-
-    private void Pause_TriggerMusic()
-    {
-        if (_isPlaying)
-        {
-            trigger_Instance.setPaused(true);
-        }
-    }
-
-    private void Unpause_TriggerMusic()
-    {
-        if (_isPaused)
-        {
-            trigger_Instance.setPaused(false);
-        }
-    }
+    //private void Unpause_TriggerMusic()
+    //{
+    //    if (_isPaused)
+    //    {
+    //        trigger_Instance.setPaused(false);
+    //    }
+    //}
 
     public void Stop_TriggerMusic()
     {

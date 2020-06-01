@@ -91,7 +91,7 @@
 	</object>
 	<object class="EventMixerMaster" id="{f81b2fe8-63e0-424c-9d1f-f9d94aeada82}">
 		<property name="volume">
-			<value>-13.5</value>
+			<value>-17</value>
 		</property>
 		<relationship name="modulators">
 			<destination>{26674c8c-de47-4ed2-9ec7-ddf5b2af68fe}</destination>
@@ -218,8 +218,11 @@
 	<object class="MixerBusPanner" id="{e96584b9-c6bc-41e2-acce-8ef4ec7b2668}" />
 	<object class="MixerBusFader" id="{8e588adf-f15b-476a-8cc7-6f30e7a0341d}" />
 	<object class="SpatialiserEffect" id="{5202c10e-c53d-4ebc-a159-51a1c82a63fe}">
+		<property name="minimumDistance">
+			<value>0.899999976</value>
+		</property>
 		<property name="maximumDistance">
-			<value>15</value>
+			<value>8</value>
 		</property>
 		<property name="extentMode">
 			<value>1</value>
@@ -268,7 +271,7 @@
 			<value>0.69458128078817727</value>
 		</property>
 		<property name="value">
-			<value>0</value>
+			<value>-14</value>
 		</property>
 		<property name="curveShape">
 			<value>-0.37527284</value>
@@ -279,7 +282,7 @@
 			<value>1</value>
 		</property>
 		<property name="value">
-			<value>-38</value>
+			<value>-80</value>
 		</property>
 	</object>
 </objects>

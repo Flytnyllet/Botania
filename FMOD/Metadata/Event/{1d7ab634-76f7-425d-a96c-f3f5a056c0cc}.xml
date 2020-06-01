@@ -189,11 +189,17 @@
 	</object>
 	<object class="MixerBusPanner" id="{4d7063a3-e17d-4c16-97ae-efa8fab45d5f}" />
 	<object class="SingleSound" id="{97e19d52-b1c3-4b20-8792-30bc7fce498b}">
+		<property name="triggerProbability">
+			<value>84.5</value>
+		</property>
+		<property name="start">
+			<value>0.063282592459177625</value>
+		</property>
 		<property name="length">
-			<value>68.799536417157228</value>
+			<value>68.00454650762488</value>
 		</property>
 		<property name="timelockedOffset">
-			<value>11.707317073170726</value>
+			<value>12.502306982703075</value>
 		</property>
 		<relationship name="fadeInCurve">
 			<destination>{b38de11a-ca5f-4ed8-a12f-4df80180e0ea}</destination>
@@ -315,7 +321,7 @@
 	</object>
 	<object class="NamedMarker" id="{f6308288-8fee-4f1a-a143-a9f3509de409}">
 		<property name="position">
-			<value>11.707317073170731</value>
+			<value>10.97560975609756</value>
 		</property>
 		<property name="name">
 			<value>Marker A</value>
@@ -329,7 +335,7 @@
 	</object>
 	<object class="TransitionMarker" id="{e05188c6-c8be-4268-a940-f4a20f988bc0}">
 		<property name="position">
-			<value>58.479420731707314</value>
+			<value>57.747713414634141</value>
 		</property>
 		<property name="triggerProbabilityEnabled">
 			<value>true</value>
@@ -355,7 +361,7 @@
 	</object>
 	<object class="TransitionMarker" id="{79567193-2340-4b57-afde-661424544767}">
 		<property name="position">
-			<value>53.414634146341463</value>
+			<value>52.68292682926829</value>
 		</property>
 		<property name="triggerProbabilityEnabled">
 			<value>true</value>
@@ -381,7 +387,7 @@
 	</object>
 	<object class="NamedMarker" id="{ec624fbd-e3c1-4a2e-8217-012084bc5113}">
 		<property name="position">
-			<value>58.536585365853675</value>
+			<value>57.804878048780502</value>
 		</property>
 		<property name="name">
 			<value>Marker B</value>
@@ -395,7 +401,7 @@
 	</object>
 	<object class="TransitionMarker" id="{e8c0b3b7-71ec-4cc2-ad38-b258f97559ba}">
 		<property name="position">
-			<value>33.23289403660538</value>
+			<value>32.501186719532207</value>
 		</property>
 		<relationship name="timeline">
 			<destination>{5ee66473-a108-406a-a725-0f635a302e70}</destination>
@@ -415,7 +421,7 @@
 	</object>
 	<object class="TransitionMarker" id="{9d05951d-a184-468e-9af0-937904fe9d46}">
 		<property name="position">
-			<value>22.660361141148357</value>
+			<value>21.928653824075187</value>
 		</property>
 		<relationship name="timeline">
 			<destination>{5ee66473-a108-406a-a725-0f635a302e70}</destination>
@@ -435,7 +441,7 @@
 	</object>
 	<object class="TransitionMarker" id="{6c56487c-1ae4-4ac3-b405-64e7ad269a32}">
 		<property name="position">
-			<value>49.024390243902438</value>
+			<value>48.292682926829265</value>
 		</property>
 		<relationship name="timeline">
 			<destination>{5ee66473-a108-406a-a725-0f635a302e70}</destination>
@@ -694,18 +700,21 @@
 	<object class="MixerBusFader" id="{47045452-b829-498e-b70c-aa04a7166d74}" />
 	<object class="AutomationPoint" id="{3520025e-8884-4df5-a492-97f754b17aa5}">
 		<property name="position">
-			<value>0</value>
+			<value>0.063282592459177625</value>
 		</property>
 		<property name="value">
 			<value>0</value>
 		</property>
 		<property name="curveShape">
-			<value>-0.2547189</value>
+			<value>0.309698045</value>
+		</property>
+		<property name="isSCurve">
+			<value>true</value>
 		</property>
 	</object>
 	<object class="AutomationPoint" id="{b18a8048-ab09-4a8c-ae31-80e3dbffa10a}">
 		<property name="position">
-			<value>7.0845070607553424</value>
+			<value>4.2414872689891112</value>
 		</property>
 		<property name="value">
 			<value>1</value>
@@ -713,7 +722,7 @@
 	</object>
 	<object class="AutomationPoint" id="{6ee5de15-1848-4596-90b9-2ab31e906f3c}">
 		<property name="position">
-			<value>59.684080366320913</value>
+			<value>58.95237304924774</value>
 		</property>
 		<property name="value">
 			<value>1</value>
@@ -727,7 +736,7 @@
 	</object>
 	<object class="AutomationPoint" id="{b4364fd7-d5f0-406b-9b31-041f8ee4f161}">
 		<property name="position">
-			<value>68.799536417157228</value>
+			<value>68.06782910008404</value>
 		</property>
 		<property name="value">
 			<value>0</value>

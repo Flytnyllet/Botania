@@ -149,7 +149,7 @@ public class Amb_Local_Manager : MonoBehaviour
                 RuntimeManager.StudioSystem.setParameterByID(biome_3_Description.id, _biome_3);
                 RuntimeManager.StudioSystem.setParameterByID(biome_4_Description.id, _biome_4);
 
-                if (_currentBiome == 4 && Random.Range(0, 1f) > 0.8f)
+                if (_currentBiome == 4 && (Random.Range(0, 1f) > 0.15f))
                     Music_Manager.Instance.Init_Music(4);
 
                 _lastBiome = _currentBiome;
