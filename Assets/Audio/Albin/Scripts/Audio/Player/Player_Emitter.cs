@@ -19,6 +19,9 @@ public class Player_Emitter : MonoBehaviour
     private EventInstance event_Book_Close;
     private EventInstance event_Book_Open;
     private EventInstance event_Book_Page;
+    private EventInstance event_Potion_Create;
+    private EventInstance event_Potion_Drink;
+    private EventInstance event_Potion_Teleportation;
 
     [SerializeField]
     private Player_Data player_Data;
@@ -51,6 +54,9 @@ public class Player_Emitter : MonoBehaviour
         event_Book_Close = RuntimeManager.CreateInstance(player_Data.p_book_close);
         event_Book_Open = RuntimeManager.CreateInstance(player_Data.p_book_open);
         event_Book_Page = RuntimeManager.CreateInstance(player_Data.p_book_page);
+        event_Potion_Create = RuntimeManager.CreateInstance(player_Data.p_potion_create);
+        event_Potion_Teleportation = RuntimeManager.CreateInstance(player_Data.p_potion_teleport);
+        event_Potion_Drink = RuntimeManager.CreateInstance(player_Data.p_potion_drink);
 
         EventDescription groundMaterialEventDescription;
         event_P_Mov_Footsteps.getDescription(out groundMaterialEventDescription);
@@ -64,6 +70,8 @@ public class Player_Emitter : MonoBehaviour
         underwaterEventDescription.getParameterDescriptionByName("underwater", out underwaterParameterDescription);
         underwaterParameterId = underwaterParameterDescription.id;
     }
+
+    //========== MOVEMENT =============
 
     public void Init_Footsteps(float ground_material)
     {
@@ -87,6 +95,8 @@ public class Player_Emitter : MonoBehaviour
         event_P_Mov_Land.start();
     }
 
+    //========== INVENTORY =============
+
     public void Init_Book_Open(EventParameter param)
     {
         event_Book_Open.start();
@@ -105,5 +115,22 @@ public class Player_Emitter : MonoBehaviour
     public void Init_Pickup(string event_Ref)
     {
         RuntimeManager.PlayOneShot(event_Ref, transform.position);
+    }
+
+    //======== POTIONS ========
+
+    public void Init_Potion_Create()
+    {
+        event_Potion_Create.start();
+    }
+
+    public void Init_Potion_Drink()
+    {
+        event_Potion_Drink.start();
+    }
+
+    public void Init_Potion_Teleportation()
+    {
+        event_Potion_Teleportation.start();
     }
 }

@@ -36,6 +36,9 @@ public class Player_Data : UnityEngine.ScriptableObject
     public string p_potion_create = null;
 
     [FMODUnity.EventRef]
+    public string p_potion_drink = null;
+
+    [FMODUnity.EventRef]
     public string p_potion_teleport = null;
 
     [Space(10)]
