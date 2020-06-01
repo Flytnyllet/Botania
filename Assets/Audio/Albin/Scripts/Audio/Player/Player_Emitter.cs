@@ -32,15 +32,18 @@ public class Player_Emitter : MonoBehaviour
         EventManager.Subscribe(EventNameLibrary.OPEN_BOOK, Init_Book_Open);
         EventManager.Subscribe(EventNameLibrary.CLOSE_BOOK, Init_Book_Close);
         EventManager.Subscribe(EventNameLibrary.FLIP_PAGE, Init_Book_Page);
-        //EventManager.Subscribe(EventNameLibrary.DRINK_POTION,);
-        EventManager.Subscribe(EventNameLibrary.CREATE_POTION, Init_Book_Page);
-        EventManager.Subscribe(EventNameLibrary.TELEPOT, Init_Book_Page);
+        EventManager.Subscribe(EventNameLibrary.DRINK_POTION,Init_Potion_Drink);
+        EventManager.Subscribe(EventNameLibrary.CREATE_POTION, Init_Potion_Create);
+        EventManager.Subscribe(EventNameLibrary.TELEPOT, Init_Potion_Teleportation);
     }
     private void OnDisable()
     {
         EventManager.UnSubscribe(EventNameLibrary.OPEN_BOOK, Init_Book_Open);
         EventManager.UnSubscribe(EventNameLibrary.CLOSE_BOOK, Init_Book_Close);
         EventManager.UnSubscribe(EventNameLibrary.FLIP_PAGE, Init_Book_Page);
+        EventManager.UnSubscribe(EventNameLibrary.DRINK_POTION, Init_Potion_Drink);
+        EventManager.UnSubscribe(EventNameLibrary.CREATE_POTION, Init_Potion_Create);
+        EventManager.UnSubscribe(EventNameLibrary.TELEPOT, Init_Potion_Teleportation);
     }
 
     private void Start()
@@ -119,17 +122,17 @@ public class Player_Emitter : MonoBehaviour
 
     //======== POTIONS ========
 
-    public void Init_Potion_Create()
+    public void Init_Potion_Create(EventParameter param = null)
     {
         event_Potion_Create.start();
     }
 
-    public void Init_Potion_Drink()
+    public void Init_Potion_Drink(EventParameter param = null)
     {
         event_Potion_Drink.start();
     }
 
-    public void Init_Potion_Teleportation()
+    public void Init_Potion_Teleportation(EventParameter param = null)
     {
         event_Potion_Teleportation.start();
     }

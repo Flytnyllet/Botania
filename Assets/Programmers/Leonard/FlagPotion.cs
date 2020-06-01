@@ -92,6 +92,9 @@ public class FlagPotion : Potion_Template
                         new EventParameter { floatParam = 2, floatParam2 = 1 });
                 }, duration);
                 break;
+            case ABILITY_FLAG.TELEPORT:
+                EventManager.TriggerEvent(EventNameLibrary.TELEPOT, new EventParameter());
+                break;
             default:
                 break;
         }
