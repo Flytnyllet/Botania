@@ -33,26 +33,17 @@ public class PickupFlower : InteractableSaving, IInteractable
     {
         if (_enabled)
         {
-
+            if (FlowerLibrary.GetFlowerDiscoverAmount(_flowerData.itemName) == 0)
+            {
+                BookManager.SetPickedFlower(_flowerData);
+                if (onPickUpEvent != null)
+                    onPickUpEvent.Invoke(_flowerData.itemName, _flowerData.itemIcon);
+            }
             //Pickup save system
             PickUp();
             //NotificationObject.name = _flowerData.itemName; // For notification system(not needed anymore, but leave it?)
             //NotificationObject.sprite = _flowerData.itemIcon; // For notification system(not needed anymore, but leave it?)
-            if (onPickUpEvent != null)
-                onPickUpEvent.Invoke(_flowerData.itemName, _flowerData.itemIcon);
-            //transform.LookAt(interactor, Vector3.up);
-            string debugFlowerNames = "Trying to pick up a " + _flowerData.itemName
-                + ". Accepted flower types are: [";
-            string[] flowerTypes = FlowerLibrary.GetAllFlowerNames();
-            foreach (string flower in flowerTypes)
-            {
-                debugFlowerNames += flower + ", ";
-            }
-            debugFlowerNames += "]";
 
-			//Debug.Log(debugFlowerNames);
-
-			BookManager.SetPickedFlower(_flowerData);
             FlowerLibrary.IncrementFlower(_flowerData.itemName, _amount);
             if (_gameobjectOverload.Length == 0)
             {
