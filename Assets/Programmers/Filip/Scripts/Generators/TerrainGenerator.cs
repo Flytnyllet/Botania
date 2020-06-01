@@ -8,6 +8,13 @@ public class TerrainGenerator : MonoBehaviour
     static readonly float VIEWER_MOVE_THRESHOLD_FOR_CHUNK_UPDATE = 20f;
     static readonly float SQR_VIEWER_MOVE_THRESHOLD_FOR_CHUNK_UPDATE = VIEWER_MOVE_THRESHOLD_FOR_CHUNK_UPDATE * VIEWER_MOVE_THRESHOLD_FOR_CHUNK_UPDATE;
 
+    public static int RenderDistanceIndex { get; private set; }
+
+    public static void SetRenderDistanceOnStart(int index)
+    {
+        RenderDistanceIndex = index;
+    }
+
     [Header("Settings")]
     [SerializeField] LODInfoHolder[] _detailLevelsHolder;
     [SerializeField, Range(0, 10)] int _detailLevelIndex = 3;
@@ -37,7 +44,9 @@ public class TerrainGenerator : MonoBehaviour
 
     private void Awake()
     {
-        _spawnTimer = new Timer(0.5f);
+        RenderDistanceIndex = _detailLevelIndex;
+
+        _spawnTimer = new Timer(1f);
     }
 
     private void OnValidate()
@@ -74,6 +83,7 @@ public class TerrainGenerator : MonoBehaviour
     public void ChangeRenderDistance(int index)
     {
         _detailLevelIndex = index;
+        RenderDistanceIndex = _detailLevelIndex;
 
         float maxViewDistance = _detailLevelsHolder[_detailLevelIndex]._levelOfDetail[_detailLevelsHolder[_detailLevelIndex]._levelOfDetail.Length - 1].visableDstThreshold;
         _chunksVisableInViewDist = Mathf.RoundToInt(maxViewDistance / _meshWorldSize);
