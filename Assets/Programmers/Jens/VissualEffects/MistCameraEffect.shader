@@ -1,4 +1,4 @@
-﻿Shader "Botania/ScreenEffects/NewImageEffectShader"
+﻿Shader "Botania/ScreenEffects/Mist"
 {
 	Properties
 	{
@@ -114,12 +114,14 @@
 				float depth = Linear01Depth(rawDepth) * 1850;
 				float4 wsDir = depth * i.interpolatedRay*0.99;
 				float3 position = _WorldSpaceCameraPos + wsDir;
+				position.x += _Time.y*2;
 				//position.y = 0;
 				//return float4(position % 1, 1);
 
 				fixed4 col = tex2D(_MainTex, i.uv);
-				float4 noise =smoothstep(0.3, 1, fBm3D(position*5));
-				return lerp(noise, col, 0.95);
+				float4 noise =smoothstep(0.3, 1, fBm3D(position*0.1));
+				float temp = smoothstep(15, 20, position.y);
+				return lerp(noise, col, temp);
 				return float4(position.x % 1, 0, position.z % 1, 1);
 				float2 uv = i.uv - 0.5;
 				float dist = step(distance(uv, 0), 0.55);
@@ -128,5 +130,5 @@
 			}
 			ENDCG
 		}
-					}
+	}
 }

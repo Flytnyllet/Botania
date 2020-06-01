@@ -4,7 +4,7 @@
 	{
 		_MainTex("Texture", 2D) = "white" {}
 		_Noise("Noise", 2D) = "white" {}
-		[PerRenderData] _Lerp("Effect Lerp Amount",range(0,1)) = 0
+		_Lerp("Effect Lerp Amount",range(0,1)) = 0
 		_Str("Effect Ammount",range(0,1)) = 0
 		_speed("Effect speed",float) = 1
 		_Color("Color", Color) = (1,1,1,1)

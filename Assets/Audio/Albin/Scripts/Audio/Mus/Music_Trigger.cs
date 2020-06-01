@@ -52,7 +52,9 @@ public class Music_Trigger : MonoBehaviour
 
     private void Update()
     {
-        if (_shouldTry && !Music_Manager.Instance.IsPlaying && !Music_Manager.Instance.IsCooldown)
+        if (_shouldTry &&
+            !Music_Manager.Instance.IsPlaying &&
+            !Music_Manager.Instance.IsCooldown)
         {
             float distance = Vector3.Distance(transform.position, _camera.position);
             if (distance > 15) { return; }
