@@ -12,7 +12,7 @@ public class WorldState : MonoBehaviour
     [SerializeField] float _targetFogDensity = 0.5f;
     float _currentFogDensity;
     float _baseFogDensity;
-    System.Threading.Tasks.Task _task;
+
 
     [SerializeField] int _lightningStrikesPerRain = 2;
 
@@ -55,27 +55,54 @@ public class WorldState : MonoBehaviour
                 break;
 
             case WORLD_EVENTS.Rain:
-                setRaining(true);
+                //This  IF / ELSE part is awfull, look away
                 float eventTime = Random.Range(_eventMinTime, _eventMaxTime);
-                float lightningTimingBaseOffset = (eventTime - 5) / _lightningStrikesPerRain;
-                float lightningTiming = 0;
-                for (int i = 0; i < _lightningStrikesPerRain; i++)
+                if (Random.Range(0, 1f) < 0.5f)
                 {
-                    lightningTiming += lightningTimingBaseOffset + Random.Range(-1, 1);
+                    setRaining(true, 2000);
+                    _rainStrenght = 0.5f;
                     EventParameter param = new EventParameter() { floatParam = 0.75f, floatParam2 = 4f };
                     ActionDelayer.RunAfterDelay(() =>
                     {
                         ActionDelayer.RunAfterDelay(() =>
                         {
-                            _amb_Thunder.Play();                // ??? mer delay ??
-                            Debug.LogError("EVERYTHING IS WORKING AS INTENDED!");
+                            if (IsRaining)
+                            {
+                                _amb_Thunder.Play();           
+                            }
                         }, Random.Range(0.15f, 1f));
                         EventManager.TriggerEvent(EventNameLibrary.LIGHTNING_STRIKE, param);
 
-                    }, lightningTiming);
+                    }, eventTime * 0.25f);
+
+                }
+                else
+                {
+                    setRaining(true);
+                    _rainStrenght = 1;
+                    float lightningTimingBaseOffset = (eventTime * 0.5f - 5) / _lightningStrikesPerRain;
+                    float lightningTiming = 0;
+                    for (int i = 0; i < _lightningStrikesPerRain - 1; i++)
+                    {
+                        lightningTiming += lightningTimingBaseOffset + Random.Range(-1, 1);
+                        EventParameter param = new EventParameter() { floatParam = 0.75f, floatParam2 = 4f };
+                        ActionDelayer.RunAfterDelay(() =>
+                        {
+                            ActionDelayer.RunAfterDelay(() =>
+                            {
+                                if (IsRaining)
+                                {
+                                    _amb_Thunder.Play();
+                                }
+                            }, Random.Range(0.15f, 1f));
+                            EventManager.TriggerEvent(EventNameLibrary.LIGHTNING_STRIKE, param);
+
+                        }, lightningTiming);
+                    }
                 }
                 ActionDelayer.RunAfterDelay(() =>
                 {
+                    _rainStrenght = 0f;
                     setRaining(false);
                     StartEvent(WORLD_EVENTS.Normal);
                 }, eventTime * 0.5f);
@@ -148,22 +175,29 @@ public class WorldState : MonoBehaviour
     //Rain
     //
     bool _raining = false;
+    float _rainStrenght = 0.0f;
     float _cloudthicknessLowStep = 0.6f;
     float _cloudthicknessLowStepSTARTVALUE;
     public bool IsRaining { get => _raining; }
-    public void setRaining(bool shouldRain)
+    public float RainStrenght { get => _rainStrenght; }
+    public void setRaining(bool shouldRain, int rainAmount = 10000)
     {
         if (shouldRain)
         {
             Shader.SetGlobalFloat("gRainWave", 0.9f);
-            StartCoroutine(ChangeCloudThickness(2, -0.8f));
+            StartCoroutine(ChangeCloudThickness(25, -0.8f));
             _raining = true;
-            EventManager.TriggerEvent(EventNameLibrary.START_RAIN, new EventParameter());
+            ActionDelayer.RunAfterDelay(() =>
+            {
+                if (_raining)
+                    EventManager.TriggerEvent(EventNameLibrary.START_RAIN, new EventParameter() { intParam = rainAmount });
+            }, 0);
+
         }
         else
         {
             Shader.SetGlobalFloat("gRainWave", 1f);
-            StartCoroutine(ChangeCloudThickness(2, _cloudthicknessLowStepSTARTVALUE));
+            StartCoroutine(ChangeCloudThickness(10, _cloudthicknessLowStepSTARTVALUE));
             _raining = false;
             EventManager.TriggerEvent(EventNameLibrary.STOP_RAIN, new EventParameter());
         }
