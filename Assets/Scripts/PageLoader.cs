@@ -19,7 +19,8 @@ public class PageLoader : MonoBehaviour
     [Tooltip("Används för att bestämma när olika element i sidan skall visas. \n"
         + "Dra in text/image och sätt in hur många blommor som ska plockas upp innan elementer låses upp")]
     [SerializeField] List<PageElement> _pageElements = new List<PageElement>();
-    [SerializeField] protected string _flowerName = "Grass";
+	[SerializeField] protected string _flowerName = "Grass";
+	[SerializeField] ItemDataContainer _flowerData = null;
 
 
     protected void OnEnable()
@@ -43,6 +44,11 @@ public class PageLoader : MonoBehaviour
             }
         }
     }
+
+	public ItemDataContainer GetFlower()
+	{
+		return _flowerData;
+	}
 
     public void NextPage()
     {
