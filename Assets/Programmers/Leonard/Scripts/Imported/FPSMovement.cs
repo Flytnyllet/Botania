@@ -184,7 +184,7 @@ public class FPSMovement : MonoBehaviour
             Debug.DrawRay(_playerCam.position + 0.45f * Vector3.up, Vector3.down * _waterRayDist, Color.red, 2f);
 
             _isUnderwater = (!isStoned && !_inWater && (_lastWaterChunk == null ? false : _lastWaterChunk.transform.position.y > transform.position.y));
-            if (_inAir && grounded)
+            if (_inAir && charCon.isGrounded)
             {
                 _emitPlayerSound.Init_Land();
             }
@@ -390,11 +390,11 @@ public class FPSMovement : MonoBehaviour
                 break;
             }
             else
-			{
-				charCon.Move(Vector3.forward * 0.01f);
-				yield return null;
+            {
+                charCon.Move(Vector3.forward * 0.01f);
+                yield return null;
             }
-			attempts++;
+            attempts++;
         }
     }
 
@@ -440,8 +440,8 @@ public class FPSMovement : MonoBehaviour
 
         yield return null;
 
-		int maxAttempts = 5;
-		int attempts = 0;
+        int maxAttempts = 5;
+        int attempts = 0;
         while (attempts < maxAttempts)
         {
             if (PositionCorrection(_teleportPlacementHeight))
@@ -449,21 +449,21 @@ public class FPSMovement : MonoBehaviour
                 break;
             }
             else
-			{
-				attempts++;
-				charCon.Move(Vector3.forward * 0.01f);
-				yield return null;
+            {
+                attempts++;
+                charCon.Move(Vector3.forward * 0.01f);
+                yield return null;
             }
         }
 
         yield return null;
 
-		attempts = 0;
+        attempts = 0;
         while (Physics.OverlapBox(transform.position, Vector3.one * 0.5f).Length > 1 && attempts < maxAttempts)
         {
             Debug.Log("Correcting position because collision");
             transform.position += Vector3.up * _teleportPlacementHeight;
-			attempts++;
+            attempts++;
             yield return null;
         }
 

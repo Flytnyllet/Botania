@@ -37,7 +37,7 @@ public class PickupFlower : InteractableSaving, IInteractable
             {
                 BookManager.SetPickedFlower(_flowerData);
                 if (onPickUpEvent != null)
-                    onPickUpEvent.Invoke(_flowerData.itemName, _flowerData.itemIcon);
+                    onPickUpEvent.Invoke(" " + _flowerData.itemName, _flowerData.itemIcon);
             }
             //Pickup save system
             PickUp();

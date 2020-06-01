@@ -123,6 +123,7 @@ public class SaveSystem : MonoBehaviour
         Player.Wipe();
         PrefabSpawnerSaveData.Wipe();
         MapGenerator.Wipe();
+        FlowerLibrary.Wipe();
     }
 
     public static void SaveStatic()
