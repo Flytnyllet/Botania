@@ -131,7 +131,7 @@ public class Amb_Rain : MonoBehaviour
     {
         if (WorldState.Instance.IsRaining && !_raining)
         {
-            StartCoroutine(Start_Rain(0.3f));
+            StartCoroutine(Start_Rain(WorldState.Instance.RainStrenght));
             _raining = true;
         }
 
