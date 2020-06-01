@@ -60,7 +60,7 @@ public class WorldState : MonoBehaviour
                 if (Random.Range(0, 1f) < 0.5f)
                 {
                     setRaining(true, 2000);
-                    _rainStrenght = 0.5f;
+                    _rainStrenght = 0.3f;
                     EventParameter param = new EventParameter() { floatParam = 0.75f, floatParam2 = 4f };
                     ActionDelayer.RunAfterDelay(() =>
                     {
