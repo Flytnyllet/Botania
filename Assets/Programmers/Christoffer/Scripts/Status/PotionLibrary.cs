@@ -8,7 +8,7 @@ public class PotionLibrary : MonoBehaviour
     {
         //simpler code (preference)
         p._speed.AddModifier(new StatModifier(20, StatType.Flat, this), 3.0f);
-        p._speed.AddModifier(new StatModifier(0.3f, StatType.PercentMult, this));
+        //p._speed.AddModifier(new StatModifier(0.3f, StatType.PercentMult, this));
     }
 
     public void SpeedPotionEnd(FPSMovement p)
