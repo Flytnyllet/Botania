@@ -17,6 +17,10 @@ public class Amb_Local_Manager : MonoBehaviour
     public float Biome_4 { get { return _biome_4; } }
     private float _biome_4 = default;
 
+    [EventRef]
+    public string snapshots_Event;
+    private EventInstance snapshots_Instance;
+
     [ParamRef]
     public string biome_1_parameter;
     private PARAMETER_DESCRIPTION biome_1_Description;
@@ -62,6 +66,13 @@ public class Amb_Local_Manager : MonoBehaviour
         RuntimeManager.StudioSystem.getParameterDescriptionByName(biome_3_parameter, out biome_3_Description);
         RuntimeManager.StudioSystem.getParameterDescriptionByName(biome_4_parameter, out biome_4_Description);
 
+        Init_Biome_Snapshots();
+    }
+
+    private void Init_Biome_Snapshots()
+    {
+        snapshots_Instance = RuntimeManager.CreateInstance(snapshots_Event);
+        snapshots_Instance.start();
     }
 
     private void Update()
@@ -149,7 +160,7 @@ public class Amb_Local_Manager : MonoBehaviour
                 RuntimeManager.StudioSystem.setParameterByID(biome_3_Description.id, _biome_3);
                 RuntimeManager.StudioSystem.setParameterByID(biome_4_Description.id, _biome_4);
 
-                if (_currentBiome == 4 && Random.Range(0, 1f) > 0.8f)
+                if (_currentBiome == 4 && (Random.Range(0, 1f) > 0.15f))
                     Music_Manager.Instance.Init_Music(4);
 
                 _lastBiome = _currentBiome;

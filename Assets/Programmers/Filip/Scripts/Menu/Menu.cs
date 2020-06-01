@@ -93,6 +93,8 @@ public class Menu : MonoBehaviour
     {
         CharacterState.SetControlState(_previousState);
         _menu.SetActive(false);
+        if (Music_Manager.Instance.StartMenu)
+            Music_Manager.Instance.Stop_StartMenuMusic();
         ResetMenu();
 
         if (_mainMenu)
@@ -130,6 +132,9 @@ public class Menu : MonoBehaviour
 
     public void Restart()
     {
+        Music_Manager.Instance.Stop_TriggerMusic();
+        if (!Music_Manager.Instance.StartMenu)
+            Music_Manager.Instance.Start_StartMenuMusic();
         Destroy(_menu);
         OnStartFadeIn.FadeOut();
         StartCoroutine(RestartWithFade());

@@ -18,7 +18,7 @@ public class Music_Trigger : MonoBehaviour
                 _shouldTry = true;
                 break;
             case "Flower_Magic_Group":
-                if (Random.Range(0, 1f) > 0.05f)
+                if (Random.Range(0, 1f) > 0.85f)
                     _shouldTry = true;
                 else
                     _shouldTry = false;
@@ -57,7 +57,7 @@ public class Music_Trigger : MonoBehaviour
             !Music_Manager.Instance.IsCooldown)
         {
             float distance = Vector3.Distance(transform.position, _camera.position);
-            if (distance > 15) { return; }
+            if (transform.parent.name != "Object_Pole(Clone)" && distance > 15 || transform.parent.name == "Object_Pole(Clone)" && distance > 7) { return; }
             else
             {
 
@@ -88,7 +88,6 @@ public class Music_Trigger : MonoBehaviour
                             break;
                     }
                     Music_Manager.Instance.Init_Music(_track);
-                    Debug.Log("Initialised music for " + transform.parent.name);
                     _shouldTry = false;
                 }
             }
