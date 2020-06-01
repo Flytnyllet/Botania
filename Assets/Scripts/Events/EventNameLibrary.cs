@@ -19,5 +19,7 @@ public static class EventNameLibrary
     public static readonly string STOP_RAIN = "StopRain";        //Finns i EventHoldern på "Rain" && "Cloud" Objektet i PlayerPrefab
     public static readonly string LIGHTNING_STRIKE = "LightningStrike";   
     public static readonly string MIST = "MIST";
+    public static readonly string CREATE_POTION = "CREATE_POT";
+    public static readonly string TELEPOT = "TELEPORT";
 
 }

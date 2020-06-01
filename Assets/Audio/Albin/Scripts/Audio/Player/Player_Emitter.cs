@@ -29,6 +29,9 @@ public class Player_Emitter : MonoBehaviour
         EventManager.Subscribe(EventNameLibrary.OPEN_BOOK, Init_Book_Open);
         EventManager.Subscribe(EventNameLibrary.CLOSE_BOOK, Init_Book_Close);
         EventManager.Subscribe(EventNameLibrary.FLIP_PAGE, Init_Book_Page);
+        //EventManager.Subscribe(EventNameLibrary.DRINK_POTION,);
+        EventManager.Subscribe(EventNameLibrary.CREATE_POTION, Init_Book_Page);
+        EventManager.Subscribe(EventNameLibrary.TELEPOT, Init_Book_Page);
     }
     private void OnDisable()
     {

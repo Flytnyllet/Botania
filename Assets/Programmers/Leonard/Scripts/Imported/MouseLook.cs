@@ -57,35 +57,35 @@ public class MouseLook : MonoBehaviour
                     rotationX = transform.localEulerAngles.y + Input.GetAxis("Mouse X") * sensitivityX;
                 }*/
 
-				if(smoothing)
-				{
-					Debug.Log("SMOOOOOOOOTH");
+				//if(smoothing)
+				//{
+				//	Debug.Log("SMOOOOOOOOTH");
 
-					rotationX = 0;
+				//	rotationX = 0;
 
-					rotationX = transform.localEulerAngles.y + Input.GetAxis("Mouse X") * sensitivityX;
+				//	rotationX = transform.localEulerAngles.y + Input.GetAxis("Mouse X") * sensitivityX;
 
-					rotationY += Input.GetAxis("Mouse Y") * sensitivityY;
-					rotationY = Mathf.Clamp(rotationY, minimumY, maximumY);
+				//	rotationY += Input.GetAxis("Mouse Y") * sensitivityY;
+				//	rotationY = Mathf.Clamp(rotationY, minimumY, maximumY);
 
-					Vector3 targetPosition = new Vector3(-rotationY, rotationX, transform.localEulerAngles.z); 
+				//	Vector3 targetPosition = new Vector3(-rotationY, rotationX, transform.localEulerAngles.z); 
 
-					transform.localEulerAngles = Vector3.SmoothDamp(transform.localEulerAngles, targetPosition, ref rotationVelocity, smoothValue);
+				//	transform.localEulerAngles = Vector3.SmoothDamp(transform.localEulerAngles, targetPosition, ref rotationVelocity, smoothValue);
 
-					//rotationX += Input.GetAxis("Mouse X") * sensitivityX;
-					//rotationY += Input.GetAxis("Mouse Y") * sensitivityY;
-					//rotationY = Mathf.Clamp(rotationY, minimumY, maximumY);
+				//	//rotationX += Input.GetAxis("Mouse X") * sensitivityX;
+				//	//rotationY += Input.GetAxis("Mouse Y") * sensitivityY;
+				//	//rotationY = Mathf.Clamp(rotationY, minimumY, maximumY);
 
-					//rotationVelocity = new Vector2(-rotationY, rotationX);
+				//	//rotationVelocity = new Vector2(-rotationY, rotationX);
 
-					//transform.localEulerAngles += rotationVelocity;
-					//rotationVelocity = Vector2.zero;
-					//rotationVelocity *= smoothValue;
+				//	//transform.localEulerAngles += rotationVelocity;
+				//	//rotationVelocity = Vector2.zero;
+				//	//rotationVelocity *= smoothValue;
 
-					//transform.localEulerAngles = Vector3.Lerp(new Vector3(-rotationY, rotationX, transform.localEulerAngles.z), transform.localEulerAngles, smoothValue);
-				}
-				else
-				{
+				//	//transform.localEulerAngles = Vector3.Lerp(new Vector3(-rotationY, rotationX, transform.localEulerAngles.z), transform.localEulerAngles, smoothValue);
+				//}
+				//else
+				//{
 
 					rotationX = 0;
 
@@ -95,7 +95,7 @@ public class MouseLook : MonoBehaviour
 					rotationY = Mathf.Clamp(rotationY, minimumY, maximumY);
 
 					transform.localEulerAngles = new Vector3(-rotationY, rotationX, transform.localEulerAngles.z);
-				}
+				//}
             }
 
             // This is not used currently

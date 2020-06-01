@@ -273,7 +273,7 @@ public class AlchemyOrganizer_2 : MonoBehaviour
     }
     void UpdateRecipeToState(Recipe recipe)
     {
-        Debug.LogFormat("Current Recipe State: {0}", recipe.state);
+        //Debug.LogFormat("Current Recipe State: {0}", recipe.state);
 
         if (recipe.state == RecipeState.Unknown)
         {
@@ -302,7 +302,6 @@ public class AlchemyOrganizer_2 : MonoBehaviour
         //}
         else
         {
-            Debug.Log("No");
             recipe.button.SetActive(true);
             recipe.craftButton.GetComponent<Button>().enabled = true;
             recipe.craftButton.GetComponent<Image>().color = new Color(0.4f, 0.75f, 0.25f, 0.5f);

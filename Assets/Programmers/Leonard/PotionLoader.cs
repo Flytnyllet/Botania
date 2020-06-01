@@ -169,6 +169,7 @@ public class PotionLoader : MonoBehaviour
         {
             if (_potionEffect.PotionEffectStart(FPSMovement.playerMovement))
             {
+                
                 EventManager.TriggerEvent(EventNameLibrary.DRINK_POTION, new EventParameter()
                 {
                     materialParam = _potionCameraEffect,

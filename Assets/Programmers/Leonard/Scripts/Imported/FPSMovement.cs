@@ -71,6 +71,8 @@ public class FPSMovement : MonoBehaviour
     [SerializeField] float _swimBobAmount = 0.05f;
     [SerializeField] float _swimBobSpeed = 1.0f;
     [SerializeField] float _swimDeceleration = 1.0f;
+    [SerializeField] float _swinSoundTempo = 1.0f;
+    bool _swimSoundMayTrigger = true;
     [SerializeField] LayerMask _waterLayer;
 
     Vector2 _swimVelocity = new Vector2(0f, 0f);
@@ -142,6 +144,7 @@ public class FPSMovement : MonoBehaviour
 
     void FixedUpdate()
     {
+
         bool isStoned = CharacterState.IsAbilityFlagActive(ABILITY_FLAG.STONE);
         bool isLevitating = CharacterState.IsAbilityFlagActive(ABILITY_FLAG.LEVITATE);
         float gravityFactor = 1.0f;
@@ -181,6 +184,10 @@ public class FPSMovement : MonoBehaviour
             Debug.DrawRay(_playerCam.position + 0.45f * Vector3.up, Vector3.down * _waterRayDist, Color.red, 2f);
 
             _isUnderwater = (!isStoned && !_inWater && (_lastWaterChunk == null ? false : _lastWaterChunk.transform.position.y > transform.position.y));
+            if (_inAir && grounded)
+            {
+                _emitPlayerSound.Init_Land();
+            }
 
             // == Functions ==
             if (charCon.isGrounded)
@@ -226,6 +233,7 @@ public class FPSMovement : MonoBehaviour
                 if (Input.GetButtonDown("Jump") && !_inAir && !Input.GetButton(DUCK_BUTTON))
                 {
                     Debug.Log("JUMP!");
+                    _emitPlayerSound.Init_Jump();
                     _velocity.y = 0;
                     Launch(jump);
                     _inAir = true;
@@ -589,7 +597,16 @@ public class FPSMovement : MonoBehaviour
         charCon.Move(readySwimVelocity * Time.deltaTime);
 
         SwimBob(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
-
+        float SwimTempo = Mathf.Sin(Time.time * _swinSoundTempo);
+        if (SwimTempo < 0 && _swimSoundMayTrigger && readySwimVelocity.x > 0.1)
+        {
+            _emitPlayerSound.Init_Swim(0f);
+            _swimSoundMayTrigger = false;
+        }
+        else if (SwimTempo > 0)
+        {
+            _swimSoundMayTrigger = true;
+        }
         if (inputs.magnitude < 0.1f)
         {
             _swimVelocity -= (_swimVelocity / _swimDeceleration) * Time.deltaTime;
