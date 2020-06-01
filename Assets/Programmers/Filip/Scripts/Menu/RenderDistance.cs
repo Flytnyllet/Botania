@@ -15,13 +15,17 @@ public class RenderDistance : MonoBehaviour
     private void Awake()
     {
         _dropdown = GetComponent<TMP_Dropdown>();
+    }
+
+    private void Start()
+    {
         AddOptions();
     }
 
     private void AddOptions()
     {
         _dropdown.AddOptions(_options);
-        _dropdown.SetValueWithoutNotify(_options.Count - QualitySettings.masterTextureLimit);
+        _dropdown.SetValueWithoutNotify(TerrainGenerator.RenderDistanceIndex);
     }
 
     public void ChangeRenderDistance()

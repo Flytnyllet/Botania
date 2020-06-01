@@ -15,6 +15,10 @@ public class TextureDetail : MonoBehaviour
     private void Awake()
     {
         _dropdown = GetComponent<TMP_Dropdown>();
+    }
+
+    private void Start()
+    {
         AddOptions();
     }
 

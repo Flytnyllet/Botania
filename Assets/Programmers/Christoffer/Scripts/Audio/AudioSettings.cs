@@ -6,35 +6,51 @@ using UnityEngine.UI;
 
 public class AudioSettings : MonoBehaviour
 {
-    [SerializeField] string _masterName;
-    [SerializeField] string _musicName;
-    [SerializeField] string _SFXName;
+    public static readonly string BUS_START_PREFIX = "bus:/";
+    public static readonly string BUS_MASTER = "Master";
+    public static readonly string BUS_MUSIC = "Master/Music";
+    public static readonly string BUS_SFX = "Master/SFX";
 
     FMOD.Studio.Bus _master;
     FMOD.Studio.Bus _music;
     FMOD.Studio.Bus _SFX;
 
-    static readonly string BUS_START_PREFIX = "bus:/";
+    [SerializeField] Slider _masterSlider;
+    [SerializeField] Slider _musicSlider;
+    [SerializeField] Slider _SFXSlider;
+
 
     void Awake()
     {
-        _master = RuntimeManager.GetBus(BUS_START_PREFIX + _masterName);
-        _music = RuntimeManager.GetBus(BUS_START_PREFIX + _musicName);
-        _SFX = RuntimeManager.GetBus(BUS_START_PREFIX + _SFXName);
+        _master = RuntimeManager.GetBus(BUS_START_PREFIX + BUS_MASTER);
+        _music = RuntimeManager.GetBus(BUS_START_PREFIX + BUS_MUSIC);
+        _SFX = RuntimeManager.GetBus(BUS_START_PREFIX + BUS_SFX);
     }
 
-    public void MasterVolumeLevel(Slider thisSlider)
+    private void Start()
     {
-        _master.setVolume(thisSlider.value);
+        float volume;
+
+        _master.getVolume(out volume);
+        _masterSlider.value = volume;
+        _music.getVolume(out volume);
+        _musicSlider.value = volume;
+        _SFX.getVolume(out volume);
+        _SFXSlider.value = volume;
     }
 
-    public void MusicVolumeLevel(Slider thisSlider)
+    public void MasterVolumeLevel()
     {
-        _music.setVolume(thisSlider.value);
+        _master.setVolume(_masterSlider.value);
     }
 
-    public void SFXVolumeLevel(Slider thisSlider)
+    public void MusicVolumeLevel()
     {
-        _SFX.setVolume(thisSlider.value);
+        _music.setVolume(_musicSlider.value);
+    }
+
+    public void SFXVolumeLevel()
+    {
+        _SFX.setVolume(_SFXSlider.value);
     }
 }

@@ -14,13 +14,19 @@ public class ChangeResolution : MonoBehaviour
         new Vector2Int(1, 1),
         new Vector2Int(3, 2),
         new Vector2Int(4, 3),
+        new Vector2Int(5, 4),
         new Vector2Int(16, 10),
-        new Vector2Int(16, 9)
+        new Vector2Int(16, 9),
+        new Vector2Int(21, 9)
     };
 
     private void Awake()
     {
         _dropdown = GetComponent<TMP_Dropdown>();
+    }
+
+    private void Start()
+    {
         AddResolutionAsOptions();
     }
 
@@ -54,7 +60,7 @@ public class ChangeResolution : MonoBehaviour
 
     string GetAspectRatio(Resolution resolution)
     {
-        float epsilon = 0.1f;
+        float epsilon = 0.05f;
 
         float ratio = (float)resolution.width / resolution.height;
 

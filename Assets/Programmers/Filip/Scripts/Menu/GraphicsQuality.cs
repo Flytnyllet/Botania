@@ -11,6 +11,10 @@ public class GraphicsQuality : MonoBehaviour
     private void Awake()
     {
         _dropdown = GetComponent<TMP_Dropdown>();
+    }
+
+    private void Start()
+    {
         AddOptions();
     }
 
