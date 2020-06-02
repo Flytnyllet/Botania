@@ -189,7 +189,7 @@ public class FPSMovement : MonoBehaviour
 
 			DivingSounds();
 
-			if (_inAir && grounded)
+			if (_inAir && charCon.isGrounded))
             {
                 _emitPlayerSound.Init_Land();
             }
