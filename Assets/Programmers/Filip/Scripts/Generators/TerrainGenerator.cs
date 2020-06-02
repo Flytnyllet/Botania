@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class TerrainGenerator : MonoBehaviour
 {
+    static TerrainGenerator _thisSingleTon;
+
     //Faster comparing square distance
     static readonly float VIEWER_MOVE_THRESHOLD_FOR_CHUNK_UPDATE = 20f;
     static readonly float SQR_VIEWER_MOVE_THRESHOLD_FOR_CHUNK_UPDATE = VIEWER_MOVE_THRESHOLD_FOR_CHUNK_UPDATE * VIEWER_MOVE_THRESHOLD_FOR_CHUNK_UPDATE;
@@ -13,6 +15,11 @@ public class TerrainGenerator : MonoBehaviour
     public static void SetRenderDistanceOnStart(int index)
     {
         RenderDistanceIndex = index;
+    }
+
+    public static float GetRenderDistance(int lod)
+    {
+        return _thisSingleTon._detailLevelsHolder[_thisSingleTon._detailLevelIndex]._levelOfDetail[lod].visableDstThreshold;
     }
 
     [Header("Settings")]
@@ -44,9 +51,15 @@ public class TerrainGenerator : MonoBehaviour
 
     private void Awake()
     {
-        _detailLevelIndex = RenderDistanceIndex;
+        if (_thisSingleTon == null)
+        {
+            _thisSingleTon = this;
+            RenderDistanceIndex = _detailLevelIndex;
 
-        _spawnTimer = new Timer(1f);
+            _spawnTimer = new Timer(1f);
+        }
+        else
+            Destroy(gameObject);   
     }
 
     private void OnValidate()
@@ -62,14 +75,6 @@ public class TerrainGenerator : MonoBehaviour
         _viewerPosition = new Vector2(_viewer.position.x, _viewer.position.z);
         _viewerPositionOld = _viewerPosition;
 
-        //_textureSettings. ApplyToMaterial(_mapMaterial);
-        //_textureSettings.UpdateMeshHeights(_mapMaterial, _heightMapSettings.MinHeight, _heightMapSettings.MaxHeight);
-
-        float maxViewDistance = _detailLevelsHolder[_detailLevelIndex]._levelOfDetail[_detailLevelsHolder[_detailLevelIndex]._levelOfDetail.Length - 1].visableDstThreshold;
-
-        _meshWorldSize = _meshSettings.MeshWorldSize;
-        _chunksVisableInViewDist = Mathf.RoundToInt(maxViewDistance / _meshWorldSize);
-
         StartCoroutine(OnStart());
     }
 
@@ -77,6 +82,12 @@ public class TerrainGenerator : MonoBehaviour
     {
         while (!SaveSystem.Ready)
             yield return null;
+
+        float maxViewDistance = _detailLevelsHolder[_detailLevelIndex]._levelOfDetail[_detailLevelsHolder[_detailLevelIndex]._levelOfDetail.Length - 1].visableDstThreshold;
+
+        _meshWorldSize = _meshSettings.MeshWorldSize;
+        _chunksVisableInViewDist = Mathf.RoundToInt(maxViewDistance / _meshWorldSize);
+
         UpdateVisableChunks();
     }
 

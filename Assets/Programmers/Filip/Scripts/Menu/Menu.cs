@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using FMODUnity;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class Menu : MonoBehaviour
 {
@@ -74,8 +76,6 @@ public class Menu : MonoBehaviour
             TerrainGenerator.SetRenderDistanceOnStart(saveData._renderDistance);
 
             Player.GetPlayerCamera().fieldOfView = saveData._FOV;
-
-            Screen.SetResolution(saveData._resolutionWidth, saveData._resolutionHeight, saveData._fullScreen);
         }
     }
 
