@@ -33,8 +33,6 @@ public class ChangeResolution : MonoBehaviour
 
     private void AddResolutionAsOptions()
     {
-        Resolution currentResolution = Screen.currentResolution;
-
         Resolution[] resolutions = (Resolution[])Screen.resolutions.Select(resolution => new Resolution { width = resolution.width, height = resolution.height }).Distinct().ToArray();
         List<string> options = new List<string>();
 
@@ -44,7 +42,7 @@ public class ChangeResolution : MonoBehaviour
         {
             options.Add(resolutions[i].width + " x " + resolutions[i].height + " " + GetAspectRatio(resolutions[i]));
 
-            if (resolutions[i].width == currentResolution.width && resolutions[i].height == currentResolution.height)
+            if (resolutions[i].width == Screen.width && resolutions[i].height == Screen.height)
                 currentResolutionIndex = i;
         }
 

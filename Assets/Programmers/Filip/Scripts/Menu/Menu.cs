@@ -76,8 +76,6 @@ public class Menu : MonoBehaviour
             TerrainGenerator.SetRenderDistanceOnStart(saveData._renderDistance);
 
             Player.GetPlayerCamera().fieldOfView = saveData._FOV;
-
-            Screen.SetResolution(saveData._resolutionWidth, saveData._resolutionHeight, saveData._fullScreen);
         }
     }
 
