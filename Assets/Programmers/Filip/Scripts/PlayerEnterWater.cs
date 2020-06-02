@@ -6,6 +6,8 @@ public class PlayerEnterWater : MonoBehaviour
 {
     [Header("Settings")]
     Transform _camera;
+    Color _colour;
+    [SerializeField] Color _skyboxColour;
     [SerializeField] float _seaLevel;
 
     [Header("Drop")]
@@ -17,6 +19,7 @@ public class PlayerEnterWater : MonoBehaviour
     private void Start()
     {
         _camera = Camera.main.transform;
+        _colour = RenderSettings.fogColor;
     }
     private void Update()
     {
@@ -29,6 +32,12 @@ public class PlayerEnterWater : MonoBehaviour
     void ToggleWater(bool status)
     {
         _isInWater = status;
+
+        if (status)
+        {
+            RenderSettings.fogColor = _skyboxColour;// new Color(0.384f, 0.322f, 0.549f); //Magic background colour numbers
+            RenderSettings.fogEndDistance = 10;
+        }
 
         for (int i = 0; i < _toggleOnGameObjects.Length; i++)
         {

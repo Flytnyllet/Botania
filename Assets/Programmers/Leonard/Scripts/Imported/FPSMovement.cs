@@ -603,8 +603,9 @@ public class FPSMovement : MonoBehaviour
         charCon.Move(readySwimVelocity * Time.deltaTime);
 
         SwimBob(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+
         float SwimTempo = Mathf.Sin(Time.time * _swinSoundTempo);
-        if (SwimTempo < 0 && _swimSoundMayTrigger && readySwimVelocity.x > 0.1)
+        if (SwimTempo < 0 && _swimSoundMayTrigger && readySwimVelocity.z > 0)
         {
             _emitPlayerSound.Init_Swim(0f);
             _swimSoundMayTrigger = false;
