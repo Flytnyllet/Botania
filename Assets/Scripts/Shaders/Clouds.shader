@@ -125,7 +125,7 @@
 				float noise = fbm(i.worldPos.xz * 0.1 + _Offset + _Time.w*0.1*_Directon);
 			//UNITY_APPLY_FOG(i.fogCoord, noise);
 			//return float4(1, 1, 1, 1);
-			float clouds = smoothstep(gCloudLowStep, _HighStep, noise);
+			float clouds = smoothstep(gCloudLowStep, _HighStep, noise)*step(i.worldPos.y,9.5);
 			return clouds * _CloudCol / gEmissionMult;
 			//return lerp(col, _FogColor, 1 - smoothstep(_FogHeight, _FogHeight + _FogOffset, i.worldPos.y));
 		}

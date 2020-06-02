@@ -121,6 +121,7 @@
 
 				fixed4 col = tex2D(_MainTex, i.uv);
 				float4 noise = smoothstep(0.3, 1, fBm3D(position*0.1));
+				noise *=1- step(position.y, 9.52);
 				float temp = smoothstep(15, 20, position.y);
 				return noise * skyboxMask + col;
 				return float4(position.x % 1, 0, position.z % 1, 1);

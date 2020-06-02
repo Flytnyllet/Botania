@@ -276,7 +276,7 @@ GameObject:
   - component: {fileID: 945601073}
   - component: {fileID: 945601072}
   - component: {fileID: 945601071}
-  - component: {fileID: 945601074}
+  - component: {fileID: 1683756613}
   m_Layer: 9
   m_Name: Rain
   m_TagString: Untagged
@@ -5019,7 +5019,7 @@ ParticleSystemRenderer:
   m_Mesh2: {fileID: 0}
   m_Mesh3: {fileID: 0}
   m_MaskInteraction: 0
---- !u!114 &945601074
+--- !u!114 &1683756613
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5028,45 +5028,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 945601070}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67a01951023e33145a883fe257d936bc, type: 3}
+  m_Script: {fileID: 11500000, guid: a88acafeecbb42d4cbd803330fd7f708, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  events:
-  - subscriptionName: StartRain
-    action:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 945601072}
-          m_MethodName: Play
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-        Culture=neutral, PublicKeyToken=null
-  - subscriptionName: StopRain
-    action:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 945601072}
-          m_MethodName: Stop
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-        Culture=neutral, PublicKeyToken=null
-  ButtonTarget: 0
 --- !u!1 &1076891522
 GameObject:
   m_ObjectHideFlags: 0
@@ -15550,7 +15514,7 @@ CharacterController:
   serializedVersion: 2
   m_Height: 2
   m_Radius: 0.3
-  m_SlopeLimit: 15
+  m_SlopeLimit: 30
   m_StepOffset: 0.01
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
@@ -15699,7 +15663,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6380197204816857825}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.73, z: -0.15}
+  m_LocalPosition: {x: 0, y: 0.73, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 6380197203547624253}

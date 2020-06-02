@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerEnterWater : MonoBehaviour
 {
     [Header("Settings")]
-
+    Transform _camera;
     [SerializeField] float _seaLevel;
 
     [Header("Drop")]
@@ -14,12 +14,15 @@ public class PlayerEnterWater : MonoBehaviour
     [SerializeField] GameObject[] _toggleOffGameObjects;
 
     bool _isInWater = false;
-
+    private void Start()
+    {
+        _camera = Camera.main.transform;
+    }
     private void Update()
     {
-        if (transform.position.y <= _seaLevel && !_isInWater)
+        if (_camera.position.y <= _seaLevel && !_isInWater)
             ToggleWater(true);
-        else if (transform.position.y > _seaLevel && _isInWater)
+        else if (_camera.position.y > _seaLevel && _isInWater)
             ToggleWater(false);
     }
 
