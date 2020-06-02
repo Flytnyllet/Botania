@@ -80,10 +80,12 @@ public class FPSMovement : MonoBehaviour
     bool _inWater = false;
     bool _swimming = false;
     bool _isUnderwater = false;
+	bool _cameraAboveSurface = true;
     float _savedMoveModifier = 1.0f;
 
     [Header("Potion Effects")]
     [SerializeField] float _levitationSpeed = 1f;
+	[SerializeField] float _levitationFallSpeed = 3f;
 
     //[SerializeField] float teleportationTime = 2f;
     [SerializeField] float _teleportationFloatSpeed = 1f;
@@ -288,13 +290,18 @@ public class FPSMovement : MonoBehaviour
             {
                 charCon.Move(_levitationSpeed * Vector3.up * Time.deltaTime);
                 _inAir = true;
-                _velocity.y = -5f;
+                _velocity.y = _levitationFallSpeed;
             }
             //transform.position = new Vector3(transform.position.x, 9.5f, transform.position.z);
         }
 
 
     }
+
+	public static bool IsSwimming()
+	{
+		return playerMovement._swimming;
+	}
 
     public void Teleport(Vector3 position)
     {
@@ -604,7 +611,7 @@ public class FPSMovement : MonoBehaviour
 
         SwimBob(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
         float SwimTempo = Mathf.Sin(Time.time * _swinSoundTempo);
-        if (SwimTempo < 0 && _swimSoundMayTrigger && readySwimVelocity.x > 0.1)
+        if (SwimTempo < 0 && _swimSoundMayTrigger && readySwimVelocity.magnitude > 0.1)
         {
             _emitPlayerSound.Init_Swim(0f);
             _swimSoundMayTrigger = false;
@@ -713,6 +720,23 @@ public class FPSMovement : MonoBehaviour
 		}
 		return false;*/
     }
+
+	void DivingSounds()
+	{
+		if(_lastWaterChunk != null)
+		{
+			if(_cameraAboveSurface == true && _playerCam.transform.position.y < _lastWaterChunk.transform.position.y)
+			{
+
+				_cameraAboveSurface = false;
+			}
+			else if(_cameraAboveSurface == false && _playerCam.transform.position.y > _lastWaterChunk.transform.position.y)
+			{
+
+				_cameraAboveSurface = true;
+			}
+		}
+	}
 
     void FootstepsSound()
     {
