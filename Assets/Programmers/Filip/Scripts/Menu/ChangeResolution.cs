@@ -9,7 +9,7 @@ public class ChangeResolution : MonoBehaviour
 {
     TMP_Dropdown _dropdown;
 
-    Vector2Int[] _aspectRatios = new Vector2Int[]
+    Vector2[] _aspectRatios = new Vector2[]
     {
         new Vector2Int(1, 1),
         new Vector2Int(3, 2),
@@ -17,6 +17,7 @@ public class ChangeResolution : MonoBehaviour
         new Vector2Int(5, 4),
         new Vector2Int(16, 10),
         new Vector2Int(16, 9),
+        new Vector2(16, 9.6f),
         new Vector2Int(21, 9)
     };
 

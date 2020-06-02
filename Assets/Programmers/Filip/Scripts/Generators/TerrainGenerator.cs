@@ -44,7 +44,7 @@ public class TerrainGenerator : MonoBehaviour
 
     private void Awake()
     {
-        _detailLevelIndex = RenderDistanceIndex;
+        RenderDistanceIndex = _detailLevelIndex;
 
         _spawnTimer = new Timer(1f);
     }
@@ -62,14 +62,6 @@ public class TerrainGenerator : MonoBehaviour
         _viewerPosition = new Vector2(_viewer.position.x, _viewer.position.z);
         _viewerPositionOld = _viewerPosition;
 
-        //_textureSettings. ApplyToMaterial(_mapMaterial);
-        //_textureSettings.UpdateMeshHeights(_mapMaterial, _heightMapSettings.MinHeight, _heightMapSettings.MaxHeight);
-
-        float maxViewDistance = _detailLevelsHolder[_detailLevelIndex]._levelOfDetail[_detailLevelsHolder[_detailLevelIndex]._levelOfDetail.Length - 1].visableDstThreshold;
-
-        _meshWorldSize = _meshSettings.MeshWorldSize;
-        _chunksVisableInViewDist = Mathf.RoundToInt(maxViewDistance / _meshWorldSize);
-
         StartCoroutine(OnStart());
     }
 
@@ -77,6 +69,12 @@ public class TerrainGenerator : MonoBehaviour
     {
         while (!SaveSystem.Ready)
             yield return null;
+
+        float maxViewDistance = _detailLevelsHolder[_detailLevelIndex]._levelOfDetail[_detailLevelsHolder[_detailLevelIndex]._levelOfDetail.Length - 1].visableDstThreshold;
+
+        _meshWorldSize = _meshSettings.MeshWorldSize;
+        _chunksVisableInViewDist = Mathf.RoundToInt(maxViewDistance / _meshWorldSize);
+
         UpdateVisableChunks();
     }
 
