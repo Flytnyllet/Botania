@@ -30,6 +30,9 @@ public class Player_Data : UnityEngine.ScriptableObject
     [FMODUnity.EventRef]
     public string p_book_page = null;
 
+    [FMODUnity.EventRef]
+    public string p_book_scribble = null;
+
     [Space(5)]
 
     [FMODUnity.EventRef]

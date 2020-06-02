@@ -19,6 +19,7 @@ public class Player_Emitter : MonoBehaviour
     private EventInstance event_Book_Close;
     private EventInstance event_Book_Open;
     private EventInstance event_Book_Page;
+    private EventInstance event_Book_Scribble;
     private EventInstance event_Potion_Create;
     private EventInstance event_Potion_Drink;
     private EventInstance event_Potion_Teleportation;
@@ -57,6 +58,7 @@ public class Player_Emitter : MonoBehaviour
         event_Book_Close = RuntimeManager.CreateInstance(player_Data.p_book_close);
         event_Book_Open = RuntimeManager.CreateInstance(player_Data.p_book_open);
         event_Book_Page = RuntimeManager.CreateInstance(player_Data.p_book_page);
+        event_Book_Scribble = RuntimeManager.CreateInstance(player_Data.p_book_scribble);
         event_Potion_Create = RuntimeManager.CreateInstance(player_Data.p_potion_create);
         event_Potion_Teleportation = RuntimeManager.CreateInstance(player_Data.p_potion_teleport);
         event_Potion_Drink = RuntimeManager.CreateInstance(player_Data.p_potion_drink);
@@ -113,6 +115,11 @@ public class Player_Emitter : MonoBehaviour
     public void Init_Book_Close(EventParameter param)
     {
         event_Book_Close.start();
+    }
+
+    public void Init_Book_Scribble()
+    {
+        event_Book_Scribble.start();
     }
 
     public void Init_Pickup(string event_Ref)
