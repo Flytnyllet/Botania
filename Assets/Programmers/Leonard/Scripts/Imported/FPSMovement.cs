@@ -186,7 +186,10 @@ public class FPSMovement : MonoBehaviour
             Debug.DrawRay(_playerCam.position + 0.45f * Vector3.up, Vector3.down * _waterRayDist, Color.red, 2f);
 
             _isUnderwater = (!isStoned && !_inWater && (_lastWaterChunk == null ? false : _lastWaterChunk.transform.position.y > transform.position.y));
-            if (_inAir && grounded)
+
+			DivingSounds();
+
+			if (_inAir && grounded)
             {
                 _emitPlayerSound.Init_Land();
             }
@@ -727,11 +730,13 @@ public class FPSMovement : MonoBehaviour
 		{
 			if(_cameraAboveSurface == true && _playerCam.transform.position.y < _lastWaterChunk.transform.position.y)
 			{
+				Debug.Log("Play Diving Sound");
 
 				_cameraAboveSurface = false;
 			}
 			else if(_cameraAboveSurface == false && _playerCam.transform.position.y > _lastWaterChunk.transform.position.y)
 			{
+				Debug.Log("Play Surfacing Sound");
 
 				_cameraAboveSurface = true;
 			}
