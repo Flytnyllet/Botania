@@ -210,7 +210,7 @@ public class AlchemyOrganizer_2 : MonoBehaviour
                 {
                     Debug.LogFormat("Setup ingredient nr {0} in recipe {1}", ii, i);
                     GameObject newIngObj = Instantiate(ingredientObject, newRecipe.craftButton.transform);
-                    newIngObj.transform.localPosition -= Vector3.right * 95 * ii;
+                    newIngObj.transform.localPosition -= Vector3.right * 80 * ii;
                     newRecipe.ingredientImages[ii] = newIngObj.GetComponent<Image>();
                     newRecipe.ingredientImages[ii].sprite = newRecipe.ingredientsData[ii].ingredient.itemIcon;
 
@@ -307,7 +307,7 @@ public class AlchemyOrganizer_2 : MonoBehaviour
         {
             recipe.button.SetActive(true);
             recipe.craftButton.GetComponent<Button>().enabled = true;
-            recipe.craftButton.GetComponent<Image>().color = new Color(0.4f, 0.75f, 0.25f, 0.5f);
+            //recipe.craftButton.GetComponent<Image>().color = new Color(0.4f, 0.75f, 0.25f, 0.5f);
 
             //for (int i = 0; i < recipe.ingredientsData.Length; i++)
             //{
@@ -329,12 +329,12 @@ public class AlchemyOrganizer_2 : MonoBehaviour
     {
         if (FlowerLibrary.GetPotionAmount(recipe.potionData.itemName) > 0)
         {
-            recipe.potionButton.GetComponent<Image>().color = new Color(0.4f, 0.75f, 0.25f, 0.5f);
+            //recipe.potionButton.GetComponent<Image>().color = new Color(0.4f, 0.75f, 0.25f, 0.5f);
             recipe.potionButton.GetComponent<Button>().enabled = true;
         }
         else
         {
-            recipe.potionButton.GetComponent<Image>().color = new Color(0.35f, 0.35f, 0.35f, 0.5f);
+            //recipe.potionButton.GetComponent<Image>().color = new Color(0.35f, 0.35f, 0.35f, 0.5f);
             recipe.potionButton.GetComponent<Button>().enabled = false;
         }
     }
