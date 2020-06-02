@@ -80,10 +80,12 @@ public class FPSMovement : MonoBehaviour
     bool _inWater = false;
     bool _swimming = false;
     bool _isUnderwater = false;
+	bool _cameraAboveSurface = true;
     float _savedMoveModifier = 1.0f;
 
     [Header("Potion Effects")]
     [SerializeField] float _levitationSpeed = 1f;
+	[SerializeField] float _levitationFallSpeed = 3f;
 
     //[SerializeField] float teleportationTime = 2f;
     [SerializeField] float _teleportationFloatSpeed = 1f;
@@ -184,7 +186,10 @@ public class FPSMovement : MonoBehaviour
             Debug.DrawRay(_playerCam.position + 0.45f * Vector3.up, Vector3.down * _waterRayDist, Color.red, 2f);
 
             _isUnderwater = (!isStoned && !_inWater && (_lastWaterChunk == null ? false : _lastWaterChunk.transform.position.y > transform.position.y));
-            if (_inAir && grounded)
+
+			DivingSounds();
+
+			if (_inAir && charCon.isGrounded)
             {
                 _emitPlayerSound.Init_Land();
             }
@@ -288,13 +293,18 @@ public class FPSMovement : MonoBehaviour
             {
                 charCon.Move(_levitationSpeed * Vector3.up * Time.deltaTime);
                 _inAir = true;
-                _velocity.y = -5f;
+                _velocity.y = _levitationFallSpeed;
             }
             //transform.position = new Vector3(transform.position.x, 9.5f, transform.position.z);
         }
 
 
     }
+
+	public static bool IsSwimming()
+	{
+		return playerMovement._swimming;
+	}
 
     public void Teleport(Vector3 position)
     {
@@ -390,11 +400,11 @@ public class FPSMovement : MonoBehaviour
                 break;
             }
             else
-			{
-				charCon.Move(Vector3.forward * 0.01f);
-				yield return null;
+            {
+                charCon.Move(Vector3.forward * 0.01f);
+                yield return null;
             }
-			attempts++;
+            attempts++;
         }
     }
 
@@ -440,8 +450,8 @@ public class FPSMovement : MonoBehaviour
 
         yield return null;
 
-		int maxAttempts = 5;
-		int attempts = 0;
+        int maxAttempts = 5;
+        int attempts = 0;
         while (attempts < maxAttempts)
         {
             if (PositionCorrection(_teleportPlacementHeight))
@@ -449,21 +459,21 @@ public class FPSMovement : MonoBehaviour
                 break;
             }
             else
-			{
-				attempts++;
-				charCon.Move(Vector3.forward * 0.01f);
-				yield return null;
+            {
+                attempts++;
+                charCon.Move(Vector3.forward * 0.01f);
+                yield return null;
             }
         }
 
         yield return null;
 
-		attempts = 0;
+        attempts = 0;
         while (Physics.OverlapBox(transform.position, Vector3.one * 0.5f).Length > 1 && attempts < maxAttempts)
         {
             Debug.Log("Correcting position because collision");
             transform.position += Vector3.up * _teleportPlacementHeight;
-			attempts++;
+            attempts++;
             yield return null;
         }
 
@@ -603,8 +613,9 @@ public class FPSMovement : MonoBehaviour
         charCon.Move(readySwimVelocity * Time.deltaTime);
 
         SwimBob(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+
         float SwimTempo = Mathf.Sin(Time.time * _swinSoundTempo);
-        if (SwimTempo < 0 && _swimSoundMayTrigger && readySwimVelocity.x > 0.1)
+        if (SwimTempo < 0 && _swimSoundMayTrigger && readySwimVelocity.magnitude > 0.1)
         {
             _emitPlayerSound.Init_Swim(0f);
             _swimSoundMayTrigger = false;
@@ -713,6 +724,25 @@ public class FPSMovement : MonoBehaviour
 		}
 		return false;*/
     }
+
+	void DivingSounds()
+	{
+		if(_lastWaterChunk != null)
+		{
+			if(_cameraAboveSurface == true && _playerCam.transform.position.y < _lastWaterChunk.transform.position.y)
+			{
+				Debug.Log("Play Diving Sound");
+
+				_cameraAboveSurface = false;
+			}
+			else if(_cameraAboveSurface == false && _playerCam.transform.position.y > _lastWaterChunk.transform.position.y)
+			{
+				Debug.Log("Play Surfacing Sound");
+
+				_cameraAboveSurface = true;
+			}
+		}
+	}
 
     void FootstepsSound()
     {

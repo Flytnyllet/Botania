@@ -1,4 +1,4 @@
-﻿Shader "Botania/ScreenEffects/Mist"
+﻿Shader "Botania/ScreenEffects/Underwater"
 {
 	Properties
 	{
@@ -12,8 +12,8 @@
 		Pass
 		{
 			CGPROGRAM
-			#pragma vertex vert 
-			#pragma fragment frag exclude_path:deferred exclude_path:prepass
+			#pragma vertex vert
+			#pragma fragment frag
 
 			#include "UnityCG.cginc"
 
@@ -112,23 +112,13 @@
 			{
 				float rawDepth = DecodeFloatRG(tex2D(_CameraDepthTexture, i.uv));
 				float depth = Linear01Depth(rawDepth) * 1850;
-				float skyboxMask = step(depth,1849);
-				float4 wsDir = depth * i.interpolatedRay*0.99;
-				float3 position = _WorldSpaceCameraPos + wsDir;
-				position.x += _Time.y * 2;
-				//position.y = 0;
-				//return float4(position % 1, 1);
+				//float4 wsDir = depth * i.interpolatedRay*0.99;
+				//float3 position = _WorldSpaceCameraPos + wsDir;
+				//position.x += _Time.y * 2;
 
-				fixed4 col = tex2D(_MainTex, i.uv);
-				float4 noise = smoothstep(0.3, 1, fBm3D(position*0.1));
-				noise *=1- step(position.y, 9.52);
-				float temp = smoothstep(15, 20, position.y);
-				return noise * skyboxMask + col;
-				return float4(position.x % 1, 0, position.z % 1, 1);
-				float2 uv = i.uv - 0.5;
-				float dist = step(distance(uv, 0), 0.55);
+				return smoothstep(0, 50, depth);
 
-				return col;
+
 			}
 			ENDCG
 		}

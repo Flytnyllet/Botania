@@ -24,35 +24,32 @@ public class PickupFlower : InteractableSaving, IInteractable
     [SerializeField] UnityEvent _pickupAction;
     [SerializeField] float _pickupAnimationTime = 0.2f;
     [SerializeField] float _pickupAnimationForce = 1.0f;
+	[SerializeField] bool isUnderwater = false;
 
     private string _flowerPickupSound;
     [SerializeField] private Player_Data _player_Data;
     private Player_Emitter _player_Emitter;
 
+	public bool IsUnderwater()
+	{
+		return isUnderwater;
+	}
+
     public bool Interact(Transform interactor)
     {
-        if (_enabled)
+        if (_enabled && (isUnderwater == false || !FPSMovement.IsSwimming()))
         {
-
+            if (FlowerLibrary.GetFlowerDiscoverAmount(_flowerData.itemName) == 0)
+            {
+                BookManager.SetPickedFlower(_flowerData);
+                if (onPickUpEvent != null)
+                    onPickUpEvent.Invoke(" " + _flowerData.itemName, _flowerData.itemIcon);
+            }
             //Pickup save system
             PickUp();
             //NotificationObject.name = _flowerData.itemName; // For notification system(not needed anymore, but leave it?)
             //NotificationObject.sprite = _flowerData.itemIcon; // For notification system(not needed anymore, but leave it?)
-            if (onPickUpEvent != null)
-                onPickUpEvent.Invoke(_flowerData.itemName, _flowerData.itemIcon);
-            //transform.LookAt(interactor, Vector3.up);
-            string debugFlowerNames = "Trying to pick up a " + _flowerData.itemName
-                + ". Accepted flower types are: [";
-            string[] flowerTypes = FlowerLibrary.GetAllFlowerNames();
-            foreach (string flower in flowerTypes)
-            {
-                debugFlowerNames += flower + ", ";
-            }
-            debugFlowerNames += "]";
 
-			//Debug.Log(debugFlowerNames);
-
-			BookManager.SetPickedFlower(_flowerData);
             FlowerLibrary.IncrementFlower(_flowerData.itemName, _amount);
             if (_gameobjectOverload.Length == 0)
             {

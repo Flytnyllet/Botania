@@ -63,38 +63,61 @@ public class Interactor : MonoBehaviour
         bool hit = Physics.Raycast(transform.position, transform.forward * distance, out collision, distance, _layerMask.value);
         Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * distance, Color.green, 1f);
 
-        if (hit && transform.eulerAngles.x < 180)
-        {
+		if (hit && transform.eulerAngles.x < 180)
+		{
 
-            //Debug.Log(collision.transform.name);
-            PickupFlower[] pickupFlowers = collision.transform.GetComponents<PickupFlower>();
+			//Debug.Log(collision.transform.name);
+			PickupFlower[] pickupFlowers = collision.transform.GetComponents<PickupFlower>();
 
-            //Currently looking at an interactable
-            bool lookingAtFlower = false;
-            for (int i = 0; i < pickupFlowers.Length; i++)
-            {
-                if (pickupFlowers[i].SetEnabled)
-                {
-                    lookingAtFlower = true;
-                    break;
-                }
-            }
+			if (FPSMovement.IsSwimming())
+			{
+				List<PickupFlower> notUnderwater = new List<PickupFlower>();
+				for (int i = 0; i < pickupFlowers.Length; i++)
+				{
+					if (!pickupFlowers[i].IsUnderwater())
+					{
+						notUnderwater.Add(pickupFlowers[i]);
+					}
+				}
+				if (notUnderwater.Count < 1)
+				{
+					ChangeLookingCursor(false);
+					return;
+				}
+				else
+				{
+					pickupFlowers = notUnderwater.ToArray();
+				}
+			}
 
-            ChangeLookingCursor(lookingAtFlower);
+			//Currently looking at an interactable
+			bool lookingAtFlower = false;
+			for (int i = 0; i < pickupFlowers.Length; i++)
+			{
+				if (pickupFlowers[i].SetEnabled)
+				{
+					lookingAtFlower = true;
+					break;
+				}
+			}
 
-            if (Input.GetButtonDown(PLAYER_INTERACT_ACTION))
-            {
-                IInteractable[] interactables = collision.transform.GetComponents<IInteractable>();
-                Debug.Log(collision.transform.name);
+			ChangeLookingCursor(lookingAtFlower);
 
-                for (int i = 0; i < interactables.Length; i++)
-                {
-                    interactables[i].Interact(this.transform);
-                }
-            }
-        }
-        else
-            ChangeLookingCursor(false);
+			if (Input.GetButtonDown(PLAYER_INTERACT_ACTION))
+			{
+				IInteractable[] interactables = collision.transform.GetComponents<IInteractable>();
+				Debug.Log(collision.transform.name);
+
+				for (int i = 0; i < interactables.Length; i++)
+				{
+					interactables[i].Interact(this.transform);
+				}
+			}
+		}
+		else
+		{
+			ChangeLookingCursor(false);
+		}
     }
 
     void ChangeLookingCursor(bool lookingAtPickup)

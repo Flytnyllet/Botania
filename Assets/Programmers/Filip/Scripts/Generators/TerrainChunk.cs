@@ -139,7 +139,7 @@ public class TerrainChunk
 
                     if (!_spawnInfoRequester.IsSet(lodIndex))
                     {
-                        if (_spawnInfoRequester.HasSpawnInfo(lodIndex)) //The requested spawninfo has arrived! Hurray!
+                        if (_spawnInfoRequester.HasSpawnInfo(lodIndex) && wasVisible) //The requested spawninfo has arrived! Hurray!
                         {
                             _spawnInfoRequester.Set(lodIndex);
                             _spawnInfoRequester.SpawnSpawnInfo(_lodMeshes[lodIndex].MeshData, _meshSettings.ChunkSize, lodIndex, _meshFilter.transform);
@@ -148,7 +148,6 @@ public class TerrainChunk
                             _spawnInfoRequester.RequestSpawnInfo(lodIndex, _detailLevels[lodIndex].levelOfDetail, _heightMap, _lodMeshes[lodIndex].MeshData, _meshSettings, new Vector2(_sampleCenter.x, -_sampleCenter.y), _chunkCoord, _meshFilter.transform);
                     }
                 }
-
             }
 
             if (wasVisible != visable)
