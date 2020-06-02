@@ -24,14 +24,20 @@ public class PickupFlower : InteractableSaving, IInteractable
     [SerializeField] UnityEvent _pickupAction;
     [SerializeField] float _pickupAnimationTime = 0.2f;
     [SerializeField] float _pickupAnimationForce = 1.0f;
+	[SerializeField] bool isUnderwater = false;
 
     private string _flowerPickupSound;
     [SerializeField] private Player_Data _player_Data;
     private Player_Emitter _player_Emitter;
 
+	public bool IsUnderwater()
+	{
+		return isUnderwater;
+	}
+
     public bool Interact(Transform interactor)
     {
-        if (_enabled)
+        if (_enabled && (isUnderwater == false || !FPSMovement.IsSwimming()))
         {
             if (FlowerLibrary.GetFlowerDiscoverAmount(_flowerData.itemName) == 0)
             {
