@@ -15,32 +15,37 @@ public class Music_Idle_Trigger : MonoBehaviour
         {
             if (!Music_Manager.Instance.StartMenu && Input.GetAxis("Horizontal") == 0 && Input.GetAxis("Vertical") == 0)
             {
-                if (Random.Range(0f, 1f) > 0.95f)
-                    StartCoroutine(IdleTriggerTimer());
+                if (Random.Range(0f, 1f) > 0.8f)
+                    _isIdleTrigger = true;
+                else { _isIdleTrigger = false; }
 
-                //Debug.Log("Tried to set the IdleTimer. Result?");
+                Debug.Log("Tried to set the IdleTimer. Result?");
                 _lastFrame = _firstFrame;
             }
-            
         }
 
-        if (Input.GetAxis("Horizontal") > 0.02f && Input.GetAxis("Vertical") > 0.02f && _lastFrame == _firstFrame)
+        if (Input.GetAxis("Vertical") > 0.01f || Input.GetAxis("Horizontal") > 0.01f)
         {
+            _isIdleTrigger = false;
             _idleTime = 0;
             _lastFrame = 0;
 
             if (Music_Manager.Instance.IsIdleMusic)
                 Music_Manager.Instance.Stop_TriggerMusic();
         }
-    }
 
-    private IEnumerator IdleTriggerTimer()
-    {
-        //Debug.Log("IdleTriggerTimer is set.");
-        _idleTime = _idleTime + Time.fixedDeltaTime;
+
+        if (_isIdleTrigger)
+        {
+            Debug.Log("IdleTriggerTimer is set.");
+            _idleTime = _idleTime + Time.fixedDeltaTime;
+            Debug.Log(_idleTime);
+        }
+
         if (_idleTime > 7)
-            Music_Manager.Instance.Init_Music(5);
-
-        yield return new WaitForSeconds(1f);
+        {
+            Music_Manager.Instance.Init_Music(6);
+            _isIdleTrigger = false;
+        }
     }
 }

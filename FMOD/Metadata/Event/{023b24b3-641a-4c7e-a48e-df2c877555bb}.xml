@@ -135,7 +135,7 @@
 	</object>
 	<object class="EventMixerMaster" id="{dabab4c6-d671-45b2-8895-33c7dd68a82a}">
 		<property name="volume">
-			<value>-14</value>
+			<value>-13.5</value>
 		</property>
 		<relationship name="modulators">
 			<destination>{0a97458f-8da4-421a-bc2d-72d15b93dead}</destination>
@@ -534,7 +534,7 @@
 			<value>0</value>
 		</property>
 		<property name="releaseTime">
-			<value>3600</value>
+			<value>3200</value>
 		</property>
 		<property name="finalValue">
 			<value>-80</value>
@@ -598,6 +598,7 @@
 	<object class="MixerBusEffectChain" id="{2e10df39-6b1f-43dd-b19f-ce77236196b3}">
 		<relationship name="effects">
 			<destination>{0492ab1d-971e-4a74-8440-8fd4298dfeba}</destination>
+			<destination>{0aa99c8c-debd-49ee-bdeb-4fa4a1efcadd}</destination>
 			<destination>{2de0ecd2-3894-483d-8b56-397430abd6dc}</destination>
 		</relationship>
 	</object>
@@ -861,6 +862,12 @@
 		<property name="filterTypeB">
 			<value>9</value>
 		</property>
+		<property name="filterTypeC">
+			<value>9</value>
+		</property>
+		<property name="filterTypeD">
+			<value>9</value>
+		</property>
 		<property name="filterTypeE">
 			<value>3</value>
 		</property>
@@ -868,7 +875,13 @@
 			<value>34.9930267</value>
 		</property>
 		<property name="frequencyB">
-			<value>92.6610107</value>
+			<value>83.5422211</value>
+		</property>
+		<property name="frequencyC">
+			<value>199.44838</value>
+		</property>
+		<property name="frequencyD">
+			<value>2828.78833</value>
 		</property>
 		<property name="frequencyE">
 			<value>21000</value>
@@ -876,16 +889,36 @@
 		<property name="qualityA">
 			<value>0.751586199</value>
 		</property>
+		<property name="qualityB">
+			<value>1.19999993</value>
+		</property>
+		<property name="qualityC">
+			<value>1.39999986</value>
+		</property>
 		<property name="qualityE">
 			<value>0.100000001</value>
 		</property>
 		<property name="gainB">
 			<value>-2.58620834</value>
 		</property>
+		<property name="gainC">
+			<value>-4.13793182</value>
+		</property>
+		<property name="gainD">
+			<value>1.55172586</value>
+		</property>
 		<relationship name="automators">
 			<destination>{8d7336a5-9e5d-4b87-adb0-083aea51ba9f}</destination>
 			<destination>{71e258cd-5d26-42a7-b3a8-77d98fd1694a}</destination>
 		</relationship>
+	</object>
+	<object class="ThreeEQEffect" id="{0aa99c8c-debd-49ee-bdeb-4fa4a1efcadd}">
+		<property name="highGain">
+			<value>-25.5</value>
+		</property>
+		<property name="highCrossover">
+			<value>5500</value>
+		</property>
 	</object>
 	<object class="MixerBusFader" id="{2de0ecd2-3894-483d-8b56-397430abd6dc}" />
 	<object class="AutomationPoint" id="{ed9ce08c-412b-4302-b167-8f417376b1c3}">

@@ -12,6 +12,9 @@ public class Player_Emitter : MonoBehaviour
     private EventInstance event_P_Mov_Swim;
     private PARAMETER_ID underwaterParameterId;
 
+    private EventInstance event_P_Mov_EnterUnderwater;
+    private PARAMETER_ID enterUnderwaterParameterId;
+
     private EventInstance event_P_Mov_Jump;
 
     private EventInstance event_P_Mov_Land;
@@ -74,6 +77,12 @@ public class Player_Emitter : MonoBehaviour
         PARAMETER_DESCRIPTION underwaterParameterDescription;
         underwaterEventDescription.getParameterDescriptionByName("underwater", out underwaterParameterDescription);
         underwaterParameterId = underwaterParameterDescription.id;
+
+        EventDescription enterUnderwaterEventDescription;
+        event_P_Mov_EnterUnderwater.getDescription(out enterUnderwaterEventDescription);
+        PARAMETER_DESCRIPTION enterUnderwaterParameterDescription;
+        enterUnderwaterEventDescription.getParameterDescriptionByName("enter", out enterUnderwaterParameterDescription);
+        enterUnderwaterParameterId = enterUnderwaterParameterDescription.id;
     }
 
     //========== MOVEMENT =============
@@ -88,6 +97,12 @@ public class Player_Emitter : MonoBehaviour
     {
         event_P_Mov_Swim.setParameterByID(underwaterParameterId, underwater);
         event_P_Mov_Swim.start();
+    }
+
+    public void Init_EnterUnderwater(float enter)
+    {
+        event_P_Mov_EnterUnderwater.setParameterByID(enterUnderwaterParameterId, enter);
+        event_P_Mov_EnterUnderwater.start();
     }
 
     public void Init_Jump()
