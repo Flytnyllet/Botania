@@ -11,5 +11,6 @@ namespace Saving
         public static readonly string MAP_MARKERS = "Map_Markers";
         public static readonly string PREFAB_SPAWNING = "Prefab_Spawning";
         public static readonly string PLAYER_POSITION = "Player_Position";
+        public static readonly string SETTINGS = "Settings";
     }
 }

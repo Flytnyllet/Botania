@@ -98,6 +98,7 @@ public class SaveSystem : MonoBehaviour
             Player.Load();
             PrefabSpawnerSaveData.Load();
             MapGenerator.Load();
+            Menu.Load();
 			FlowerLibrary.Load();
 			AlchemyOrganizer_2.UpdateAfterLoad();
         }
@@ -143,6 +144,7 @@ public class SaveSystem : MonoBehaviour
             Noise.Save();
             PrefabSpawnerSaveData.Save();
             Player.Save();
+            Menu.Save();
             MapGenerator.Save();
 			FlowerLibrary.Save();
         }

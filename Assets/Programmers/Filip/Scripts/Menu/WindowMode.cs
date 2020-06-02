@@ -6,9 +6,21 @@ public class WindowMode : MonoBehaviour
 {
     [SerializeField] GameObject _selection;
 
+    bool _first = true;
+
     private void OnEnable()
     {
-        _selection.SetActive(!Screen.fullScreen);
+        if (!_first)
+            _selection.SetActive(!Screen.fullScreen);
+    }
+
+    private void Start()
+    {
+        if (_first)
+        {
+            _first = false;
+            _selection.SetActive(!Screen.fullScreen);
+        }
     }
 
     public void ChangeWindowMode()
