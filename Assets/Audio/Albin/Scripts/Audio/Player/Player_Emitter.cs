@@ -57,6 +57,7 @@ public class Player_Emitter : MonoBehaviour
         event_P_Mov_Swim = RuntimeManager.CreateInstance(player_Data.p_mov_swim);
         event_P_Mov_Jump = RuntimeManager.CreateInstance(player_Data.p_mov_jump);
         event_P_Mov_Land = RuntimeManager.CreateInstance(player_Data.p_mov_land);
+        event_P_Mov_EnterUnderwater = RuntimeManager.CreateInstance(player_Data.p_mov_enterUnderwater);
 
         event_Book_Close = RuntimeManager.CreateInstance(player_Data.p_book_close);
         event_Book_Open = RuntimeManager.CreateInstance(player_Data.p_book_open);

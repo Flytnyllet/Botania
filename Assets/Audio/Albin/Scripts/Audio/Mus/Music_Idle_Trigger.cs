@@ -19,7 +19,7 @@ public class Music_Idle_Trigger : MonoBehaviour
                     _isIdleTrigger = true;
                 else { _isIdleTrigger = false; }
 
-                Debug.Log("Tried to set the IdleTimer. Result?");
+                //Debug.Log("Tried to set the IdleTimer. Result?");
                 _lastFrame = _firstFrame;
             }
         }
@@ -37,7 +37,7 @@ public class Music_Idle_Trigger : MonoBehaviour
 
         if (_isIdleTrigger)
         {
-            Debug.Log("IdleTriggerTimer is set.");
+            //Debug.Log("IdleTriggerTimer is set.");
             _idleTime = _idleTime + Time.fixedDeltaTime;
             Debug.Log(_idleTime);
         }
