@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class TerrainGenerator : MonoBehaviour
 {
+    static TerrainGenerator _thisSingleTon;
+
     //Faster comparing square distance
     static readonly float VIEWER_MOVE_THRESHOLD_FOR_CHUNK_UPDATE = 20f;
     static readonly float SQR_VIEWER_MOVE_THRESHOLD_FOR_CHUNK_UPDATE = VIEWER_MOVE_THRESHOLD_FOR_CHUNK_UPDATE * VIEWER_MOVE_THRESHOLD_FOR_CHUNK_UPDATE;
@@ -13,6 +15,11 @@ public class TerrainGenerator : MonoBehaviour
     public static void SetRenderDistanceOnStart(int index)
     {
         RenderDistanceIndex = index;
+    }
+
+    public static float GetRenderDistance(int lod)
+    {
+        return _thisSingleTon._detailLevelsHolder[_thisSingleTon._detailLevelIndex]._levelOfDetail[lod].visableDstThreshold;
     }
 
     [Header("Settings")]
@@ -44,9 +51,15 @@ public class TerrainGenerator : MonoBehaviour
 
     private void Awake()
     {
-        RenderDistanceIndex = _detailLevelIndex;
+        if (_thisSingleTon == null)
+        {
+            _thisSingleTon = this;
+            RenderDistanceIndex = _detailLevelIndex;
 
-        _spawnTimer = new Timer(1f);
+            _spawnTimer = new Timer(1f);
+        }
+        else
+            Destroy(gameObject);   
     }
 
     private void OnValidate()
