@@ -188,8 +188,8 @@ public class PrefabSpawner : MonoBehaviour
 
     public bool CanObjectSpawnSize(int x, int y, int size, int chunkSize, ref bool[,] grid)
     {
-        int maxX = x + size < chunkSize ? x + size : -1;
-        int maxY = y + size < chunkSize ? y + size : -1;
+        int maxX = x + size <= chunkSize ? x + size: -1;
+        int maxY = y + size <= chunkSize ? y + size: -1;
 
         //Object is trying to fit in on the corner on a chunk -> no room!
         if (maxX == -1 || maxY == -1)
@@ -199,7 +199,8 @@ public class PrefabSpawner : MonoBehaviour
         {
             for (int checkY = y; checkY < maxY; checkY++)
             {
-                if (grid[checkX, checkY])
+                if (maxX == chunkSize || maxY == chunkSize) { }
+                else if (grid[checkX, checkY])
                     return false;
             }
         }

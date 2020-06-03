@@ -731,15 +731,15 @@ public class FPSMovement : MonoBehaviour
 		{
 			if(_cameraAboveSurface == true && _playerCam.transform.position.y < _lastWaterChunk.transform.position.y)
 			{
-				Debug.Log("Play Diving Sound");
+                _emitPlayerSound.Init_EnterUnderwater(1);
 
 				_cameraAboveSurface = false;
 			}
 			else if(_cameraAboveSurface == false && _playerCam.transform.position.y > _lastWaterChunk.transform.position.y)
 			{
-				Debug.Log("Play Surfacing Sound");
+                _emitPlayerSound.Init_EnterUnderwater(0);
 
-				_cameraAboveSurface = true;
+                _cameraAboveSurface = true;
 			}
 		}
 	}

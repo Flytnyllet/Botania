@@ -9,7 +9,7 @@ public class ChangeResolution : MonoBehaviour
 {
     TMP_Dropdown _dropdown;
 
-    Vector2Int[] _aspectRatios = new Vector2Int[]
+    Vector2[] _aspectRatios = new Vector2[]
     {
         new Vector2Int(1, 1),
         new Vector2Int(3, 2),
@@ -17,6 +17,7 @@ public class ChangeResolution : MonoBehaviour
         new Vector2Int(5, 4),
         new Vector2Int(16, 10),
         new Vector2Int(16, 9),
+        new Vector2(16, 9.6f),
         new Vector2Int(21, 9)
     };
 
@@ -32,8 +33,6 @@ public class ChangeResolution : MonoBehaviour
 
     private void AddResolutionAsOptions()
     {
-        Resolution currentResolution = Screen.currentResolution;
-
         Resolution[] resolutions = (Resolution[])Screen.resolutions.Select(resolution => new Resolution { width = resolution.width, height = resolution.height }).Distinct().ToArray();
         List<string> options = new List<string>();
 
@@ -43,7 +42,7 @@ public class ChangeResolution : MonoBehaviour
         {
             options.Add(resolutions[i].width + " x " + resolutions[i].height + " " + GetAspectRatio(resolutions[i]));
 
-            if (resolutions[i].width == currentResolution.width && resolutions[i].height == currentResolution.height)
+            if (resolutions[i].width == Screen.width && resolutions[i].height == Screen.height)
                 currentResolutionIndex = i;
         }
 

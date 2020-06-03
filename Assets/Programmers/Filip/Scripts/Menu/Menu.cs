@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using FMODUnity;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class Menu : MonoBehaviour
 {
@@ -17,6 +19,10 @@ public class Menu : MonoBehaviour
 
     [SerializeField] MenuItemHover[] _changeNames;
     [SerializeField] GameObject _logo;
+
+    [Header("UI Sounds")]
+    [EventRef] public string ui_select_Ref;
+    [EventRef] public string ui_start_Ref;
 
     CHARACTER_CONTROL_STATE _previousState;
 
@@ -74,8 +80,6 @@ public class Menu : MonoBehaviour
             TerrainGenerator.SetRenderDistanceOnStart(saveData._renderDistance);
 
             Player.GetPlayerCamera().fieldOfView = saveData._FOV;
-
-            Screen.SetResolution(saveData._resolutionWidth, saveData._resolutionHeight, saveData._fullScreen);
         }
     }
 
@@ -132,6 +136,19 @@ public class Menu : MonoBehaviour
         }
 
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex, LoadSceneMode.Single);
+    }
+
+    public void Init_UI_Select()
+    {
+        RuntimeManager.PlayOneShot(ui_select_Ref);
+    }
+
+    public void Init_UI_Start()
+    {
+        if (Music_Manager.Instance.StartMenu)
+            RuntimeManager.PlayOneShot(ui_start_Ref);
+        else
+            RuntimeManager.PlayOneShot(ui_select_Ref);
     }
 }
 

@@ -12,6 +12,9 @@ public class Player_Emitter : MonoBehaviour
     private EventInstance event_P_Mov_Swim;
     private PARAMETER_ID underwaterParameterId;
 
+    private EventInstance event_P_Mov_EnterUnderwater;
+    private PARAMETER_ID enterUnderwaterParameterId;
+
     private EventInstance event_P_Mov_Jump;
 
     private EventInstance event_P_Mov_Land;
@@ -19,6 +22,7 @@ public class Player_Emitter : MonoBehaviour
     private EventInstance event_Book_Close;
     private EventInstance event_Book_Open;
     private EventInstance event_Book_Page;
+    private EventInstance event_Book_Scribble;
     private EventInstance event_Potion_Create;
     private EventInstance event_Potion_Drink;
     private EventInstance event_Potion_Teleportation;
@@ -53,10 +57,12 @@ public class Player_Emitter : MonoBehaviour
         event_P_Mov_Swim = RuntimeManager.CreateInstance(player_Data.p_mov_swim);
         event_P_Mov_Jump = RuntimeManager.CreateInstance(player_Data.p_mov_jump);
         event_P_Mov_Land = RuntimeManager.CreateInstance(player_Data.p_mov_land);
+        event_P_Mov_EnterUnderwater = RuntimeManager.CreateInstance(player_Data.p_mov_enterUnderwater);
 
         event_Book_Close = RuntimeManager.CreateInstance(player_Data.p_book_close);
         event_Book_Open = RuntimeManager.CreateInstance(player_Data.p_book_open);
         event_Book_Page = RuntimeManager.CreateInstance(player_Data.p_book_page);
+        event_Book_Scribble = RuntimeManager.CreateInstance(player_Data.p_book_scribble);
         event_Potion_Create = RuntimeManager.CreateInstance(player_Data.p_potion_create);
         event_Potion_Teleportation = RuntimeManager.CreateInstance(player_Data.p_potion_teleport);
         event_Potion_Drink = RuntimeManager.CreateInstance(player_Data.p_potion_drink);
@@ -72,6 +78,12 @@ public class Player_Emitter : MonoBehaviour
         PARAMETER_DESCRIPTION underwaterParameterDescription;
         underwaterEventDescription.getParameterDescriptionByName("underwater", out underwaterParameterDescription);
         underwaterParameterId = underwaterParameterDescription.id;
+
+        EventDescription enterUnderwaterEventDescription;
+        event_P_Mov_EnterUnderwater.getDescription(out enterUnderwaterEventDescription);
+        PARAMETER_DESCRIPTION enterUnderwaterParameterDescription;
+        enterUnderwaterEventDescription.getParameterDescriptionByName("enter", out enterUnderwaterParameterDescription);
+        enterUnderwaterParameterId = enterUnderwaterParameterDescription.id;
     }
 
     //========== MOVEMENT =============
@@ -86,6 +98,12 @@ public class Player_Emitter : MonoBehaviour
     {
         event_P_Mov_Swim.setParameterByID(underwaterParameterId, underwater);
         event_P_Mov_Swim.start();
+    }
+
+    public void Init_EnterUnderwater(float enter)
+    {
+        event_P_Mov_EnterUnderwater.setParameterByID(enterUnderwaterParameterId, enter);
+        event_P_Mov_EnterUnderwater.start();
     }
 
     public void Init_Jump()
@@ -113,6 +131,11 @@ public class Player_Emitter : MonoBehaviour
     public void Init_Book_Close(EventParameter param)
     {
         event_Book_Close.start();
+    }
+
+    public void Init_Book_Scribble()
+    {
+        event_Book_Scribble.start();
     }
 
     public void Init_Pickup(string event_Ref)

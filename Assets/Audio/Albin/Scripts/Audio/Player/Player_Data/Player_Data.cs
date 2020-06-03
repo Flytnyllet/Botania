@@ -18,6 +18,9 @@ public class Player_Data : UnityEngine.ScriptableObject
     [FMODUnity.EventRef]
     public string p_mov_swim = null;
 
+    [FMODUnity.EventRef]
+    public string p_mov_enterUnderwater = null;
+
     [Space(10)]
 
     [Header("P_Inv")]
@@ -29,6 +32,9 @@ public class Player_Data : UnityEngine.ScriptableObject
 
     [FMODUnity.EventRef]
     public string p_book_page = null;
+
+    [FMODUnity.EventRef]
+    public string p_book_scribble = null;
 
     [Space(5)]
 

@@ -11,14 +11,14 @@ public class Amb_Water : MonoBehaviour
 
     private void Update()
     {
-        if (transform.position.y < 9.35f)
+        if (transform.position.y < 9.0f)
         {
             inWater.SetActive(false);
             waves.SetActive(false);
             nearWater.SetActive(false);
             underwater.SetActive(true);
         }
-        else if (transform.position.y > 9.35f && transform.position.y <= 9.6)
+        else if (transform.position.y > 9.0f && transform.position.y <= 9.6)
         {
             inWater.SetActive(true);
             waves.SetActive(true);
