@@ -16,7 +16,7 @@ public class PickupFlower : InteractableSaving, IInteractable
         set { _enabled = value; }
     }
     [SerializeField] ItemDataContainer _flowerData;
-    [SerializeField] int _amount = 1;
+    [SerializeField] int _flowersReturned = 1;
     [SerializeField] Texture2D _pickupAlpha;
 
     [Tooltip("Används i fall ett annat objekt än det lokala skall tas bort vid upplockning")]
@@ -24,16 +24,16 @@ public class PickupFlower : InteractableSaving, IInteractable
     [SerializeField] UnityEvent _pickupAction;
     [SerializeField] float _pickupAnimationTime = 0.2f;
     [SerializeField] float _pickupAnimationForce = 1.0f;
-	[SerializeField] bool isUnderwater = false;
+    [SerializeField] bool isUnderwater = false;
 
     private string _flowerPickupSound;
     [SerializeField] private Player_Data _player_Data;
     private Player_Emitter _player_Emitter;
 
-	public bool IsUnderwater()
-	{
-		return isUnderwater;
-	}
+    public bool IsUnderwater()
+    {
+        return isUnderwater;
+    }
 
     public bool Interact(Transform interactor)
     {
@@ -50,7 +50,8 @@ public class PickupFlower : InteractableSaving, IInteractable
             //NotificationObject.name = _flowerData.itemName; // For notification system(not needed anymore, but leave it?)
             //NotificationObject.sprite = _flowerData.itemIcon; // For notification system(not needed anymore, but leave it?)
 
-            FlowerLibrary.IncrementFlower(_flowerData.itemName, _amount);
+            Play_PickupSound(_flowerData.itemName);
+            FlowerLibrary.IncrementFlower(_flowerData.itemName, _flowersReturned);
             if (_gameobjectOverload.Length == 0)
             {
                 if (_pickupAlpha != null)
@@ -73,11 +74,10 @@ public class PickupFlower : InteractableSaving, IInteractable
                 GetComponent<Collider>().enabled = false;//This may not work since there are multiple colliders
 
             }
-            if (_dissableTriggerafterPickup) GetComponent<Collider>().enabled = false;
             StartCoroutine(ShakeFlower(interactor, _pickupAnimationTime, _pickupAnimationForce));
             _pickupAction.Invoke();
             AlchemyOrganizer_2.DiscoverRecipes(_flowerData);
-            Play_PickupSound(_flowerData.itemName);
+            if (_dissableTriggerafterPickup) GetComponent<Collider>().enabled = false;
             return true; //Doesn't really have a purpose for this
         }
         return false;
