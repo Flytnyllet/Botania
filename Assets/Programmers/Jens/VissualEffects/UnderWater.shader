@@ -107,16 +107,18 @@
 
 			sampler2D _MainTex;
 			sampler2D _CameraDepthTexture;
+			float _Distance;
+			float4 _Colour;
 
 			fixed4 frag(v2f i) : SV_Target
 			{
 				float rawDepth = DecodeFloatRG(tex2D(_CameraDepthTexture, i.uv));
-				float depth = Linear01Depth(rawDepth) * 1850;
+				float4 depth = Linear01Depth(rawDepth) * 1850;
 				//float4 wsDir = depth * i.interpolatedRay*0.99;
 				//float3 position = _WorldSpaceCameraPos + wsDir;
 				//position.x += _Time.y * 2;
-
-				return smoothstep(0, 50, depth);
+				depth = smoothstep(0, _Distance, depth);
+				return tex2D(_MainTex, i.uv)*(1-depth)+depth* _Colour;
 
 
 			}

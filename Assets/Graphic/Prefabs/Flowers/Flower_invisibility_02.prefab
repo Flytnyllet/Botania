@@ -243,17 +243,30 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _dissableTriggerafterPickup: 1
   _flowerData: {fileID: 11400000, guid: edfdc5a62d9d8714c8b46ab474ca287a, type: 2}
+  _amount: 1
   _pickupAlpha: {fileID: 2800000, guid: 82cc1525c3b9c0246aff426f5ddac89c, type: 3}
   _gameobjectOverload:
   - {fileID: 455743568526610367}
   - {fileID: 54942463292100471}
   _pickupAction:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 6106770268260866394}
+        m_MethodName: Pickup
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   _pickupAnimationTime: 0.2
   _pickupAnimationForce: 1
+  isUnderwater: 0
   _player_Data: {fileID: 11400000, guid: d0d6668ab68191b44ac744e3648e5fb3, type: 2}
 --- !u!114 &5887058312716319968
 MonoBehaviour:
