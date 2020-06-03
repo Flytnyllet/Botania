@@ -95,10 +95,16 @@ public class Menu : MonoBehaviour
     public void ExitMenu()
     {
         CharacterState.SetControlState(_previousState);
-        _menu.SetActive(false);
         if (Music_Manager.Instance.StartMenu)
             Music_Manager.Instance.Stop_StartMenuMusic();
+
+        for (int i = 0; i < _changeNames.Length; i++)
+        {
+            _changeNames[i].ChangeName();
+        }
+
         ResetMenu();
+        _menu.SetActive(false);
     }
 
 
