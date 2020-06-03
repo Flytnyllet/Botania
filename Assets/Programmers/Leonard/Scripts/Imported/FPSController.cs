@@ -15,8 +15,8 @@ public class FPSController : MonoBehaviour
 
     void Update()
     {
-		float x = Input.GetAxis("Horizontal");
-		float y = Input.GetAxis("Vertical");
+		float x = Input.GetAxis(InputKeyWords.HORIZONTAL);
+		float y = Input.GetAxis(InputKeyWords.VERTICAL);
 
 		Vector3 move = transform.right *x  + transform.forward *y;
 

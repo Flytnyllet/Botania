@@ -9,9 +9,9 @@ public class FPSMovement : MonoBehaviour
     public static FPSMovement playerMovement;
 
     // Tag Handling (Replace with LayerMasks)
-    const string DUCK_BUTTON = "Duck";
-    const string SPRINT_BUTTON = "Sprint";
-    const string CHANGE_CAMERA_MODE_BUTTOM = "Camera";
+    //const string DUCK_BUTTON = "Duck";
+    //const string SPRINT_BUTTON = "Sprint";
+    //const string CHANGE_CAMERA_MODE_BUTTOM = "Camera";
     //[SerializeField] string GROUND_TAG = "null";
     //[SerializeField] string WATER_TAG = "null";
 
@@ -131,7 +131,8 @@ public class FPSMovement : MonoBehaviour
         _emitPlayerSound = GetComponent<Player_Emitter>();
 
         charCon = GetComponent<CharacterController>();
-        _playerCam = transform.Find("PlayerCam");
+        _playerCam = Player.GetPlayerCamera().transform;
+        //_playerCam = transform.Find("PlayerCam");
         _cameraStartPosition = _playerCam.localPosition;
         CharacterState.SetControlState(CHARACTER_CONTROL_STATE.PLAYERCONTROLLED);
     }
@@ -185,11 +186,9 @@ public class FPSMovement : MonoBehaviour
 
             // == Variables ==
             //Input
-            Vector2 moveInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+            Vector2 moveInput = new Vector2(Input.GetAxis(InputKeyWords.HORIZONTAL), Input.GetAxis(InputKeyWords.VERTICAL));
             if (moveInput.magnitude > 1)
-            {
                 moveInput.Normalize();
-            }
 
             //Vector3 jump = new Vector3(0, 1f * _jumpForce.Value, 0);
             _moveModifier = 1.0f;
@@ -250,7 +249,7 @@ public class FPSMovement : MonoBehaviour
             // Everything that can be done while grounded
             if (_grounded)
             {
-                if (Input.GetButton(SPRINT_BUTTON))
+                if (Input.GetAxisRaw(InputKeyWords.SPRINT) != 0)
                 {
                     _moveModifier *= _sprintSpeedFactor;
                 }
@@ -552,7 +551,7 @@ public class FPSMovement : MonoBehaviour
         Vector3 move =
             _playerCam.right.normalized * horizontal +
             lookDir.normalized * vertical;
-        charCon.Move(move.normalized * _speed.Value * modifier * Time.deltaTime);
+        charCon.Move(move * _speed.Value * modifier * Time.deltaTime);
 
         //Post move distance to ground check
         /*if (ground.distance <= _slopeWalkCorrection && !_inAir)
@@ -632,7 +631,7 @@ public class FPSMovement : MonoBehaviour
         Vector3 readySwimVelocity = readyX.normalized * _swimVelocity.x + readyZ.normalized * _swimVelocity.y;
         charCon.Move(readySwimVelocity * Time.deltaTime);
 
-        SwimBob(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+        SwimBob(Input.GetAxis(InputKeyWords.HORIZONTAL), Input.GetAxis(InputKeyWords.VERTICAL));
 
         float SwimTempo = Mathf.Sin(Time.time * _swinSoundTempo);
         if (SwimTempo < 0 && _swimSoundMayTrigger && readySwimVelocity.magnitude > 0.1)

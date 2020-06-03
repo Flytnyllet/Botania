@@ -89,9 +89,9 @@ public class MouseLook : MonoBehaviour
 
 					rotationX = 0;
 
-					rotationX = transform.localEulerAngles.y + Input.GetAxis("Mouse X") * sensitivityX;
+					rotationX = transform.localEulerAngles.y + Input.GetAxis(InputKeyWords.MOUSE_X) * sensitivityX;
 
-					rotationY += Input.GetAxis("Mouse Y") * sensitivityY;
+					rotationY += Input.GetAxis(InputKeyWords.MOUSE_Y) * sensitivityY;
 					rotationY = Mathf.Clamp(rotationY, minimumY, maximumY);
 
 					transform.localEulerAngles = new Vector3(-rotationY, rotationX, transform.localEulerAngles.z);
