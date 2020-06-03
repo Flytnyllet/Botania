@@ -235,7 +235,7 @@ public class FPSMovement : MonoBehaviour
                 }
                 // Jump, otherwise Slide, otherwise Walk
                 //if (Input.GetButtonDown("Jump") && groundDetection.distance <= charCon.bounds.size.y / 2 + _allowedJumpDistance && !_inAir && !Input.GetButton(DUCK_BUTTON))
-                if (Input.GetButtonDown("Jump") && !_inAir && !Input.GetButton(DUCK_BUTTON))
+                if (Input.GetButtonDown("Jump") && !_inAir && _cameraAboveSurface && !Input.GetButton(DUCK_BUTTON))
                 {
                     Debug.Log("JUMP!");
                     _emitPlayerSound.Init_Jump();
