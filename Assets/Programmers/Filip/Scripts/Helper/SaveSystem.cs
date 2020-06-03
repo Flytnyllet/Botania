@@ -119,6 +119,7 @@ public class SaveSystem : MonoBehaviour
 
     public void Wipe()
     {
+        Debug.Log("WIPONIG!");
         Noise.Wipe();
         Player.Wipe();
         PrefabSpawnerSaveData.Wipe();

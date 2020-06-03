@@ -32,15 +32,15 @@ public class BookManager : MonoBehaviour
     [SerializeField] AlphaAwareButton _tabButtons = null;
     [SerializeField] GameObject _map = null;
     [SerializeField] GameObject _potionWheel = null;
-	ItemDataContainer recentlyPickedFlower = null;
-	GameObject nextPage = null;
-	GameObject prevPage = null;
+    ItemDataContainer recentlyPickedFlower = null;
+    GameObject nextPage = null;
+    GameObject prevPage = null;
 
-	public static void SetPickedFlower(ItemDataContainer flower)
-	{
-		Debug.Log("Picked Flower Set!");
-		Instance.recentlyPickedFlower = flower;
-	}
+    public static void SetPickedFlower(ItemDataContainer flower)
+    {
+        Debug.Log("Picked Flower Set!");
+        Instance.recentlyPickedFlower = flower;
+    }
 
     private void OnEnable()
     {
@@ -56,7 +56,7 @@ public class BookManager : MonoBehaviour
         _tabButtons.gameObject.SetActive(false);
         MapGenerator.Display(false);
         CharacterState.SetControlState(CHARACTER_CONTROL_STATE.PLAYERCONTROLLED);
-		
+
         if (param != null && param.boolParam == true)
         {
             EventManager.TriggerEvent(EventNameLibrary.CLOSE_BOOK, new EventParameter());
@@ -134,30 +134,30 @@ public class BookManager : MonoBehaviour
             _potionWheel.SetActive(false);
             CharacterState.SetControlState(CHARACTER_CONTROL_STATE.PLAYERCONTROLLED);
         }
-		else if (Input.GetKeyDown(KeyCode.Escape) && _book.activeSelf == true)
-		{
-			CloseBook();
-		}
+        else if (Input.GetKeyDown(KeyCode.Escape) && _book.activeSelf == true)
+        {
+            CloseBook();
+        }
     }
 
-	void PageChangerActive(int bookmark)
-	{
-		if (nextPage == null)
-		{
-			nextPage = _book.transform.Find("NextPage").gameObject;
-			prevPage = _book.transform.Find("PrevPage").gameObject;
-		}
-		if(bookmark == 1)
-		{
-			nextPage.SetActive(true);
-			prevPage.SetActive(true);
-		}
-		else
-		{
-			nextPage.SetActive(false);
-			prevPage.SetActive(false);
-		}
-	}
+    void PageChangerActive(int bookmark)
+    {
+        if (nextPage == null)
+        {
+            nextPage = _book.transform.Find("NextPage").gameObject;
+            prevPage = _book.transform.Find("PrevPage").gameObject;
+        }
+        if (bookmark == 1)
+        {
+            nextPage.SetActive(true);
+            prevPage.SetActive(true);
+        }
+        else
+        {
+            nextPage.SetActive(false);
+            prevPage.SetActive(false);
+        }
+    }
 
     bool OpenBookmark(int index, string input)
     {
@@ -173,31 +173,31 @@ public class BookManager : MonoBehaviour
             }
             else if (CharacterState.Control_State == CHARACTER_CONTROL_STATE.PLAYERCONTROLLED)
             {
-				if ((input == INPUT_INVENTORY || input == INPUT_FLOWERS) && recentlyPickedFlower != null)
-				{
-					OpenBook(1);
+                if ((input == INPUT_INVENTORY || input == INPUT_FLOWERS) && recentlyPickedFlower != null)
+                {
+                    OpenBook(1);
 
-					int i = _flowerPages.FindIndex(x => x.GetFlower() == recentlyPickedFlower) +2;
-					if(i == -1)
-					{
-						Debug.LogErrorFormat("Book Manager failed to find a page covering the flower {0}", recentlyPickedFlower.itemName);
-					}
-					Debug.LogFormat("Change To Picked Flower! Picked flower is at page {0}", i);
-					SetCurrentFlowerPage(i);
-					recentlyPickedFlower = null;
-				}
-				else
-				{
-					OpenBook(index);
-				}
+                    int i = _flowerPages.FindIndex(x => x.GetFlower() == recentlyPickedFlower) + 2;
+                    if (i == -1)
+                    {
+                        Debug.LogErrorFormat("Book Manager failed to find a page covering the flower {0}", recentlyPickedFlower.itemName);
+                    }
+                    Debug.LogFormat("Change To Picked Flower! Picked flower is at page {0}", i);
+                    SetCurrentFlowerPage(i);
+                    recentlyPickedFlower = null;
+                }
+                else
+                {
+                    OpenBook(index);
+                }
             }
             else
-			{
-				return false;
-			}
-			PageChangerActive(_currentBookmark);
+            {
+                return false;
+            }
+            PageChangerActive(_currentBookmark);
 
-			return true;
+            return true;
         }
         return false;
     }
@@ -296,9 +296,13 @@ public class BookManager : MonoBehaviour
 
     public void SetCurrentFlowerPage(int target)//Jens var här
     {
+        foreach (PageLoader loader in _bookmarks[_flowerOrganizerId].GetComponentsInChildren<PageLoader>())
+        {
+            loader.gameObject.SetActive(false);
+        }
         PageLoader[] flowerPages = _bookmarks[_flowerOrganizerId].GetComponentsInChildren<PageLoader>(true);
-        flowerPages[_currentPage].gameObject.SetActive(false);
-        flowerPages[_currentPage + 1].gameObject.SetActive(false);
+        //flowerPages[_currentPage].gameObject.SetActive(false);
+        //flowerPages[_currentPage + 1].gameObject.SetActive(false);
         _currentPage = target;
         flowerPages[_currentPage].gameObject.SetActive(true);
         flowerPages[_currentPage + 1].gameObject.SetActive(true);

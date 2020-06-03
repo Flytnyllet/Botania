@@ -33,8 +33,10 @@ public static class FlowerLibrary
 
     public static void Wipe()
     {
-        _flowerTypes.Clear();
-        _potionTypes.Clear();
+        _flowerTypes = new Dictionary<string, FlowerData>();
+        _potionTypes = new Dictionary<string, int>();
+
+        Save();
     }
 
     public static void Save()

@@ -8,19 +8,19 @@ public class AlternativeInteractText : InteractText
     {
         if (_textPopUp != null)
         {
-            if (NotificationObject.currentCoroutineText != null)
-                StopCoroutine(NotificationObject.currentCoroutineText);
+            if (_notifciationObj.currentCoroutineText != null)
+                StopCoroutine(_notifciationObj.currentCoroutineText);
 
-            NotificationObject.currentCoroutineText = StartCoroutine(FadeOut(1, 2));
+            _notifciationObj.currentCoroutineText = StartCoroutine(FadeOut(1, 2));
         }
 
 
         if (_imagePopUp != null)
         {
-            if (NotificationObject.currentCoroutineImage != null)
-                StopCoroutine(NotificationObject.currentCoroutineImage);
+            if (_notifciationObj.currentCoroutineImage != null)
+                StopCoroutine(_notifciationObj.currentCoroutineImage);
 
-            NotificationObject.currentCoroutineImage = StartCoroutine(FadeOut(1.5f, 2));
+            _notifciationObj.currentCoroutineImage = StartCoroutine(FadeOut(1.5f, 2));
         }
 
     }

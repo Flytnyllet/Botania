@@ -3,16 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public static class NotificationObject
-{
-    public static Coroutine currentCoroutineText;
-    public static Coroutine currentCoroutineImage;
-    public static string name { get; set; }
-    public static Sprite sprite { get; set; }
-}
+
 
 public class InteractText : UIElement
 {
+    protected class NotificationObject
+    {
+        public Coroutine currentCoroutineText;
+        public Coroutine currentCoroutineImage;
+        public string name { get; set; }
+        public Sprite sprite { get; set; }
+    }
+    protected NotificationObject _notifciationObj = new NotificationObject();
     protected Text _textPopUp;
     protected Image _imagePopUp;
     protected string _text;
@@ -37,21 +39,21 @@ public class InteractText : UIElement
     {
         if (_textPopUp != null)
         {
-            if (NotificationObject.currentCoroutineText != null)
-                StopCoroutine(NotificationObject.currentCoroutineText);
+            if (_notifciationObj.currentCoroutineText != null)
+                StopCoroutine(_notifciationObj.currentCoroutineText);
 
             _textPopUp.text = _text;
-            NotificationObject.currentCoroutineText = StartCoroutine(FadeOut(1, 2));
+            _notifciationObj.currentCoroutineText = StartCoroutine(FadeOut(1, 2));
         }
 
 
         if (_imagePopUp != null)
         {
-            if (NotificationObject.currentCoroutineImage != null)
-                StopCoroutine(NotificationObject.currentCoroutineImage);
+            if (_notifciationObj.currentCoroutineImage != null)
+                StopCoroutine(_notifciationObj.currentCoroutineImage);
 
             _imagePopUp.sprite = sprite;
-            NotificationObject.currentCoroutineImage = StartCoroutine(FadeOut(1.5f, 2));
+            _notifciationObj.currentCoroutineImage = StartCoroutine(FadeOut(1.5f, 2));
         }
 
     }
