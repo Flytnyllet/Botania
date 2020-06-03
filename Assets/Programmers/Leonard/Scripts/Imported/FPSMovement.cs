@@ -146,9 +146,9 @@ public class FPSMovement : MonoBehaviour
         //    camScript.smoothing = !camScript.smoothing;
         //}
 
-        if (Input.GetButtonDown("Jump") && charCon.isGrounded && !_inAir && _cameraAboveSurface && !Input.GetButton(DUCK_BUTTON) && _grounded)
+        if (Input.GetButtonDown(InputKeyWords.JUMP) && charCon.isGrounded && !_inAir && _cameraAboveSurface && !Input.GetButton(InputKeyWords.DUCK) && _grounded)
         {
-            Debug.Log("JUMP!");
+            //Debug.Log("JUMP!");
             _emitPlayerSound.Init_Jump();
             _velocity.y = 0;
             Launch(new Vector3(0, 1f * _jumpForce.Value, 0));
@@ -156,11 +156,11 @@ public class FPSMovement : MonoBehaviour
             _savedMoveModifier = _moveModifier;
         }
 
-        if (Input.GetButtonDown(DUCK_BUTTON))
+        if (Input.GetButtonDown(InputKeyWords.DUCK))
         {
             Ducking(-_duckDistance);
         }
-        else if (Input.GetButtonUp(DUCK_BUTTON))
+        else if (Input.GetButtonUp(InputKeyWords.DUCK))
         {
             Ducking(0);
         }
@@ -271,7 +271,7 @@ public class FPSMovement : MonoBehaviour
                 //}
                 if (!_inAir)
                 {
-                    if (Input.GetButton(DUCK_BUTTON))
+                    if (Input.GetButton(InputKeyWords.DUCK))
                     {
                         _moveModifier *= _crawlSpeedFactor;
                     }
