@@ -20,11 +20,11 @@ public class Amb_Underwater : MonoBehaviour
     {
         underwater_Description.createInstance(out underwater_Instance);
         underwater_Instance.start();
-        underwater_Instance.release();
     }
 
     private void OnDisable()
     {
+        underwater_Instance.release();
         underwater_Instance.triggerCue();
     }
 }

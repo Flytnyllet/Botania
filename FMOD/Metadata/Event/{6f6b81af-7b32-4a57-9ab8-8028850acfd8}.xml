@@ -167,26 +167,32 @@
 		</relationship>
 	</object>
 	<object class="SoundScatterer" id="{c21793fd-c628-44d5-9f67-7e98bf0018d9}">
+		<property name="start">
+			<value>1.5461752981591912</value>
+		</property>
 		<property name="length">
-			<value>2.1501644736842107</value>
+			<value>0.99582812094892392</value>
+		</property>
+		<property name="volume">
+			<value>-3.5</value>
 		</property>
 		<property name="minimumTimeBetweenSounds">
 			<value>2000</value>
 		</property>
 		<property name="maximumTimeBetweenSounds">
-			<value>7000</value>
+			<value>6500</value>
 		</property>
 		<property name="minimumScatterDistance">
-			<value>5.5999999</value>
+			<value>0</value>
 		</property>
 		<property name="maximumScatterDistance">
-			<value>7.5999999</value>
+			<value>0</value>
 		</property>
 		<property name="volumeRandomization">
-			<value>-3.5</value>
+			<value>-3</value>
 		</property>
 		<property name="pitchRandomization">
-			<value>0.449999988</value>
+			<value>0.549999952</value>
 		</property>
 		<relationship name="sound">
 			<destination>{178235e0-6235-4695-ae12-b22c6933b189}</destination>
@@ -194,7 +200,7 @@
 	</object>
 	<object class="EventMixerGroup" id="{f21cca50-8e66-4323-ac19-1fef4d7b68e9}">
 		<property name="volume">
-			<value>1.5</value>
+			<value>-10.5</value>
 		</property>
 		<property name="name">
 			<value>Audio 2</value>
@@ -268,7 +274,11 @@
 			<destination>{557d94d5-904e-4c94-9135-b80c5610b1a2}</destination>
 		</relationship>
 	</object>
-	<object class="MixerBusPanner" id="{97609a23-ae18-4061-9157-4ff994f9c248}" />
+	<object class="MixerBusPanner" id="{97609a23-ae18-4061-9157-4ff994f9c248}">
+		<property name="surroundPanDirection">
+			<value>-130.095734</value>
+		</property>
+	</object>
 	<object class="MixerBusFader" id="{9771e01a-d570-40cf-b3cc-67eebdf6ab47}" />
 	<object class="RandomizerModulator" id="{71f4f7ef-1151-4cdc-8178-8b474b83daea}">
 		<property name="nameOfPropertyBeingModulated">
@@ -315,7 +325,14 @@
 			<destination>{546af428-2f4f-42b0-912e-6529c758c83f}</destination>
 		</relationship>
 	</object>
-	<object class="MixerBusPanner" id="{dfcff4bd-ae0a-498a-b127-2ba312b77d4a}" />
+	<object class="MixerBusPanner" id="{dfcff4bd-ae0a-498a-b127-2ba312b77d4a}">
+		<property name="surroundPanDirection">
+			<value>4.49885368</value>
+		</property>
+		<property name="surroundPanExtent">
+			<value>285.910461</value>
+		</property>
+	</object>
 	<object class="FadeCurve" id="{c229cf88-be82-41ef-8237-f8946e89e6d9}">
 		<relationship name="startPoint">
 			<destination>{43cde998-369c-47d0-9038-452e664fde7a}</destination>
@@ -358,7 +375,7 @@
 			<value>-8.5</value>
 		</property>
 		<property name="dryLevel">
-			<value>5.5</value>
+			<value>3</value>
 		</property>
 	</object>
 	<object class="MixerBusFader" id="{557d94d5-904e-4c94-9135-b80c5610b1a2}" />
@@ -405,20 +422,24 @@
 	</object>
 	<object class="ThreeEQEffect" id="{42172cd8-6074-438d-97c8-b850d392b824}">
 		<property name="lowGain">
-			<value>-21</value>
+			<value>-25</value>
 		</property>
 		<property name="midGain">
-			<value>4</value>
+			<value>1</value>
 		</property>
 		<property name="highGain">
 			<value>-80</value>
 		</property>
-		<property name="lowCrossover">
-			<value>520</value>
-		</property>
 		<property name="highCrossover">
-			<value>560</value>
+			<value>140</value>
 		</property>
+		<property name="crossoverSlope">
+			<value>0</value>
+		</property>
+		<relationship name="modulators">
+			<destination>{e3b21ae5-fbe9-411d-a179-470c09d077ee}</destination>
+			<destination>{271bdcde-7374-4bef-a317-f7cbd82c2597}</destination>
+		</relationship>
 	</object>
 	<object class="MixerBusFader" id="{3cef27ab-3241-465e-acab-0d85b3cb1048}" />
 	<object class="SingleSound" id="{5e73daa4-3887-45f4-b930-9fa76ffa52e0}">
@@ -462,7 +483,7 @@
 			<value>6.5</value>
 		</property>
 		<property name="highGain">
-			<value>4</value>
+			<value>6</value>
 		</property>
 		<property name="lowCrossover">
 			<value>620</value>
@@ -494,10 +515,13 @@
 			<value>-36</value>
 		</property>
 		<property name="earlyLateMix">
-			<value>92</value>
+			<value>89</value>
 		</property>
 		<property name="wetLevel">
-			<value>-11</value>
+			<value>-8</value>
+		</property>
+		<property name="dryLevel">
+			<value>-3</value>
 		</property>
 	</object>
 	<object class="MixerBusFader" id="{546af428-2f4f-42b0-912e-6529c758c83f}" />
@@ -517,7 +541,7 @@
 	</object>
 	<object class="AutomationPoint" id="{50cfaaa5-bee1-4653-a0c4-414e0c64628a}">
 		<property name="position">
-			<value>1.875</value>
+			<value>1.5</value>
 		</property>
 		<property name="value">
 			<value>100</value>
@@ -525,7 +549,7 @@
 	</object>
 	<object class="AutomationPoint" id="{0dbdef96-fbee-461d-9d0d-17cf0781732f}">
 		<property name="position">
-			<value>2.1197204058730823</value>
+			<value>2.5</value>
 		</property>
 		<property name="value">
 			<value>100</value>
@@ -546,6 +570,31 @@
 		</property>
 	</object>
 	<object class="MixerBusFader" id="{c0aebbe4-91bb-48c9-8d64-6ba458afdfa7}" />
+	<object class="LFOModulator" id="{e3b21ae5-fbe9-411d-a179-470c09d077ee}">
+		<property name="nameOfPropertyBeingModulated">
+			<value>highCrossover</value>
+		</property>
+		<property name="rate">
+			<value>0.00500000035</value>
+		</property>
+		<property name="depth">
+			<value>1</value>
+		</property>
+		<property name="direction">
+			<value>-16</value>
+		</property>
+	</object>
+	<object class="LFOModulator" id="{271bdcde-7374-4bef-a317-f7cbd82c2597}">
+		<property name="nameOfPropertyBeingModulated">
+			<value>lowCrossover</value>
+		</property>
+		<property name="rate">
+			<value>0.100000009</value>
+		</property>
+		<property name="depth">
+			<value>10</value>
+		</property>
+	</object>
 	<object class="RandomizerModulator" id="{09b7256b-19b9-4669-a246-cb84ec1cc172}">
 		<property name="nameOfPropertyBeingModulated">
 			<value>pitch</value>

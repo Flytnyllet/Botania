@@ -20,6 +20,10 @@ public class Menu : MonoBehaviour
     [SerializeField] MenuItemHover[] _changeNames;
     [SerializeField] GameObject _logo;
 
+    [Header("UI Sounds")]
+    [EventRef] public string ui_select_Ref;
+    [EventRef] public string ui_start_Ref;
+
     CHARACTER_CONTROL_STATE _previousState;
 
     bool _onStart = true;
@@ -132,6 +136,19 @@ public class Menu : MonoBehaviour
         }
 
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex, LoadSceneMode.Single);
+    }
+
+    public void Init_UI_Select()
+    {
+        RuntimeManager.PlayOneShot(ui_select_Ref);
+    }
+
+    public void Init_UI_Start()
+    {
+        if (Music_Manager.Instance.StartMenu)
+            RuntimeManager.PlayOneShot(ui_start_Ref);
+        else
+            return;
     }
 }
 
