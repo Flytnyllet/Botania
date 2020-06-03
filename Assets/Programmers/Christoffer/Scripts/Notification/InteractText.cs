@@ -13,27 +13,30 @@ public static class NotificationObject
 
 public class InteractText : UIElement
 {
-    private Text _textPopUp;
-    private Image _imagePopUp;
-    private string _text;
+    protected Text _textPopUp;
+    protected Image _imagePopUp;
+    protected string _text;
 
     void Start()
     {
-        if (GetComponent<Text>() != null) {
+        if (GetComponent<Text>() != null)
+        {
             element = GetComponent<Text>();
             _textPopUp = GetComponent<Text>();
         }
 
-        if (GetComponent<Image>() != null) {
+        if (GetComponent<Image>() != null)
+        {
             element = GetComponent<Image>();
             _imagePopUp = GetComponent<Image>();
         }
         PickupFlower.onPickUpEvent += PopUp;
     }
 
-    public void PopUp(string _text, Sprite sprite = null)
+    public virtual void PopUp(string _text = null, Sprite sprite = null)
     {
-        if (_textPopUp != null) {
+        if (_textPopUp != null)
+        {
             if (NotificationObject.currentCoroutineText != null)
                 StopCoroutine(NotificationObject.currentCoroutineText);
 
