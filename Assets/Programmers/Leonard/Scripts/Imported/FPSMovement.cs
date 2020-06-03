@@ -80,12 +80,12 @@ public class FPSMovement : MonoBehaviour
     bool _inWater = false;
     bool _swimming = false;
     bool _isUnderwater = false;
-	bool _cameraAboveSurface = true;
+    bool _cameraAboveSurface = true;
     float _savedMoveModifier = 1.0f;
 
     [Header("Potion Effects")]
     [SerializeField] float _levitationSpeed = 1f;
-	[SerializeField] float _levitationFallSpeed = 3f;
+    [SerializeField] float _levitationFallSpeed = 3f;
 
     //[SerializeField] float teleportationTime = 2f;
     [SerializeField] float _teleportationFloatSpeed = 1f;
@@ -187,9 +187,9 @@ public class FPSMovement : MonoBehaviour
 
             _isUnderwater = (!isStoned && !_inWater && (_lastWaterChunk == null ? false : _lastWaterChunk.transform.position.y > transform.position.y));
 
-			DivingSounds();
+            DivingSounds();
 
-			if (_inAir && charCon.isGrounded)
+            if (_inAir && charCon.isGrounded)
             {
                 _emitPlayerSound.Init_Land();
             }
@@ -301,15 +301,14 @@ public class FPSMovement : MonoBehaviour
 
     }
 
-	public static bool IsSwimming()
-	{
-		return playerMovement._swimming;
-	}
+    public static bool IsSwimming()
+    {
+        return playerMovement._swimming;
+    }
 
     public void Teleport(Vector3 position)
     {
         charCon.Move(position - transform.position);
-        //transform.position = position;
     }
 
     public bool PositionCorrection(float placementHeight)
@@ -369,10 +368,10 @@ public class FPSMovement : MonoBehaviour
         return false;
     }
 
-    void Teleportation()
+    public void Teleportation(Vector3 targetPosition = new Vector3(), bool setTarget = false)
     {
         CharacterState.SetControlState(CHARACTER_CONTROL_STATE.CUTSCENE);
-        StartCoroutine(Teleportation_Execution());
+        StartCoroutine(Teleportation_Execution(targetPosition, setTarget));
     }
 
     IEnumerator Fade(float fadeTime, Image image, float change)
@@ -408,7 +407,7 @@ public class FPSMovement : MonoBehaviour
         }
     }
 
-    IEnumerator Teleportation_Execution()
+    IEnumerator Teleportation_Execution(Vector3 targetPosition = new Vector3(), bool setTarget = false)
     {
         // =====================
         // TELEPORTATION WIND-UP
@@ -431,20 +430,28 @@ public class FPSMovement : MonoBehaviour
         _loadScreen.color += new Color(0f, 0f, 0f, 1f);
         _loadIcon.color += new Color(0f, 0f, 0f, 1f);
 
-        // =====================
+        if (setTarget == false)
+        {
+            // =====================
 
-        // =====================
-        // ACTUAL TELEPORTATION
-        // =====================
+            // =====================
+            // ACTUAL TELEPORTATION
+            // =====================
 
-        float teleportRadius = Random.Range(_teleportMinDistance, _teleportMaxDistance);
-        float teleportAngle = Random.Range(0, 360f);
-        Vector2 teleportPoint = Mathf.Sin(teleportAngle) * teleportRadius * Vector2.right + Mathf.Cos(teleportAngle) * teleportRadius * Vector2.up;
-        Vector3 teleportTarget = transform.position + Vector3.right * teleportPoint.x + Vector3.forward * teleportPoint.y;
-        //Vector3.right * transform.position.x * teleportPoint.x + Vector3.forward * transform.position.z * teleportPoint.y;
-        Debug.LogFormat("Teleportation target: {0}", teleportTarget);
-        Teleport(teleportTarget);
+            float teleportRadius = Random.Range(_teleportMinDistance, _teleportMaxDistance);
+            float teleportAngle = Random.Range(0, 360f);
+            Vector2 teleportPoint = Mathf.Sin(teleportAngle) * teleportRadius * Vector2.right + Mathf.Cos(teleportAngle) * teleportRadius * Vector2.up;
+            Vector3 teleportTarget = transform.position + Vector3.right * teleportPoint.x + Vector3.forward * teleportPoint.y;
+            //Vector3.right * transform.position.x * teleportPoint.x + Vector3.forward * transform.position.z * teleportPoint.y;
+            Debug.LogFormat("Teleportation target: {0}", teleportTarget);
 
+
+            Teleport(teleportTarget);
+        }
+        else
+        {
+            Teleport(targetPosition);
+        }
         _loadIcon.color += new Color(0f, 0f, 0f, 1f);
         Fade(1f, _loadScreen, -1f);
 
@@ -725,24 +732,24 @@ public class FPSMovement : MonoBehaviour
 		return false;*/
     }
 
-	void DivingSounds()
-	{
-		if(_lastWaterChunk != null)
-		{
-			if(_cameraAboveSurface == true && _playerCam.transform.position.y < _lastWaterChunk.transform.position.y)
-			{
+    void DivingSounds()
+    {
+        if (_lastWaterChunk != null)
+        {
+            if (_cameraAboveSurface == true && _playerCam.transform.position.y < _lastWaterChunk.transform.position.y)
+            {
                 _emitPlayerSound.Init_EnterUnderwater(1);
 
-				_cameraAboveSurface = false;
-			}
-			else if(_cameraAboveSurface == false && _playerCam.transform.position.y > _lastWaterChunk.transform.position.y)
-			{
+                _cameraAboveSurface = false;
+            }
+            else if (_cameraAboveSurface == false && _playerCam.transform.position.y > _lastWaterChunk.transform.position.y)
+            {
                 _emitPlayerSound.Init_EnterUnderwater(0);
 
                 _cameraAboveSurface = true;
-			}
-		}
-	}
+            }
+        }
+    }
 
     void FootstepsSound()
     {

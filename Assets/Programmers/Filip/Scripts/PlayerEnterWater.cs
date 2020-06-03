@@ -5,9 +5,12 @@ using UnityEngine;
 public class PlayerEnterWater : MonoBehaviour
 {
     [Header("Settings")]
-    Transform _camera;
-    Color _colour;
-    [SerializeField] Color _skyboxColour;
+    Camera _camera;
+    [SerializeField] Color _colour;
+    [SerializeField] Material _underWaterEffect;
+    [SerializeField] CameraEffect _cameraEffects;
+    [SerializeField] LayerMask _underWaterCullingMask;
+    LayerMask _surfaceWaterCullingMask;
     [SerializeField] float _seaLevel;
 
     [Header("Drop")]
@@ -18,14 +21,15 @@ public class PlayerEnterWater : MonoBehaviour
     bool _isInWater = false;
     private void Start()
     {
-        _camera = Camera.main.transform;
-        _colour = RenderSettings.fogColor;
+        _camera = Camera.main;
+        _surfaceWaterCullingMask = _camera.cullingMask;
+        _underWaterEffect.SetColor("_WaterCol", _colour);
     }
     private void Update()
     {
-        if (_camera.position.y <= _seaLevel && !_isInWater)
+        if (_camera.transform.position.y <= _seaLevel && !_isInWater)
             ToggleWater(true);
-        else if (_camera.position.y > _seaLevel && _isInWater)
+        else if (_camera.transform.position.y > _seaLevel && _isInWater)
             ToggleWater(false);
     }
 
@@ -35,8 +39,14 @@ public class PlayerEnterWater : MonoBehaviour
 
         if (status)
         {
-            RenderSettings.fogColor = _skyboxColour;// new Color(0.384f, 0.322f, 0.549f); //Magic background colour numbers
-            RenderSettings.fogEndDistance = 10;
+            _camera.cullingMask = _underWaterCullingMask;
+            _underWaterEffect.SetFloat("_Distance", 200);
+            _cameraEffects.ActivateImageEffect(_underWaterEffect);
+        }
+        else
+        {
+            _camera.cullingMask = _surfaceWaterCullingMask;
+            _cameraEffects.RemoveImageEffect(_underWaterEffect);
         }
 
         for (int i = 0; i < _toggleOnGameObjects.Length; i++)

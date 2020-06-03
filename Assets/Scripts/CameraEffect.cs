@@ -89,7 +89,10 @@ public class CameraEffect : MonoBehaviour
     }
 
 
-
+    public void RemoveImageEffect(Material material)
+    {
+        _effectMaterials.Remove(material);
+    }
 
 
     public void ActivateImageEffect(Material material)
@@ -298,7 +301,7 @@ public class CameraEffect : MonoBehaviour
     }
 
 
-    
+
 
     IEnumerator LerpWaterEffect(float lerpTime)
     {
@@ -323,7 +326,7 @@ public class CameraEffect : MonoBehaviour
         float camAspect = _camera.aspect;
         float fovWHalf = _camera.fieldOfView * 0.5f * Mathf.Deg2Rad;
 
-        Vector3 toRight = _camera.transform.right * Mathf.Tan(fovWHalf ) * camAspect;
+        Vector3 toRight = _camera.transform.right * Mathf.Tan(fovWHalf) * camAspect;
         Vector3 toTop = _camera.transform.up * Mathf.Tan(fovWHalf);
 
         Vector3 topLeft = (_camera.transform.forward - toRight + toTop);

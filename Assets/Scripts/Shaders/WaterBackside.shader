@@ -1,4 +1,4 @@
-﻿Shader "Botania/Water"
+﻿Shader "Botania/WaterBack"
 {
 	Properties
 	{
@@ -23,15 +23,14 @@
 	}
 		SubShader
 		{
-			Tags  { "RenderType" = "Transparent" "IgnoreProjector" = "True" "Queue" = "Transparent" }
+			Tags  { "RenderType" = "Opaque" }
 			LOD 200
-			Cull off
-			Blend SrcAlpha OneMinusSrcAlpha
+			Cull front
 			ZWrite On
 			
 			CGPROGRAM
 			// Physically based Standard lighting model, and enable shadows on all light types
-			#pragma surface surf Standard exclude_path:deferred exclude_path:prepass alpha:fade  
+			#pragma surface surf Standard 
 
 			#pragma target 3.0
 

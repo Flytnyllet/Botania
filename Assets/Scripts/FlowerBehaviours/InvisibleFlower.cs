@@ -6,6 +6,7 @@ public class InvisibleFlower : MonoBehaviour
 {
     bool _IsVissible { get => CharacterState.IsAbilityFlagActive(ABILITY_FLAG.VISSION) || CharacterState.IsAbilityFlagActive(ABILITY_FLAG.CALM_ALL_FLOWERS); }
     Collider _collider;
+    bool _pickedUp = false;
     [SerializeField] MeshRenderer[] _renderer;
     [SerializeField] Texture2D _visibleTex;
     [SerializeField] Texture2D _invisibleTex;
@@ -16,13 +17,16 @@ public class InvisibleFlower : MonoBehaviour
     }
     void SetVissibility(EventParameter param = null)
     {
-        _collider.enabled = _IsVissible;
+        _collider.enabled = (_IsVissible && !_pickedUp);
         foreach (MeshRenderer renderer in _renderer)
         {
-            renderer.material.SetTexture("_Alpha", _IsVissible ? _visibleTex : _invisibleTex);
+            renderer.material.SetTexture("_Alpha", (_IsVissible && !_pickedUp) ? _visibleTex : _invisibleTex);
         }
     }
-
+    public void Pickup()
+    {
+        _pickedUp = true;
+    }
     private void OnEnable()
     {
         SetVissibility();

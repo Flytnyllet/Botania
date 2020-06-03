@@ -36,9 +36,10 @@ public class Player_Emitter : MonoBehaviour
         EventManager.Subscribe(EventNameLibrary.OPEN_BOOK, Init_Book_Open);
         EventManager.Subscribe(EventNameLibrary.CLOSE_BOOK, Init_Book_Close);
         EventManager.Subscribe(EventNameLibrary.FLIP_PAGE, Init_Book_Page);
-        EventManager.Subscribe(EventNameLibrary.DRINK_POTION,Init_Potion_Drink);
+        EventManager.Subscribe(EventNameLibrary.DRINK_POTION, Init_Potion_Drink);
         EventManager.Subscribe(EventNameLibrary.CREATE_POTION, Init_Potion_Create);
         EventManager.Subscribe(EventNameLibrary.TELEPOT, Init_Potion_Teleportation);
+        PickupFlower.onPickUpEvent += Init_Book_Scribble;
     }
     private void OnDisable()
     {
@@ -51,7 +52,7 @@ public class Player_Emitter : MonoBehaviour
     }
 
     private void Start()
-    {   
+    {
         _movement = GetComponentInParent<FPSMovement>();
         event_P_Mov_Footsteps = RuntimeManager.CreateInstance(player_Data.p_mov_rnd_footsteps);
         event_P_Mov_Swim = RuntimeManager.CreateInstance(player_Data.p_mov_swim);
@@ -133,7 +134,7 @@ public class Player_Emitter : MonoBehaviour
         event_Book_Close.start();
     }
 
-    public void Init_Book_Scribble()
+    public void Init_Book_Scribble(string _text = null, Sprite sprite = null)
     {
         event_Book_Scribble.start();
     }
