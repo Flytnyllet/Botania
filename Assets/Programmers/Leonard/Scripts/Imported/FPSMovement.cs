@@ -228,7 +228,7 @@ public class FPSMovement : MonoBehaviour
             // Everything that can be done while grounded
             if (grounded)
             {
-                if (Input.GetButton(InputKeyWords.SPRINT))
+                if (Input.GetAxisRaw(InputKeyWords.SPRINT) != 0)
                 {
                     moveModifier *= _sprintSpeedFactor;
                 }
