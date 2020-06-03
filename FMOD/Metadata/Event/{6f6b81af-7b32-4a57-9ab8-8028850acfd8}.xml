@@ -174,25 +174,25 @@
 			<value>0.99582812094892392</value>
 		</property>
 		<property name="volume">
-			<value>-5.5</value>
+			<value>-3.5</value>
 		</property>
 		<property name="minimumTimeBetweenSounds">
 			<value>2000</value>
 		</property>
 		<property name="maximumTimeBetweenSounds">
-			<value>7500</value>
+			<value>6500</value>
 		</property>
 		<property name="minimumScatterDistance">
 			<value>0</value>
 		</property>
 		<property name="maximumScatterDistance">
-			<value>0.599999964</value>
+			<value>0</value>
 		</property>
 		<property name="volumeRandomization">
 			<value>-3</value>
 		</property>
 		<property name="pitchRandomization">
-			<value>0.449999988</value>
+			<value>0.549999952</value>
 		</property>
 		<relationship name="sound">
 			<destination>{178235e0-6235-4695-ae12-b22c6933b189}</destination>
@@ -200,7 +200,7 @@
 	</object>
 	<object class="EventMixerGroup" id="{f21cca50-8e66-4323-ac19-1fef4d7b68e9}">
 		<property name="volume">
-			<value>-13</value>
+			<value>-10.5</value>
 		</property>
 		<property name="name">
 			<value>Audio 2</value>
@@ -275,8 +275,8 @@
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{97609a23-ae18-4061-9157-4ff994f9c248}">
-		<property name="surroundPanExtent">
-			<value>161.600006</value>
+		<property name="surroundPanDirection">
+			<value>-130.095734</value>
 		</property>
 	</object>
 	<object class="MixerBusFader" id="{9771e01a-d570-40cf-b3cc-67eebdf6ab47}" />
@@ -326,8 +326,11 @@
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{dfcff4bd-ae0a-498a-b127-2ba312b77d4a}">
+		<property name="surroundPanDirection">
+			<value>4.49885368</value>
+		</property>
 		<property name="surroundPanExtent">
-			<value>115.999992</value>
+			<value>285.910461</value>
 		</property>
 	</object>
 	<object class="FadeCurve" id="{c229cf88-be82-41ef-8237-f8946e89e6d9}">
@@ -515,10 +518,10 @@
 			<value>89</value>
 		</property>
 		<property name="wetLevel">
-			<value>-11</value>
+			<value>-8</value>
 		</property>
 		<property name="dryLevel">
-			<value>-5</value>
+			<value>-3</value>
 		</property>
 	</object>
 	<object class="MixerBusFader" id="{546af428-2f4f-42b0-912e-6529c758c83f}" />
