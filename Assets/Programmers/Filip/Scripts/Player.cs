@@ -53,7 +53,7 @@ public class Player : MonoBehaviour
     {
         object spawnPosition = Serialization.Load(Saving.FileNames.PLAYER_POSITION);
 
-        if (spawnPosition != null || (Vector3)spawnPosition == new Vector3(-1000, -1000, -1000))
+        if (spawnPosition != null && (Vector3)spawnPosition != new Vector3(-1000, -1000, -1000))
             _spawnPosition = (Vector3)spawnPosition;
     }
 
@@ -74,7 +74,7 @@ public class Player : MonoBehaviour
         do
         {
             yield return null;
-            hit = Physics.Raycast(_thisSingleton._playerParent.transform.position, Vector3.down, out collision, _distanceRayCast, _layerMask.value);
+            hit = Physics.Raycast(_spawnPosition, Vector3.down, out collision, _distanceRayCast, _layerMask.value);
             Debug.DrawRay(_thisSingleton._playerParent.transform.position, Vector3.down * _distanceRayCast, Color.cyan, 1f);
         } while (!hit);
 

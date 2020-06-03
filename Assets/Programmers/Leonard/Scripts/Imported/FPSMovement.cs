@@ -81,7 +81,9 @@ public class FPSMovement : MonoBehaviour
     bool _swimming = false;
     bool _isUnderwater = false;
     bool _cameraAboveSurface = true;
+    bool _grounded;
     float _savedMoveModifier = 1.0f;
+    float _moveModifier = 1.0f;
 
     [Header("Potion Effects")]
     [SerializeField] float _levitationSpeed = 1f;
@@ -142,6 +144,25 @@ public class FPSMovement : MonoBehaviour
         //    MouseLook camScript = _playerCam.GetComponent<MouseLook>();
         //    camScript.smoothing = !camScript.smoothing;
         //}
+
+        if (Input.GetButtonDown("Jump") && charCon.isGrounded && !_inAir && _cameraAboveSurface && !Input.GetButton(DUCK_BUTTON) && _grounded)
+        {
+            Debug.Log("JUMP!");
+            _emitPlayerSound.Init_Jump();
+            _velocity.y = 0;
+            Launch(new Vector3(0, 1f * _jumpForce.Value, 0));
+            _inAir = true;
+            _savedMoveModifier = _moveModifier;
+        }
+
+        if (Input.GetButtonDown(DUCK_BUTTON))
+        {
+            Ducking(-_duckDistance);
+        }
+        else if (Input.GetButtonUp(DUCK_BUTTON))
+        {
+            Ducking(0);
+        }
     }
 
     void FixedUpdate()
@@ -170,13 +191,13 @@ public class FPSMovement : MonoBehaviour
                 moveInput.Normalize();
             }
 
-            Vector3 jump = new Vector3(0, 1f * _jumpForce.Value, 0);
-            float moveModifier = 1.0f;
+            //Vector3 jump = new Vector3(0, 1f * _jumpForce.Value, 0);
+            _moveModifier = 1.0f;
 
             //Ground Detection
             //float terrainAngle;
             RaycastHit groundDetection;
-            bool grounded =
+            _grounded =
                 (GroundRay(transform.position, Vector3.down, charCon.bounds.size.y / 2 + _groundRayExtraDist, out groundDetection)
                 && true);
 
@@ -194,7 +215,7 @@ public class FPSMovement : MonoBehaviour
                 _emitPlayerSound.Init_Land();
             }
 
-            // == Functions ==
+            //== Functions ==
             if (charCon.isGrounded)
             {
                 _inAir = false;
@@ -227,49 +248,41 @@ public class FPSMovement : MonoBehaviour
                 Swimming(moveInput);
             }
             // Everything that can be done while grounded
-            if (grounded)
+            if (_grounded)
             {
                 if (Input.GetButton(SPRINT_BUTTON))
                 {
-                    moveModifier *= _sprintSpeedFactor;
+                    _moveModifier *= _sprintSpeedFactor;
                 }
                 // Jump, otherwise Slide, otherwise Walk
                 //if (Input.GetButtonDown("Jump") && groundDetection.distance <= charCon.bounds.size.y / 2 + _allowedJumpDistance && !_inAir && !Input.GetButton(DUCK_BUTTON))
-                if (Input.GetButtonDown("Jump") && !_inAir && _cameraAboveSurface && !Input.GetButton(DUCK_BUTTON))
-                {
-                    Debug.Log("JUMP!");
-                    _emitPlayerSound.Init_Jump();
-                    _velocity.y = 0;
-                    Launch(jump);
-                    _inAir = true;
-                    _savedMoveModifier = moveModifier;
-                }
+                //if (Input.GetButtonDown("Jump") && !_inAir && _cameraAboveSurface && !Input.GetButton(DUCK_BUTTON))
+                //{
+                //    Debug.Log("JUMP!");
+                //    _emitPlayerSound.Init_Jump();
+                //    _velocity.y = 0;
+                //    Launch(jump);
+                //    _inAir = true;
+                //    _savedMoveModifier = moveModifier;
+                //}
                 //else if (Input.GetButton(DUCK_BUTTON) && terrainAngle > 10f)
                 //{
                 //	Debug.Log("SLIDING!");
                 //	Sliding(x, slopeDirection);
                 //}
-                else
+                if (!_inAir)
                 {
-                    if (Input.GetButtonDown(DUCK_BUTTON))
+                    if (Input.GetButton(DUCK_BUTTON))
                     {
-                        Ducking(-_duckDistance);
-                    }
-                    else if (Input.GetButton(DUCK_BUTTON))
-                    {
-                        moveModifier *= _crawlSpeedFactor;
-                    }
-                    else if (Input.GetButtonUp(DUCK_BUTTON))
-                    {
-                        Ducking(0);
+                        _moveModifier *= _crawlSpeedFactor;
                     }
 
-                    Walking(moveInput.x, moveInput.y, groundDetection, moveModifier);
+                    Walking(moveInput.x, moveInput.y, groundDetection, _moveModifier);
 
                     // Bobbing
                     if (Settings.GetToggle(Toggles.Headbobbing))
                     {
-                        HeadBob(moveInput.x, moveInput.y, moveModifier);
+                        HeadBob(moveInput.x, moveInput.y, _moveModifier);
                     }
                 }
             }

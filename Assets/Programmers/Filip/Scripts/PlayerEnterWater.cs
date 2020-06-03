@@ -12,11 +12,15 @@ public class PlayerEnterWater : MonoBehaviour
     [SerializeField] LayerMask _underWaterCullingMask;
     LayerMask _surfaceWaterCullingMask;
     [SerializeField] float _seaLevel;
+    [SerializeField] Color _particleWaterColour;
+    [SerializeField] ParticleSystem _surfaceParticles;
+    [SerializeField] ParticleSystem _waterParticles;
+    ParticleSystem.MinMaxGradient _surfaceCol;
+    ParticleSystem.MinMaxGradient _waterCol;
 
     [Header("Drop")]
 
     [SerializeField] GameObject[] _toggleOnGameObjects;
-    [SerializeField] GameObject[] _toggleOffGameObjects;
 
     bool _isInWater = false;
     private void Start()
@@ -24,6 +28,9 @@ public class PlayerEnterWater : MonoBehaviour
         _camera = Camera.main;
         _surfaceWaterCullingMask = _camera.cullingMask;
         _underWaterEffect.SetColor("_WaterCol", _colour);
+        _surfaceCol = new ParticleSystem.MinMaxGradient(_surfaceParticles.main.startColor.colorMin, _surfaceParticles.main.startColor.colorMin);
+        _waterCol = new ParticleSystem.MinMaxGradient(_waterParticles.main.startColor.colorMin, _waterParticles.main.startColor.colorMin);
+
     }
     private void Update()
     {
@@ -39,12 +46,16 @@ public class PlayerEnterWater : MonoBehaviour
 
         if (status)
         {
+            var module = _surfaceParticles.main;
+            module.startColor = _waterCol;
             _camera.cullingMask = _underWaterCullingMask;
             _underWaterEffect.SetFloat("_Distance", 200);
             _cameraEffects.ActivateImageEffect(_underWaterEffect);
         }
         else
         {
+            var module = _surfaceParticles.main;
+            module.startColor = _surfaceCol;
             _camera.cullingMask = _surfaceWaterCullingMask;
             _cameraEffects.RemoveImageEffect(_underWaterEffect);
         }
@@ -52,11 +63,6 @@ public class PlayerEnterWater : MonoBehaviour
         for (int i = 0; i < _toggleOnGameObjects.Length; i++)
         {
             _toggleOnGameObjects[i].SetActive(status);
-        }
-
-        for (int i = 0; i < _toggleOffGameObjects.Length; i++)
-        {
-            _toggleOffGameObjects[i].SetActive(!status);
         }
     }
 }
