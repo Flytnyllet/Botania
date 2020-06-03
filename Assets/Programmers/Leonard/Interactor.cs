@@ -5,8 +5,6 @@ using UnityEngine.UI;
 
 public class Interactor : MonoBehaviour
 {
-    static readonly string PLAYER_INTERACT_ACTION = "Fire1";
-
     static GameObject _log;
     static GameObject _logEntry;
 
@@ -103,7 +101,7 @@ public class Interactor : MonoBehaviour
 
 			ChangeLookingCursor(lookingAtFlower);
 
-			if (Input.GetButtonDown(PLAYER_INTERACT_ACTION))
+			if (Input.GetButtonDown(InputKeyWords.ACTION_0))
 			{
 				IInteractable[] interactables = collision.transform.GetComponents<IInteractable>();
 				Debug.Log(collision.transform.name);

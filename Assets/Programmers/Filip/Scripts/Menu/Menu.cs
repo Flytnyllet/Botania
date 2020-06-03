@@ -8,8 +8,6 @@ using UnityEngine.UI;
 
 public class Menu : MonoBehaviour
 {
-    const string MENU_BUTTON = "Cancel";
-
     [Header("Settings")]
 
 
@@ -32,7 +30,7 @@ public class Menu : MonoBehaviour
 
     void Update()
     {
-        if ((_onStart || Input.GetButtonDown(MENU_BUTTON)) && _menu != null)
+        if ((_onStart || Input.GetButtonDown(InputKeyWords.CANCEL)) && _menu != null)
         {
             _onStart = false;
 

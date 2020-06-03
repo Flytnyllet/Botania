@@ -8,12 +8,6 @@ public class BookManager : MonoBehaviour
 {
     public static BookManager Instance;
 
-    const string INPUT_INVENTORY = "Inventory";
-    const string INPUT_MAP = "Map";
-    const string INPUT_FLOWERS = "Flowers";
-    const string INPUT_LORE = "Lore";
-    const string INPUT_ALCHEMY = "Alchemy";
-    const string OPEN_WHEEL = "Wheel";
     [SerializeField] Sprite[] _BookSprites = null;
 
     [SerializeField] List<GameObject> _bookmarks = new List<GameObject>();
@@ -106,17 +100,17 @@ public class BookManager : MonoBehaviour
 
     void InputHandling()
     {
-        if (OpenBookmark(_currentBookmark, INPUT_INVENTORY)) ;
+        if (OpenBookmark(_currentBookmark, InputKeyWords.INVENTORY)) ;
 
-        else if (OpenBookmark(4, INPUT_MAP)) ;
+        else if (OpenBookmark(4, InputKeyWords.MAP)) ;
 
-        else if (OpenBookmark(2, INPUT_LORE)) ;
+        else if (OpenBookmark(2, InputKeyWords.LORE)) ;
 
-        else if (OpenBookmark(1, INPUT_FLOWERS)) ;
+        else if (OpenBookmark(1, InputKeyWords.FLOWERS)) ;
 
-        else if (OpenBookmark(3, INPUT_ALCHEMY)) ;
+        else if (OpenBookmark(3, InputKeyWords.ALCHEMY)) ;
 
-        else if (Input.GetButtonDown(OPEN_WHEEL) && !_book.activeSelf && CharacterState.Control_State == CHARACTER_CONTROL_STATE.PLAYERCONTROLLED)
+        else if (Input.GetButtonDown(InputKeyWords.WHEEL) && !_book.activeSelf && CharacterState.Control_State == CHARACTER_CONTROL_STATE.PLAYERCONTROLLED)
         {
             _potionWheel.SetActive(true);
             //_potionWheel.SetActive(!_potionWheel.activeSelf);
@@ -129,12 +123,12 @@ public class BookManager : MonoBehaviour
             //	CharacterState.SetControlState(CHARACTER_CONTROL_STATE.PLAYERCONTROLLED);
             //}
         }
-        else if (Input.GetButtonUp(OPEN_WHEEL) && _potionWheel.activeSelf)
+        else if (Input.GetButtonUp(InputKeyWords.WHEEL) && _potionWheel.activeSelf)
         {
             _potionWheel.SetActive(false);
             CharacterState.SetControlState(CHARACTER_CONTROL_STATE.PLAYERCONTROLLED);
         }
-        else if (Input.GetKeyDown(KeyCode.Escape) && _book.activeSelf == true)
+        else if (Input.GetButtonDown(InputKeyWords.CANCEL) && _book.activeSelf == true)
         {
             CloseBook();
         }
@@ -173,7 +167,7 @@ public class BookManager : MonoBehaviour
             }
             else if (CharacterState.Control_State == CHARACTER_CONTROL_STATE.PLAYERCONTROLLED)
             {
-                if ((input == INPUT_INVENTORY || input == INPUT_FLOWERS) && recentlyPickedFlower != null)
+                if ((input == InputKeyWords.INVENTORY || input == InputKeyWords.FLOWERS) && recentlyPickedFlower != null)
                 {
                     OpenBook(1);
 

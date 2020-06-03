@@ -118,7 +118,7 @@ public class Mus_Blom_07 : MonoBehaviour
 
     private void SetBlom07Mov()
     {
-        if (Input.GetAxis("Horizontal") > 0.1f || Input.GetAxis("Vertical") > 0.1f)
+        if (Input.GetAxis(InputKeyWords.HORIZONTAL) > 0.1f || Input.GetAxis(InputKeyWords.VERTICAL) > 0.1f)
         {
             blom_07.Set_Parameter(blom_07._blom07MovParameterId, 1);
             blom_07.Set_Parameter(blom_07._blom07CalmParameterId, 0);

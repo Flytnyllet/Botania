@@ -13,7 +13,7 @@ public class Music_Idle_Trigger : MonoBehaviour
     {
         if (_firstFrame != _lastFrame)
         {
-            if (!Music_Manager.Instance.StartMenu && Input.GetAxis("Horizontal") == 0 && Input.GetAxis("Vertical") == 0)
+            if (!Music_Manager.Instance.StartMenu && Input.GetAxis(InputKeyWords.HORIZONTAL) == 0 && Input.GetAxis(InputKeyWords.VERTICAL) == 0)
             {
                 if (Random.Range(0f, 1f) > 0.8f)
                     _isIdleTrigger = true;
@@ -24,7 +24,7 @@ public class Music_Idle_Trigger : MonoBehaviour
             }
         }
 
-        if (Input.GetAxis("Vertical") > 0.01f || Input.GetAxis("Horizontal") > 0.01f)
+        if (Input.GetAxis(InputKeyWords.VERTICAL) > 0.01f || Input.GetAxis(InputKeyWords.HORIZONTAL) > 0.01f)
         {
             _isIdleTrigger = false;
             _idleTime = 0;

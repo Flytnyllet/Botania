@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class PotionWheelManager : MonoBehaviour
 {
-	const string MENU_ACTIVATE_BUTTON = "Use Wheel";
 	[SerializeField] BookManager _bookManager = null;
 	[SerializeField] GameObject _wheelRegion = null;
 	//[SerializeField] [Range(3, 8)] int _nrOfRegions = 4;
@@ -68,7 +67,7 @@ public class PotionWheelManager : MonoBehaviour
 				//Debug.Log("Same Region Selected");
 			}
 
-			ActivateSelectedRegion(MENU_ACTIVATE_BUTTON);
+			ActivateSelectedRegion(InputKeyWords.USE_WHEEL);
 		}
 		else
 		{
