@@ -67,6 +67,9 @@
 		<property name="voiceStealing">
 			<value>3</value>
 		</property>
+		<property name="triggerCooldown">
+			<value>40</value>
+		</property>
 	</object>
 	<object class="MarkerTrack" id="{bf695e9d-652f-4fd5-bf5a-f47589c5fb58}" />
 	<object class="GroupTrack" id="{c328f628-4f3a-40a6-8431-a1941d345228}">
@@ -138,7 +141,7 @@
 	</object>
 	<object class="EventMixerMaster" id="{5c7f28e7-e798-44e6-85f9-eb77999fe61d}">
 		<property name="volume">
-			<value>-9</value>
+			<value>-10.5</value>
 		</property>
 		<relationship name="modulators">
 			<destination>{d7fb2f7f-f36f-4ce9-a7bf-4dfe18c2d2d5}</destination>
@@ -228,6 +231,9 @@
 		<property name="startOffset">
 			<value>50.5</value>
 		</property>
+		<property name="volume">
+			<value>-6.5</value>
+		</property>
 		<property name="looping">
 			<value>true</value>
 		</property>
@@ -302,6 +308,9 @@
 		</property>
 		<property name="startOffset">
 			<value>50.5</value>
+		</property>
+		<property name="volume">
+			<value>-6.5</value>
 		</property>
 		<property name="looping">
 			<value>true</value>
@@ -837,12 +846,15 @@
 			<value>0</value>
 		</property>
 		<property name="curveShape">
-			<value>-0.0435059257</value>
+			<value>-1</value>
+		</property>
+		<property name="isSCurve">
+			<value>true</value>
 		</property>
 	</object>
 	<object class="AutomationPoint" id="{571e4740-e349-4369-8d24-a17f87de429d}">
 		<property name="position">
-			<value>0.29000000000000004</value>
+			<value>0.95000000000000007</value>
 		</property>
 		<property name="value">
 			<value>100</value>
@@ -932,10 +944,10 @@
 	</object>
 	<object class="AutomationPoint" id="{aaf9556b-9a76-4c3a-af5b-ae1b400e698e}">
 		<property name="position">
-			<value>1</value>
+			<value>0.91000000000000003</value>
 		</property>
 		<property name="value">
-			<value>-1</value>
+			<value>-2</value>
 		</property>
 	</object>
 	<object class="AutomationPoint" id="{f5620096-273c-4074-bd74-4982e5fce582}">
@@ -1158,7 +1170,7 @@
 			<value>1</value>
 		</property>
 		<property name="value">
-			<value>660</value>
+			<value>700</value>
 		</property>
 	</object>
 	<object class="AutomationPoint" id="{c18a13e8-c91e-4fcb-8f2e-f5b3120fde2f}">
@@ -1180,7 +1192,7 @@
 			<value>1</value>
 		</property>
 		<property name="value">
-			<value>4000</value>
+			<value>4500</value>
 		</property>
 	</object>
 	<object class="AutomationPoint" id="{6852e882-3b4a-4b92-ad4b-b5087886c93b}">
@@ -1191,7 +1203,7 @@
 			<value>22000</value>
 		</property>
 		<property name="curveShape">
-			<value>0.0866363645</value>
+			<value>-0.356760025</value>
 		</property>
 		<property name="isSCurve">
 			<value>true</value>
