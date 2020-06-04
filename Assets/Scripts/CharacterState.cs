@@ -15,10 +15,6 @@ public static class CharacterState
     public static CHARACTER_CONTROL_STATE Control_State { get => _controlState; }
     static List<ABILITY_FLAG> _abilityFlags = new List<ABILITY_FLAG>();
     public static float PositionType { get; set; }
-    static CharacterState()
-    {
-        Debug.Log(_abilityFlags.Count);
-    }
 
     //Förenkla läslighet i tillkopplad kod
     public static bool MayMove
