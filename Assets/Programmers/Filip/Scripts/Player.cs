@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    public static bool PlayerSpawned() { return _playerSpawned; }
+    static bool _playerSpawned = false;
+
     [SerializeField] float _seaLevelSpawn = 10;
     [SerializeField] MeshSettings _meshSettings;
     [SerializeField] Transform _playerParent;
@@ -15,6 +18,7 @@ public class Player : MonoBehaviour
 
     [SerializeField] FPSMovement _fpsScript;
 
+    MouseLook _mouseLook;
     Camera _playerCamera;
 
     //Singleton
@@ -32,7 +36,9 @@ public class Player : MonoBehaviour
         if (_thisSingleton == null)
         {
             _thisSingleton = this;
+            _playerSpawned = false;
             _playerTransform = GetComponent<Transform>();
+            _mouseLook = GetComponent<MouseLook>();
             _playerCamera = GetComponent<Camera>();
             _updateBiomeTableTimer = new Timer(_updateBiomeTime);
             _biomeInfo = _biomeInfoInstance;
@@ -44,17 +50,14 @@ public class Player : MonoBehaviour
             Destroy(this);
     }
 
-    private void Start()
-    {
-        _thisSingleton.StartCoroutine(PlacePlayer());
-    }
-
     public static void Load()
     {
         object spawnPosition = Serialization.Load(Saving.FileNames.PLAYER_POSITION);
 
         if (spawnPosition != null && (Vector3)spawnPosition != new Vector3(-1000, -1000, -1000))
             _spawnPosition = (Vector3)spawnPosition;
+
+        _thisSingleton.StartCoroutine(_thisSingleton.PlacePlayer());
     }
 
     public static void Save()
@@ -69,14 +72,20 @@ public class Player : MonoBehaviour
 
     IEnumerator PlacePlayer()
     {
+        //This makes sure Start runs on FPSScript
+        yield return null;
+        _fpsScript.Teleport(_spawnPosition);
+
         bool hit = false;
         RaycastHit collision;
         do
         {
             yield return null;
             hit = Physics.Raycast(_spawnPosition, Vector3.down, out collision, _distanceRayCast, _layerMask.value);
-            Debug.DrawRay(_thisSingleton._playerParent.transform.position, Vector3.down * _distanceRayCast, Color.cyan, 1f);
+            Debug.DrawRay(_spawnPosition, Vector3.down * _distanceRayCast, Color.cyan, 1f);
         } while (!hit);
+
+        _playerSpawned = true;
 
         Vector3 spawnPosition = collision.point;
 
@@ -110,6 +119,16 @@ public class Player : MonoBehaviour
     public static Transform GetPlayerTransform()
     {
         return _playerTransform;
+    }
+
+    public static void SetSensitivity(float value)
+    {
+        _thisSingleton._mouseLook.Sensitivity = value;
+    }
+
+    public static float GetSensitivity()
+    {
+        return _thisSingleton._mouseLook.Sensitivity;
     }
 
     public static Camera GetPlayerCamera()

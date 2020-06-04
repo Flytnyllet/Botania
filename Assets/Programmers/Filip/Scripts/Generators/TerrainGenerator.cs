@@ -47,16 +47,12 @@ public class TerrainGenerator : MonoBehaviour
     Dictionary<Vector2, TerrainChunk> _terrainChunkDictionary = new Dictionary<Vector2, TerrainChunk>();
     List<TerrainChunk> _visibleTerrainChunks = new List<TerrainChunk>();
 
-    Timer _spawnTimer;
-
     private void Awake()
     {
         if (_thisSingleTon == null)
         {
             _thisSingleTon = this;
             RenderDistanceIndex = _detailLevelIndex;
-
-            _spawnTimer = new Timer(1f);
         }
         else
             Destroy(gameObject);   
@@ -110,10 +106,9 @@ public class TerrainGenerator : MonoBehaviour
     {
         if (SaveSystem.Ready)
         {
-            _spawnTimer.Time += Time.deltaTime;
             _viewerPosition = new Vector2(_viewer.position.x, _viewer.position.z);
 
-            if (_viewerPosition != _viewerPositionOld || !_spawnTimer.Expired())
+            if (_viewerPosition != _viewerPositionOld || !Player.PlayerSpawned())
             {
                 for (int i = 0; i < _visibleTerrainChunks.Count; i++)
                 {
