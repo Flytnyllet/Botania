@@ -37,18 +37,19 @@ public class LevitationBehaviour : MonoBehaviour
             _playerInside = false;
         }
     }
-    private void Update()
-    {
-        if (_playerInside)
-        {
-            Vector3 direction = (transform.position - _targetTransform.position).normalized;
-            direction.y = -1;
-            _charCon.Move(direction * _fleeSpeed * Time.deltaTime);
-        }
-        else
-        {
-            _charCon.Move(_direction * Time.deltaTime);
-        }
-    }
+    //private void Update()
+    //{
+    //    if (_playerInside)
+    //    {
+    //        Vector3 direction = (transform.position - _targetTransform.position).normalized;
+    //        direction.y = -1;
+    //        _charCon.Move(direction * _fleeSpeed * Time.deltaTime);
+    //    }
+    //    else
+    //    {
+    //        _charCon.Move(_direction * Time.deltaTime);
+    //    }
+    //}
+    
 
 }
