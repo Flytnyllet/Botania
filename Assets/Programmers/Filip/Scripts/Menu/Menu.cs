@@ -58,7 +58,8 @@ public class Menu : MonoBehaviour
              Screen.currentResolution,
              Screen.fullScreen, QualitySettings.GetQualityLevel(),
              QualitySettings.masterTextureLimit, TerrainGenerator.RenderDistanceIndex,
-             Player.GetPlayerCamera().fieldOfView);
+             Player.GetPlayerCamera().fieldOfView,
+             Player.GetSensitivity());
 
         Serialization.Save(Saving.FileNames.SETTINGS, saveData);
     }
@@ -78,6 +79,7 @@ public class Menu : MonoBehaviour
             TerrainGenerator.SetRenderDistanceOnStart(saveData._renderDistance);
 
             Player.GetPlayerCamera().fieldOfView = saveData._FOV;
+            Player.SetSensitivity(saveData._lookSensitivity);
         }
     }
 
@@ -157,13 +159,20 @@ public class Menu : MonoBehaviour
 }
 
 
+[System.Serializable]
+public struct MenuNumberString
+{
+    public float number;
+    public string name;
+}
+
 
 [System.Serializable]
 public class OptionsSave
 {
-    public float _masterVol;
-    public float _musicVol;
-    public float _SFXVol;
+    public float _masterVol = 1;
+    public float _musicVol = 1;
+    public float _SFXVol = 1;
 
     public int _resolutionWidth;
     public int _resolutionHeight;
@@ -172,9 +181,10 @@ public class OptionsSave
     public int _textureDetail;
     public int _renderDistance;
 
-    public float _FOV;
+    public float _lookSensitivity = 3;
+    public float _FOV = 65;
 
-    public OptionsSave(float masterVol, float musicVol, float SFXVol, Resolution resolution, bool fullScreen, int graphicsQuality, int textureDetail, int renderDistance, float FOV)
+    public OptionsSave(float masterVol, float musicVol, float SFXVol, Resolution resolution, bool fullScreen, int graphicsQuality, int textureDetail, int renderDistance, float FOV, float lookSensitivity)
     {
         this._masterVol = masterVol;
         this._musicVol = musicVol;
@@ -188,5 +198,6 @@ public class OptionsSave
         this._renderDistance = renderDistance;
 
         this._FOV = FOV;
+        this._lookSensitivity = lookSensitivity;
     }
 }

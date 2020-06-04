@@ -52,7 +52,7 @@ public class TerrainChunk
         Vector2 position = coord * meshSettings.MeshWorldSize;
         _bounds = new Bounds(position, Vector2.one * meshSettings.MeshWorldSize);
 
-        _meshObject = new GameObject("Terrain Chunk");
+        _meshObject = new GameObject("Terrain Chunk: " + coord);
         _meshRenderer = _meshObject.AddComponent<MeshRenderer>();
         _meshFilter = _meshObject.AddComponent<MeshFilter>();
         _meshCollider = _meshObject.AddComponent<MeshCollider>();
@@ -291,11 +291,14 @@ class SpawnInfoRequester
 
     void OnSpawnInfoReceived(object spawnInfo)
     {
-        _spawnInfo[_currentSpawningLodIndex] = (List<SpawnInfo>)spawnInfo;
+        if (_spawnInfo[_currentSpawningLodIndex] == null)
+        {
+            _spawnInfo[_currentSpawningLodIndex] = (List<SpawnInfo>)spawnInfo;
 
-        _hasSpawnInfo[_currentSpawningLodIndex] = true;
-        HasRequestedSpawnInfo = false; //Sets to false to indicate that if the lod increase it can spawn more!
-        _updateCallback();
+            _hasSpawnInfo[_currentSpawningLodIndex] = true;
+            HasRequestedSpawnInfo = false; //Sets to false to indicate that if the lod increase it can spawn more!
+            _updateCallback();
+        }
     }
 
     public void RequestSpawnInfo(int detailType, int levelOfDetail, HeightMap heightMap, MeshData meshData, MeshSettings meshSettings, Vector2 sampleCenter, Vector2 chunkCoord, Transform container)
@@ -309,7 +312,8 @@ class SpawnInfoRequester
 
     public void SpawnSpawnInfo(MeshData meshData, int chunkSize, int lodIndex, Transform container)
     {
-        GameObject spawnInfoContainer = new GameObject("SpawnContainer " + lodIndex);
+        GameObject spawnInfoContainer = new GameObject("SpawnContainer " + lodIndex + " Count: " + _spawnInfo[lodIndex].Count);
+
         spawnInfoContainer.transform.parent = container;
         _spawnContainers[lodIndex] = spawnInfoContainer.transform;
         _prefabSpawner.SpawnSpawnInfo(_spawnInfo[lodIndex], spawnInfoContainer.transform, lodIndex == 0);
@@ -350,7 +354,9 @@ class SpawnInfoRequester
     {
         Set(detailType);
         _hasSpawnInfo[detailType] = true;
-        _spawnInfo[detailType] = _prefabSpawner.SpawnOnChunk(detailType, levelOfDetail, _thisBiome, heightMap, meshData, meshSettings, sampleCenter, chunkCoord);
+        if (_spawnInfo[detailType] == null)
+            _spawnInfo[detailType] = _prefabSpawner.SpawnOnChunk(detailType, levelOfDetail, _thisBiome, heightMap, meshData, meshSettings, sampleCenter, chunkCoord);
+        
         SpawnSpawnInfo(meshData, meshSettings.ChunkSize, detailType, container);
     }
 }

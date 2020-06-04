@@ -47,16 +47,12 @@ public class TerrainGenerator : MonoBehaviour
     Dictionary<Vector2, TerrainChunk> _terrainChunkDictionary = new Dictionary<Vector2, TerrainChunk>();
     List<TerrainChunk> _visibleTerrainChunks = new List<TerrainChunk>();
 
-    Timer _spawnTimer;
-
     private void Awake()
     {
         if (_thisSingleTon == null)
         {
             _thisSingleTon = this;
             RenderDistanceIndex = _detailLevelIndex;
-
-            _spawnTimer = new Timer(1f);
         }
         else
             Destroy(gameObject);   
@@ -72,16 +68,16 @@ public class TerrainGenerator : MonoBehaviour
     {
         _viewer = Player.GetPlayerTransform();
 
-        _viewerPosition = new Vector2(_viewer.position.x, _viewer.position.z);
-        _viewerPositionOld = _viewerPosition;
-
         StartCoroutine(OnStart());
     }
 
     IEnumerator OnStart()
     {
-        while (!SaveSystem.Ready)
+        while (!SaveSystem.Ready || !Player.ReadyToSpawnWorld)
             yield return null;
+
+        _viewerPosition = new Vector2(_viewer.position.x, _viewer.position.z);
+        _viewerPositionOld = _viewerPosition;
 
         float maxViewDistance = _detailLevelsHolder[_detailLevelIndex]._levelOfDetail[_detailLevelsHolder[_detailLevelIndex]._levelOfDetail.Length - 1].visableDstThreshold;
 
@@ -103,17 +99,18 @@ public class TerrainGenerator : MonoBehaviour
         {
             entry.Value.UpdateRenderDistance(_detailLevelsHolder[_detailLevelIndex]._levelOfDetail);
         }
-        UpdateVisableChunks();
+
+        if (SaveSystem.Ready && Player.ReadyToSpawnWorld)
+            UpdateVisableChunks();
     }
 
     private void Update()
     {
-        if (SaveSystem.Ready)
+        if (SaveSystem.Ready && Player.ReadyToSpawnWorld)
         {
-            _spawnTimer.Time += Time.deltaTime;
             _viewerPosition = new Vector2(_viewer.position.x, _viewer.position.z);
 
-            if (_viewerPosition != _viewerPositionOld || !_spawnTimer.Expired())
+            if (_viewerPosition != _viewerPositionOld || !Player.PlayerSpawned)
             {
                 for (int i = 0; i < _visibleTerrainChunks.Count; i++)
                 {
