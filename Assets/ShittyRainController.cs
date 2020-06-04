@@ -22,7 +22,6 @@ public class ShittyRainController : MonoBehaviour
     }
     void StartRain(EventParameter param)
     {
-        Debug.Log(param.intParam);
         var module = _particleSys.emission;
         module.rateOverTime = param.intParam;
         _particleSys.Play();

@@ -17,11 +17,14 @@ public class BookManager : MonoBehaviour
     [SerializeField] Sprite[] _BookSprites = null;
 
     [SerializeField] List<GameObject> _bookmarks = new List<GameObject>();
+    [SerializeField] List<PageLoader> _frontPages = new List<PageLoader>();
     [SerializeField] List<PageLoader> _flowerPages = new List<PageLoader>();
     [SerializeField] List<PageLoader> FLOWERPAGE_INDEX = new List<PageLoader>();
     [SerializeField] List<PageLoader> _lorePages = new List<PageLoader>();
-    [SerializeField] List<PageLoader> _indexPages = new List<PageLoader>();
+    //[SerializeField] List<PageLoader> _indexPages = new List<PageLoader>();
+    [SerializeField] int _firstBookmarkID = 0;
     [SerializeField] int _flowerOrganizerId = 1;
+    [SerializeField] int _loreID = 2;
     [SerializeField] RectTransform _bookmarkTemplate = null;
     [SerializeField] GameObject _emptyPageTemplate = null;
     [SerializeField] Vector2[] _bookmarkPositions = null;
@@ -80,6 +83,8 @@ public class BookManager : MonoBehaviour
             FLOWERPAGE_INDEX.Add(page);
         }
         SetupPage(_flowerOrganizerId, FLOWERPAGE_INDEX);
+        SetupPage(_firstBookmarkID, _frontPages);
+        SetupPage(_loreID, _lorePages);
 
         /*
 		if (_book == null)
@@ -147,7 +152,7 @@ public class BookManager : MonoBehaviour
             nextPage = _book.transform.Find("NextPage").gameObject;
             prevPage = _book.transform.Find("PrevPage").gameObject;
         }
-        if (bookmark == 1)
+        if (bookmark == 1 || bookmark == 2)
         {
             nextPage.SetActive(true);
             prevPage.SetActive(true);
@@ -330,8 +335,9 @@ public class BookManager : MonoBehaviour
                 break;
 
             default:
-                _currentPage = ChangeCurrentPage(FLOWERPAGE_INDEX.Count, change);
-                ChangePage(FLOWERPAGE_INDEX);
+                //Jens var här och kommenterade ut, this just causes issues, no?
+                //_currentPage = ChangeCurrentPage(FLOWERPAGE_INDEX.Count, change);
+                //ChangePage(FLOWERPAGE_INDEX);
                 break;
         }
     }
@@ -438,6 +444,7 @@ public class BookManager : MonoBehaviour
             _bookmarks[_currentBookmark].SetActive(true);
         }
         _book.GetComponent<Image>().sprite = _BookSprites[index];
+        PageChangerActive(index);
     }
 
     public void FlipPageSoundEffect()
