@@ -68,16 +68,16 @@ public class TerrainGenerator : MonoBehaviour
     {
         _viewer = Player.GetPlayerTransform();
 
-        _viewerPosition = new Vector2(_viewer.position.x, _viewer.position.z);
-        _viewerPositionOld = _viewerPosition;
-
         StartCoroutine(OnStart());
     }
 
     IEnumerator OnStart()
     {
-        while (!SaveSystem.Ready)
+        while (!SaveSystem.Ready || !Player.ReadyToSpawnWorld)
             yield return null;
+
+        _viewerPosition = new Vector2(_viewer.position.x, _viewer.position.z);
+        _viewerPositionOld = _viewerPosition;
 
         float maxViewDistance = _detailLevelsHolder[_detailLevelIndex]._levelOfDetail[_detailLevelsHolder[_detailLevelIndex]._levelOfDetail.Length - 1].visableDstThreshold;
 
@@ -99,16 +99,18 @@ public class TerrainGenerator : MonoBehaviour
         {
             entry.Value.UpdateRenderDistance(_detailLevelsHolder[_detailLevelIndex]._levelOfDetail);
         }
-        UpdateVisableChunks();
+
+        if (SaveSystem.Ready && Player.ReadyToSpawnWorld)
+            UpdateVisableChunks();
     }
 
     private void Update()
     {
-        if (SaveSystem.Ready)
+        if (SaveSystem.Ready && Player.ReadyToSpawnWorld)
         {
             _viewerPosition = new Vector2(_viewer.position.x, _viewer.position.z);
 
-            if (_viewerPosition != _viewerPositionOld || !Player.PlayerSpawned())
+            if (_viewerPosition != _viewerPositionOld || !Player.PlayerSpawned)
             {
                 for (int i = 0; i < _visibleTerrainChunks.Count; i++)
                 {

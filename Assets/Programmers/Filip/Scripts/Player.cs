@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public static bool PlayerSpawned() { return _playerSpawned; }
-    static bool _playerSpawned = false;
+    public static bool ReadyToSpawnWorld { get; private set; } = false;
+    public static bool PlayerSpawned { get; private set; } = false;
 
     [SerializeField] float _seaLevelSpawn = 10;
     [SerializeField] MeshSettings _meshSettings;
@@ -36,7 +36,8 @@ public class Player : MonoBehaviour
         if (_thisSingleton == null)
         {
             _thisSingleton = this;
-            _playerSpawned = false;
+            ReadyToSpawnWorld = false;
+            PlayerSpawned = false;
             _playerTransform = GetComponent<Transform>();
             _mouseLook = GetComponent<MouseLook>();
             _playerCamera = GetComponent<Camera>();
@@ -75,6 +76,7 @@ public class Player : MonoBehaviour
         //This makes sure Start runs on FPSScript
         yield return null;
         _fpsScript.Teleport(_spawnPosition);
+        ReadyToSpawnWorld = true;
 
         bool hit = false;
         RaycastHit collision;
@@ -85,7 +87,7 @@ public class Player : MonoBehaviour
             Debug.DrawRay(_spawnPosition, Vector3.down * _distanceRayCast, Color.cyan, 1f);
         } while (!hit);
 
-        _playerSpawned = true;
+        PlayerSpawned = true;
 
         Vector3 spawnPosition = collision.point;
 
