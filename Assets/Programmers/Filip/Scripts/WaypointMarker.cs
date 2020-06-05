@@ -22,11 +22,16 @@ public class WaypointMarker : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     [SerializeField] TMP_Text _text;
     [SerializeField] Image _image;
 
-    RectTransform _rectTransform;
+    Animator _animator;
+    bool _doAnimationOnAwake = false;
+    string _trigger;
 
     private void Awake()
     {
-        _rectTransform = GetComponent<RectTransform>();
+        _animator = GetComponent<Animator>();
+
+        if (_doAnimationOnAwake)
+            _animator.SetTrigger(_trigger);
 
         Select(true);
         Select(false);
@@ -57,14 +62,7 @@ public class WaypointMarker : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
 	void UsingInputField()
 	{
-		if(_inputField.isFocused)
-		{
-			_usingInputField = true;
-		}
-		else
-		{
-			_usingInputField = false;
-		}
+        _usingInputField = _inputField.isFocused;
 	}
 
 	public static bool InputFieldFocus()
@@ -87,14 +85,20 @@ public class WaypointMarker : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         MapGenerator.WaypointNameChange(transform, _inputField.text);
     }
 
-    public void Setup(Sprite sprite, string name, float size)
+    public void Setup(MapMarkers type, string name, float size)
     {
         _inputField.text = name;
-        _image.sprite = sprite;
-        _image.raycastTarget = true;
-        _rectTransform.sizeDelta = new Vector2(size, size);
 
-        FormatText();
+        if (_animator == null)
+        {
+            _doAnimationOnAwake = true;
+            _trigger = type.ToString();
+        }
+        else
+            _animator.SetTrigger(type.ToString());
+
+        _image.raycastTarget = true;
+        GetComponent<RectTransform>().sizeDelta = new Vector2(size, size);
     }
 
     public void ToggleMovement(bool status)

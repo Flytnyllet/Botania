@@ -17,21 +17,21 @@ public class WaypointPlop : MonoBehaviour
 
     Timer _plopTimer;
     Timer _alphaTimer;
-    Vector3 _spriteStartScale;
+    //Vector3 _spriteStartScale;
     Vector3 _labelStartScale;
-    Color _spriteStartColor;
+    //Color _spriteStartColor;
     Color _labelStartColor;
 
     private void Awake()
     {
         _plopTimer = new Timer(_plopTime);
         _alphaTimer = new Timer(_alphaTime);
-        _spriteStartScale = transform.localScale;
-        _spriteStartColor = _spriteImage.color;
+        //_spriteStartScale = transform.localScale;
+        //_spriteStartColor = _spriteImage.color;
 
-        Color startColorSprite = _spriteStartColor;
-        startColorSprite.a = 0.0f;
-        _spriteImage.color = startColorSprite;
+        //Color startColorSprite = _spriteStartColor;
+        //startColorSprite.a = 0.0f;
+        //_spriteImage.color = startColorSprite;
 
         //So world markers can use script
         if (_labelTransform != null)
@@ -55,7 +55,7 @@ public class WaypointPlop : MonoBehaviour
             float point = _sizeCurve.Evaluate(_plopTimer.Ratio());
 
             Vector3 newScale = new Vector3(point, point, point);
-            transform.localScale = newScale;
+            //transform.localScale = newScale;
 
             //So world markers can use script
             if (_labelTransform != null)
@@ -65,9 +65,9 @@ public class WaypointPlop : MonoBehaviour
         {
             float point = _alphaCurve.Evaluate(_alphaTimer.Ratio());
 
-            Color spriteImageColor = _spriteImage.color;
-            spriteImageColor.a = point;
-            _spriteImage.color = spriteImageColor;
+            //Color spriteImageColor = _spriteImage.color;
+            //spriteImageColor.a = point;
+            //_spriteImage.color = spriteImageColor;
 
             //So world markers can use script
             if (_labelTransform != null)
@@ -79,8 +79,8 @@ public class WaypointPlop : MonoBehaviour
         }
         if (_alphaTimer.Expired() && _plopTimer.Expired())
         {
-            transform.localScale = _spriteStartScale;
-            _spriteImage.color = _spriteStartColor;
+            //transform.localScale = _spriteStartScale;
+            //_spriteImage.color = _spriteStartColor;
             //So world markers can use script
             if (_labelTransform != null)
             {
