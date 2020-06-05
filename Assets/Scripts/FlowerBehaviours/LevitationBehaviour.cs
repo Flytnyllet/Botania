@@ -5,9 +5,9 @@ using UnityEngine;
 public class LevitationBehaviour : MonoBehaviour
 {
     bool _playerInside = false;
-    [SerializeField]CharacterController _charCon;
+    bool _running = false;
+    [SerializeField] CharacterController _charCon;
     SphereCollider _collider;
-    [SerializeField] Transform _targetTransform;
     [SerializeField] Vector3 _direction;
     [SerializeField] float _fleeSpeed;
     [SerializeField] float _playerDistanceTarget = 10;
@@ -24,31 +24,45 @@ public class LevitationBehaviour : MonoBehaviour
         if (other.tag == "Player")
         {
             _collider.radius = _playerDistanceTarget;
-            _targetTransform = other.transform;
             _playerInside = true;
+            if (!_running)
+            {
+                StartCoroutine(MoveFromTarget(other.transform, 2));
+            }
         }
     }
     private void OnTriggerExit(Collider other)
     {
         if (other.tag == "Player")
         {
-
             _collider.radius = _colliderStartRadius;
             _playerInside = false;
         }
     }
-    private void Update()
+    IEnumerator MoveFromTarget(Transform target, float deaccelerationTime)
     {
-        if (_playerInside)
+        _running = true;
+        while (_playerInside)
         {
-            Vector3 direction = (transform.position - _targetTransform.position).normalized;
-            direction.y = -1;
-            _charCon.Move(direction * _fleeSpeed * Time.deltaTime);
-        }
-        //else
-        //{
-        //    _charCon.Move(_direction * Time.deltaTime);
-        //}
-    }
+            while (_playerInside)
+            {
+                Vector3 direction = (transform.position - target.position).normalized;
+                direction.y = -1;
+                _charCon.Move(direction * _fleeSpeed * Time.deltaTime);
+                yield return null;
+            }
+            float time = 0;
+            while (time < deaccelerationTime)
+            {
+                if (_playerInside) { break; }
 
+                Vector3 direction = (transform.position - target.position).normalized;
+                direction.y = -1;
+                _charCon.Move(direction * _fleeSpeed * (1 - time / deaccelerationTime) * Time.deltaTime);
+                time += Time.deltaTime;
+                yield return null;
+            }
+        }
+        _running = false;
+    }
 }

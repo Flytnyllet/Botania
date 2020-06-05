@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6440083248673180043}
   - component: {fileID: 8312692849841289038}
   m_Layer: 5
-  m_Name: Unstable_Flower_Image
+  m_Name: First_image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -61,7 +61,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _pageElements: []
   _flowerName: 0
-  _flowerData: {fileID: 11400000, guid: 6e302855e89a12645b18975abd8daf50, type: 2}
+  _flowerData: {fileID: 11400000, guid: fa895d10c1a977146a34926973fca5a0, type: 2}
 --- !u!114 &8312692849841289038
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -102,15 +102,15 @@ RectTransform:
   m_GameObject: {fileID: 7120519674469120695}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.35, y: 0.35, z: 0.35}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 6440083248673180044}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 6.700012, y: -57}
-  m_SizeDelta: {x: 1542.2, y: 1542.2}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 512, y: 512}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1858677834919748840
 CanvasRenderer:
@@ -133,14 +133,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: ec85c81996ad00c43b1a4ecf50ce86d2, type: 3}
+  m_Sprite: {fileID: 21300000, guid: c441bdeff3b36c64eac582fa77e83555, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
