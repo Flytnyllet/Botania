@@ -154,7 +154,7 @@ public class Menu : MonoBehaviour
         if (Music_Manager.Instance.StartMenu)
             RuntimeManager.PlayOneShot(ui_start_Ref);
         else
-            return;
+            Init_UI_Select();
     }
 }
 
