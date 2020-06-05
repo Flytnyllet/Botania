@@ -12,7 +12,8 @@
 		_LineB("Line Position", range(0,1)) = 0.5
 		_WaveSharpnessIn("Line Sharpness Inner", range(0,1)) = 1
 		_WaveSharpnessOut("Line Sharpness Outer", range(0,1)) = 1
-		_MaxDistance("MaxDist", float) = 500
+		_MaxDistance("MaxDist", float) = 200
+		_startFalloff("Start Falloff towards Max", float) = 100
 		_WaveWidth("Wave Width", float) = 1
 	}
 		SubShader
@@ -131,6 +132,7 @@
 				float _LineA;
 				float _LineB;
 				float _WaveWidth;
+				float _startFalloff;
 
 				fixed4 frag(v2f i) : SV_Target
 				{
@@ -142,7 +144,7 @@
 
 					//Distance
 					float dist = distance(fragWorldPos, gAudioPosition);
-					float maxDistClamp = smoothstep(_MaxDistance, _MaxDistance - 10,dist);
+					float maxDistClamp = smoothstep(_MaxDistance, _startFalloff,dist);
 					float waves = (abs(dist - _Time.y*_speed) % _WaveWidth) / _WaveWidth;
 
 					//Waves
