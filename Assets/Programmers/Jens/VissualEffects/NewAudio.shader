@@ -165,12 +165,12 @@
 					float leftC = distance(UV, float2(0, 0)) * 1.5;
 					float maskL = step(leftC,1);
 					float screenMask = leftC * maskL;
-					leftC = abs(leftC - _Time.x * 8) % 1;
+					leftC = abs(leftC - _Time.x * 4) % 1;
 					leftC *= maskL;
 					float rightC = distance(UV, float2(aspect.x, 0)) * 1.5;
 					float maskR = step(rightC,1);
 					screenMask += rightC * maskR;
-					rightC = abs(rightC - _Time.x * 8) % 1;
+					rightC = abs(rightC - _Time.x * 4) % 1;
 					rightC *= maskR;
 					float screenWave = leftC + rightC;
 					wavesA = smoothstep(0.45, 0.5, screenWave);
