@@ -103,50 +103,47 @@ public class PickupFlower : InteractableSaving, IInteractable
     {
         switch (flowerName)
         {
-            case "Calm":
+            case "Thystnat":
                 _flowerPickupSound = _player_Data.p_pickup_calm;
                 break;
-            case "Earth":
+            case "Terra":
                 _flowerPickupSound = _player_Data.p_pickup_earth;
                 break;
-            case "Home":
+            case "Hemiir":
                 _flowerPickupSound = _player_Data.p_pickup_home;
                 break;
-            case "Invisible":
+            case "Dolder":
                 _flowerPickupSound = _player_Data.p_pickup_invisible;
                 break;
-            case "Mole":
+            case "Flikker":
                 _flowerPickupSound = _player_Data.p_pickup_mole;
                 break;
-            case "Soul":
+            case "Forlusten":
                 _flowerPickupSound = _player_Data.p_pickup_soul;
                 break;
-            case "Teleporter":
+            case "Resuin":
                 _flowerPickupSound = _player_Data.p_pickup_tp;
                 break;
-            case "Faith":
+            case "Tronn":
                 _flowerPickupSound = _player_Data.p_pickup_vitsippa;
                 break;
-            case "Levitation":
+            case "Sviftan":
                 _flowerPickupSound = _player_Data.p_pickup_levitation;
                 break;
-            case "Gazing":
+            case "Oogen":
                 _flowerPickupSound = _player_Data.p_pickup_sight;
                 break;
-            case "Magic":
+            case "Sirviil":
                 _flowerPickupSound = _player_Data.p_pickup_magic;
                 break;
-            case "Underwater":
+            case "Beneed":
                 _flowerPickupSound = _player_Data.p_pickup_underwater;
                 break;
-            case "Lillypad":
+            case "Shiirn":
                 _flowerPickupSound = _player_Data.p_pickup_water;
                 break;
-            case "Unstable":
-                _flowerPickupSound = _player_Data.p_pickup_unstable;
-                break;
             default:
-                _flowerPickupSound = _player_Data.p_pickup_home;
+                Debug.LogError("Flower String [" + flowerName + "] not Identified, check ItemDataContainer");
                 return;
         }
         _player_Emitter = Player.FindObjectOfType<Player_Emitter>();

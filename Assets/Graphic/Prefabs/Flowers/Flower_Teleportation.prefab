@@ -5062,6 +5062,9 @@ MonoBehaviour:
   _particles: {fileID: 1143048545}
   _MinJumps: 1
   _Maxjumps: 4
+  _mask:
+    serializedVersion: 2
+    m_Bits: 1048576
 --- !u!114 &572510021
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5076,7 +5079,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _dissableTriggerafterPickup: 0
   _flowerData: {fileID: 11400000, guid: 6c8183cf83ef97446865ee2832d3574e, type: 2}
-  _amount: 1
+  _flowersReturned: 1
   _pickupAlpha: {fileID: 0}
   _gameobjectOverload: []
   _pickupAction:
@@ -5086,6 +5089,7 @@ MonoBehaviour:
       Culture=neutral, PublicKeyToken=null
   _pickupAnimationTime: 0.2
   _pickupAnimationForce: 1
+  isUnderwater: 0
   _player_Data: {fileID: 11400000, guid: d0d6668ab68191b44ac744e3648e5fb3, type: 2}
 --- !u!114 &572510028
 MonoBehaviour:

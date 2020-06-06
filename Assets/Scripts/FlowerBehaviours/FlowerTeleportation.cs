@@ -17,8 +17,8 @@ public class FlowerTeleportation : MonoBehaviour
     [SerializeField] int _Maxjumps = 3;
     int jumpGoal;
     int _jumps = 0;
-
-    Vector3 groundOffset = new Vector3(0, 0.05f, 0);
+    [SerializeField] LayerMask _mask;
+    Vector3 groundOffset = new Vector3(0, 0.1f, 0);
     Vector3 _objectHeight;
     Vector3 _objectAltitudeOffset;
     CapsuleCollider _capCollider;
@@ -81,7 +81,7 @@ public class FlowerTeleportation : MonoBehaviour
 
         pos.y -= 0.4f;
         _jumps++;
-        transform.position = pos + _objectHeight * 0.5f;
+        transform.position = pos + _objectHeight * 0.4f;
 
         if (!trailActive)
             _trailObject.StartMovement(this.transform);
@@ -110,7 +110,7 @@ public class FlowerTeleportation : MonoBehaviour
                 if (HIT && hit.transform.tag != "Flower")
                 {
                     Vector3 hitPos = hit.point;
-                    if (!Physics.CheckCapsule(hitPos + groundOffset, hitPos + _objectHeight * 1.1f, _capCollider.bounds.size.x * 4, 0, QueryTriggerInteraction.Ignore))
+                    if (!Physics.CheckCapsule(hitPos + groundOffset, hitPos + _objectHeight * 1.1f, _capCollider.bounds.size.x, _mask, QueryTriggerInteraction.Ignore))
                     {
                         ReleaseTrailObject(hitPos);
                         break;
@@ -121,7 +121,7 @@ public class FlowerTeleportation : MonoBehaviour
                 if (HIT && hit.transform.tag != "Flower")
                 {
                     Vector3 hitPos = hit.point;
-                    if (!Physics.CheckCapsule(hitPos + groundOffset, hitPos + _objectHeight * 1.1f, this.transform.localScale.x * 4, 0, QueryTriggerInteraction.Ignore))
+                    if (!Physics.CheckCapsule(hitPos + groundOffset, hitPos + _objectHeight * 1.1f, this.transform.localScale.x, _mask, QueryTriggerInteraction.Ignore))
                     {
                         ReleaseTrailObject(hitPos);
                         break;
