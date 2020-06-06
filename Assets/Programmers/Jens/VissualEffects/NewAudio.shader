@@ -12,7 +12,8 @@
 		_LineB("Line Position", range(0,1)) = 0.5
 		_WaveSharpnessIn("Line Sharpness Inner", range(0,1)) = 1
 		_WaveSharpnessOut("Line Sharpness Outer", range(0,1)) = 1
-		_MaxDistance("MaxDist", float) = 500
+		_MaxDistance("MaxDist", float) = 200
+		_startFalloff("Start Falloff towards Max", float) = 100
 		_WaveWidth("Wave Width", float) = 1
 	}
 		SubShader
@@ -113,6 +114,7 @@
 					o.vertex = UnityObjectToClipPos(v.vertex);
 					o.uv = v.uv;
 					o.interpolatedRay = v.ray;
+
 					return o;
 				}
 
@@ -131,6 +133,7 @@
 				float _LineA;
 				float _LineB;
 				float _WaveWidth;
+				float _startFalloff;
 
 				fixed4 frag(v2f i) : SV_Target
 				{
@@ -142,7 +145,7 @@
 
 					//Distance
 					float dist = distance(fragWorldPos, gAudioPosition);
-					float maxDistClamp = smoothstep(_MaxDistance, _MaxDistance - 10,dist);
+					float maxDistClamp = smoothstep(_MaxDistance, _startFalloff,dist);
 					float waves = (abs(dist - _Time.y*_speed) % _WaveWidth) / _WaveWidth;
 
 					//Waves
@@ -154,11 +157,31 @@
 					waves = (wavesA - wavesB)*clamp(0, 1, tex2D(_CameraDepthTexture, i.uv).x * 10000) + A;
 					waves *= maxDistClamp;
 
+					//screen UV
+					float aspect = _ScreenParams.x / _ScreenParams.y;
+					float2 UV = i.uv;
+					UV.x *= aspect;
+					//ScreenWaves
+					float leftC = distance(UV, float2(0, 0)) * 1.5;
+					float maskL = step(leftC,1);
+					float screenMask = leftC * maskL;
+					leftC = abs(leftC - _Time.x * 8) % 1;
+					leftC *= maskL;
+					float rightC = distance(UV, float2(aspect.x, 0)) * 1.5;
+					float maskR = step(rightC,1);
+					screenMask += rightC * maskR;
+					rightC = abs(rightC - _Time.x * 8) % 1;
+					rightC *= maskR;
+					float screenWave = leftC + rightC;
+					wavesA = smoothstep(0.45, 0.5, screenWave);
+					wavesB = smoothstep(0.5, 0.75, screenWave);
+					screenWave = (wavesA - wavesB)*smoothstep(0.5, 0, screenMask) * 5;
+
 
 					fixed4 col = tex2D(_MainTex, i.uv);
 					float4 effectCol = col * (1 - waves * _Str);
-					return lerp(col, effectCol, _Lerp) + waves * _Color*_Color.a* _Str;
-
+					col = lerp(col, effectCol, _Lerp) + waves * _Color*_Color.a* _Str;
+					return col  + screenWave * effectCol;
 				}
 				ENDCG
 			}
