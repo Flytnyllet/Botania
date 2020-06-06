@@ -16,7 +16,7 @@ struct Recipe
     public GameObject potionButton;
     public GameObject craftButton;
     public Text potionAmount;
-	public Image potionImage;
+    public Image potionImage;
     public Text[] ingredientAmount;
     public Image[] ingredientImages;
     public ItemDataContainer potionData;
@@ -190,8 +190,8 @@ public class AlchemyOrganizer_2 : MonoBehaviour
             newRecipe.potionButton = newRecipe.button.transform.GetChild(1).gameObject;
             newRecipe.buttonText.text = newRecipe.potionData.itemName;
             newRecipe.potionAmount = newRecipe.potionButton.GetComponentInChildren<Text>();
-			newRecipe.potionImage = newRecipe.potionButton.transform.GetChild(0).GetComponent<Image>();
-			newRecipe.potionImage.sprite = newRecipe.potionData.itemIcon;
+            newRecipe.potionImage = newRecipe.potionButton.transform.GetChild(0).GetComponent<Image>();
+            newRecipe.potionImage.sprite = newRecipe.potionData.itemIcon;
 
             int nrIngredientObjects = newRecipe.button.transform.childCount - 3;
             GameObject ingredientObject = newRecipe.craftButton.transform.GetChild(0).gameObject;
@@ -453,7 +453,7 @@ public class AlchemyOrganizer_2 : MonoBehaviour
                 Debug.Log("Null Fail");
                 hasSame = null;
             }
-            if (object.ReferenceEquals(_allIngredients[i].symbol, data.symbol) && FlowerLibrary.GetFlowerAmount(_allIngredients[i].itemName) > amount)
+            else if (object.ReferenceEquals(_allIngredients[i].symbol, data.symbol) && FlowerLibrary.GetFlowerAmount(_allIngredients[i].itemName) > amount)
             {
                 Debug.Log("Not Null Fail");
                 hasSame = _allIngredients[i];
