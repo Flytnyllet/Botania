@@ -8,6 +8,6 @@ public class ObjectSetMapMarker : MonoBehaviour
 
     private void Start()
     {
-        MapGenerator.AddWorldMarkerGlobal(_mapMarker, transform.position, _mapMarker.ToString());
+        //MapGenerator.AddWorldMarkerGlobal(_mapMarker, transform.position, _mapMarker.ToString());
     }
 }

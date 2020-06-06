@@ -55,14 +55,14 @@ public class EventTrigger : MonoBehaviour
     }
     private void OnCollisionStay2D(Collision2D collision)
     {
-        if (interaction == INTERACTIONS.onButtonPress && collision.gameObject.tag == "Player" && Input.GetKeyDown(KeyCode.E))
+        if (interaction == INTERACTIONS.onButtonPress && collision.gameObject.tag == "Player" && Input.GetKeyDown(InputKeyWords.ACTION_0))
         {
             Engage();
         }
     }
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (interaction == INTERACTIONS.onButtonPress && collision.gameObject.tag == "Player" && Input.GetKeyDown(KeyCode.E))
+        if (interaction == INTERACTIONS.onButtonPress && collision.gameObject.tag == "Player" && Input.GetKeyDown(InputKeyWords.ACTION_0))
         {
             Engage();
         }

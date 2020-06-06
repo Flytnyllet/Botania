@@ -31,6 +31,8 @@ public class SaveSystem : MonoBehaviour
 
     Animator _animator;
 
+    Timer _waitUntilFirstSave = new Timer(1);
+
     Timer _saveTimer;
     Timer _saveIconTimer;
     Timer _menuIntervallTimer;
@@ -68,6 +70,8 @@ public class SaveSystem : MonoBehaviour
 
     private void Update()
     {
+        _waitUntilFirstSave.Time += Time.deltaTime;
+
         if (_menuSave)
         {
             _menuIntervallTimer.Time += Time.deltaTime;
@@ -119,7 +123,6 @@ public class SaveSystem : MonoBehaviour
 
     public void Wipe()
     {
-        Debug.Log("WIPONIG!");
         Noise.Wipe();
         Player.Wipe();
         PrefabSpawnerSaveData.Wipe();
@@ -129,7 +132,7 @@ public class SaveSystem : MonoBehaviour
 
     public static void SaveStatic()
     {
-        if (_thisSaveSystem._save && _thisSaveSystem._canCurrentlyMenuSave)
+        if (_thisSaveSystem._waitUntilFirstSave.Expired() &&_thisSaveSystem._save && _thisSaveSystem._canCurrentlyMenuSave)
         {
             _thisSaveSystem._canCurrentlyMenuSave = false;
             _thisSaveSystem._menuIntervallTimer.Reset();

@@ -8,7 +8,7 @@ public class PrefabSpawner : MonoBehaviour
     static readonly int DEGREES_360 = 360;
     static readonly float STANDARD_GRID_OFFSET = 0.5f;
 
-    public bool CompletelySpawnedIn { get; private set; } = false;
+    public bool CompletelySpawnedIn { get; private set; } = true;
     bool _readyToFixNormals = false;
     bool _tryingToFixNormals = false;
     bool[,] _occupiedGrid;

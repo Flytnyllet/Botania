@@ -4,11 +4,6 @@ using UnityEngine;
 
 public class DevCam : MonoBehaviour
 {
-    const string HORIZONTAL = "Horizontal";
-    const string VERTICAL = "Vertical";
-    const string UP = "Jump";
-    const string DOWN = "Duck";
-
     [SerializeField] bool _useDevCam = true;
 
     Camera _camera;
@@ -121,7 +116,7 @@ public class DevCam : MonoBehaviour
     {
         if (_activated)
         {
-            Vector4 movement = new Vector4(Input.GetAxis(HORIZONTAL), Input.GetAxis(VERTICAL), Input.GetAxis(UP), Input.GetAxis(DOWN));
+            Vector4 movement = new Vector4(Input.GetAxis(InputKeyWords.HORIZONTAL), Input.GetAxis(InputKeyWords.VERTICAL), Input.GetAxis(InputKeyWords.JUMP), Input.GetAxis(InputKeyWords.DUCK));
             bool tiltLeft = Input.GetKey(KeyCode.Alpha1);
             bool tiltRight = Input.GetKey(KeyCode.Alpha3);
 

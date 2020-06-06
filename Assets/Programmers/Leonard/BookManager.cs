@@ -8,12 +8,6 @@ public class BookManager : MonoBehaviour
 {
     public static BookManager Instance;
 
-    const string INPUT_INVENTORY = "Inventory";
-    const string INPUT_MAP = "Map";
-    const string INPUT_FLOWERS = "Flowers";
-    const string INPUT_LORE = "Lore";
-    const string INPUT_ALCHEMY = "Alchemy";
-    const string OPEN_WHEEL = "Wheel";
     [SerializeField] Sprite[] _BookSprites = null;
 
     [SerializeField] List<GameObject> _bookmarks = new List<GameObject>();
@@ -38,6 +32,12 @@ public class BookManager : MonoBehaviour
     ItemDataContainer recentlyPickedFlower = null;
     GameObject nextPage = null;
     GameObject prevPage = null;
+
+
+    GetAxisRawDown _axisRawMap = new GetAxisRawDown(InputKeyWords.MAP_CONTROLLER, 1);
+    GetAxisRawDown _axisRawFlower = new GetAxisRawDown(InputKeyWords.FLOWERS, -1);
+    GetAxisRawDown _axisRawLore = new GetAxisRawDown(InputKeyWords.LORE, 1);
+    GetAxisRawDown _axisRawAlchemy = new GetAxisRawDown(InputKeyWords.ALCHEMY, -1);
 
     public static void SetPickedFlower(ItemDataContainer flower)
     {
@@ -111,17 +111,17 @@ public class BookManager : MonoBehaviour
 
     void InputHandling()
     {
-        if (OpenBookmark(_currentBookmark, INPUT_INVENTORY)) ;
+        if (OpenBookmark(_currentBookmark, InputKeyWords.INVENTORY)) ;
 
-        else if (OpenBookmark(4, INPUT_MAP)) ;
+        else if (OpenBookmark(4, InputKeyWords.MAP, _axisRawMap)) ;
 
-        else if (OpenBookmark(2, INPUT_LORE)) ;
+        else if (OpenBookmark(2, InputKeyWords.LORE, _axisRawLore)) ;
 
-        else if (OpenBookmark(1, INPUT_FLOWERS)) ;
+        else if (OpenBookmark(1, InputKeyWords.FLOWERS, _axisRawFlower)) ;
 
-        else if (OpenBookmark(3, INPUT_ALCHEMY)) ;
+        else if (OpenBookmark(3, InputKeyWords.ALCHEMY, _axisRawAlchemy)) ;
 
-        else if (Input.GetButtonDown(OPEN_WHEEL) && !_book.activeSelf && CharacterState.Control_State == CHARACTER_CONTROL_STATE.PLAYERCONTROLLED)
+        else if (Input.GetButtonDown(InputKeyWords.WHEEL) && !_book.activeSelf && CharacterState.Control_State == CHARACTER_CONTROL_STATE.PLAYERCONTROLLED)
         {
             _potionWheel.SetActive(true);
             //_potionWheel.SetActive(!_potionWheel.activeSelf);
@@ -134,12 +134,12 @@ public class BookManager : MonoBehaviour
             //	CharacterState.SetControlState(CHARACTER_CONTROL_STATE.PLAYERCONTROLLED);
             //}
         }
-        else if (Input.GetButtonUp(OPEN_WHEEL) && _potionWheel.activeSelf)
+        else if (Input.GetButtonUp(InputKeyWords.WHEEL) && _potionWheel.activeSelf)
         {
             _potionWheel.SetActive(false);
             CharacterState.SetControlState(CHARACTER_CONTROL_STATE.PLAYERCONTROLLED);
         }
-        else if (Input.GetKeyDown(KeyCode.Escape) && _book.activeSelf == true)
+        else if (Input.GetButtonDown(InputKeyWords.CANCEL) && _book.activeSelf == true)
         {
             CloseBook();
         }
@@ -164,9 +164,9 @@ public class BookManager : MonoBehaviour
         }
     }
 
-    bool OpenBookmark(int index, string input)
+    bool OpenBookmark(int index, string input, GetAxisRawDown axisDown = null)
     {
-        if (Input.GetButtonDown(input) && !_potionWheel.activeSelf)
+        if ((Input.GetButtonDown(input) || (axisDown != null && axisDown.GetAxisDown())) && !_potionWheel.activeSelf)
         {
             if (_book.activeSelf && _currentBookmark == index)
             {
@@ -178,7 +178,7 @@ public class BookManager : MonoBehaviour
             }
             else if (CharacterState.Control_State == CHARACTER_CONTROL_STATE.PLAYERCONTROLLED)
             {
-                if ((input == INPUT_INVENTORY || input == INPUT_FLOWERS) && recentlyPickedFlower != null)
+                if ((input == InputKeyWords.INVENTORY || input == InputKeyWords.FLOWERS) && recentlyPickedFlower != null)
                 {
                     OpenBook(1);
 

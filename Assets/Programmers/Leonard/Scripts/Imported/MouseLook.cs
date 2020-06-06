@@ -20,17 +20,17 @@ public class MouseLook : MonoBehaviour
     Camera _camera;
 
     public enum RotationAxes { MouseXAndY = 0, MouseX = 1, MouseY = 2 }
-    public RotationAxes axes = RotationAxes.MouseXAndY;
-    public float sensitivityX = 10F;
-    public float sensitivityY = 10F;
+    [SerializeField] RotationAxes axes = RotationAxes.MouseXAndY;
+    [SerializeField] float sensitivityX = 10F;
+    [SerializeField] float sensitivityY = 10F;
 
-    public float minimumX = -360F;
-    public float maximumX = 360F;
+    [SerializeField] float minimumX = -360F;
+    [SerializeField] float maximumX = 360F;
 
-    public float minimumY = -60F;
-    public float maximumY = 60F;
+    [SerializeField] float minimumY = -60F;
+    [SerializeField] float maximumY = 60F;
 
-	public bool smoothing = false;
+    [SerializeField] bool smoothing = false;
 	[Range(0f, 1f)] public float smoothValue = 0.5f;
 	Vector3 rotationVelocity = new Vector3(0f,0f,0f);
 
@@ -38,6 +38,20 @@ public class MouseLook : MonoBehaviour
 	float rotationX = 0F;
 
 	FPSMovement fpsMove;
+
+
+    public float Sensitivity
+    {
+        get
+        {
+            return sensitivityX;
+        }
+        set
+        {
+            sensitivityX = value;
+            sensitivityY = value;
+        }
+    }
 
     void Update()
     {
@@ -89,9 +103,9 @@ public class MouseLook : MonoBehaviour
 
 					rotationX = 0;
 
-					rotationX = transform.localEulerAngles.y + Input.GetAxis("Mouse X") * sensitivityX;
+					rotationX = transform.localEulerAngles.y + Input.GetAxis(InputKeyWords.MOUSE_X) * sensitivityX;
 
-					rotationY += Input.GetAxis("Mouse Y") * sensitivityY;
+					rotationY += Input.GetAxis(InputKeyWords.MOUSE_Y) * sensitivityY;
 					rotationY = Mathf.Clamp(rotationY, minimumY, maximumY);
 
 					transform.localEulerAngles = new Vector3(-rotationY, rotationX, transform.localEulerAngles.z);

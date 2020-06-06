@@ -5,7 +5,6 @@ using UnityEngine.SceneManagement;
 
 public class EscMenu : MonoBehaviour
 {
-    const string MENU_BUTTON = "Cancel";
     [SerializeField] GameObject _menu;
     CHARACTER_CONTROL_STATE _previousState;
     private void Awake()
@@ -15,7 +14,7 @@ public class EscMenu : MonoBehaviour
     //This should probably be replaced with a central class which controlls what window should be shown?
     void Update()
     {
-        if (Input.GetButtonDown(MENU_BUTTON))
+        if (Input.GetButtonDown(InputKeyWords.CANCEL))
         {
             if (CharacterState.Control_State != CHARACTER_CONTROL_STATE.MENU)
             {
