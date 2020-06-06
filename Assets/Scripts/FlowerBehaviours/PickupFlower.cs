@@ -146,6 +146,7 @@ public class PickupFlower : InteractableSaving, IInteractable
                 _flowerPickupSound = _player_Data.p_pickup_unstable;
                 break;
             default:
+                _flowerPickupSound = _player_Data.p_pickup_home;
                 return;
         }
         _player_Emitter = Player.FindObjectOfType<Player_Emitter>();
