@@ -50,6 +50,11 @@ public class MapPreview : MonoBehaviour
     Transform _biomeContainer;
 
 
+    private void Awake()
+    {
+        Destroy(gameObject);
+    }
+
     public bool DoAutoUpdate() { return _autoUpdate; }
 
     public float GetScale() { return _meshSettings.MeshScale; }
