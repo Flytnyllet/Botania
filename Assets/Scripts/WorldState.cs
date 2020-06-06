@@ -59,8 +59,7 @@ public class WorldState : MonoBehaviour
                 float eventTime = Random.Range(_eventMinTime, _eventMaxTime);
                 if (Random.Range(0, 1f) < 0.5f)
                 {
-                    setRaining(true, 2000);
-                    _rainStrenght = 0.3f;
+                    setRaining(true, 2000, 0.3f);
                     EventParameter param = new EventParameter() { floatParam = 0.75f, floatParam2 = 4f };
                     ActionDelayer.RunAfterDelay(() =>
                     {
@@ -78,8 +77,7 @@ public class WorldState : MonoBehaviour
                 }
                 else
                 {
-                    setRaining(true);
-                    _rainStrenght = 1;
+                    setRaining(true, 10000, 1);
                     float lightningTimingBaseOffset = (eventTime * 0.5f - 5) / _lightningStrikesPerRain;
                     float lightningTiming = 0;
                     for (int i = 0; i < _lightningStrikesPerRain - 1; i++)
@@ -180,15 +178,16 @@ public class WorldState : MonoBehaviour
     float _cloudthicknessLowStepSTARTVALUE;
     public bool IsRaining { get => _raining; }
     public float RainStrenght { get => _rainStrenght; }
-    public void setRaining(bool shouldRain, int rainAmount = 10000)
+    public void setRaining(bool shouldRain, int rainAmount = 10000, float rainSoundLevel = 0)
     {
         if (shouldRain)
         {
             Shader.SetGlobalFloat("gRainWave", 0.9f);
             StartCoroutine(ChangeCloudThickness(20, -0.8f));
-            _raining = true;
             ActionDelayer.RunAfterDelay(() =>
             {
+                _rainStrenght = rainSoundLevel;
+                _raining = true;
                 if (_raining)
                     EventManager.TriggerEvent(EventNameLibrary.START_RAIN, new EventParameter() { intParam = rainAmount });
             }, 10);

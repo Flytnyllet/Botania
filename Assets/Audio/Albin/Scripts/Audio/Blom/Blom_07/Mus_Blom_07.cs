@@ -159,12 +159,12 @@ public class Mus_Blom_07 : MonoBehaviour
     }
     private void OnEnable()
     {
-        CalmFlowerTargetController.Instance.Subscribe(this.transform);
+        CalmFlowerTargetController.Subscribe(this.transform);
     }
 
     private void OnDisable()
     {
-        CalmFlowerTargetController.Instance.Unsubscribe(this.transform);
+        CalmFlowerTargetController.Unsubscribe(this.transform);
         blom_07.Set_Parameter(blom_07._blom07MovParameterId, 1);
         blom_07.Set_Parameter(blom_07._blom07CalmParameterId, 15);
         blom_07.Stop_Blom_07();

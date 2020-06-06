@@ -7,13 +7,13 @@ public class QuickTrashyEnableDissableScript : MonoBehaviour
     [SerializeField] GameObject[] _target;
     private void OnEnable()
     {
-        EventManager.Subscribe(EventNameLibrary.OPEN_BOOK, SetEnabled);
-        EventManager.Subscribe(EventNameLibrary.CLOSE_BOOK, SetDissabled);
+        EventManager.Subscribe(EventNameLibrary.CLOSE_BOOK, SetEnabled);
+        EventManager.Subscribe(EventNameLibrary.OPEN_BOOK, SetDissabled);
     }
     private void OnDisable()
     {
-        EventManager.UnSubscribe(EventNameLibrary.OPEN_BOOK, SetEnabled);
-        EventManager.UnSubscribe(EventNameLibrary.CLOSE_BOOK, SetDissabled);
+        EventManager.UnSubscribe(EventNameLibrary.CLOSE_BOOK, SetEnabled);
+        EventManager.UnSubscribe(EventNameLibrary.OPEN_BOOK, SetDissabled);
     }
     void SetEnabled(EventParameter param = null)
     {

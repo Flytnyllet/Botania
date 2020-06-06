@@ -165,7 +165,19 @@ public static class FlowerLibrary
 
     static void AddFlower(string flower, int amount)
     {
-        _flowerTypes.Add(flower, new FlowerData(amount));
+        //FlowerData data;
+        //if (_flowerTypes.TryGetValue("flower", out data))
+        //{
+        //    data.Amount += amount;
+        //    if (amount > 0)
+        //    {
+        //        data.Discovered += amount;
+        //    }
+        //}
+        //else
+        //{
+        _flowerTypes.Add("flower", new FlowerData(amount));
+        //  }
     }
 
     static void AddPotion(string potion, int amount)
@@ -229,11 +241,13 @@ public static class FlowerLibrary
             if (amount + _flowerTypes[flowerName].Amount > _maxItems)
             {
                 _flowerTypes[flowerName].Amount = _maxItems;
-                _flowerTypes[flowerName].Discovered += amount;
             }
             else
             {
                 _flowerTypes[flowerName].Amount += amount;
+            }
+            if (amount > 0)
+            {
                 _flowerTypes[flowerName].Discovered += amount;
             }
         }

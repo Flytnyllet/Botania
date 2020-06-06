@@ -2,38 +2,28 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CalmFlowerTargetController : MonoBehaviour
+public static class CalmFlowerTargetController
 {
-    public static CalmFlowerTargetController Instance;
-    List<Transform> calmFlowers = new List<Transform>();
+    static List<Transform> calmFlowers = new List<Transform>();
 
-    private void Awake()
+    static CalmFlowerTargetController()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Debug.Log("ValidReferenceException: Object reference set to an instance of an object");
-            Destroy(this.gameObject);
-        }
         SetClosestDistance();
     }
 
-    public void Subscribe(Transform transform)
+    public static void Subscribe(Transform transform)
     {
         calmFlowers.Add(transform);
         SetClosestDistance();
     }
-    public void Unsubscribe(Transform transform)
+    public static void Unsubscribe(Transform transform)
     {
         calmFlowers.Remove(transform);
         SetClosestDistance();
     }
 
     //Kan optimeras genom att bytas ut mot en sorterad stack eller någon skit, men har inte tid just nu.
-    void SetClosestDistance()
+    static void SetClosestDistance()
     {
         Vector3 closest = new Vector4(0, 99999, 0, 0);
         float closestDistance = 99999;

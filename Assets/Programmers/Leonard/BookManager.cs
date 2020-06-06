@@ -59,7 +59,7 @@ public class BookManager : MonoBehaviour
         _tabButtons.gameObject.SetActive(false);
         MapGenerator.Display(false);
         CharacterState.SetControlState(CHARACTER_CONTROL_STATE.PLAYERCONTROLLED);
-
+        EventManager.TriggerEvent(EventNameLibrary.CLOSE_BOOK, new EventParameter());
         if (param != null && param.boolParam == true)
         {
             EventManager.TriggerEvent(EventNameLibrary.CLOSE_BOOK, new EventParameter());
