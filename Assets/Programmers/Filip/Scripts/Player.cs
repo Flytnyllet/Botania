@@ -63,7 +63,9 @@ public class Player : MonoBehaviour
 
     public static void Save()
     {
-        Serialization.Save(Saving.FileNames.PLAYER_POSITION, _playerTransform.position + Vector3.up * 50); //+50 is just to guarantee it doesn't fall throught the ground
+        Vector3 savePosition = _playerTransform.position;
+        savePosition.y = 0;
+        Serialization.Save(Saving.FileNames.PLAYER_POSITION, savePosition + Vector3.up * 75); //+75 is just to guarantee it doesn't fall throught the ground
     }
 
     public static void Wipe()

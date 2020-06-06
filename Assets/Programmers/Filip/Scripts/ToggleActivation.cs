@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DrickDen : MonoBehaviour
+public class ToggleActivation : MonoBehaviour
 {
     [SerializeField] GameObject _focus;
 

@@ -1,7 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using FMODUnity;
+using TMPro;
 using UnityEngine;
-using FMODUnity;
 using UnityEngine.UI;
 
 public class AudioSettings : MonoBehaviour
@@ -18,6 +17,10 @@ public class AudioSettings : MonoBehaviour
     [SerializeField] Slider _masterSlider;
     [SerializeField] Slider _musicSlider;
     [SerializeField] Slider _SFXSlider;
+
+    [SerializeField] TMP_Text _masterValue;
+    [SerializeField] TMP_Text _musicValue;
+    [SerializeField] TMP_Text _SFXValue;
 
 
     void Awake()
@@ -42,15 +45,23 @@ public class AudioSettings : MonoBehaviour
     public void MasterVolumeLevel()
     {
         _master.setVolume(_masterSlider.value);
+        _masterValue.text = GetVolumeLevelString(_masterSlider.value);
     }
 
     public void MusicVolumeLevel()
     {
         _music.setVolume(_musicSlider.value);
+        _musicValue.text = GetVolumeLevelString(_musicSlider.value);
     }
 
     public void SFXVolumeLevel()
     {
         _SFX.setVolume(_SFXSlider.value);
+        _SFXValue.text = GetVolumeLevelString(_SFXSlider.value);
+    }
+
+    string GetVolumeLevelString(float value)
+    {
+        return System.Math.Round(value, 2).ToString();
     }
 }
