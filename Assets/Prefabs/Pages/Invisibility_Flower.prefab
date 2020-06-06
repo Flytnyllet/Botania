@@ -1,5 +1,167 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1227837281585072034
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 905381047642200561}
+  - component: {fileID: 6044827083512768253}
+  - component: {fileID: 2959488621317978618}
+  m_Layer: 5
+  m_Name: Text1 (3)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &905381047642200561
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1227837281585072034}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_Children: []
+  m_Father: {fileID: 6440083248673180044}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 82}
+  m_SizeDelta: {x: 1030, y: 384.3}
+  m_Pivot: {x: 0.5, y: 1}
+--- !u!222 &6044827083512768253
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1227837281585072034}
+  m_CullTransparentMesh: 0
+--- !u!114 &2959488621317978618
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1227837281585072034}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_FontData:
+    m_Font: {fileID: 12800000, guid: dbc218758a53fc146b1f834aa51290e8, type: 3}
+    m_FontSize: 35
+    m_FontStyle: 0
+    m_BestFit: 0
+    m_MinSize: 3
+    m_MaxSize: 40
+    m_Alignment: 0
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: "Even when visible, the Dolder looks almost as if it\u2019s about ready
+    to wink out of sight. It\u2019s somewhat transparent, with a blue sheen making
+    it feel otherworldly - even more so. I\u2019m curious as to why it acts that way.
+    Was there some sort of reason for this specific flower to develop invisibility
+    as a mechanism?"
+--- !u!1 &1435824155134231489
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2695137415522689767}
+  - component: {fileID: 5340697484494296857}
+  - component: {fileID: 9009821298149710560}
+  m_Layer: 5
+  m_Name: Text1 (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &2695137415522689767
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1435824155134231489}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_Children: []
+  m_Father: {fileID: 6440083248673180044}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 328.6}
+  m_SizeDelta: {x: 1030, y: 271.08}
+  m_Pivot: {x: 0.5, y: 1}
+--- !u!222 &5340697484494296857
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1435824155134231489}
+  m_CullTransparentMesh: 0
+--- !u!114 &9009821298149710560
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1435824155134231489}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_FontData:
+    m_Font: {fileID: 12800000, guid: ae5e547c71d839244a20bbc6b3298460, type: 3}
+    m_FontSize: 64
+    m_FontStyle: 0
+    m_BestFit: 0
+    m_MinSize: 3
+    m_MaxSize: 64
+    m_Alignment: 1
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: "Dolder\n\r\n"
 --- !u!1 &6440083246931009305
 GameObject:
   m_ObjectHideFlags: 0
@@ -32,10 +194,10 @@ RectTransform:
   m_Father: {fileID: 6440083248673180044}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 1}
-  m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -71}
-  m_SizeDelta: {x: 1030, y: 355.7}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 277.8}
+  m_SizeDelta: {x: 1030, y: 271.08}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &6440083246931009318
 CanvasRenderer:
@@ -66,23 +228,21 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 38
+    m_Font: {fileID: 12800000, guid: ae5e547c71d839244a20bbc6b3298460, type: 3}
+    m_FontSize: 43
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 3
-    m_MaxSize: 40
-    m_Alignment: 1
+    m_MaxSize: 43
+    m_Alignment: 0
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas a egestas
-    augue. Aenean sit amet consequat sapien. Phasellus id sodales arcu. Quisque sed
-    mi pulvinar, varius lorem ut, dignissim tellus. Donec sit amet condimentum ex.
-    Cras scelerisque faucibus neque, eu accumsan nisl gravida nec. Ut accumsan erat
-    eget commodo ornare.\r\n\r\n"
+  m_Text: "It appears this one continues to elude me. It\u2019s so close I swear I
+    feel its presence, yet I am unable to know for sure that it\u2019s there. How
+    did they ever pick you, I wonder? A dolder, hidden in plain sight.\n\r\n"
 --- !u!1 &6440083248673180045
 GameObject:
   m_ObjectHideFlags: 0
@@ -96,7 +256,7 @@ GameObject:
   - component: {fileID: 6440083248673180042}
   - component: {fileID: 6440083248673180043}
   m_Layer: 5
-  m_Name: Earth_Flower
+  m_Name: Invisibility_Flower
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -115,6 +275,8 @@ RectTransform:
   m_Children:
   - {fileID: 6440083246931009304}
   - {fileID: 2177618321551922728}
+  - {fileID: 2695137415522689767}
+  - {fileID: 905381047642200561}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -138,7 +300,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6440083248673180045}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
@@ -208,10 +370,10 @@ RectTransform:
   m_Father: {fileID: 6440083248673180044}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 1}
-  m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -256}
-  m_SizeDelta: {x: 1030, y: 777.6}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 178}
+  m_SizeDelta: {x: 1030, y: 384.3}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &3863489135661219289
 CanvasRenderer:
@@ -242,28 +404,20 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 38
+    m_Font: {fileID: 12800000, guid: f30b51c36c4f40e4da550acbf4249b45, type: 3}
+    m_FontSize: 30
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 3
     m_MaxSize: 40
-    m_Alignment: 1
+    m_Alignment: 0
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Curabitur odio nibh, blandit eu aliquet vel, rutrum et turpis. Nullam malesuada
-    arcu vel orci congue maximus. Phasellus sapien tortor, venenatis ac enim id, porttitor
-    iaculis magna. Nulla et tortor sit amet mi vulputate sagittis ac sit amet velit.
-    Cras id eros eget diam ornare vestibulum. Fusce urna libero, finibus at ex sit
-    amet, bibendum tempor risus. Vestibulum pulvinar turpis sed sem bibendum gravida.
-    Cras facilisis, ligula aliquet feugiat interdum, massa erat ultricies ante, in
-    finibus leo lorem id tortor. Aliquam quis dui congue, euismod lacus a, rutrum
-    lacus. Nam in risus venenatis, bibendum odio at, dictum enim. Duis justo sem,
-    hendrerit sed suscipit eget, consectetur a ex. Quisque laoreet velit eu facilisis
-    consequat. Duis at felis vitae libero aliquet posuere. Sed commodo ultrices nisl,
-    a convallis nunc efficitur egestas. Nunc elementum, lacus ut sodales sagittis,
-    justo risus mattis odio, in tempor elit nulla ac dui. Aenean ut tortor at nisi
-    tincidunt efficitur.
+  m_Text: "Growing in solitude, it seems to sprout wherever it pleases, although it\u2019s
+    commonly found growing alongside mushrooms. Invisible to the naked eye, one requires
+    special properties in order to unveil its hidden self. In exchange for the trouble
+    to pick it, given the right circumstances, it\u2019s possible to extract and utilize
+    the flower\u2019s properties for oneself.\r\n"

@@ -1,5 +1,87 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4690751586794870119
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1782855321547863439}
+  - component: {fileID: 609424925679159801}
+  - component: {fileID: 4891278856695463882}
+  m_Layer: 5
+  m_Name: Text1 (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1782855321547863439
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4690751586794870119}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_Children: []
+  m_Father: {fileID: 6440083248673180044}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 117}
+  m_SizeDelta: {x: 1030, y: 341.2}
+  m_Pivot: {x: 0.5, y: 1}
+--- !u!222 &609424925679159801
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4690751586794870119}
+  m_CullTransparentMesh: 0
+--- !u!114 &4891278856695463882
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4690751586794870119}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_FontData:
+    m_Font: {fileID: 12800000, guid: dbc218758a53fc146b1f834aa51290e8, type: 3}
+    m_FontSize: 35
+    m_FontStyle: 0
+    m_BestFit: 0
+    m_MinSize: 0
+    m_MaxSize: 45
+    m_Alignment: 0
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: 'My feet are sore from following Sviftan around all day, but it sure was
+    a fun experience. Leave it to a flower to look for adventures. Thankfully, it
+    moves slowly enough that one can easily catch up to it, which allowed me to take
+    the flower back with me for further research when I got tired of walking. '
 --- !u!1 &6440083246931009305
 GameObject:
   m_ObjectHideFlags: 0
@@ -32,9 +114,9 @@ RectTransform:
   m_Father: {fileID: 6440083248673180044}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 1}
-  m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -71}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 276}
   m_SizeDelta: {x: 1030, y: 355.7}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &6440083246931009318
@@ -66,23 +148,20 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 38
+    m_Font: {fileID: 12800000, guid: ae5e547c71d839244a20bbc6b3298460, type: 3}
+    m_FontSize: 43
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 3
-    m_MaxSize: 40
-    m_Alignment: 1
+    m_MaxSize: 43
+    m_Alignment: 0
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas a egestas
-    augue. Aenean sit amet consequat sapien. Phasellus id sodales arcu. Quisque sed
-    mi pulvinar, varius lorem ut, dignissim tellus. Donec sit amet condimentum ex.
-    Cras scelerisque faucibus neque, eu accumsan nisl gravida nec. Ut accumsan erat
-    eget commodo ornare.\r\n\r\n"
+  m_Text: "This flower soars through the air with no pattern or direction, entirely
+    free and willing to go wherever the wind so chooses. \n"
 --- !u!1 &6440083248673180045
 GameObject:
   m_ObjectHideFlags: 0
@@ -96,7 +175,7 @@ GameObject:
   - component: {fileID: 6440083248673180042}
   - component: {fileID: 6440083248673180043}
   m_Layer: 5
-  m_Name: Earth_Flower
+  m_Name: Levitation_Flower
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -115,6 +194,8 @@ RectTransform:
   m_Children:
   - {fileID: 6440083246931009304}
   - {fileID: 2177618321551922728}
+  - {fileID: 1782855321547863439}
+  - {fileID: 6019031856630252275}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -138,7 +219,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6440083248673180045}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
@@ -176,6 +257,85 @@ MonoBehaviour:
   _pageElements: []
   _flowerName: 0
   _flowerData: {fileID: 0}
+--- !u!1 &7210918061478478631
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6019031856630252275}
+  - component: {fileID: 3228586201017632270}
+  - component: {fileID: 3073047153971221735}
+  m_Layer: 5
+  m_Name: Text1 (3)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &6019031856630252275
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7210918061478478631}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_Children: []
+  m_Father: {fileID: 6440083248673180044}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 331.6}
+  m_SizeDelta: {x: 1030, y: 355.7}
+  m_Pivot: {x: 0.5, y: 1}
+--- !u!222 &3228586201017632270
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7210918061478478631}
+  m_CullTransparentMesh: 0
+--- !u!114 &3073047153971221735
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7210918061478478631}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_FontData:
+    m_Font: {fileID: 12800000, guid: ae5e547c71d839244a20bbc6b3298460, type: 3}
+    m_FontSize: 64
+    m_FontStyle: 0
+    m_BestFit: 0
+    m_MinSize: 3
+    m_MaxSize: 65
+    m_Alignment: 1
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: Sviftan
 --- !u!1 &7707341369679739663
 GameObject:
   m_ObjectHideFlags: 0
@@ -208,10 +368,10 @@ RectTransform:
   m_Father: {fileID: 6440083248673180044}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 1}
-  m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -256}
-  m_SizeDelta: {x: 1030, y: 777.6}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 199.9}
+  m_SizeDelta: {x: 1030, y: 341.2}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &3863489135661219289
 CanvasRenderer:
@@ -242,28 +402,19 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 38
+    m_Font: {fileID: 12800000, guid: f30b51c36c4f40e4da550acbf4249b45, type: 3}
+    m_FontSize: 30
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 3
     m_MaxSize: 40
-    m_Alignment: 1
+    m_Alignment: 0
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Curabitur odio nibh, blandit eu aliquet vel, rutrum et turpis. Nullam malesuada
-    arcu vel orci congue maximus. Phasellus sapien tortor, venenatis ac enim id, porttitor
-    iaculis magna. Nulla et tortor sit amet mi vulputate sagittis ac sit amet velit.
-    Cras id eros eget diam ornare vestibulum. Fusce urna libero, finibus at ex sit
-    amet, bibendum tempor risus. Vestibulum pulvinar turpis sed sem bibendum gravida.
-    Cras facilisis, ligula aliquet feugiat interdum, massa erat ultricies ante, in
-    finibus leo lorem id tortor. Aliquam quis dui congue, euismod lacus a, rutrum
-    lacus. Nam in risus venenatis, bibendum odio at, dictum enim. Duis justo sem,
-    hendrerit sed suscipit eget, consectetur a ex. Quisque laoreet velit eu facilisis
-    consequat. Duis at felis vitae libero aliquet posuere. Sed commodo ultrices nisl,
-    a convallis nunc efficitur egestas. Nunc elementum, lacus ut sodales sagittis,
-    justo risus mattis odio, in tempor elit nulla ac dui. Aenean ut tortor at nisi
-    tincidunt efficitur.
+  m_Text: "It\u2019s yellow crown is loosely encapsulated by large, green leaves adorned
+    by yellow markings. Whilst the flower is constantly afloat, it becomes stationary
+    during rainfall. Once broken down, its essence is able to grant a temporary hovering
+    effect."
