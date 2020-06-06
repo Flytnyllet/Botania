@@ -87,6 +87,9 @@ public class Player_Data : UnityEngine.ScriptableObject
     public string p_pickup_underwater = null;
 
     [FMODUnity.EventRef]
+    public string p_pickup_unstable = null;
+
+    [FMODUnity.EventRef]
     public string p_pickup_water = null;
 }
 

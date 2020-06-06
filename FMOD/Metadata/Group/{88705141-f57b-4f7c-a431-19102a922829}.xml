@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.00.00">
 	<object class="MixerGroup" id="{88705141-f57b-4f7c-a431-19102a922829}">
 		<property name="volume">
-			<value>-15.5</value>
+			<value>-30</value>
 		</property>
 		<property name="name">
 			<value>global_wind</value>
@@ -19,9 +19,15 @@
 	</object>
 	<object class="MixerBusEffectChain" id="{c750dc88-2432-41e8-97c4-07ee395db5e1}">
 		<relationship name="effects">
+			<destination>{64cbace6-816e-412c-849e-ba8db5f6e3f7}</destination>
 			<destination>{473934b9-9397-4933-bfb0-c5bd4111dd42}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{98ea26f2-721e-49cb-bd5f-9e8161112992}" />
+	<object class="ThreeEQEffect" id="{64cbace6-816e-412c-849e-ba8db5f6e3f7}">
+		<property name="bypass">
+			<value>true</value>
+		</property>
+	</object>
 	<object class="MixerBusFader" id="{473934b9-9397-4933-bfb0-c5bd4111dd42}" />
 </objects>

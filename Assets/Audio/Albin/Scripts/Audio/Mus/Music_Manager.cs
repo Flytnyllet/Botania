@@ -20,6 +20,8 @@ public class Music_Manager : MonoBehaviour
     private bool _isOptions = default;
 
     [EventRef]
+    public string mus_01_alchemy;
+    [EventRef]
     public string mus_01_biome1_1;
     [EventRef]
     public string mus_01_biome2_2;
@@ -53,6 +55,7 @@ public class Music_Manager : MonoBehaviour
     private bool _playOnlyFirstTime = true;
 
     private bool _triggeredStop = false;
+    private bool _firstDrink = true;
     
     
 
@@ -73,7 +76,15 @@ public class Music_Manager : MonoBehaviour
     private void OnEnable()
     {
         Init_StartMenuMusic();
-        //Init_OptionsMusic();
+        EventManager.Subscribe(EventNameLibrary.DRINK_POTION, Trigger_Alchemy_Music); 
+    }
+
+    void Trigger_Alchemy_Music(EventParameter param = null)
+    {
+        if (_firstDrink)
+            Init_Music(7);
+        else if (Random.Range(0, 1) > 0.6f)
+            Init_Music(7);
     }
 
 
@@ -203,6 +214,9 @@ public class Music_Manager : MonoBehaviour
                 case 6:
                     trigger_Event = mus_00_paus;
                     break;
+                case 7:
+                    trigger_Event = mus_01_alchemy;
+                    break;
             }
             trigger_Instance = RuntimeManager.CreateInstance(trigger_Event);
             Play_TriggerMusic();
@@ -212,6 +226,9 @@ public class Music_Manager : MonoBehaviour
 
             if (trigger_Event == mus_00_paus)
                 _isIdleMusic = true;
+
+            if (trigger_Event == mus_01_alchemy)
+                _firstDrink = false;
         }
     }
 
