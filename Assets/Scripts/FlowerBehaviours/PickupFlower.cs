@@ -142,6 +142,9 @@ public class PickupFlower : InteractableSaving, IInteractable
             case "Lillypad":
                 _flowerPickupSound = _player_Data.p_pickup_water;
                 break;
+            case "Unstable":
+                _flowerPickupSound = _player_Data.p_pickup_unstable;
+                break;
             default:
                 return;
         }

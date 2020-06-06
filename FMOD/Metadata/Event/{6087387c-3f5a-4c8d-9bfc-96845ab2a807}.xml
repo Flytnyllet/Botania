@@ -32,7 +32,6 @@
 			<destination>{7be14dec-4dd9-48c2-8f96-4903810782c1}</destination>
 		</relationship>
 		<relationship name="banks">
-			<destination>{c04dcdcc-5b85-493f-96ae-07bbbbb16d65}</destination>
 			<destination>{a3f91e27-e044-4924-a5fc-64ef3dfb5cc1}</destination>
 		</relationship>
 	</object>
@@ -57,7 +56,11 @@
 			<destination>{3567d0d0-6045-4637-9eda-5c3f5fe4bbbd}</destination>
 		</relationship>
 	</object>
-	<object class="EventAutomatableProperties" id="{068c6c80-8dad-484a-89e6-870882fef58c}" />
+	<object class="EventAutomatableProperties" id="{068c6c80-8dad-484a-89e6-870882fef58c}">
+		<property name="triggerCooldown">
+			<value>80</value>
+		</property>
+	</object>
 	<object class="MarkerTrack" id="{f7e96ad0-35a1-40d0-a4e7-b5d50ee135cd}" />
 	<object class="GroupTrack" id="{152fd9bb-edb9-48d6-b03c-b615796fee31}">
 		<relationship name="modules">
