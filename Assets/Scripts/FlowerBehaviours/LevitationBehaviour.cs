@@ -27,7 +27,7 @@ public class LevitationBehaviour : MonoBehaviour
             _playerInside = true;
             if (!_running)
             {
-                StartCoroutine(MoveFromTarget(other.transform, 2));
+                StartCoroutine(MoveFromTarget(other.transform, 8));
             }
         }
     }
@@ -39,22 +39,47 @@ public class LevitationBehaviour : MonoBehaviour
             _playerInside = false;
         }
     }
+    void FaceAwayFromTarget(Transform target)
+    {
+        Vector3 to = target.position;
+        Vector3 from = transform.position;
+        //magic numbers for making the flower lean back slightly
+        to.y = -.5f;
+        from.y = 0;
+
+        var lookDirection = Quaternion.LookRotation(from - to);
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, lookDirection, 200.0f * Time.deltaTime);
+    }
+
     IEnumerator MoveFromTarget(Transform target, float deaccelerationTime)
     {
         _running = true;
         while (_playerInside)
         {
+            float time = 0;
+            while (time < deaccelerationTime)
+            {
+                if (_playerInside) { break; }
+                FaceAwayFromTarget(target);
+                Vector3 direction = (transform.position - target.position).normalized;
+                direction.y = -1;
+                _charCon.Move(direction * _fleeSpeed * (1 - time / deaccelerationTime) * Time.deltaTime);
+                time += Time.deltaTime;
+                yield return null;
+            }
             while (_playerInside)
             {
+                FaceAwayFromTarget(target);
                 Vector3 direction = (transform.position - target.position).normalized;
                 direction.y = -1;
                 _charCon.Move(direction * _fleeSpeed * Time.deltaTime);
                 yield return null;
             }
-            float time = 0;
+            time = 0;
             while (time < deaccelerationTime)
             {
                 if (_playerInside) { break; }
+                FaceAwayFromTarget(target);
 
                 Vector3 direction = (transform.position - target.position).normalized;
                 direction.y = -1;
