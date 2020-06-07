@@ -331,11 +331,12 @@ public class BookManager : MonoBehaviour
 
             case 2:
                 _currentPage = ChangeCurrentPage(_lorePages.Count, change);
+                EventManager.TriggerEvent(EventNameLibrary.FLIP_PAGE, new EventParameter()); //Play flip page sound. This should be moved. I just don't know where.
                 ChangePage(_lorePages);
                 break;
 
             default:
-                //Jens var här och kommenterade ut, this just causes issues, no?
+                        //Jens var här och kommenterade ut, this just causes issues, no?
                 //_currentPage = ChangeCurrentPage(FLOWERPAGE_INDEX.Count, change);
                 //ChangePage(FLOWERPAGE_INDEX);
                 break;
