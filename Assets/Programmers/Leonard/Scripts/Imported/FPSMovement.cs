@@ -97,6 +97,14 @@ public class FPSMovement : MonoBehaviour
     [SerializeField] [Range(50, 500)] float _teleportRay = 100f;
     [SerializeField] LayerMask _groundLayer;
     Color alpha = new Color(0, 0, 0, 1);
+    public bool MayTeleport
+    {
+        get
+        {
+            return !_isUnderwater;
+        }
+    }
+
 
     [SerializeField] Image _loadScreen = null;
 
@@ -585,7 +593,7 @@ public class FPSMovement : MonoBehaviour
         if (CharacterState.IsAbilityFlagActive(ABILITY_FLAG.SLOWFALL))
         {
             if (_velocity.y > 0) _velocity.y = 0;
-            factor *= 0.075f;
+            factor *= 0.1f;
         }
 
         charCon.Move(_velocity * Time.deltaTime);

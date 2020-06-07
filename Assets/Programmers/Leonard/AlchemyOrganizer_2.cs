@@ -208,7 +208,6 @@ public class AlchemyOrganizer_2 : MonoBehaviour
             {
                 for (int ii = nrIngredientObjects; ii < nrIngredients; ii++)
                 {
-                    Debug.LogFormat("Setup ingredient nr {0} in recipe {1}", ii, i);
                     GameObject newIngObj = Instantiate(ingredientObject, newRecipe.craftButton.transform);
                     newIngObj.transform.localPosition -= Vector3.right * 80 * ii;
                     newRecipe.ingredientImages[ii] = newIngObj.GetComponent<Image>();

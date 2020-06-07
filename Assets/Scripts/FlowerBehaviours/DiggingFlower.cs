@@ -53,7 +53,6 @@ public class DiggingFlower : MonoBehaviour
             !CharacterState.IsAbilityFlagActive(ABILITY_FLAG.INVISSIBLE) &&
             !CharacterState.IsAbilityFlagActive(ABILITY_FLAG.CALM_ALL_FLOWERS))
         {
-            Debug.Log("This should work");
             _playerInArea = true; //I hate this
             StartCoroutine(DigAndWait());
         }

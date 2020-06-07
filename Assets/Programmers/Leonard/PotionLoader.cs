@@ -50,13 +50,11 @@ public class PotionLoader : MonoBehaviour
     {
         if (recipe.Count < 1)
         {
-            Debug.Log("Test2");
             if (recipeAmounts.Count == recipeIngredients.Count)
             {
                 for (int i = 0; i < recipeIngredients.Count; i++)
                 {
-
-                    Debug.Log("Test3");
+                    
                     RecipeEntry entry;
                     entry.amount = recipeAmounts[i];
                     entry.ingredient = recipeIngredients[i];
@@ -128,7 +126,6 @@ public class PotionLoader : MonoBehaviour
 
     public List<RecipeEntry> GetRecipe()
     {
-        Debug.Log("Test");
         SetUpRecipies();
         return recipe;
     }

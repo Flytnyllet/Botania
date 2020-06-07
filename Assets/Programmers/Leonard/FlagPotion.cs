@@ -12,13 +12,18 @@ public class FlagPotion : Potion_Template
         this.effect = effect;
         this.duration = duration;
     }
-    public override bool PotionEffectStart(FPSMovement p)
+    public override bool PotionEffectStart(FPSMovement playerMovement)
     {
+        //Awful hack for last minute fixes
         ABILITY_FLAG flag = CharacterState.GetFlagFromString(effect);
         bool AbillityActive;
         if (flag == ABILITY_FLAG.LEVITATE)
         {
             AbillityActive = (CharacterState.IsAbilityFlagActive(ABILITY_FLAG.LEVITATE) || CharacterState.IsAbilityFlagActive(ABILITY_FLAG.SLOWFALL));
+        }
+        else if (flag == ABILITY_FLAG.TELEPORT)
+        {
+            AbillityActive = (playerMovement.MayTeleport || CharacterState.IsAbilityFlagActive(flag));
         }
         else
         {
