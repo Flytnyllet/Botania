@@ -23,7 +23,8 @@ public class FlagPotion : Potion_Template
         }
         else if (flag == ABILITY_FLAG.TELEPORT)
         {
-            AbillityActive = (playerMovement.MayTeleport || CharacterState.IsAbilityFlagActive(flag));
+                        //If the player may not Teleport from outside factors, it should be treated as if the potion is on at this stage - Shitty hack fix
+            AbillityActive = (!playerMovement.MayTeleport || CharacterState.IsAbilityFlagActive(flag));
         }
         else
         {

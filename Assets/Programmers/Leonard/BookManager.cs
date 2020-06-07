@@ -36,7 +36,7 @@ public class BookManager : MonoBehaviour
 
     GetAxisRawDown _axisRawMap = new GetAxisRawDown(InputKeyWords.MAP_CONTROLLER, 1);
     GetAxisRawDown _axisRawFlower = new GetAxisRawDown(InputKeyWords.FLOWERS, -1);
-    GetAxisRawDown _axisRawLore = new GetAxisRawDown(InputKeyWords.LORE, 1);
+    GetAxisRawDown _axisRawLore = new GetAxisRawDown(InputKeyWords.LORE, -1);
     GetAxisRawDown _axisRawAlchemy = new GetAxisRawDown(InputKeyWords.ALCHEMY, -1);
 
     public static void SetPickedFlower(ItemDataContainer flower)

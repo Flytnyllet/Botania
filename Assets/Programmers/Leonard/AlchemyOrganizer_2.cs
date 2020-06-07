@@ -452,7 +452,7 @@ public class AlchemyOrganizer_2 : MonoBehaviour
                 Debug.Log("Null Fail");
                 hasSame = null;
             }
-            else if (object.ReferenceEquals(_allIngredients[i].symbol, data.symbol) && FlowerLibrary.GetFlowerAmount(_allIngredients[i].itemName) > amount)
+            else if (object.ReferenceEquals(_allIngredients[i].symbol, data.symbol) && FlowerLibrary.GetFlowerAmount(_allIngredients[i].itemName) >= amount)
             {
                 Debug.Log("Not Null Fail");
                 hasSame = _allIngredients[i];
