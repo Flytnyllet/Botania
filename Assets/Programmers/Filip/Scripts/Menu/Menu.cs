@@ -10,7 +10,6 @@ public class Menu : MonoBehaviour
 {
     [Header("Settings")]
 
-
     [SerializeField] GameObject _menu;
     [SerializeField] GameObject _main;
     [SerializeField] GameObject[] _rest;
@@ -28,9 +27,13 @@ public class Menu : MonoBehaviour
 
     bool _mainMenu = true;
 
+    public bool CurrentlyChangingResolution { get; set; } = false;
+
+
+
     void Update()
     {
-        if ((_onStart || Input.GetButtonDown(InputKeyWords.CANCEL)) && _menu != null)
+        if ((_onStart || Input.GetButtonDown(InputKeyWords.CANCEL)) && _menu != null & !CurrentlyChangingResolution)
         {
             _onStart = false;
 

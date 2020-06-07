@@ -7,6 +7,7 @@ using System.Text;
 
 public class ChangeResolution : MonoBehaviour
 {
+    [SerializeField] Menu _menuScript;
     [SerializeField] GameObject _revertWindow;
     [SerializeField, Range(1, 50)] float _revertTime = 10;
     [SerializeField] TMP_Text _revertText;
@@ -56,6 +57,7 @@ public class ChangeResolution : MonoBehaviour
 
         if (!final)
         {
+            _menuScript.CurrentlyChangingResolution = true;
             _revertWindow.SetActive(true);
             _currentlyCountingDown = true;
             StartCoroutine(CountDownToRevert());
@@ -68,6 +70,7 @@ public class ChangeResolution : MonoBehaviour
 
     public void RevertResolution()
     {
+        _menuScript.CurrentlyChangingResolution = false;
         _currentlyCountingDown = false;
         _revertWindow.SetActive(false);
         _dropdown.SetValueWithoutNotify(GetResolutionIndex(_lastResolution.x, _lastResolution.y));
@@ -76,6 +79,7 @@ public class ChangeResolution : MonoBehaviour
 
     public void KeepResolution()
     {
+        _menuScript.CurrentlyChangingResolution = false;
         _revertWindow.SetActive(false);
         _currentlyCountingDown = false;
     }
