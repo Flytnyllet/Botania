@@ -97,6 +97,7 @@ public class PickupFlower : InteractableSaving, IInteractable
             time += Time.deltaTime;
             yield return null;
         }
+        this.transform.eulerAngles = baseRotation;
     }
 
     private void Play_PickupSound(string flowerName)
