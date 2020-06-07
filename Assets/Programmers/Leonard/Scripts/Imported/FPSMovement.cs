@@ -254,8 +254,12 @@ public class FPSMovement : MonoBehaviour
                 _inAir = true;
                 Swimming(moveInput);
             }
+            else if (!_inWater)
+            {
+                _swimming = false;
+            }
             // Everything that can be done while grounded
-            if (_grounded)
+            if (_grounded && !_swimming)
             {
                 if (Input.GetAxisRaw(InputKeyWords.SPRINT) != 0)
                 {
@@ -293,7 +297,7 @@ public class FPSMovement : MonoBehaviour
                     }
                 }
             }
-            else
+            else if (!_inWater)
             {
                 //_swimVelocity = Vector2.zero;
                 Strafing(moveInput.x, moveInput.y);
@@ -641,6 +645,7 @@ public class FPSMovement : MonoBehaviour
 
         SwimBob(Input.GetAxis(InputKeyWords.HORIZONTAL), Input.GetAxis(InputKeyWords.VERTICAL));
 
+        //Audio
         float SwimTempo = Mathf.Sin(Time.time * _swinSoundTempo);
         if (SwimTempo < 0 && _swimSoundMayTrigger && readySwimVelocity.magnitude > 0.1)
         {
@@ -656,6 +661,7 @@ public class FPSMovement : MonoBehaviour
             _swimVelocity -= (_swimVelocity / _swimDeceleration) * Time.deltaTime;
         }
 
+        //what
         _swimVelocity -= _swimVelocity * Time.deltaTime;
     }
 
