@@ -20,7 +20,7 @@ The team behind Ninvae is **Firore Games** and we are:
 ### Game Writing
 
 * Aydan KananiAydan Kanani
-* Saga Sporrong
+* Saga Sporrong: *Writing & Project Lead*
 
 ### Graphics
 
